@@ -51,7 +51,7 @@ class OneTableObjectMapperTest extends LimbTestCase
 
   function OneTableObjectMapperTest()
   {
-    parent :: LimbTestCase('one table object mapper test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

@@ -9,26 +9,34 @@
 *
 ***********************************************************************************/
 
-class MapDataspaceToObjectCommand
+class MapDataspaceToEntityPartCommand
 {
   var $map;
-  var $object;
+  var $context_key;
+  var $entity_part_name;
 
-  function MapDataspaceToObjectCommand($map, &$object)
+  function MapDataspaceToEntityPartCommand($map, $context_key, $entity_part_name)
   {
     $this->map = $map;
-    $this->object =& $object;
+    $this->context_key = $context_key;
+    $this->entity_part_name = $entity_part_name;
   }
 
-  function perform()
+  function perform(&$context)
   {
     $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();
 
+    if(!$entity =& $context->getObject($this->context_key))
+      return LIMB_STATUS_ERROR;
+
+    if(!$part =& $entity->getPart($this->entity_part_name))
+      return LIMB_STATUS_ERROR;
+
     foreach($this->map as $key => $setter)
     {
       if ((($value = $dataspace->get($key)) !== false) && (($value = $dataspace->get($key)) !== null))
-        $this->object->set($setter, $value);
+        $part->set($setter, $value);
     }
 
     return LIMB_STATUS_OK;

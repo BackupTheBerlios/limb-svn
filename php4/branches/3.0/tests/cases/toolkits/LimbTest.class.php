@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: LimbBaseToolkitTest.class.php 1105 2005-02-15 13:46:50Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/Limb.class.php');
@@ -36,7 +36,7 @@ class LimbTest extends LimbTestCase
 {
   function LimbTest()
   {
-    parent :: LimbTestCase('limb container tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testDefaultToolkit()

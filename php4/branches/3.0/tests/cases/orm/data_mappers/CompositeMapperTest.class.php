@@ -54,7 +54,7 @@ class CompositeMapperTest extends LimbTestCase
 
   function CompositeMapperTest()
   {
-    parent :: LimbTestCase('composite mapper test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

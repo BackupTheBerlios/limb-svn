@@ -20,7 +20,7 @@ class LimbPagerNavigatorTagTestCase extends LimbTestCase
 {
   function LimbPagerNavigatorTagTestCase()
   {
-    parent :: LimbTestCase('limb pager tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

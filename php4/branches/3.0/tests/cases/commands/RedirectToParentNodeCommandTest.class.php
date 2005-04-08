@@ -10,7 +10,8 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/RedirectToParentNodeCommand.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/Object.class.php');
+require_once(LIMB_DIR . '/core/entity/Entity.class.php');
+require_once(LIMB_DIR . '/core/NodeConnection.class.php');
 require_once(LIMB_DIR . '/core/tree/Path2IdTranslator.class.php');
 require_once(LIMB_DIR . '/core/commands/Command.interface.php');
 require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');
@@ -33,7 +34,7 @@ class RedirectToParentNodeCommandTest extends LimbTestCase
 
   function RedirectToParentNodeCommandTest()
   {
-    parent :: LimbTestCase('redirect to parent node command test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()
@@ -53,10 +54,47 @@ class RedirectToParentNodeCommandTest extends LimbTestCase
     Limb :: restoreToolkit();
   }
 
+  function testPerformFailedNoNodeEntityPart()
+  {
+    $entity = new Entity();
+
+    $context = new Dataspace();
+    $context->setObject($field_name = 'whatever', $entity);
+
+    $this->toolkit->setCurrentEntity($object);
+
+    $this->path2id_translator->expectNever('getPathToNode');
+
+    $command = new RedirectToParentNodeCommandTestVersion($this);
+    $command->RedirectToParentNodeCommand($field_name);
+
+    $this->assertEqual($command->perform($context), LIMB_STATUS_ERROR);
+  }
+
+  function testPerformFailedNoContextField()
+  {
+    $context = new Dataspace();
+
+    $this->toolkit->setCurrentEntity($object);
+
+    $this->path2id_translator->expectNever('getPathToNode');
+
+    $command = new RedirectToParentNodeCommandTestVersion($this);
+    $command->RedirectToParentNodeCommand($entity_name = 'whatever');
+
+    $this->assertEqual($command->perform($context), LIMB_STATUS_ERROR);
+  }
+
   function testPerformOk()
   {
-    $node = new Object();
+    $node = new NodeConnection();
     $node->set('parent_id', $parent_node_id = 100);
+
+    $entity = new Entity();
+    $entity->registerPart('node', $node);
+
+    $context = new Dataspace();
+    $context->setObject($entity_name = 'whatever', $entity);
 
     $this->toolkit->setCurrentEntity($object);
 
@@ -64,15 +102,15 @@ class RedirectToParentNodeCommandTest extends LimbTestCase
     $this->path2id_translator->setReturnValue('getPathToNode', $path = 'any path');
 
     $regirect_command = new MockCommand($this);
-    $regirect_command->expectOnce('perform');
+    $regirect_command->expectOnce('perform', array($context));
     $regirect_command->setReturnValue('perform', LIMB_STATUS_OK);
 
     $command = new RedirectToParentNodeCommandTestVersion($this);
-    $command->RedirectToParentNodeCommand($node);
+    $command->RedirectToParentNodeCommand($entity_name);
 
     $command->setReturnReference('getRedirectCommand', $regirect_command, array($path));
 
-    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
+    $this->assertEqual($command->perform($context), LIMB_STATUS_OK);
 
     $regirect_command->tally();
   }

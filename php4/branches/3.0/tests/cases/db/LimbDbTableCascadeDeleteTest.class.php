@@ -99,7 +99,7 @@ class LimbDbTableCascadeDeleteTest extends LimbTestCase
 
   function LimbDbTableCascadeDeleteTest()
   {
-    parent :: LimbTestCase('cascade delete db table tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

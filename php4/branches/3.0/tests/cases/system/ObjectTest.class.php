@@ -23,7 +23,7 @@ class ObjectTest extends LimbTestCase
 
   function ObjectTest()
   {
-    parent :: LimbTestCase('object tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

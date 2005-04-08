@@ -15,19 +15,34 @@ class RegisterObjectCommandTest extends LimbTestCase
 {
   function RegisterObjectCommandTest()
   {
-    parent :: LimbTestCase('register object command test');
+    parent :: LimbTestCase(__FILE__);
   }
 
-  function testPerform()
+  function testPerformError()
   {
-    $object = new SimpleObject();
-    $object->set('title', $title = 'any title');
+    $context = new DataSpace();
 
     $toolkit =& Limb :: toolkit();
 
-    $command = new RegisterObjectCommand($object);
+    $command = new RegisterObjectCommand($field_name = 'whatever');
 
-    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
+    $this->assertEqual($command->perform($context), LIMB_STATUS_ERROR);
+  }
+
+  function testPerformOK()
+  {
+    $context = new DataSpace();
+
+    $object = new SimpleObject();
+    $object->set('title', $title = 'any title');
+
+    $context->setObject($entity_name = 'whatever', $object);
+
+    $toolkit =& Limb :: toolkit();
+
+    $command = new RegisterObjectCommand($entity_name);
+
+    $this->assertEqual($command->perform($context), LIMB_STATUS_OK);
 
     $uow =& $toolkit->getUOW();
 

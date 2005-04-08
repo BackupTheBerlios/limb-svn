@@ -12,7 +12,7 @@ class TemplateTagsGroup extends LimbGroupTest
 {
   function TemplateTagsGroup()
   {
-    parent :: LimbGroupTest('template tags tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

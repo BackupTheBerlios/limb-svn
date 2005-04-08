@@ -37,7 +37,7 @@ class LimbDAOComponentTest extends LimbTestCase
 
   function LimbDAOComponentTest()
   {
-    parent :: LimbTestCase('limb dao component test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

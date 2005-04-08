@@ -16,7 +16,7 @@ class SimpleDeleteSQLTest extends LimbTestCase
 
   function SimpleDeleteSQLTest()
   {
-    parent :: LimbTestCase('simple delete sql tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

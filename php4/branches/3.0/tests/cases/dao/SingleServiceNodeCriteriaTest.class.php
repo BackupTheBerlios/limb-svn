@@ -33,7 +33,7 @@ class SingleServiceNodeCriteriaTest extends LimbTestCase
 
   function SingleServiceNodeCriteriaTest()
   {
-    parent :: LimbTestCase('single service node criteria tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

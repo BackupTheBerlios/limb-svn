@@ -14,7 +14,7 @@ class NotFoundRequestResolverTest extends LimbTestCase
 {
   function NotFoundRequestResolverTest()
   {
-    parent :: LimbTestCase('not found request resolver test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

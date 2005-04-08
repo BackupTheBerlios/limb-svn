@@ -27,7 +27,7 @@ class AbstractDataMapperTest extends LimbTestCase
 
   function AbstractDataMapperTest()
   {
-    parent :: LimbTestCase('abstract mapper test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

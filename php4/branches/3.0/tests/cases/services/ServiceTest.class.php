@@ -14,7 +14,7 @@ class ServiceTest extends LimbTestCase
 {
   function ServiceTest()
   {
-    parent :: LimbTestCase('service tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

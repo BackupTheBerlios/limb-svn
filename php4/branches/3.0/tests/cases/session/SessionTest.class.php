@@ -20,7 +20,7 @@ class SessionTest extends LimbTestCase
 
   function SessionTest()
   {
-    parent :: LimbTestCase('session test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

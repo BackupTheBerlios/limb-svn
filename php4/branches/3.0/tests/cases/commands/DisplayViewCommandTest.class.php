@@ -38,7 +38,7 @@ class DisplayViewCommandTest extends LimbTestCase
 
   function DisplayViewCommandTest()
   {
-    parent :: LimbTestCase('display cmd test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

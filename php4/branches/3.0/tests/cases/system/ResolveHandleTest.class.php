@@ -24,7 +24,7 @@ class ResolveHandleTest extends LimbTestCase
 {
   function ResolveHandleTest()
   {
-    parent :: LimbTestCase('LIMB handle tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testClassDeclaredInSameFile()

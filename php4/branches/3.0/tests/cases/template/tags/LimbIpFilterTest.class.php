@@ -14,7 +14,7 @@ class LimbIpFilterTestCase extends LimbTestCase
 {
   function LimbIpFilterTestCase()
   {
-    parent :: LimbTestCase('limb ip filter case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

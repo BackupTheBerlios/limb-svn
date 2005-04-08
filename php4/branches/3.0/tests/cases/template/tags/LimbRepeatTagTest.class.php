@@ -14,7 +14,7 @@ class LimbRepeatTagTestCase extends LimbTestCase
 {
   function LimbRepeatTagTestCase()
   {
-    parent :: LimbTestCase('limb repeat tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

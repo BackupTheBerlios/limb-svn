@@ -26,7 +26,7 @@ class HttpResponseTest extends LimbTestCase
 
   function HttpResponseTest()
   {
-    parent :: LimbTestCase('http response test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

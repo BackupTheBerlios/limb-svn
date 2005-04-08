@@ -12,7 +12,7 @@ class ServiceGroup extends LimbGroupTest
 {
   function ServiceGroup()
   {
-    parent :: LimbGroupTest('service tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

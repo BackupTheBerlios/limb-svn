@@ -16,7 +16,7 @@ class CacheRegistryTest extends LimbTestCase
 
   function CacheRegistryTest()
   {
-    parent :: LimbTestCase('cache registry test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

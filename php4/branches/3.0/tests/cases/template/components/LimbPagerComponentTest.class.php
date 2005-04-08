@@ -21,7 +21,7 @@ class LimbPagerComponentTest extends LimbTestCase
 
   function LimbPagerComponentTest()
   {
-    parent :: LimbTestCase('limb pager component test');
+    parent :: LimbTestCase(__FILE__);
 
     $toolkit =& Limb :: toolkit();
   }

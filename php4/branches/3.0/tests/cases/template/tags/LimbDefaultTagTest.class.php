@@ -14,7 +14,7 @@ class LimbDefaultTagTestCase extends LimbTestCase
 {
   function LimbDefaultTagTestCase()
   {
-    parent :: LimbTestCase('limb default tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

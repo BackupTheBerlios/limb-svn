@@ -14,7 +14,7 @@ class EntityTest extends LimbTestCase
 {
   function EntityTest()
   {
-    parent :: LimbTestCase('entity test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

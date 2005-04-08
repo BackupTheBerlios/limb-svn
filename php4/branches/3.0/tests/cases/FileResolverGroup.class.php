@@ -12,7 +12,7 @@ class FileResolverGroup extends LimbGroupTest
 {
   function FileResolverGroup()
   {
-    parent :: LimbGroupTest('file resolvers tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

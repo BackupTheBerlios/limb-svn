@@ -18,7 +18,7 @@ class LimbDbPoolTest extends LimbTestCase
 {
   function LimbDbPoolTest()
   {
-    parent :: LimbTestCase('db pool test case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testGetConnection()

@@ -28,7 +28,7 @@ class Path2IdTranslatorTest extends LimbTestCase
 
   function Path2IdTranslatorTest()
   {
-    parent :: LimbTestCase('path to id translator tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

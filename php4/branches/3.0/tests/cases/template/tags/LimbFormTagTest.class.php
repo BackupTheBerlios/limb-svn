@@ -15,7 +15,7 @@ class LimbFormTagTestCase extends LimbTestCase
 {
   function LimbFormTagTestCase()
   {
-    parent :: LimbTestCase('limb form tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

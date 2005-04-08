@@ -17,7 +17,7 @@ class SimpleDbTest extends LimbTestCase
 
   function SimpleDbTest()
   {
-    parent :: LimbTestCase('simple db tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

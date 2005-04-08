@@ -50,7 +50,7 @@ class VersionedObjectMapperTest extends LimbTestCase
 
   function VersionedObjectMapperTest()
   {
-    parent :: LimbTestCase('versioned object mapper test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

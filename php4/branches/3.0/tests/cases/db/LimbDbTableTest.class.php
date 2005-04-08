@@ -36,7 +36,7 @@ class LimbDbTableTest extends LimbTestCase
 
   function LimbDbTableTest()
   {
-    parent :: LimbTestCase('db table tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

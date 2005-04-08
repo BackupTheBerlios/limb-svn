@@ -12,7 +12,7 @@ class DAOTagsGroup extends LimbGroupTest
 {
   function DAOTagsGroup()
   {
-    parent :: LimbGroupTest('DAO tags tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

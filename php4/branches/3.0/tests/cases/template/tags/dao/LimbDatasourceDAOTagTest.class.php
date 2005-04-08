@@ -23,7 +23,7 @@ class LimbDatasourceDAOTagTestCase extends LimbTestCase
 
   function LimbDatasourceDAOTagTestCase()
   {
-    parent :: LimbTestCase('limb datasource dao tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

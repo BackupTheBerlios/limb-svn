@@ -19,7 +19,7 @@ class RequestResolverMappingFilterTest extends LimbTestCase
 {
   function RequestResolverMappingFilterTest()
   {
-    parent :: LimbTestCase('request resolver mapping filter test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

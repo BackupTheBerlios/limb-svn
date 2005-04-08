@@ -15,7 +15,7 @@ class DeleteObjectCommandTest extends LimbTestCase
 {
   function DeleteObjectCommandTest()
   {
-    parent :: LimbTestCase('delete object command test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()
@@ -28,16 +28,31 @@ class DeleteObjectCommandTest extends LimbTestCase
     Limb :: restoreToolkit();
   }
 
+  function testPeformError()
+  {
+    $toolkit =& Limb :: toolkit();
+
+    $context = new DataSpace();
+
+    $command = new DeleteObjectCommand($field_name = 'whatever');
+
+    $this->assertEqual($command->perform($context), LIMB_STATUS_ERROR);
+  }
+
   function testPerformOK()
   {
     $toolkit =& Limb :: toolkit();
 
+    $context = new DataSpace();
+
     $object = new SimpleObject();
     $object->set('id', $id = 1001);
 
-    $command = new DeleteObjectCommand($object);
+    $context->setObject($field_name = 'whatever', $object);
 
-    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
+    $command = new DeleteObjectCommand($field_name);
+
+    $this->assertEqual($command->perform($context), LIMB_STATUS_OK);
 
     $uow =& $toolkit->getUOW();
     $this->assertTrue($uow->isDeleted($object));

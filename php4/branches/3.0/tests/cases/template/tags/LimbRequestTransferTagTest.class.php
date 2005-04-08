@@ -16,7 +16,7 @@ class LimbRequestTransferTagTestCase extends LimbTestCase
 
   function LimbRequestTransferTagTestCase()
   {
-    parent :: LimbTestCase('limb request trasfer tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

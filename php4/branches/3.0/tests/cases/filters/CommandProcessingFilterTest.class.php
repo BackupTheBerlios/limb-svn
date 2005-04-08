@@ -21,7 +21,7 @@ class CommandProcessingFilterTest extends LimbTestCase
 {
   function CommandProcessingFilterTest()
   {
-    parent :: LimbTestCase('command processing filter test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

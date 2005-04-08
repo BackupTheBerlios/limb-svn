@@ -32,7 +32,7 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
   function TreeNodeDataMapperTest()
   {
-    parent :: LimbTestCase('tree node mapper test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

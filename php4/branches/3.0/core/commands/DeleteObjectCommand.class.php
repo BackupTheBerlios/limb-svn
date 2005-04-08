@@ -11,19 +11,22 @@
 
 class DeleteObjectCommand
 {
-  var $object;
+  var $context_field;
 
-  function DeleteObjectCommand(&$object)
+  function DeleteObjectCommand($context_field)
   {
-    $this->object =& $object;
+    $this->context_field = $context_field;
   }
 
-  function perform()
+  function perform(&$context)
   {
+    if(!$object =& $context->getObject($this->context_field))
+      return LIMB_STATUS_ERROR;
+
     $toolkit =& Limb :: toolkit();
     $uow =& $toolkit->getUOW();
 
-    $uow->delete($this->object);
+    $uow->delete($object);
 
     return LIMB_STATUS_OK;
   }

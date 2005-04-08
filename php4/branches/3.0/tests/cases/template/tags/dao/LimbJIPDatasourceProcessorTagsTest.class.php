@@ -14,7 +14,7 @@ class LimbJIPDatasourceProcessorTagsTestCase extends LimbTestCase
 {
   function LimbJIPDatasourceProcessorTagsTestCase()
   {
-    parent :: LimbTestCase('limb jip datasource processor tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

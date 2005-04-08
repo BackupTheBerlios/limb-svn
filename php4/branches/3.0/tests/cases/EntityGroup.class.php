@@ -12,7 +12,7 @@ class EntityGroup extends LimbGroupTest
 {
   function EntityGroup()
   {
-    parent :: LimbGroupTest('entity tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

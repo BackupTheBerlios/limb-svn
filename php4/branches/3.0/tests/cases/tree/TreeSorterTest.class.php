@@ -15,7 +15,7 @@ class TreeSorterTest extends LimbTestCase
 {
   function TreeSorterTest()
   {
-    parent :: LimbTestCase('tree sorter tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testSort()

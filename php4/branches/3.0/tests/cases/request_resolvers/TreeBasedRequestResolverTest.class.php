@@ -31,7 +31,7 @@ class TreeBasedRequestResolverTest extends LimbTestCase
 
   function TreeBasedRequestResolverTest()
   {
-    parent :: LimbTestCase('tree based request resolver test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

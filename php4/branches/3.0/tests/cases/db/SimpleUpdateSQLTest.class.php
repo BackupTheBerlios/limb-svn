@@ -16,7 +16,7 @@ class SimpleUpdateSQLTest extends LimbTestCase
 
   function SimpleUpdateSQLTest()
   {
-    parent :: LimbTestCase('simple update sql tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

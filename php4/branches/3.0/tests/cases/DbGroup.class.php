@@ -12,7 +12,7 @@ class DbGroup extends LimbGroupTest
 {
   function DbGroup()
   {
-    parent :: LimbGroupTest('db tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

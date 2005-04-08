@@ -15,7 +15,7 @@ class UseViewCommandTest extends LimbTestCase
 {
   function UseViewCommandTest()
   {
-    parent :: LimbTestCase('use view cmd test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testPerformOk()

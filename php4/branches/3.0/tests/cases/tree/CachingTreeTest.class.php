@@ -26,7 +26,7 @@ class CachingTreeTest extends LimbTestCase
 
   function CachingTreeTest()
   {
-    parent :: LimbTestCase('caching tree tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

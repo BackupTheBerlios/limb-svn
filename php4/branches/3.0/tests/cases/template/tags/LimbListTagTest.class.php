@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: LimbPagerTagTest.class.php 1055 2005-01-24 14:35:50Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
@@ -20,7 +20,7 @@ class LimbListTagTestCase extends LimbTestCase
 
   function LimbListTagTestCase()
   {
-    parent :: LimbTestCase('limb list tags case');
+    parent :: LimbTestCase(__FILE__);
 
     $this->names = array(array('name' => 'Alex'),
                          array('name' => 'Serega'),

@@ -16,7 +16,7 @@ class UriTest extends LimbTestCase
 
   function UriTest()
   {
-    parent :: LimbTestCase('uri test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

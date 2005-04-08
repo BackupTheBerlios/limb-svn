@@ -14,7 +14,7 @@ class LimbOptionalTagTestCase extends LimbTestCase
 {
   function LimbOptionalTagTestCase()
   {
-    parent :: LimbTestCase('limb optional tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

@@ -12,7 +12,7 @@ class CronGroup extends LimbGroupTest
 {
   function CronGroup()
   {
-    parent :: LimbGroupTest('cron tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

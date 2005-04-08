@@ -12,7 +12,7 @@ class ValidationGroup extends LimbGroupTest
 {
   function ValidationGroup()
   {
-    parent :: LimbGroupTest('validation tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

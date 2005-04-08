@@ -23,7 +23,7 @@ class TreeDecoratorTest extends LimbTestCase
 
   function TreeDecoratorTest()
   {
-    parent :: LimbTestCase('tree decorator tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

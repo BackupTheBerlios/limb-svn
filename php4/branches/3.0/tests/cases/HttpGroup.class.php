@@ -12,7 +12,7 @@ class HttpGroup extends LimbGroupTest
 {
   function HttpGroup()
   {
-    parent :: LimbGroupTest('http tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

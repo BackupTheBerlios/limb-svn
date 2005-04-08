@@ -8,6 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/etc/limb_util.inc.php');
+
+function make__FILE__readable($str)
+{
+  return str_replace('_', ' ', to_under_scores(basename($str, '.class.php')));
+}
 
 function registerTestingIni($ini_file, $content)
 {

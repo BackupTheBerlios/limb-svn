@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: UseViewCommandTest.class.php 1028 2005-01-18 11:06:55Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/RedirectCommand.class.php');
@@ -19,7 +19,7 @@ class RedirectCommandTest extends LimbTestCase
 {
   function RedirectCommandTest()
   {
-    parent :: LimbTestCase('redirect cmd test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testPerformOk()

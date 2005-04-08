@@ -12,7 +12,7 @@ class TreeGroup extends LimbGroupTest
 {
   function TreeGroup()
   {
-    parent :: LimbGroupTest('tree');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

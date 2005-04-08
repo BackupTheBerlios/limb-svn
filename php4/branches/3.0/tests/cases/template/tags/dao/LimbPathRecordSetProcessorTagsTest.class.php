@@ -23,7 +23,7 @@ class LimbPathRecordSetProcessorTagTestCase extends LimbTestCase
 
   function LimbPathRecordSetProcessorTagTestCase()
   {
-    parent :: LimbTestCase('limb path record set processor tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

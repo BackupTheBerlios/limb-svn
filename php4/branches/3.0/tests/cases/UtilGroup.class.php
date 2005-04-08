@@ -12,7 +12,7 @@ class UtilGroup extends LimbGroupTest
 {
   function UtilGroup()
   {
-    parent :: LimbGroupTest('util tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

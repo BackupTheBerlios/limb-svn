@@ -17,7 +17,7 @@ class DomainObjectTest extends LimbTestCase
 
   function DomainObjectTest()
   {
-    parent :: LimbTestCase('domain object tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

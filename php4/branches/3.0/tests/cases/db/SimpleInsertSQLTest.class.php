@@ -16,7 +16,7 @@ class SimpleInsertSQLTest extends LimbTestCase
 
   function SimpleInsertSQLTest()
   {
-    parent :: LimbTestCase('simple insert sql tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

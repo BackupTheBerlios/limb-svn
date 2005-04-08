@@ -25,7 +25,7 @@ class SessionDbDriverTest extends LimbTestCase
 
   function SessionDbDriverTest()
   {
-    parent :: LimbTestCase('session db driver test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

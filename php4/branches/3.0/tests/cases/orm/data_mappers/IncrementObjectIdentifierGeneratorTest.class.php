@@ -26,7 +26,7 @@ class IncrementObjectIdentifierGeneratorTest extends LimbTestCase
 
   function IncrementObjectIdentifierGeneratorTest()
   {
-    parent :: LimbTestCase('incremental identifier generator test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

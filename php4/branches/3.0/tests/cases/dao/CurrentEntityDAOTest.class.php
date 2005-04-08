@@ -16,7 +16,7 @@ class CurrentEntityDAOTest extends LimbTestCase
 {
   function CurrentEntityDAOTest()
   {
-    parent :: LimbTestCase('current entity dao tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

@@ -14,7 +14,7 @@ class LogTest extends LimbTestCase
 {
   function LogTest()
   {
-    parent :: LimbTestCase('log test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testWritingToFile()

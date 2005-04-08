@@ -12,7 +12,7 @@ class PackageGroup extends LimbGroupTest
 {
   function PackageGroup()
   {
-    parent :: LimbGroupTest('package tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

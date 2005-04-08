@@ -12,7 +12,7 @@ class FiltersGroup extends LimbGroupTest
 {
   function FiltersGroup()
   {
-    parent :: LimbGroupTest('filters tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

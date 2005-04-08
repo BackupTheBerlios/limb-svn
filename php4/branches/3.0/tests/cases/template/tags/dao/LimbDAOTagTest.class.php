@@ -31,7 +31,7 @@ class LimbDAOTagTestCase extends LimbTestCase
 
   function LimbDAOTagTestCase()
   {
-    parent :: LimbTestCase('limb dao tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

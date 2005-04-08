@@ -30,7 +30,7 @@ function toStudlyCaps($str, $ucfirst = true)
 
 function to_under_scores($str)
 {
-  return ltrim(preg_replace('~([a-z])?([A-Z])~e', "'\\1_'.strtolower('\\2')", $str),
+  return ltrim(preg_replace('~([a-z])?([A-Z])([a-z])~e', "'\\1_'.strtolower('\\2').'\\3'", $str),
                '_');
 }
 

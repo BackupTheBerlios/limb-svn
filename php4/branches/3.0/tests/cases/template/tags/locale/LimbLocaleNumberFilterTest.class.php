@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: LimbFormTagTest.class.php 1013 2005-01-12 12:13:22Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
@@ -17,7 +17,7 @@ class LimbLocaleNumberFilterTestCase extends LimbTestCase
 {
   function LimbLocaleNumberFilterTestCase()
   {
-    parent :: LimbTestCase('LimbI18NNumber filter case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

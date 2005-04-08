@@ -12,7 +12,7 @@ class SessionGroup extends LimbGroupTest
 {
   function SessionGroup()
   {
-    parent :: LimbGroupTest('session tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

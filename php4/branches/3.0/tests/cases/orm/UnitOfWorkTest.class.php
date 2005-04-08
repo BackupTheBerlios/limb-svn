@@ -52,7 +52,7 @@ class UnitOfWorkTest extends LimbTestCase
 
   function UnitOfWorkTest()
   {
-    parent :: LimbTestCase('unit of work tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

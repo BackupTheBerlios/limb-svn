@@ -18,7 +18,7 @@ class LimbBaseToolkitTest extends LimbTestCase
 
   function LimbBaseToolkitTest()
   {
-    parent :: LimbTestCase('limb base toolkit tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

@@ -5,14 +5,14 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: CommandsGroup.class.php 1102 2005-02-14 12:36:26Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 class SimpleObjectCommandsGroup extends LimbGroupTest
 {
   function SimpleObjectCommandsGroup()
   {
-    parent :: LimbGroupTest('commands for simple objects manipulation tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

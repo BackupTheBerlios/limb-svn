@@ -8,12 +8,19 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/error/Debug.class.php');
 
-if(!defined('ERROR_HANDLER_TYPE'))
-  Debug :: setHandleType('custom');
-else
-  Debug :: setHandleType(ERROR_HANDLER_TYPE);
+//restore_error_handler() won't cut it at times,
+//since it restores the last error handler set
+function restore_native_error_handler()
+{
+  do
+  {
+    $handler = set_error_handler('dummyErrorHandler');
+    restore_error_handler();
+    restore_error_handler();
+  }
+  while($handler !== null);
+}
 
 function isErrorHandlerInstalled($handler)
 {

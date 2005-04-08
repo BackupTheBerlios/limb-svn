@@ -35,7 +35,7 @@ class TreeBranchCriteriaTest extends LimbTestCase
 
   function TreeBranchCriteriaTest()
   {
-    parent :: LimbTestCase('tree branch criteria tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

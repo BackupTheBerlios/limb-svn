@@ -39,7 +39,7 @@ class EntityMapperTest extends LimbTestCase
 
   function EntityMapperTest()
   {
-    parent :: LimbTestCase('entity mapper test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

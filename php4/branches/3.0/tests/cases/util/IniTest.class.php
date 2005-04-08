@@ -20,7 +20,7 @@ class IniTest extends LimbTestCase
 {
   function IniTest()
   {
-    parent :: LimbTestCase('ini test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

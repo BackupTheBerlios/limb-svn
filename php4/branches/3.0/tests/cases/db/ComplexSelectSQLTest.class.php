@@ -14,7 +14,7 @@ class ComplexSelectSQLTest extends LimbTestCase
 {
   function ComplexSelectSQLTest()
   {
-    parent :: LimbTestCase('complex select sql tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testSelect()

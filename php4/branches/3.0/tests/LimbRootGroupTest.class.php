@@ -14,7 +14,7 @@ class LimbRootGroupTest extends LimbGroupTest
 {
   function LimbRootGroupTest()
   {
-    parent :: LimbGroupTest('all LIMB tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

@@ -17,7 +17,7 @@ class NodeConnectionMapperTest extends LimbTestCase
 
   function NodeConnectionMapperTest()
   {
-    parent :: LimbTestCase('node connection mapper test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

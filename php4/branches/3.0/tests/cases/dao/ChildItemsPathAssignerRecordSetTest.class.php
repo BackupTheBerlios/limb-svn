@@ -27,7 +27,7 @@ class ChildItemsPathAssignerRecordSetTest extends LimbTestCase
 
   function ChildItemsPathAssignerRecordSetTest()
   {
-    parent :: LimbTestCase('child items path assigner record set set test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

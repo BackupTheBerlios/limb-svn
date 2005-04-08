@@ -20,7 +20,7 @@ class IniOverrideTest extends LimbTestCase
 {
   function IniOverrideTest()
   {
-    parent :: LimbTestCase('ini override test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

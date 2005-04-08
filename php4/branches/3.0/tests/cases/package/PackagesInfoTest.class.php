@@ -18,7 +18,7 @@ class PackagesInfoTest extends LimbTestCase
 
   function PackagesInfoTest()
   {
-    parent :: LimbTestCase('packages info test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

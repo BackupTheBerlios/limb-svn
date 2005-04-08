@@ -25,7 +25,7 @@ class OneTableObjectsCriteriaTest extends LimbTestCase
 
   function OneTableObjectsCriteriaTest()
   {
-    parent :: LimbTestCase('one table objects criteria tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

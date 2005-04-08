@@ -11,8 +11,11 @@
 
 class LimbTestCase extends UnitTestCase
 {
-  function LimbTestCase($label = false)
+  function LimbTestCase($label = false, $auto_label = true)
   {
+    if($label && $auto_label)
+      $label = make__FILE__readable($label);
+
     parent :: UnitTestCase($label);
   }
 

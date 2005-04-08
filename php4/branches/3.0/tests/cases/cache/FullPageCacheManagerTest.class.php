@@ -35,7 +35,7 @@ class FullPageCacheManagerTest extends LimbTestCase
 
   function FullPageCacheManagerTest()
   {
-    parent :: LimbTestCase('full page cache test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

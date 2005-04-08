@@ -16,7 +16,7 @@ class IniBasedRequestResolverMapperTest extends LimbTestCase
 {
   function IniBasedRequestResolverMapperTest()
   {
-    parent :: LimbTestCase('ini based request resolver mapper test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

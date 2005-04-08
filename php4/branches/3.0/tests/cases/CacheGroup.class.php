@@ -12,7 +12,7 @@ class CacheGroup extends LimbGroupTest
 {
   function CacheGroup()
   {
-    parent :: LimbGroupTest('cache tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

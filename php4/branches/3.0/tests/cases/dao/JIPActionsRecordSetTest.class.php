@@ -15,7 +15,7 @@ class JIPActionsRecordSetTest extends LimbTestCase
 {
   function JIPActionsRecordSetTest()
   {
-    parent :: LimbTestCase('JIP actions record set test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testCurrent()

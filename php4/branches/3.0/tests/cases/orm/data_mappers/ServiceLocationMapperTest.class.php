@@ -17,7 +17,7 @@ class ServiceLocationMapperTest extends LimbTestCase
 
   function ServiceLocationMapperTest()
   {
-    parent :: LimbTestCase('service location mapper test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

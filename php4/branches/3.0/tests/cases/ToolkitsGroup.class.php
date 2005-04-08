@@ -12,7 +12,7 @@ class ToolkitsGroup extends LimbGroupTest
 {
   function ToolkitsGroup()
   {
-    parent :: LimbGroupTest('toolkits tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

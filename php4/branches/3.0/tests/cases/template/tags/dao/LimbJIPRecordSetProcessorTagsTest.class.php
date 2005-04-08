@@ -15,7 +15,7 @@ class LimbJIPRecordSetProcessorTagTestCase extends LimbTestCase
 {
   function LimbJIPRecordSetProcessorTagTestCase()
   {
-    parent :: LimbTestCase('limb jip record set processor tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

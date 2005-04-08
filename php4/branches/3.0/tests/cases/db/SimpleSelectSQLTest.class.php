@@ -16,7 +16,7 @@ class SimpleSelectSQLTest extends LimbTestCase
 
   function SimpleSelectSQLTest()
   {
-    parent :: LimbTestCase('simple select sql tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

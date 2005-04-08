@@ -14,7 +14,7 @@ class LimbParameterTagTestCase extends LimbTestCase
 {
   function LimbParameterTagTestCase()
   {
-    parent :: LimbTestCase('limb parameter tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

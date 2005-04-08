@@ -15,7 +15,7 @@ class LimbDataTransferTagTestCase extends LimbTestCase
 {
   function LimbDataTransferTagTestCase()
   {
-    parent :: LimbTestCase('limb data transfer tag case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

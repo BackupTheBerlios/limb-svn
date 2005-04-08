@@ -12,7 +12,7 @@ class RequestResolverGroup extends LimbGroupTest
 {
   function RequestResolverGroup()
   {
-    parent :: LimbGroupTest('request resolver tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

@@ -5,14 +5,14 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: DataMappersGroup.class.php 1074 2005-01-29 15:46:16Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 class DataMappersGroup extends LimbGroupTest
 {
   function DataMappersGroup()
   {
-    parent :: LimbGroupTest('data mappers tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

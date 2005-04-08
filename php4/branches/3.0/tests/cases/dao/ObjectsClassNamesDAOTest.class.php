@@ -28,7 +28,7 @@ class ObjectsClassNamesDAOTest extends LimbTestCase
 
   function ObjectsClassNamesDAOTest()
   {
-    parent :: LimbTestCase('objects class names dao tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

@@ -26,7 +26,7 @@ class MaterializedPathTreeTest extends LimbTestCase
 
   function MaterializedPathTreeTest()
   {
-    parent :: LimbTestCase('materialized path tree tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

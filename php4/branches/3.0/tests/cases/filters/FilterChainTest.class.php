@@ -103,7 +103,7 @@ class FilterChainTest extends LimbTestCase
 
   function FilterChainTest()
   {
-    parent :: LimbTestCase('filter chain tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

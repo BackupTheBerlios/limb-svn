@@ -32,7 +32,7 @@ class SQLBasedDAOTest extends LimbTestCase
 
   function SQLBasedDAOTest()
   {
-    parent :: LimbTestCase('SQLBasedDAO test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

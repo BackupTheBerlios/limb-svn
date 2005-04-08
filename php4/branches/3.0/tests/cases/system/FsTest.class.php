@@ -36,7 +36,7 @@ class FsTest extends LimbTestCase
 {
   function FsTest()
   {
-    parent :: LimbTestCase('fs tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function _createFileSystem()

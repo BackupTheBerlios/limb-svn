@@ -38,7 +38,7 @@ class CurrentEntityDirectChildrenDAOTest extends LimbTestCase
 
   function CurrentEntityDirectChildrenDAOTest()
   {
-    parent :: LimbTestCase('current entity direct children dao test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

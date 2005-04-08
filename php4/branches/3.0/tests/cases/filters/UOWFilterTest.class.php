@@ -25,7 +25,7 @@ class UOWFilterTest extends LimbTestCase
 
   function UOWFilterTest()
   {
-    parent :: LimbTestCase('unit of work filter test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

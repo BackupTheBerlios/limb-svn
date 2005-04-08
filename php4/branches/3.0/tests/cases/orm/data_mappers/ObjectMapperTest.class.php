@@ -17,7 +17,7 @@ class ObjectMapperTest extends LimbTestCase
 
   function ObjectMapperTest()
   {
-    parent :: LimbTestCase('object mapper test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

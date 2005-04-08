@@ -15,7 +15,7 @@ class JIPProcessorTest extends LimbTestCase
 {
   function JIPProcessorTest()
   {
-    parent :: LimbTestCase('JIP processor test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testProcess()

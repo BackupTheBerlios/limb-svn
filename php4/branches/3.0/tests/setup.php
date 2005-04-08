@@ -23,7 +23,8 @@ if (file_exists(dirname(__FILE__) . '/setup.override.php'))
 @define('WACT_ROOT', dirname(__FILE__) . '/../../../../external/wact/framework/');
 require_once(WACT_ROOT . '/common.inc.php');
 restore_error_handler();
-@define('TMPL_FILESCHEME_PATH', WACT_ROOT . '/../tests/filescheme/');
+//@define('TMPL_FILESCHEME_PATH', WACT_ROOT . '/../tests/filescheme/');
+@define('TMPL_FILESCHEME_PATH', LIMB_DIR . '/tests/template/fileschemes/');
 
 require_once(LIMB_DIR . '/core/Limb.class.php');
 require_once(LIMB_DIR . '/setup.php');
@@ -51,6 +52,8 @@ require_once(LIMB_DIR . '/tests/lib/TestFinder.class.php');
 require_once(LIMB_DIR . '/core/error/error.inc.php');
 require_once(LIMB_DIR . '/core/PackagesInfo.class.php');
 require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');
+require_once(LIMB_DIR . '/core/Object.class.php');
+require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 
 require_once(LIMB_DIR . '/tests/setup_SimpleTest.inc.php');
 require_once(LIMB_DIR . '/tests/lib/LimbTestCase.class.php');

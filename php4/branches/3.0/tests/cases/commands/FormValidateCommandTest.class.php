@@ -27,7 +27,7 @@ class FormValidateCommandTest extends LimbTestCase
 
   function FormValidateCommandTest()
   {
-    parent :: LimbTestCase('form validate command test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

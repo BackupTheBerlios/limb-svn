@@ -10,9 +10,10 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/RedirectToNodeCommand.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/Object.class.php');
+require_once(LIMB_DIR . '/core/entity/Entity.class.php');
 require_once(LIMB_DIR . '/core/tree/Path2IdTranslator.class.php');
 require_once(LIMB_DIR . '/core/commands/Command.interface.php');
+require_once(LIMB_DIR . '/core/NodeConnection.class.php');
 
 Mock :: generate('LimbBaseToolkit');
 Mock :: generate('Path2IdTranslator');
@@ -29,7 +30,7 @@ class RedirectToNodeCommandTest extends LimbTestCase
 
   function RedirectToNodeCommandTest()
   {
-    parent :: LimbTestCase('redirect to node command test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()
@@ -49,24 +50,57 @@ class RedirectToNodeCommandTest extends LimbTestCase
     Limb :: restoreToolkit();
   }
 
+  function testPerformFailedNoNodeEntityPart()
+  {
+    $context = new DataSpace();
+
+    $entity = new Entity();
+
+    $context->setObject($entity_name = 'whatever', $entity);
+
+    $this->path2id_translator->expectNever('getPathToNode');
+
+    $command = new RedirectToNodeCommand($entity_name);
+
+    $this->assertEqual($command->perform($context), LIMB_STATUS_ERROR);
+  }
+
+  function testPerformFailedNoEntity()
+  {
+    $context = new DataSpace();
+
+    $this->path2id_translator->expectNever('getPathToNode');
+
+    $command = new RedirectToNodeCommand($entity_name = 'whatever');
+
+    $this->assertEqual($command->perform($context), LIMB_STATUS_ERROR);
+  }
+
   function testPerformOk()
   {
-    $node = new Object();
+    $context = new DataSpace();
+
+    $node = new NodeConnection();
     $node->set('id', $node_id = 10);
+
+    $entity = new Entity();
+    $entity->registerPart('node', $node);
+
+    $context->setObject($entity_name = 'whatever', $entity);
 
     $this->path2id_translator->expectOnce('getPathToNode', array($node_id));
     $this->path2id_translator->setReturnValue('getPathToNode', $path = 'any path');
 
     $regirect_command = new MockCommand($this);
-    $regirect_command->expectOnce('perform');
+    $regirect_command->expectOnce('perform', array($context));
     $regirect_command->setReturnValue('perform', LIMB_STATUS_OK);
 
     $command = new RedirectToNodeCommandTestVersion($this);
-    $command->RedirectToNodeCommand($node);
+    $command->RedirectToNodeCommand($entity_name);
 
     $command->setReturnReference('getRedirectCommand', $regirect_command, array($path));
 
-    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
+    $this->assertEqual($command->perform($context), LIMB_STATUS_OK);
 
     $regirect_command->tally();
   }

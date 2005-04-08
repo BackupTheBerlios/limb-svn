@@ -12,7 +12,7 @@ class ImageLibraryGroup extends LimbGroupTest
 {
   function ImageLibraryGroup()
   {
-    parent :: LimbGroupTest('image library tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

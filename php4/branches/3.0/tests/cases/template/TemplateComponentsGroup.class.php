@@ -12,7 +12,7 @@ class TemplateComponentsGroup extends LimbGroupTest
 {
   function TemplateComponentsGroup()
   {
-    parent :: LimbGroupTest('template components tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

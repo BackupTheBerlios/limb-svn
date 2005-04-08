@@ -12,7 +12,7 @@ class SystemGroup extends LimbGroupTest
 {
   function SystemGroup()
   {
-    parent :: LimbGroupTest('system tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: LogTest.class.php 1028 2005-01-18 11:06:55Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/i18n/Locale.class.php');
@@ -14,7 +14,7 @@ class LocaleTest extends LimbTestCase
 {
   function LocaleTest()
   {
-    parent :: LimbTestCase('locale test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testGetMonthNameJanuary()

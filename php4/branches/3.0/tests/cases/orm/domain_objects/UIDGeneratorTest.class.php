@@ -18,7 +18,7 @@ class UIDGeneratorTest extends LimbTestCase
 
   function UIDGeneratorTest()
   {
-    parent :: LimbTestCase('UID generator tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

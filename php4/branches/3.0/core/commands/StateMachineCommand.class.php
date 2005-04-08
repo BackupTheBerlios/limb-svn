@@ -14,6 +14,7 @@ define('STATE_MACHINE_BY_DEFAULT', 255);
 class StateMachineCommand
 {
   var $states = array();
+  var $state_history = array();
   var $initial_state = null;
 
   function StateMachineCommand()
@@ -37,7 +38,7 @@ class StateMachineCommand
     $this->initial_state = $state;
   }
 
-  function perform()
+  function perform(&$context)
   {
     if (!count($this->states))
       return;
@@ -53,7 +54,7 @@ class StateMachineCommand
     while($next_state != false)
     {
       $state = $next_state;
-      $result = $this->_performStateCommand($state);
+      $result = $this->_performStateCommand($state, $context);
 
       if (isset($this->states[$state]['transitions'][$result]))
         $next_state = $this->states[$state]['transitions'][$result];
@@ -67,7 +68,7 @@ class StateMachineCommand
     }
   }
 
-  function _performStateCommand($state)
+  function _performStateCommand($state, &$context)
   {
     if (!isset($this->states[$state]))
     {
@@ -76,7 +77,22 @@ class StateMachineCommand
     }
 
     $command =& Handle :: resolve($this->states[$state]['command']);
-    return $command->perform();
+
+    $result = $command->perform($context);
+
+    $this->state_history[] = array($state, $result);
+
+    return $result;
+  }
+
+  function getEndState()
+  {
+    return end($this->state_history);
+  }
+
+  function getStateHistory()
+  {
+    return $this->state_history;
   }
 
   function _getNextState($state, $result)

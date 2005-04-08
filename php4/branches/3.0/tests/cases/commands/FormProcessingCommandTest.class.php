@@ -30,7 +30,7 @@ class FormProcessingCommandTest extends LimbTestCase
 
   function FormProcessingCommandTest()
   {
-    parent :: LimbTestCase('form processing (submitted or not) command test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

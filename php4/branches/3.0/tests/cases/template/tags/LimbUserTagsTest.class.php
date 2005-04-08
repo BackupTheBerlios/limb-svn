@@ -14,7 +14,7 @@ class LimbUserTagsTestCase extends LimbTestCase
 {
   function LimbUserTagsTestCase()
   {
-    parent :: LimbTestCase('limb user related tags and properties case');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function tearDown()

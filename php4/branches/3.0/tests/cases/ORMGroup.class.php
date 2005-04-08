@@ -5,14 +5,14 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: DAOGroup.class.php 1073 2005-01-29 15:01:02Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 class ORMGroup extends LimbGroupTest
 {
   function ORMGroup()
   {
-    parent :: LimbGroupTest('ORM tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

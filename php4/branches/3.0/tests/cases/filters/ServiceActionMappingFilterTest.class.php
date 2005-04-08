@@ -21,7 +21,7 @@ class ServiceActionMappingFilterTest extends LimbTestCase
 {
   function ServiceActionMappingFilterTest()
   {
-    parent :: LimbTestCase('service action mapping filter test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

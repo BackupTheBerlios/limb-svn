@@ -12,21 +12,27 @@ require_once(LIMB_DIR . '/core/commands/RedirectCommand.class.php');
 
 class RedirectToNodeCommand
 {
-  var $node;
+  var $entity_name;
 
-  function RedirectToNodeCommand(&$node)
+  function RedirectToNodeCommand($entity_name)
   {
-    $this->node =& $node;
+    $this->entity_name = $entity_name;
   }
 
-  function perform()
+  function perform(&$context)
   {
+    if(!$entity =& $context->get($this->entity_name))
+      return LIMB_STATUS_ERROR;
+
+    if(!$node =& $entity->getPart('node'))
+      return LIMB_STATUS_ERROR;
+
     $toolkit =& Limb :: toolkit();
     $path2id_translator =& $toolkit->getPath2IdTranslator();
 
-    $path = $path2id_translator->getPathToNode($this->node->get('id'));
+    $path = $path2id_translator->getPathToNode($node->get('id'));
     $command =& $this->getRedirectCommand($path);
-    return $command->perform();
+    return $command->perform($context);
   }
 
   function & getRedirectCommand($path)
