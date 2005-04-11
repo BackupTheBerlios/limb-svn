@@ -162,7 +162,7 @@ class form_element extends tag_component
 
       foreach($errors as $error_data)
       {
-        echo "set_error('{$this->id}', '" . addslashes($error_data['error']) . "');";
+        echo "set_form_field_error('{$this->id}', '" . addslashes($error_data['error']) . "');";
       }
 
       echo '</script>';

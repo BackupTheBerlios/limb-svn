@@ -12,7 +12,7 @@ function get_label_for_field(id)
   return null;
 }
 
-function set_error(id, msg)
+function set_form_field_error(id, msg)
 {
   obj = document.getElementById(id);
   if(!obj)
