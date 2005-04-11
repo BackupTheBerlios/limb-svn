@@ -51,7 +51,7 @@ function add_event(control, type, fn, use_capture)
  {
    var r = control.attachEvent("on" + type, fn);
    return r;
- }
+  }
 }
 
 function get_query_item(page_href, item_name)

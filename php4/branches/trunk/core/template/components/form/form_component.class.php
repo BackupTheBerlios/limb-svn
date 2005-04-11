@@ -75,7 +75,9 @@ class form_component extends tag_component
           if(!$label = $child->get_attribute('label'))
             $label = $child->get_server_id();
 
-          $array[] = array('label' => $label, 'error_message' => $error['error']);
+          $array[] = array('field' => $field_name,
+                           'label' => $label,
+                           'error_message' => $error['error']);
         }
       }
     }
