@@ -241,6 +241,18 @@ function insert_limb_repository_file(e, id)
 }
 
 //===========================================================
+
+prevGetHTML = HTMLArea.getHTML;
+HTMLArea.getHTML = function(root, outputRoot, editor)
+{
+  res = trim(prevGetHTML(root, outputRoot, editor));
+
+  if(res == '<br />')
+    return '';
+
+  return res;
+}
+
 HTMLArea.prototype.stripBaseURL = function(string) {
   var baseurl = this.config.baseURL;
 

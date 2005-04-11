@@ -6,7 +6,7 @@ function get_label_for_field(id)
     for(c=0; c<labels.length; c++)
     {
       if(labels[c].htmlFor == id)
-        return labels[c].firstChild.nodeValue;
+        return labels[c].innerHTML;
     }
   }
   return null;
