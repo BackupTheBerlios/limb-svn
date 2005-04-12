@@ -20,7 +20,7 @@ class FormProcessingCommand// implements Command
   var $is_multi;
   var $map;
 
-  function FormProcessingCommand($form_id, $is_multi = LIMB_SINGLE_FORM, $map)
+  function FormProcessingCommand($form_id, $is_multi = LIMB_SINGLE_FORM, $map = array())
   {
     $this->form_id = $form_id;
     $this->is_multi = $is_multi;
@@ -56,9 +56,17 @@ class FormProcessingCommand// implements Command
 
   function _mergeDataspaceWithRequest(&$dataspace, &$request)
   {
-    ComplexArray :: map($this->map,
+    $data = array();
+    if($this->map)
+    {
+      ComplexArray :: map($this->map,
                         $this->_getRequestData($request),
-                        $data = array());
+                        $data);
+    }
+    else
+    {
+      $data = $this->_getRequestData($request);
+    }
 
     $dataspace->merge($data);
   }

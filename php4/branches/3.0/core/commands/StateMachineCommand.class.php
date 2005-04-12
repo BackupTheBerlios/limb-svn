@@ -80,7 +80,7 @@ class StateMachineCommand
 
     $result = $command->perform($context);
 
-    $this->state_history[] = array($state, $result);
+    $this->state_history[] = array($state => $result);
 
     return $result;
   }

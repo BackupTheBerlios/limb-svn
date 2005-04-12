@@ -133,6 +133,27 @@ class FormProcessingCommandTest extends LimbTestCase
 
     $this->assertEqual($form_command->perform(), LIMB_STATUS_FORM_SUBMITTED);
   }
+
+  function testToMappingIfNoMapAttribute()
+  {
+    $form_command = new FormProcessingCommand($form_id = 'test_form', LIMB_SINGLE_FORM);
+
+    $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
+
+    $this->request->setReturnValue('export',
+                                   $request = array('request_field1' => 1,
+                                                    'request_field2' => 10,
+                                                    'submitted' => 1));
+
+    $this->dataspace->expectOnce('merge', array(array('request_field1' => 1,
+                                                      'request_field2' => 10,
+                                                      'submitted' => 1
+                                                      )));
+
+    $this->form_component->expectOnce('registerDataSource', array($this->dataspace));
+
+    $this->assertEqual($form_command->perform(), LIMB_STATUS_FORM_SUBMITTED);
+  }
 }
 
 ?>

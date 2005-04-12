@@ -189,10 +189,10 @@ class StateMachineCommandTest extends LimbTestCase
     $this->assertTrue(catch('Exception', $e));//because of the 'no_such_state'
 
     $this->assertEqual($this->state_machine->getStateHistory(),
-                       array(array('initial', 'status1'),
-                             array('state2', 'status2')));
+                       array(array('initial' => 'status1'),
+                             array('state2' => 'status2')));
 
-    $this->assertEqual($this->state_machine->getEndState(), array('state2', 'status2'));
+    $this->assertEqual($this->state_machine->getEndState(), array('state2' => 'status2'));
   }
 
   function testGetStateHistoryAllCommandsInHistory()
@@ -211,11 +211,11 @@ class StateMachineCommandTest extends LimbTestCase
 
     $this->state_machine->perform(new DataSpace());
     $this->assertEqual($this->state_machine->getStateHistory(),
-                       array(array('initial', 'status1'),
-                             array('state2', 'status2'),
-                             array('state3', 'whatever')));
+                       array(array('initial' => 'status1'),
+                             array('state2' => 'status2'),
+                             array('state3' => 'whatever')));
 
-    $this->assertEqual($this->state_machine->getEndState(), array('state3', 'whatever'));
+    $this->assertEqual($this->state_machine->getEndState(), array('state3' => 'whatever'));
   }
 
   function testCatchCircularFlow(){}

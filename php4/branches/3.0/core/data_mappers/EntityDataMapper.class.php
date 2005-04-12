@@ -12,6 +12,8 @@ require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 
 class EntityDataMapper extends AbstractDataMapper
 {
+  function EntityDataMapper(){}
+
   var $part_mappers = array();
 
   function registerPartMapper($name, &$mapper)
