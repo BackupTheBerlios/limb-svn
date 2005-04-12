@@ -12,12 +12,9 @@ function get_label_for_field(id)
   return null;
 }
 
-function set_form_field_error(id, msg)
+function default_form_field_error_printer(id, msg)
 {
   obj = document.getElementById(id);
-  if(!obj)
-    return;
-
   span = document.createElement('SPAN');
   br = document.createElement('BR');
   text = document.createTextNode(msg);
@@ -29,13 +26,11 @@ function set_form_field_error(id, msg)
   obj.style.borderColor = 'red';
   obj.style.borderStyle = 'solid';
   obj.style.borderWidth = '1px';
-
-  set_field_summary_error(id, msg);
 }
 
-function set_field_summary_error(id, msg)
+function default_form_field_error_label_printer(id, msg)
 {
-  span = document.getElementById("error_summary_for_" + id);
+  span = document.getElementById("label_for_" + id);
 
   if(!span)
     return;
@@ -56,7 +51,23 @@ function set_field_summary_error(id, msg)
   }
 
   span.appendChild(newa);
-  span.appendChild(document.createTextNode(" : " + msg));
+}
+
+function set_form_field_error(id, msg)
+{
+  obj = document.getElementById(id);
+  if(!obj)
+    return;
+
+  if(typeof(form_field_error_printer) == "function")
+    form_field_error_printer(id, msg);
+  else
+    default_form_field_error_printer(id, msg);
+
+  if(typeof(form_field_error_label_printer) == "function")
+    form_field_error_label_printer(id, msg);
+  else
+    default_form_field_error_label_printer(id, msg);
 }
 
 function check_form_errors()
