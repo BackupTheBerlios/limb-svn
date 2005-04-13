@@ -8,7 +8,7 @@
 * $Id: SimpleAuthorizer.class.php 1032 2005-01-18 15:43:46Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/behaviours/Behaviour.class.php');
+require_once(LIMB_DIR . '/core/services/Service.class.php');
 
 class SimpleACLAuthorizer// implements Authorizer
 {
@@ -19,41 +19,41 @@ class SimpleACLAuthorizer// implements Authorizer
     $this->policy[] = array($path, $group_name, $access);
   }
 
-  function canDo($action_name, &$service)
+  function canDo($action_name, &$object)
   {
-    $this->assignActions(&$service);
+    $this->assignActions(&$object);
 
-    $actions = $service->get('actions');
+    $actions = $object->get('actions');
 
     return isset($actions[$action_name]);
   }
 
-  function assignActions(&$service)
+  function assignActions(&$object)
   {
-    if($actions = $service->get('actions'))
+    if($actions = $object->get('actions'))
       return;
 
-    $behaviour =& new Behaviour($service->get('behaviour_name'));
+    $service =& new Service($object->get('service_name'));
 
-    $actions = $behaviour->getActionsList();
+    $actions = $service->getActionsList();
 
-    $path = $service->get('path');
+    $path = $object->get('path');
     $accessible_actions = array();
 
-    $access = $this->_determineWhatAccessApplyToService(&$service);
+    $access = $this->_determineWhatAccessApplyToObject(&$object);
 
     foreach($actions as $action)
     {
-      $action_propery = $behaviour->getActionProperties($action);
+      $action_propery = $service->getActionProperties($action);
 
       if ($action_propery['access'] <= $access)
         $accessible_actions[$action] = $action_propery;
     }
 
-    $service->set('actions', $accessible_actions);
+    $object->set('actions', $accessible_actions);
   }
 
-  function _determineWhatAccessApplyToService(&$service)
+  function _determineWhatAccessApplyToObject(&$object)
   {
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
@@ -63,7 +63,7 @@ class SimpleACLAuthorizer// implements Authorizer
     if (!count($groups))
       return $result;
 
-    $path = $service->get('path');
+    $path = $object->get('path');
     foreach($groups as $group)
     {
       $current_group_access = $this->_getAccessAppliedToGroup($path, $group);
@@ -74,7 +74,7 @@ class SimpleACLAuthorizer// implements Authorizer
     return $result;
   }
 
-  function _getAccessAppliedToGroup($service_path, $group)
+  function _getAccessAppliedToGroup($object_path, $group)
   {
     $prev_matching = 0;
     $result = 0;
@@ -82,7 +82,7 @@ class SimpleACLAuthorizer// implements Authorizer
     foreach($this->policy as $policy_record)
     {
       if(($policy_record[1] == $group) &&
-         $this->_isMoreAccurateMatching($policy_record[0], $service_path, &$prev_matching))
+         $this->_isMoreAccurateMatching($policy_record[0], $object_path, &$prev_matching))
       {
         $result = $policy_record[2];
       }
@@ -91,9 +91,9 @@ class SimpleACLAuthorizer// implements Authorizer
     return $result;
   }
 
-  function _isMoreAccurateMatching($path, $service_path, &$prev_matching)
+  function _isMoreAccurateMatching($path, $object_path, &$prev_matching)
   {
-    $mathing = strlen(substr($path, $service_path));
+    $mathing = strlen(substr($path, $object_path));
     if ($mathing >= $prev_matching)
     {
       $prev_matching = $mathing;

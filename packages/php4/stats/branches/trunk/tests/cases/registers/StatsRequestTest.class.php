@@ -15,7 +15,7 @@ class StatsRequestTest extends LimbTestCase
 {
   function StatsRequestTest()
   {
-    parent :: LimbTestCase('stats request test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

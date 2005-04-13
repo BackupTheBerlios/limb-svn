@@ -14,7 +14,7 @@ class StatsSearchEnginesHitsReportDAOTest extends LimbTestCase
 {
   function StatsSearchEnginesHitsReportDAOTest()
   {
-    parent :: LimbTestCase('stats search engines hits report DAO test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   var $db = null;

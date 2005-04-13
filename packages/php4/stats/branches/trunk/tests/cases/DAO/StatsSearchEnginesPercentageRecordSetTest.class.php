@@ -27,7 +27,7 @@ class StatsSearchEnginesPercentageRecordSetTest extends LimbTestCase
 
   function StatsSearchEnginesPercentageRecordSetTest()
   {
-    parent :: LimbTestCase('stats search reports percentage record set test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

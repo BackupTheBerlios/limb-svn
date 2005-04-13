@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../SimpleACLAuthenticator.class.php');
-require_once(LIMB_DIR . '/core/Service.class.php');
 require_once(dirname(__FILE__) . '/../../DAO/SimpleACLAbstractUsersDAO.class.php');
 
 Mock :: generate('SimpleACLAbstractUsersDAO', 'MockAbstractUsersDAO');
@@ -20,7 +19,7 @@ class SimpleACLAuthenticatorTest extends LimbTestCase
 
   function SimpleACLAuthenticatorTest()
   {
-    parent :: LimbTestCase('Simple ACL Authenticator test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

@@ -18,7 +18,7 @@ class StatsRegisterManagerTest extends LimbTestCase
 {
   function StatsRegisterManagerTest()
   {
-    parent :: LimbTestCase('stats register manager test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testRegister()

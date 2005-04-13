@@ -17,7 +17,7 @@ class SimpleACLIniBasedUsersDAOTest extends LimbTestCase
 
   function SimpleACLIniBasedUsersDAOTest()
   {
-    parent :: LimbTestCase('Simple ACL ini based users DAO test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

@@ -14,7 +14,7 @@ class StatsHitsReportDAOTest extends LimbTestCase
 {
   function StatsHitsReportDAOTest()
   {
-    parent :: LimbTestCase('stats hits report DAO test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   var $db = null;

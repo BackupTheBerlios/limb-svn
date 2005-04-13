@@ -12,7 +12,7 @@ class CommonMediaGroup extends LimbGroupTest
 {
   function CommonMediaGroup()
   {
-    parent :: LimbGroupTest('media tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

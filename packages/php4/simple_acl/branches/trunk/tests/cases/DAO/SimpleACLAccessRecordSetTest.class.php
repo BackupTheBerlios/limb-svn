@@ -18,7 +18,7 @@ class SimpleACLAccessRecordSetTest extends LimbTestCase
 {
   function SimpleACLAccessRecordSetTest()
   {
-    parent :: LimbTestCase('simple ACL access record set test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testEmpty()

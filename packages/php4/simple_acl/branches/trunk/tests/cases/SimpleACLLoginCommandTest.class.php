@@ -16,7 +16,7 @@ class SimpleACLLoginCommandTest extends LimbTestCase
 
   function SimpleACLLoginCommandTest()
   {
-    parent :: LimbTestCase('Simple ACL login command test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

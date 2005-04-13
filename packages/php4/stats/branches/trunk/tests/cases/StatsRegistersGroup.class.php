@@ -12,7 +12,7 @@ class StatsRegistersGroup extends LimbGroupTest
 {
   function StatsRegistersGroup()
   {
-    parent :: LimbGroupTest('stats registers tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

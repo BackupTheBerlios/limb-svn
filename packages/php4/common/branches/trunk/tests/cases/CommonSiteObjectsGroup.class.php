@@ -12,7 +12,7 @@ class CommonSiteObjectsGroup extends LimbGroupTest
 {
   function CommonSiteObjectsGroup()
   {
-    parent :: LimbGroupTest('site objects tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

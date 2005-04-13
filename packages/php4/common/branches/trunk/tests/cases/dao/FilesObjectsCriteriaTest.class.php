@@ -19,7 +19,7 @@ class FileObjectsCriteriaTest extends LimbTestCase
 
   function FileObjectsCriteriaTest()
   {
-    parent :: LimbTestCase('file objects criteria tests');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

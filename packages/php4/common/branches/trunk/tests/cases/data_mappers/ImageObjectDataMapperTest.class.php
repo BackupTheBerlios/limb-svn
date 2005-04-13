@@ -30,7 +30,7 @@ class ImageObjectDataMapperTest extends LimbTestCase
 
   function ImageObjectDataMapperTest()
   {
-    parent :: LimbTestCase('image object data mapper test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

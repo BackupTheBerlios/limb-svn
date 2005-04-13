@@ -20,7 +20,7 @@ class SimpleACLIniBasedPolicyLoaderTest extends LimbTestCase
 
   function SimpleACLIniBasedPolicyLoaderTest()
   {
-    parent :: LimbTestCase('Simple ACL ini based policy loader test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

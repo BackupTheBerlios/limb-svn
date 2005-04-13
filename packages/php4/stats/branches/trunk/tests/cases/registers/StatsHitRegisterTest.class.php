@@ -29,7 +29,7 @@ class StatsHitRegisterTest extends LimbTestCase
 
   function StatsHitRegisterTest()
   {
-    parent :: LimbTestCase('stats hit register test');
+    parent :: LimbTestCase(__FILE__);
 
     $toolkit =& Limb :: toolkit();
     $this->conn =& $toolkit->getDbConnection();

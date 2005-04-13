@@ -24,7 +24,7 @@ class StatsCounterRegisterTest extends LimbTestCase
 
   function StatsCounterRegisterTest()
   {
-    parent :: LimbTestCase('stats counter register test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

@@ -17,7 +17,7 @@ class ImageObjectsDAOTest extends LimbTestCase
 
   function ImageObjectsDAOTest()
   {
-    parent :: LimbTestCase('image objects DAO test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

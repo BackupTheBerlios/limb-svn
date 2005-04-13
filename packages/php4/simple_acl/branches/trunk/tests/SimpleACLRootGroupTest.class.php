@@ -14,7 +14,7 @@ class SimpleACLRootGroupTest extends LimbGroupTest
 {
   function SimpleACLRootGroupTest()
   {
-    parent :: LimbGroupTest('simple access control list package tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

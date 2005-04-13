@@ -12,7 +12,7 @@ class SimpleACLDAOGroup extends LimbGroupTest
 {
   function SimpleACLDAOGroup()
   {
-    parent :: LimbGroupTest('simple ACL DAO tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

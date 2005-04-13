@@ -22,7 +22,7 @@ class StatsSearchPhraseRegisterTest extends LimbTestCase
 
   function StatsSearchPhraseRegisterTest()
   {
-    parent :: LimbTestCase('stats search prase register test');
+    parent :: LimbTestCase(__FILE__);
 
     $toolkit =& Limb :: toolkit();
     $this->conn =& $toolkit->getDbConnection();

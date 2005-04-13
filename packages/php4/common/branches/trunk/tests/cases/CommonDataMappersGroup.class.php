@@ -12,7 +12,7 @@ class CommonDataMappersGroup extends LimbGroupTest
 {
   function CommonDataMappersGroup()
   {
-    parent :: LimbGroupTest('common data mappers tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

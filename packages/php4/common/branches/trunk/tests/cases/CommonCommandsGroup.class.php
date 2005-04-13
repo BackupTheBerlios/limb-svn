@@ -12,7 +12,7 @@ class CommonCommandsGroup extends LimbGroupTest
 {
   function CommonCommandsGroup()
   {
-    parent :: LimbGroupTest('commands tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

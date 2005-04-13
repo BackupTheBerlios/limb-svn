@@ -20,7 +20,7 @@ class StatsIpTest extends LimbTestCase
 
   function statsIpTest()
   {
-    parent :: LimbTestCase('stats ip test');
+    parent :: LimbTestCase(__FILE__);
 
     $toolkit =& Limb :: toolkit();
     $this->conn =& $toolkit->getDbConnection();

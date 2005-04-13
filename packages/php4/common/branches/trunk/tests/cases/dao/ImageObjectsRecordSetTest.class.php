@@ -18,7 +18,7 @@ class ImageObjectsRecordSetTest extends LimbTestCase
 
   function ImageObjectsRecordSetTest()
   {
-    parent :: LimbTestCase('image objects record set test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

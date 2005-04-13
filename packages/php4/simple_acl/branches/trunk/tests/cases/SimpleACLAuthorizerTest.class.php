@@ -9,8 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../SimpleACLAuthorizer.class.php');
-require_once(dirname(__FILE__) . '/SimpleACLAuthorizerTestBehaviour.class.php');
-require_once(LIMB_DIR . '/core/Service.class.php');
+require_once(LIMB_DIR . '/core/Object.class.php');
 
 class SimpleACLAuthorizerTest extends LimbTestCase
 {
@@ -18,7 +17,7 @@ class SimpleACLAuthorizerTest extends LimbTestCase
 
   function SimpleACLAuthorizerTest()
   {
-    parent :: LimbTestCase('Simple ACL Authorizer test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()
@@ -26,7 +25,7 @@ class SimpleACLAuthorizerTest extends LimbTestCase
     $this->authorizer = new SimpleACLAuthorizer();
 
     registerTestingIni(
-      'SimpleACLAuthorizerTestBehaviour.behaviour.ini',
+      'SimpleACLAuthorizerTestService.service.ini',
       '
       [read]
       access = 1
@@ -47,9 +46,9 @@ class SimpleACLAuthorizerTest extends LimbTestCase
 
   function testAssignActionsWithPathExactMatchingAccess()
   {
-    $object = new Service();
+    $object = new Object();
     $object->set('path', $path = '/root');
-    $object->set('behaviour_name', 'SimpleACLAuthorizerTestBehaviour');
+    $object->set('service_name', 'SimpleACLAuthorizerTestService');
 
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
@@ -65,9 +64,9 @@ class SimpleACLAuthorizerTest extends LimbTestCase
 
   function testAssignActionsWithNearestParentAccess()
   {
-    $object = new Service();
+    $object = new Object();
     $object->set('path', $path = '/root/docs/some_doc');
-    $object->set('behaviour_name', 'SimpleACLAuthorizerTestBehaviour');
+    $object->set('service_name', 'SimpleACLAuthorizerTestService');
 
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
@@ -84,9 +83,9 @@ class SimpleACLAuthorizerTest extends LimbTestCase
 
   function testCanDo()
   {
-    $object = new Service();
+    $object = new Object();
     $object->set('path', $path = '/root/docs/some_doc');
-    $object->set('behaviour_name', 'SimpleACLAuthorizerTestBehaviour');
+    $object->set('service_name', 'SimpleACLAuthorizerTestService');
 
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();

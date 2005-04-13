@@ -18,7 +18,7 @@ class SimpleACLActionsRecordSetTest extends LimbTestCase
 {
   function SimpleACLActionsRecordSetTest()
   {
-    parent :: LimbTestCase('simple ACL actions record set test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testEmpty()

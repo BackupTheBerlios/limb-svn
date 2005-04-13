@@ -14,7 +14,7 @@ class StatsRootGroupTest extends LimbGroupTest
 {
   function StatsRootGroupTest()
   {
-    parent :: LimbGroupTest('stats package tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

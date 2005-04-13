@@ -12,7 +12,7 @@ class CommonDAOGroup extends LimbGroupTest
 {
   function CommonDAOGroup()
   {
-    parent :: LimbGroupTest('common DAO tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

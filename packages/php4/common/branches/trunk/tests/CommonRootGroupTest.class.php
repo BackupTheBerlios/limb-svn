@@ -14,7 +14,7 @@ class CommonRootGroupTest extends LimbGroupTest
 {
   function CommonRootGroupTest()
   {
-    parent :: LimbGroupTest('common package tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

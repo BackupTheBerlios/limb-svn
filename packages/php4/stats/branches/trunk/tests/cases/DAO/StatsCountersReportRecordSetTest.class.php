@@ -19,7 +19,7 @@ class StatsCountersReportRecordSetTest extends LimbTestCase
 {
   function StatsCountersReportRecordSetTest()
   {
-    parent :: LimbTestCase('stats counters report record set test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function testRecordSet()

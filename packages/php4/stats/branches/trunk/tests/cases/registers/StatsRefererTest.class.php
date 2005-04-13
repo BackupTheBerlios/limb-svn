@@ -28,7 +28,7 @@ class StatsRefererTest extends LimbTestCase
 
   function StatsRefererTest()
   {
-    parent :: LimbTestCase('stats referer test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()

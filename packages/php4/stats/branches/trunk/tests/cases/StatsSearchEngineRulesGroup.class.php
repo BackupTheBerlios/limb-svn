@@ -12,7 +12,7 @@ class StatsSearchEngineRulesGroup extends LimbGroupTest
 {
   function StatsSearchEngineRulesGroup()
   {
-    parent :: LimbGroupTest('stats search engine rules tests');
+    parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()

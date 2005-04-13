@@ -27,7 +27,7 @@ class StatsUriTest extends LimbTestCase
 
   function StatsUriTest()
   {
-    parent :: LimbTestCase('stats uri test');
+    parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()
