@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/core/lib/i18n/locale.class.php');
 require_once(LIMB_DIR . '/core/lib/date/date_time_zone.class.php');
 
@@ -34,7 +33,7 @@ class date
     elseif(is_string($date))
       $this->set_by_string($date, $format);
     elseif(is_numeric($date))
-      $this->set_by_days($date);
+      $this->set_by_stamp($date);
     else
       $this->set_by_stamp();
   }

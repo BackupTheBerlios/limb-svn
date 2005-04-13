@@ -8,34 +8,68 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
 require_once(LIMB_DIR . '/core/model/stats/stats_referers_report.class.php');
+require_once(LIMB_DIR . '/core/lib/date/date.class.php');
 
 class stats_referers_list_datasource extends datasource
 {
+  var $request;
   var $stats_referers_report = null;
 
   function stats_referers_list_datasource()
   {
-    $this->stats_report =& new stats_referers_report();
-
+    $this->stats_report =& $this->_create_referers_report();
     parent :: datasource();
+  }
+
+  function set_request(&$request)
+  {
+    $this->request =& $request;
+  }
+
+  function & _get_request()
+  {
+    if(is_object($this->request))
+      return $this->request;
+
+    //ugly!?
+    return request :: instance();
+  }
+
+  function _create_referers_report()
+  {
+    return new stats_referers_report();
   }
 
   function & get_dataset(&$counter, $params=array())
   {
     $this->_configure_filters();
 
-    $counter = $this->stats_report->fetch_count($params);
-    $arr = $this->stats_report->fetch($params);
+    $limit = isset($params['limit']) ? $params['limit'] : 0;
+    $offset = isset($params['offset']) ? $params['offset'] : 0;
 
-    $arr = $this->_process_result_array($arr);
+    $counter = $this->_do_fetch_count();
+    $arr = $this->_process_result_array($this->_do_fetch($limit, $offset));
+
     return new array_dataset($arr);
+  }
+
+  function _do_fetch($limit, $offset)
+  {
+    return $this->stats_report->fetch($limit, $offset);
+  }
+
+  function _do_fetch_count()
+  {
+    return $this->stats_report->fetch_count();
   }
 
   function _process_result_array($arr)
   {
+    if(!sizeof($arr))
+      return $arr;
+
     $total = $this->stats_report->fetch_total_hits();
 
     $result = array();
@@ -50,13 +84,13 @@ class stats_referers_list_datasource extends datasource
 
   function _configure_filters()
   {
-    $request = request :: instance();
-
-    $this->_set_period_filter($request);
+    $this->_set_period_filter();
   }
 
-  function _set_period_filter(&$request)
+  function _set_period_filter()
   {
+    $request =& $this->_get_request();
+
     $locale =& locale :: instance();
     $start_date = new date();
     $start_date->set_hour(0);

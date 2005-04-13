@@ -20,25 +20,38 @@ function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cac
 
 function & get_ini($file_name, $use_cache = null)
 {
-  if (isset($GLOBALS['testing_ini'][$file_name]))
-  {
-    $dir = VAR_DIR;
-    $use_cache = false;
-  }
-  elseif (file_exists(PROJECT_DIR . 'core/settings/' . $file_name))
-    $dir = PROJECT_DIR . 'core/settings/';
-  elseif (file_exists(LIMB_DIR . '/core/settings/' . $file_name))
-    $dir = LIMB_DIR . '/core/settings/';
-  else
+  if(!$path = get_ini_real_path($file_name))
     error('ini file not found',
       __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__,
       array('file' => $file_name));
 
-  if (!($ini =& ini::instance($dir . $file_name, $use_cache)))
+  if (isset($GLOBALS['testing_ini'][$file_name]))
+    $use_cache = false;
+
+  if (!($ini =& ini::instance($path, $use_cache)))
     error('couldnt retrieve ini instance', __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__,
-    array('file' => $dir . $file_name));
+    array('file' => $path));
 
   return $ini;
+}
+
+function get_ini_real_path($file_name)
+{
+  if (isset($GLOBALS['testing_ini'][$file_name]))
+    $dir = VAR_DIR;
+  elseif (file_exists(PROJECT_DIR . '/core/settings/' . $file_name))
+    $dir = PROJECT_DIR . '/core/settings/';
+  elseif (file_exists(LIMB_DIR . '/core/settings/' . $file_name))
+    $dir = LIMB_DIR . '/core/settings/';
+  else
+    return false;
+
+  return $dir . $file_name;
+}
+
+function ini_exists($file_name)
+{
+  return get_ini_real_path($file_name) !== false;
 }
 
 class ini
