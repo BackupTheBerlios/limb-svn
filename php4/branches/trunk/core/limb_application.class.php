@@ -32,7 +32,6 @@ class limb_application
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/logging_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/full_page_cache_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/jip_filter');
-    $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/image_cache_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/site_object_controller_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/session_history_filter');
   }

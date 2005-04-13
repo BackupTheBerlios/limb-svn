@@ -100,23 +100,39 @@ class stats_referers_report_test extends LimbTestCase
   function test_fetch_by_groups()
   {
     $this->db->sql_insert('sys_stat_referer_url', array('id' => 1, 'referer_url' => 'http://host1'));
-    $this->db->sql_insert('sys_stat_referer_url', array('id' => 2, 'referer_url' => 'http://host2'));
-    $this->db->sql_insert('sys_stat_referer_url', array('id' => 3, 'referer_url' => 'http://host2/path'));
+    $this->db->sql_insert('sys_stat_referer_url', array('id' => 2, 'referer_url' => 'http://host9'));
+    $this->db->sql_insert('sys_stat_referer_url', array('id' => 3, 'referer_url' => 'http://host9/path'));
+    $this->db->sql_insert('sys_stat_referer_url', array('id' => 4, 'referer_url' => 'http://host3/path/1'));
 
     $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 1));
+
+    //*host9*
     $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 2));
     $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 2));
     $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 3));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 3));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 3));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 3));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 3));
 
-    $res = $this->report->fetch_by_groups(array('*host2*'));
-    $expected = array(array('referers_group' => '*host2*', 'hits' => 3));
+    //*host3*
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 4));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 4));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 4));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 4));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 4));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 4));
+
+    $res = $this->report->fetch_by_groups($groups = array('*host9*', '*host3*'));
+    $expected = array(array('referers_group' => '*host9*', 'hits' => 7),
+                      array('referers_group' => '*host3*', 'hits' => 6));
     $this->assertEqual($res, $expected);
 
-    $res = $this->report->fetch_except_groups(array('*host2*'));
+    $res = $this->report->fetch_except_groups($groups);
     $expected = array(array('stat_referer_id' => 1, 'referer_url' => 'http://host1', 'hits' => 1));
     $this->assertEqual($res, $expected);
 
-    $this->assertEqual($this->report->fetch_total_hits(), 4);
+    $this->assertEqual($this->report->fetch_total_hits(), 14);
   }
 
   function test_fetch_limited_except_groups()
@@ -124,18 +140,30 @@ class stats_referers_report_test extends LimbTestCase
     $this->db->sql_insert('sys_stat_referer_url', array('id' => 1, 'referer_url' => 'http://host0'));
     $this->db->sql_insert('sys_stat_referer_url', array('id' => 2, 'referer_url' => 'http://host1'));
     $this->db->sql_insert('sys_stat_referer_url', array('id' => 3, 'referer_url' => 'http://host2'));
+    $this->db->sql_insert('sys_stat_referer_url', array('id' => 4, 'referer_url' => 'http://host3'));
 
+    //except *host3*
     $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 1));
     $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 2));
     $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 2));
     $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 2));
     $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 3));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 3));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 3));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 3));
 
-    $res = $this->report->fetch_except_groups(array('*host2*'), 1, 0);
-    $expected = array(array('stat_referer_id' => '2', 'referer_url' => 'http://host1', 'hits' => '3'));
+    //*host3*
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 4));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 4));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 4));
+    $this->db->sql_insert('sys_stat_log', array('stat_referer_id' => 4));
+
+    $res = $this->report->fetch_except_groups($groups = array('*host3*'), 2, 0);
+    $expected = array(array('stat_referer_id' => 3, 'referer_url' => 'http://host2', 'hits' => 4),
+                      array('stat_referer_id' => 2, 'referer_url' => 'http://host1', 'hits' => 3));
     $this->assertEqual($res, $expected);
 
-    $this->assertEqual($this->report->fetch_count_except_groups(array('*host2*')), 2);
+    $this->assertEqual($this->report->fetch_count_except_groups($groups), 3);
   }
 }
 

@@ -20,9 +20,9 @@ class stats_referers_report
     $this->db =& db_factory :: instance();
   }
 
-  function _get_main_sql()
+  function _get_base_sql()
   {
-    $sql = 'SELECT ' .
+    return 'SELECT ' .
            'stat_referer_id, ssru.referer_url as referer_url, ' .
            'COUNT(stat_referer_id) as hits ' .
            'FROM ' .
@@ -31,13 +31,40 @@ class stats_referers_report
            'AND sslog.stat_referer_id = ssru.id ' .
            'GROUP BY stat_referer_id ' .
            'ORDER BY hits DESC';
+  }
 
-     return $sql;
+  function _get_base_count_sql()
+  {
+    return 'SELECT ' .
+           'stat_referer_id ' .
+           'FROM ' .
+           'sys_stat_log ' .
+           'WHERE %s ' .
+           'GROUP BY stat_referer_id';
+  }
+
+  function _get_total_hits_sql()
+  {
+    return 'SELECT ' .
+           'COUNT(id) as total ' .
+           'FROM ' .
+           'sys_stat_log ' .
+           'WHERE %s ';
+  }
+
+  function _get_except_groups_count_sql()
+  {
+    return 'SELECT ' .
+           'stat_referer_id ' .
+           'FROM ' .
+           'sys_stat_log as sslog, sys_stat_referer_url as ssru ' .
+           'WHERE sslog.stat_referer_id = ssru.id AND %s ' .
+           'GROUP BY stat_referer_id';
   }
 
   function fetch($limit = 0, $offset = 0)
   {
-    $sql = sprintf($this->_get_main_sql(),
+    $sql = sprintf($this->_get_base_sql(),
                    $this->_build_period_condition());
 
     $this->db->sql_exec($sql, $limit, $offset);
@@ -47,13 +74,8 @@ class stats_referers_report
 
   function fetch_count()
   {
-    $sql = 'SELECT ' .
-           'stat_referer_id ' .
-           'FROM ' .
-           'sys_stat_log ' .
-           'WHERE ' .
-           $this->_build_period_condition() . ' ' .
-           'GROUP BY stat_referer_id';
+    $sql = sprintf($this->_get_base_count_sql(),
+                   $this->_build_period_condition());
 
     $this->db->sql_exec($sql);
     return $this->db->count_selected_rows();
@@ -61,12 +83,8 @@ class stats_referers_report
 
   function fetch_total_hits()
   {
-    $sql = 'SELECT ' .
-           'COUNT(id) as total ' .
-           'FROM ' .
-           'sys_stat_log ' .
-           'WHERE ' .
-           $this->_build_period_condition();
+    $sql = sprintf($this->_get_total_hits_sql(),
+                   $this->_build_period_condition());
 
     $this->db->sql_exec($sql);
     $record = $this->db->fetch_row();
@@ -84,36 +102,40 @@ class stats_referers_report
 
   function fetch_by_groups($groups)
   {
-    $this->_group_result($this->fetch(), $groups, $grouped, $non_grouped);
-    return $grouped;
+    $sql = sprintf($this->_get_base_sql(),
+                   $this->_build_period_condition() . ' ' .
+                   $this->_build_only_groups_condition($groups));
+
+    $this->db->sql_exec($sql);
+
+    return $this->_group_result($this->fetch(), $groups);
   }
 
   function fetch_except_groups($groups, $limit = 0, $offset = 0)
   {
-    $this->_group_result($this->fetch($limit, $offset), $groups, $grouped, $non_grouped);
-    return $non_grouped;
+    $sql = sprintf($this->_get_base_sql(),
+                   $this->_build_period_condition() . ' ' .
+                   $this->_build_except_groups_condition($groups));
+
+    $this->db->sql_exec($sql, $limit, $offset);
+
+    return $this->db->get_array();
   }
 
   function fetch_count_except_groups($groups)
   {
-    $sql = 'SELECT ' .
-           'stat_referer_id ' .
-           'FROM ' .
-           'sys_stat_log as sslog, sys_stat_referer_url as ssru ' .
-           'WHERE sslog.stat_referer_id = ssru.id AND ' .
-           $this->_build_period_condition() . ' ' .
-           $this->_build_except_groups_condition($groups) . ' ' .
-           'GROUP BY stat_referer_id';
+    $sql = sprintf($this->_get_except_groups_count_sql(),
+                   $this->_build_period_condition() . ' ' .
+                   $this->_build_except_groups_condition($groups));
 
     $this->db->sql_exec($sql);
     return $this->db->count_selected_rows();
   }
 
-  function _group_result($array, $groups, &$grouped, &$non_grouped)
+  function _group_result($array, $groups)
   {
     $hits_by_group = array();
     $grouped = array();
-    $non_grouped = array();
 
     $regex_groups = $this->_prepare_regex_groups($groups);
 
@@ -126,12 +148,14 @@ class stats_referers_report
 
         $hits_by_group[$group] += $item['hits'];
       }
-      else
-        $non_grouped[] = $item;
     }
+
+    arsort($hits_by_group);
 
     foreach($hits_by_group as $group => $hits)
       $grouped[] = array('referers_group' => $group, 'hits' => $hits);
+
+    return $grouped;
   }
 
   function _prepare_regex_groups($groups)
@@ -168,6 +192,17 @@ class stats_referers_report
     }
     return implode(' ', $conds);
   }
+
+  function _build_only_groups_condition($groups)
+  {
+    $conds = array();
+    foreach($groups as $group)
+    {
+      $conds[] = 'AND referer_url LIKE "' . str_replace('*', '%', $this->db->escape($group)) . '"';
+    }
+    return implode(' ', $conds);
+  }
+
 }
 
 ?>
