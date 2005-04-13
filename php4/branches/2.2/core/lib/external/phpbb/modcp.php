@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: modcp.php,v 1.1 2003/07/04 18:33:11 pacha Exp $
+ *   $Id$
  *
  *
  ***************************************************************************/

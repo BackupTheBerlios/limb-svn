@@ -143,7 +143,7 @@ class image_library_test extends UnitTestCase
     
 //      $this->assertEqual(filesize($this->output_file), $this->rotated_size);
     clearstatcache();
-  }*/
+  }*/
   
   function test_flip()
   {

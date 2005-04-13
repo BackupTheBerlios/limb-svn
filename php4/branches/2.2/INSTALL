@@ -34,11 +34,11 @@ capabilities of 3.23+ version)
 	PROJECT SETUP  
 --------------------------------------------------------------------------------
 1.	Unpack the downloaded LIMB archive
-1.	Unpack the downloaded empty project archive
-2.	Edit the project settings in YOUR_PROJECT_DIRECTORY/setup_custom.php
-3.	Load database dump with structure and initial data from init_en.sql or init_ru.sql,
+2.	Unpack the downloaded empty project archive
+3.	Edit the project settings in YOUR_PROJECT_DIRECTORY/setup_custom.php
+4.	Load database dump with structure and initial data from init_en.sql or init_ru.sql,
     you can find them in LIMB_DIR/init/ directory
-4.  For more information on registering new objects or templates customization
+5.  For more information on registering new objects or templates customization
     please visit http://limb-project.com/root/documentation
 
 --------------------------------------------------------------------------------
