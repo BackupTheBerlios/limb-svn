@@ -25,7 +25,7 @@ class GdLibraryTest extends ImageLibraryTest
   {
     $this->library = new ImageGd();
 
-    parent :: ImageLibraryTest();
+    parent :: ImageLibraryTest(__FILE__);
   }
 }
 ?>

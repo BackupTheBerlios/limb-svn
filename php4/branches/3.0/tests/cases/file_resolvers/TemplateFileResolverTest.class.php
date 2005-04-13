@@ -20,6 +20,11 @@ Mock :: generatePartial(
 
 class TemplateFileResolverTest extends BasePackageFileResolverTest
 {
+  function TemplateFileResolverTest()
+  {
+    parent :: BasePackageFileResolverTest(__FILE__);
+  }
+
   function & _defineResolver()
   {
     $resolver = new TemplateFileResolverTestVersion($this);

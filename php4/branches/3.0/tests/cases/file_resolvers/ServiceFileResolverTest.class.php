@@ -13,6 +13,11 @@ require_once(LIMB_DIR . '/core/file_resolvers/ServiceFileResolver.class.php');
 
 class ServiceFileResolverTest extends BasePackageFileResolverTest
 {
+  function ServiceFileResolverTest()
+  {
+    parent :: BasePackageFileResolverTest(__FILE__);
+  }
+
   function & _defineResolver()
   {
     return new ServiceFileResolver(new PackageFileResolver());

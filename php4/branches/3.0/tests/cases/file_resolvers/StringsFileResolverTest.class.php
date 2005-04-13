@@ -13,6 +13,11 @@ require_once(LIMB_DIR . '/core/file_resolvers/StringsFileResolver.class.php');
 
 class StringsFileResolverTest extends BasePackageFileResolverTest
 {
+  function StringsFileResolverTest()
+  {
+    parent :: BasePackageFileResolverTest(__FILE__);
+  }
+
   function & _defineResolver()
   {
     return new StringsFileResolver(new PackageFileResolver());

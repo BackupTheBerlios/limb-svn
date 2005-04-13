@@ -18,6 +18,11 @@ class CachingFileResolverTest extends LimbTestCase
   var $resolver;
   var $wrapped_resolver;
 
+  function CachingFileResolverTest()
+  {
+    parent :: LimbTestCase(__FILE__);
+  }
+
   function setUp()
   {
     $this->wrapped_resolver = new MockFileResolver($this);

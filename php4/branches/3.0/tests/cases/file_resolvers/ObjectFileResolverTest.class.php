@@ -13,6 +13,11 @@ require_once(LIMB_DIR . '/core/file_resolvers/ObjectFileResolver.class.php');
 
 class ObjectFileResolverTest extends BasePackageFileResolverTest
 {
+  function ObjectFileResolverTest()
+  {
+    parent :: BasePackageFileResolverTest(__FILE__);
+  }
+
   function & _defineResolver()
   {
     return new ObjectFileResolver(new PackageFileResolver());

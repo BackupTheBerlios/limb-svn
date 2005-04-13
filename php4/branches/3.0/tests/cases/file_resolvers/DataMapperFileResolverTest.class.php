@@ -13,6 +13,11 @@ require_once(LIMB_DIR . '/core/file_resolvers/DataMapperFileResolver.class.php')
 
 class DataMapperFileResolverTest extends BasePackageFileResolverTest
 {
+  function DataMapperFileResolverTest()
+  {
+    parent :: BasePackageFileResolverTest(__FILE__);
+  }
+
   function & _defineResolver()
   {
     return new DataMapperFileResolver(new PackageFileResolver());

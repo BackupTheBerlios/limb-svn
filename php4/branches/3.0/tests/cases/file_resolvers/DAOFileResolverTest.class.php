@@ -13,6 +13,11 @@ require_once(LIMB_DIR . '/core/file_resolvers/DAOFileResolver.class.php');
 
 class DAOFileResolverTest extends BasePackageFileResolverTest
 {
+  function DAOFileResolverTest()
+  {
+    parent :: BasePackageFileResolverTest(__FILE__);
+  }
+
   function & _defineResolver()
   {
     return new DAOFileResolver(new PackageFileResolver());

@@ -13,6 +13,11 @@ require_once(LIMB_DIR . '/core/file_resolvers/DbTableFileResolver.class.php');
 
 class DbTableFileResolverTest extends BasePackageFileResolverTest
 {
+  function DbTableFileResolverTest()
+  {
+    parent :: BasePackageFileResolverTest(__FILE__);
+  }
+
   function & _defineResolver()
   {
     return new DbTableFileResolver(new PackageFileResolver());

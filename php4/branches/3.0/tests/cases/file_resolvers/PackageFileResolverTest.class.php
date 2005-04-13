@@ -19,6 +19,11 @@ Mock :: generatePartial(
 
 class PackageFileResolverTest extends BasePackageFileResolverTest
 {
+  function PackageFileResolverTest()
+  {
+    parent :: BasePackageFileResolverTest(__FILE__);
+  }
+
   function & _defineResolver()
   {
     return new PackageFileResolver();
