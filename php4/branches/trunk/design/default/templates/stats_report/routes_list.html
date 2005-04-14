@@ -13,9 +13,9 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
+<th width="10%">hits</th>
+<th width="10%">%</th>
 <th>Route</th>
-<th>hits</th>
-<th>%</th>
 </tr>
 
 <grid:LIST id='table'>
@@ -27,6 +27,9 @@
 <grid:STRIPE even>
 <tr>
 </grid:STRIPE>
+
+<td>{$hits}</td>
+<td>{$percentage}</td>
 
 <td>
 <core:DATA_TRANSFER hash_id='route' target='routes'>
@@ -44,8 +47,6 @@
 
 </td>
 
-<td>{$hits}</td>
-<td>{$percentage}</td>
 </tr>
 </grid:ITERATOR>
 </grid:LIST>

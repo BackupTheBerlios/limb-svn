@@ -13,9 +13,9 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
+<th width="10%">hits</th>
+<th width="10%">%</th>
 <th>Engine name</th>
-<th>hits</th>
-<th>%</th>
 </tr>
 
 <grid:LIST id='table'>
@@ -27,10 +27,9 @@
 <grid:STRIPE even>
 <tr>
 </grid:STRIPE>
-
-<td>{$engine}</td>
 <td>{$hits}</td>
 <td>{$percentage}</td>
+<td>{$engine}</td>
 </tr>
 </grid:ITERATOR>
 </grid:LIST>

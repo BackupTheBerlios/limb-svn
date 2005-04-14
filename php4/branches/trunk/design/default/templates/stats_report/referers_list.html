@@ -10,9 +10,9 @@
 <grid:LIST id='referers_by_groups'>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-<th width="80%">Group</th>
 <th width="10%">hits</th>
 <th width="10%">%</th>
+<th width="80%">Group</th>
 </tr>
 
 <grid:ITERATOR>
@@ -23,12 +23,11 @@
 <grid:STRIPE even>
 <tr>
 </grid:STRIPE>
-
+<td>{$hits}</td>
+<td>{$percentage}</td>
 <td>
   <a href='?action=referers_group_report&group={$referers_group}'>{$referers_group}</a>
 </td>
-<td>{$hits}</td>
-<td>{$percentage}</td>
 </tr>
 </grid:ITERATOR>
 </table>
@@ -47,9 +46,9 @@
 <grid:LIST id='referers_except_groups'>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-<th width="80%">URL</th>
 <th width="10%">hits</th>
 <th width="10%">%</th>
+<th>URL</th>
 </tr>
 
 <grid:ITERATOR>
@@ -61,11 +60,11 @@
 <tr>
 </grid:STRIPE>
 
+<td>{$hits}</td>
+<td>{$percentage}</td>
 <td>
   <a href='{$referer_url}'>{$referer_url}</a>
 </td>
-<td>{$hits}</td>
-<td>{$percentage}</td>
 </tr>
 </grid:ITERATOR>
 </table>
