@@ -22,10 +22,6 @@ class partial_page_cache_manager
   var $rules = array();
   var $matched_rule;
 
-  function partial_page_cache_manager()
-  {
-  }
-
   function _set_matched_rule($rule)
   {
     $this->matched_rule = $rule;
@@ -224,10 +220,14 @@ class partial_page_cache_manager
   {
     include_once(LIMB_DIR . '/core/lib/util/ini.class.php');
 
-    $ini =& get_ini('partial_page_cache.ini');
     $this->rules = array();
+    $groups = array();
 
-    $groups = $ini->get_all();
+    if(ini_exists('partial_page_cache.ini'))
+    {
+      $ini =& get_ini('partial_page_cache.ini');
+      $groups = $ini->get_all();
+    }
 
     foreach($groups as $group => $data)
     {

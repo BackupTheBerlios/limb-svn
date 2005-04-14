@@ -27,10 +27,6 @@ class image_cache_manager
   var $found_images = array();
   var $wild_card;
 
-  function image_cache_manager()
-  {
-  }
-
   function _define_replace_regex_array()
   {
     return array(
@@ -321,10 +317,14 @@ class image_cache_manager
   {
     include_once(LIMB_DIR . '/core/lib/util/ini.class.php');
 
-    $ini =& get_ini('image_cache.ini');
     $this->rules = array();
+    $groups = array();
 
-    $groups = $ini->get_all();
+    if(ini_exists('image_cache.ini'))
+    {
+      $ini =& get_ini('image_cache.ini');
+      $groups = $ini->get_all();
+    }
 
     foreach($groups as $group => $data)
     {
