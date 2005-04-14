@@ -52,7 +52,7 @@ class stats_referers_report
            'WHERE %s ';
   }
 
-  function _get_except_groups_count_sql()
+  function _get_joined_count_sql()
   {
     return 'SELECT ' .
            'stat_referer_id ' .
@@ -100,14 +100,33 @@ class stats_referers_report
     $this->filter_conditions[] = " AND time BETWEEN {$start_stamp} AND {$finish_stamp} ";
   }
 
-  function fetch_by_groups($groups)
+  function fetch_by_group($group, $limit = 0, $offset = 0)
+  {
+    $sql = sprintf($this->_get_base_sql(),
+                   $this->_build_period_condition() . ' ' .
+                   $this->_build_only_groups_condition(array($group)));
+
+    $this->db->sql_exec($sql, $limit, $offset);
+    return $this->db->get_array();
+  }
+
+  function fetch_count_by_group($group)
+  {
+    $sql = sprintf($this->_get_joined_count_sql(),
+                   $this->_build_period_condition() . ' ' .
+                   $this->_build_only_groups_condition(array($group)));
+
+    $this->db->sql_exec($sql);
+    return $this->db->count_selected_rows();
+  }
+
+  function fetch_summarized_by_groups($groups)
   {
     $sql = sprintf($this->_get_base_sql(),
                    $this->_build_period_condition() . ' ' .
                    $this->_build_only_groups_condition($groups));
 
     $this->db->sql_exec($sql);
-
     return $this->_group_result($this->fetch(), $groups);
   }
 
@@ -118,13 +137,12 @@ class stats_referers_report
                    $this->_build_except_groups_condition($groups));
 
     $this->db->sql_exec($sql, $limit, $offset);
-
     return $this->db->get_array();
   }
 
   function fetch_count_except_groups($groups)
   {
-    $sql = sprintf($this->_get_except_groups_count_sql(),
+    $sql = sprintf($this->_get_joined_count_sql(),
                    $this->_build_period_condition() . ' ' .
                    $this->_build_except_groups_condition($groups));
 

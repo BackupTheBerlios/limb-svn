@@ -35,6 +35,12 @@ class stats_report_controller extends site_object_controller
             'action_path' => '/stats_report/stats_referers_report_action',
             'display_in_breadcrumbs' => true
         ),
+        'referers_group_report' => array(
+            'template_path' => '/stats_report/referers_group_list.html',
+            'action_name' => strings :: get('show_referers_group_report', 'stats'),
+            'action_path' => '/stats_report/stats_referers_group_report_action',
+            'display_in_breadcrumbs' => true
+        ),
         'hits_hosts_report' => array(
             'template_path' => '/stats_report/hits_hosts_list.html',
             'action_name' => strings :: get('show_hits_hosts_report', 'stats'),

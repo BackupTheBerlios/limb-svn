@@ -10,29 +10,28 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/datasource/stats_referers_list_datasource.class.php');
 
-class stats_referers_by_groups_list_datasource extends stats_referers_list_datasource
+class stats_referers_by_group_list_datasource extends stats_referers_list_datasource
 {
-  var $groups = array();
-
-  function _get_groups()
+  function _get_group()
   {
-    if($this->groups)
-      return $this->groups;
-
-    if(ini_exists('referers_groups.ini'))
-      $this->groups = get_ini_option('referers_groups.ini', 'groups');
-
-    return $this->groups;
+    $request = request :: instance();
+    return $request->get_attribute('group');
   }
 
   function _do_fetch($limit, $offset)
   {
-    return $this->stats_report->fetch_summarized_by_groups($this->_get_groups());
+    if($group = $this->_get_group())
+      return $this->stats_report->fetch_by_group($group, $limit, $offset);
+    else
+      return array();
   }
 
   function _do_fetch_count()
   {
-    return null;//???
+    if($group = $this->_get_group())
+      return $this->stats_report->fetch_count_by_group($group);
+    else
+      return array();
   }
 }
 ?>
