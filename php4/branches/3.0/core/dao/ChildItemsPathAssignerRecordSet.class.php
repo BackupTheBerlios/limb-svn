@@ -18,7 +18,8 @@ class ChildItemsPathAssignerRecordSet extends IteratorDbDecorator
   {
     $record =& parent :: current();
 
-    $record->set('path', $this->parent_path . '/' . $record->get('identifier'));
+    if($this->parent_path)
+      $record->set('path', $this->parent_path . '/' . $record->get('_node_identifier'));
 
     return $record;
   }
@@ -26,11 +27,13 @@ class ChildItemsPathAssignerRecordSet extends IteratorDbDecorator
   function rewind()
   {
     $toolkit =& Limb :: toolkit();
-    $mapped_object =& $toolkit->getCurrentEntity();
+    if($mapped_object =& $toolkit->getCurrentEntity())
+    {
 
-    $id_translator =& $toolkit->getPath2IdTranslator();
-    if($path = $id_translator->toPath($mapped_object->get('oid')))
-      $this->parent_path = $path;
+      $id_translator =& $toolkit->getPath2IdTranslator();
+      if($path = $id_translator->toPath($mapped_object->get('oid')))
+        $this->parent_path = $path;
+    }
 
     parent :: rewind();
   }

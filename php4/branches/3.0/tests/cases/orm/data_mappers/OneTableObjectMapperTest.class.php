@@ -84,11 +84,10 @@ class OneTableObjectMapperTest extends LimbTestCase
     $mapper = new OneTableObjectMapper('OneTableObjectMapperTest');
     $object = new OneTableObjectMapperTestNewsObject();
 
-    $result = array('id' => $id = 10,
-                    'content' => $content = 'some content',
-                    'annotation' => $annotation = 'some annotation',
-                    'news_date' => $news_date = 'some date',
-                    'junk' => 'junk!!!');
+    $result = array('_content_id' => $id = 10,
+                    '_content_content' => $content = 'some content',
+                    '_content_annotation' => $annotation = 'some annotation',
+                    '_content_news_date' => $news_date = 'some date');
 
     $record = new Dataspace();
     $record->import($result);
@@ -96,11 +95,9 @@ class OneTableObjectMapperTest extends LimbTestCase
     $mapper->load($record, $object);
 
     $this->assertEqual($object->get('id'), $id);
-    $this->assertEqual($object->getContent(), $content);
-    $this->assertEqual($object->getAnnotation(), $annotation);
-    $this->assertEqual($object->getNewsDate(), $news_date);
-
-    $this->assertNull($object->get('junk'));
+    $this->assertEqual($object->get('content'), $content);
+    $this->assertEqual($object->get('annotation'), $annotation);
+    $this->assertEqual($object->get('news_date'), $news_date);
   }
 
   function testInsertExtraTableRecordOk()

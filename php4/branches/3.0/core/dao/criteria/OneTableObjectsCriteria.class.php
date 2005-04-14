@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: OneTableObjectsCriteria.class.php 1101 2005-02-14 11:54:06Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -27,7 +27,7 @@ class OneTableObjectsCriteria
   {
     $db_table =& $this->getDbTable($this->db_table_name);
 
-    $sql->addField($db_table->getColumnsForSelectAsString('tn', array('oid')));
+    $sql->addField($db_table->getColumnsForSelectAsString('tn', array('oid'), '_content_'));
     $sql->addTable($db_table->getTableName() . ' AS tn');
     $sql->addCondition('sys_object.oid=tn.oid');
   }

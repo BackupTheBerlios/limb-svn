@@ -47,12 +47,14 @@ class ServiceLocationMapperTest extends LimbTestCase
     $record = new Dataspace();
     $record->import(array('_service_name' => $service_name = 'TestService',
                           '_service_title' => $title = 'some title',
+                          '_service_id' => $id = 40,
                           ));
 
     $mapper->load($record, $object);
 
     $this->assertEqual($object->get('name'), $service_name);
     $this->assertEqual($object->get('title'), $title);
+    $this->assertEqual($object->get('id'), $id);
   }
 
   function testFailedInsertNoOId()

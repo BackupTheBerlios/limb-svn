@@ -338,11 +338,11 @@ class LimbDbTableTest extends LimbTestCase
     $this->assertEqual($this->db_table_test->getColumnsForSelectAsString(), $select_string);
   }
 
-  function testGetColumnsForSelectSpecificName()
+  function testGetColumnsForSelectSpecificNameAndPrefix()
   {
-    $select_string = 'tn.id as id, tn.description as description, tn.title as title';
+    $select_string = 'tn.id as _content_id, tn.description as _content_description, tn.title as _content_title';
 
-    $this->assertEqual($this->db_table_test->getColumnsForSelectAsString('tn'), $select_string);
+    $this->assertEqual($this->db_table_test->getColumnsForSelectAsString('tn', array(), '_content_'), $select_string);
   }
 
   function testGetColumnsForSelectSpecificNameWithExcludes()

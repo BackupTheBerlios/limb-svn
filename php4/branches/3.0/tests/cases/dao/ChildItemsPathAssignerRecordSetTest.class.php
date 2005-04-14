@@ -56,8 +56,8 @@ class ChildItemsPathAssignerRecordSetTest extends LimbTestCase
     $this->path2id_translator->expectOnce('toPath', array($id));
     $this->path2id_translator->setReturnValue('toPath', $path = 'whatever');
 
-    $objects = array(array('identifier' => 'item1'),
-                    array('identifier' => 'item2'));
+    $objects = array(array('_node_identifier' => 'item1'),
+                    array('_node_identifier' => 'item2'));
 
     $rs = new ChildItemsPathAssignerRecordSet(new PagedArrayDataset($objects));
     $rs->rewind();

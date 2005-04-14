@@ -21,6 +21,7 @@ class ObjectMapper extends AbstractDataMapper
   {
     $object->set('oid', $record->get('oid'));
     $object->set('class_id', $record->get('class_id'));
+    $object->set('class_name', $record->get('class_name'));
   }
 
   function insert(&$object)

@@ -17,7 +17,8 @@ class TemplateFileResolver extends FileResolverDecorator
   {
     $toolkit =& Limb :: toolkit();
     $ini =& $toolkit->getINI('common.ini');
-    $tmpl_path = $ini->getOption('path', 'Templates');
+    $tmpl_path = $ini->getOption('templates_path', 'Templates');
+    $shared_tmpl_path = $ini->getOption('shared_templates_path', 'Templates');
 
     $locale = $this->_getLocalePrefix();
 
@@ -31,6 +32,17 @@ class TemplateFileResolver extends FileResolverDecorator
 
     if(catch('Exception', $e))
       $res = $this->_resolver->resolve('design/'  . $file_path, $params);
+
+    if(catch('Exception', $e))
+    {
+      if(file_exists($shared_tmpl_path . $locale . $file_path))
+        return $shared_tmpl_path . $locale . $file_path;
+
+      if(file_exists($shared_tmpl_path . $file_path))
+        return $shared_tmpl_path . $file_path;
+
+      throw($e);
+    }
 
     return $res;
   }

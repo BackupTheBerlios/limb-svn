@@ -287,7 +287,7 @@ class LimbDbTable
     return (defined('DB_AUTO_CONSTRAINTS') &&  DB_AUTO_CONSTRAINTS == true);
   }
 
-  function getColumnsForSelect($table_name = '', $exclude_columns = array())
+  function getColumnsForSelect($table_name = '', $exclude_columns = array(), $prefix = '')
   {
     if(!$table_name)
       $table_name = $this->getTableName();
@@ -297,15 +297,15 @@ class LimbDbTable
     foreach($columns as $key => $descr)
     {
       if(!in_array($key, $exclude_columns))
-        $implode_arr[] = $table_name . '.' . $key . ' as ' . $key;
+        $implode_arr[] = $table_name . '.' . $key . ' as ' . $prefix . $key;
     }
 
     return $implode_arr;
   }
 
-  function getColumnsForSelectAsString($table_name = '', $exclude_columns = array())
+  function getColumnsForSelectAsString($table_name = '', $exclude_columns = array(), $prefix = '')
   {
-    return implode(', ', $this->getColumnsForSelect($table_name, $exclude_columns));
+    return implode(', ', $this->getColumnsForSelect($table_name, $exclude_columns, $prefix));
   }
 
   function _fillStatementVariables($values)

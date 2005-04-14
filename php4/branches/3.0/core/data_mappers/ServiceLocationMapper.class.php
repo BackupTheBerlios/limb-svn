@@ -14,6 +14,7 @@ class ServiceLocationMapper extends AbstractDataMapper
 {
   function load(&$record, &$object)
   {
+    $object->set('id', $record->get('_service_id'));
     $object->set('title', $record->get('_service_title'));
     $object->set('name', $record->get('_service_name'));
   }

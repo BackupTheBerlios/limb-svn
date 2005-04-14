@@ -17,7 +17,7 @@ class CommandProcessingFilter//implements InterceptingFilter
     $service =& $toolkit->getCurrentService();
 
     $command =& $service->getActionCommand($service->getCurrentAction());
-    $command->perform();
+    $command->perform(new Dataspace());
 
     $filter_chain->next();
   }

@@ -47,12 +47,14 @@ class ObjectMapperTest extends LimbTestCase
 
     $record = new Dataspace();
     $record->import(array('oid' => $id = 10,
-                          'class_id' => $class_id = 100));
+                          'class_id' => $class_id = 100,
+                          'class_name' => $class_name = 'some_class'));
 
     $mapper->load($record, $object);
 
     $this->assertEqual($object->get('oid'), $id);
     $this->assertEqual($object->get('class_id'), $class_id);
+    $this->assertEqual($object->get('class_name'), $class_name);
   }
 
   function testInsertOkGenerateClassId()

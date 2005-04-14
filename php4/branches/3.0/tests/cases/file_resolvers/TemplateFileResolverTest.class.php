@@ -43,7 +43,8 @@ class TemplateFileResolverTest extends BasePackageFileResolverTest
       'common.ini',
       '
       [Templates]
-       path = ' . OVERRIDE_TEMPLATE_DIR_FOR_TEST . '
+       templates_path = ' . OVERRIDE_TEMPLATE_DIR_FOR_TEST . '
+       shared_templates_path = ' . LIMB_DIR . '/design/
       '
     );
   }
@@ -78,6 +79,12 @@ class TemplateFileResolverTest extends BasePackageFileResolverTest
   {
     $this->assertEqual($this->resolver->resolve('test2.html'),
                        TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/design/test2.html');
+  }
+
+  function testResolveTemplateFileFoundInSharedDirectory()
+  {
+    $this->assertEqual($this->resolver->resolve('page.html'),
+                       LIMB_DIR . '/design/page.html');
   }
 
   function testResolveTemplateFileFailed()

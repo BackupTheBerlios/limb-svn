@@ -19,7 +19,7 @@ class OneTableObjectMapper extends AbstractDataMapper
     $this->_db_name = $db_name;
   }
 
-  function &getDbTable()
+  function & getDbTable()
   {
     if(!$this->_db_table)
     {
@@ -32,11 +32,13 @@ class OneTableObjectMapper extends AbstractDataMapper
 
   function load(&$record, &$object)
   {
-    $raw_data = $record->export();
+    $table =& $this->getDbTable();
 
-    $raw_data = $this->_filterInputData($raw_data);
-
-    $object->merge($raw_data);
+    foreach($table->getColumns() as $key => $props)
+    {
+      if($value = $record->get('_content_' . $key))
+       $object->set($key, $value);
+    }
   }
 
   function _filterInputData($row)

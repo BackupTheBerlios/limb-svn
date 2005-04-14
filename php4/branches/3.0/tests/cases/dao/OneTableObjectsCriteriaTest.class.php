@@ -67,8 +67,8 @@ class OneTableObjectsCriteriaTest extends LimbTestCase
     $rs =& new SimpleDbDataset($this->dao->fetch());
     $record = $rs->getRow();
 
-    $this->assertEqual($record['content'], 'object_1_content');
-    $this->assertEqual($record['annotation'], 'object_1_annotation');
+    $this->assertEqual($record['_content_content'], 'object_1_content');
+    $this->assertEqual($record['_content_annotation'], 'object_1_annotation');
   }
 
   function _insertObjectRecords()
