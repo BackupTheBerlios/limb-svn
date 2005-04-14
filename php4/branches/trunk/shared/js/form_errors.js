@@ -38,7 +38,7 @@ function default_form_field_error_label_printer(id, msg)
   label = get_label_for_field(id);
 
   if(!label)
-    return;
+    label = id; //dirty workaround for non-labelled fields
 
   newa = document.createElement('a');
   newa.appendChild(document.createTextNode(label));
