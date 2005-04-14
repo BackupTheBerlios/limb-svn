@@ -2,12 +2,12 @@
 <core:INCLUDE file='/admin/admin_form_items/title.html'>
 <tr>
   <td><label for="author"><locale:STRING name='author' file='subscribe'></label></td>
-  <td><input type="text" name="author" id="author" label="author"  class="input">
+  <td><input type="text" name="author" id="author" class="input">
   </td>
 </tr>
 <tr>
-  <td><label for="subscribe_mail_content"><span class=req>*</span><locale:STRING name='content'></label></td>
-  <td><richedit name="subscribe_mail_content" id="subscribe_mail_content" label="Content" rows="25" cols="80"></richedit>
+  <td><span class=req>*</span><label for="subscribe_mail_content"><locale:STRING name='content'></label></td>
+  <td><richedit name="subscribe_mail_content" id="subscribe_mail_content" rows="25" cols="80"></richedit>
   </td>
 </tr>
 <core:INCLUDE file='/admin/admin_form_items/req_info.html'>

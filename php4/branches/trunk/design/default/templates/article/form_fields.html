@@ -1,6 +1,6 @@
-	
+
 <tabs active_tab="tab1" class="tabulator">
-	
+
   <tabs:labels>
     <tab_item:label tab_id="tab1"><locale:STRING name='properties'></tab_item:label>
     <tab_item:label tab_id="tab2"><locale:STRING name='content'></tab_item:label>
@@ -10,33 +10,33 @@
   <core:INCLUDE file='/admin/admin_form_items/errors.html'>
   </table>
 
-  <tabs:contents>  
-    <tab_item:content tab_id="tab1">			
-				  <table width="100%" border="0" cellspacing="2" cellpadding="2">
-		  			<core:INCLUDE file='/admin/admin_form_items/identifier.html'>
-		  			<core:INCLUDE file='/admin/admin_form_items/title.html'>
-		  			<core:INCLUDE file='/admin/admin_form_items/annotation.html'>
-				    <tr>
-				      <td><label for="author"><span class=req>*</span><locale:STRING name='author' file='article'></label></td>
-				      <td><input type="text" name="author" id="author" label="Author" size="60" class='input'></td>
-				    </tr>
-				    <tr>
-				      <td><label for="source"><locale:STRING name='source' file='article'></label></td>
-				      <td><input type="text" name="source" id="source" label="Source" size="60" class='input'></td>
-				    </tr>
-				    <tr>
-				      <td><label for="uri"><locale:STRING name='uri' file='article'></label></td>
-				      <td><input type="text" name="uri" id="uri" label="URL" size="60" class='input'></td>
-				    </tr>
-				  </table>
-		</tab_item:content>
+  <tabs:contents>
+    <tab_item:content tab_id="tab1">
+          <table width="100%" border="0" cellspacing="2" cellpadding="2">
+            <core:INCLUDE file='/admin/admin_form_items/identifier.html'>
+            <core:INCLUDE file='/admin/admin_form_items/title.html'>
+            <core:INCLUDE file='/admin/admin_form_items/annotation.html'>
+            <tr>
+              <td><span class=req>*</span><label for="author"><locale:STRING name='author' file='article'></label></td>
+              <td><input type="text" name="author" id="author" size="60" class='input'></td>
+            </tr>
+            <tr>
+              <td><label for="source"><locale:STRING name='source' file='article'></label></td>
+              <td><input type="text" name="source" id="source" size="60" class='input'></td>
+            </tr>
+            <tr>
+              <td><label for="uri"><locale:STRING name='uri' file='article'></label></td>
+              <td><input type="text" name="uri" id="uri" size="60" class='input'></td>
+            </tr>
+          </table>
+    </tab_item:content>
 
-		<tab_item:content tab_id="tab2">
-				  <table width="100%" border="0" cellspacing="3" cellpadding="0" height='100%'>
-			    <tr>
-			      <td align='left' colspan='20' valign='top'><richedit name="article_content" id="article_content" label="Content"></richedit></td>
-			    </tr>
-				  </table>
-  	</tab_item:content>  	
-  </tabs:contents>  
+    <tab_item:content tab_id="tab2">
+          <table width="100%" border="0" cellspacing="3" cellpadding="0" height='100%'>
+          <tr>
+            <td align='left' colspan='20' valign='top'><richedit name="article_content" id="article_content"></richedit></td>
+          </tr>
+          </table>
+    </tab_item:content>
+  </tabs:contents>
 </tabs>
