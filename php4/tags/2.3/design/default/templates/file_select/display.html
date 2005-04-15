@@ -1,0 +1,168 @@
+<core:WRAP file="/admin/popup.html" placeholder="content">
+
+<core:LITERAL>
+<table cellspacing=0 cellpadding=1 border=0>
+<form>
+<tr id='files_panel'>
+  <td>
+    <table cellspacing=0 cellpadding=1 border=0>
+    <tr>
+      <td>
+        <table cellspacing=0 cellpadding=1 border=0>
+        <tr>
+          <td>
+            <fieldset>
+</core:LITERAL>
+              <legend style='color:#000000'><locale:STRING name='files' file='file'></legend>
+              <table cellspacing=0 cellpadding=1 border=0>
+              <tr>
+                <td align=right>
+                  </td>
+              </tr>
+              <tr>
+                <td align=center>
+                  <iframe name='file_select_frame' id='file_select_frame' width=450 height=400></iframe>
+                  </td>
+              </tr>
+              </table>
+            </fieldset>
+          </td>
+          <td valign=top>
+            <fieldset>
+              <legend style='color:#000000'><locale:STRING name='file_info' file='file'></legend>
+              <table cellspacing=0 cellpadding=1 border=0>
+              <tr>
+                <td colspan=2><img src='/shared/images/1x1.gif' width=160 height=1></td>
+              </tr>
+              <tr>
+                <td colspan=2 align='center'><span class='text' style='font-weight:bold'><div id='_preview_caption'>&nbsp;</div></span></td>
+              </tr>
+              <tr>
+                <td><img src='/shared/images/1x1.gif' width=1></td>
+                <td align='center' valign='top' width=100%><img id='_preview' src='/shared/images/1x1.gif'></td>
+              </tr>
+              <tr>
+                <td><img src='/shared/images/1x1.gif' width=1></td>
+                <td colspan=2 valign='top'><span class='text'><div id='_preview_description'>&nbsp;</div></span></td>
+              </tr>
+              <tr>
+                <td><img src='/shared/images/1x1.gif' width=1></td>
+                <td colspan=2 valign='top'><span class='text'><div id='_preview_size'>&nbsp;</div></span></td>
+              </tr>
+              <tr>
+                <td><img src='/shared/images/1x1.gif' width=1></td>
+                <td colspan=2 valign='top'><span class='text'><div id='_preview_mime'>&nbsp;</div></span></td>
+              </tr>
+              </table>
+            </fieldset>
+          </td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+<core:LITERAL>
+    <tr>
+      <td align=right>
+        <input type='button' name='_insert_button' value='</core:LITERAL><locale:STRING name='insert'><core:LITERAL>' class='button' onclick='insert_file()' disabled=1 >
+        <input type='button' value="</core:LITERAL><locale:STRING name='close'><core:LITERAL>" class='button' onclick='window.close()'>
+        </td>
+    </tr>
+    </table>
+  </td>
+</tr>
+</form>
+</table>
+</core:LITERAL>
+<script>
+  var WINDOW_WIDTH = 750;
+  var WINDOW_HEIGHT = 600;
+
+  var preview_obj = document.getElementById('_preview');
+
+  obj = document.getElementById('_preview_caption');
+  var preview_caption_obj = obj.firstChild;
+
+  obj = document.getElementById('_preview_description');
+  var preview_description_obj = obj.firstChild;
+
+  obj = document.getElementById('_preview_size');
+  var preview_size_obj = obj.firstChild;
+
+  obj = document.getElementById('_preview_mime');
+  var preview_mime_obj = obj.firstChild;
+
+  obj = document.getElementsByName('_insert_button');
+  var insert_button_obj = obj[0];
+
+  var file_obj = new Object();
+
+  var img_1x1 = new Image();
+  img_1x1.src = '/shared/images/1x1.gif';
+
+  function update_file_data(file_data)
+  {
+    preview_obj.src = img_1x1.src;
+    preview_obj.width = 1;
+    preview_obj.height = 1;
+
+    if (file_data.node_id)
+    {
+      preview_obj.src = '/root?node_id=' + file_data.node_id + '&icon';
+      preview_obj.width = 16;
+      preview_obj.height = 16;
+    }
+
+    preview_caption_obj.nodeValue = file_data.name;
+    preview_description_obj.nodeValue = file_data.description;
+    preview_size_obj.nodeValue = 'Size:' + file_data.size + ' bytes';
+    preview_mime_obj.nodeValue = 'Mime-type:' + file_data.mime_type;
+
+    insert_button_obj.disabled = false;
+
+    file_obj.node_id = file_data.node_id;
+    file_obj.name = file_data.name;
+    file_obj.description = file_data.description;
+    file_obj.mime_type = file_data.mime_type;
+    file_obj.size = file_data.size;
+  }
+
+  function insert_file()
+  {
+    h = get_close_popup_handler();
+    h(file_obj);
+
+    window.close();
+  }
+
+  function get_file()
+  {
+    h = get_init_popup_handler();
+    file = h(window.name);
+
+    start_path = '/root/files?action=file_select';
+
+    if (typeof(file) == 'object' && file != null)
+    {
+      if (file.node_id != 0)
+      {
+        preview_obj.src = '/root?node_id=' + file.node_id + '&icon';
+        insert_button_obj.disabled = false;
+      }
+      else
+      {
+        preview_obj.src = '/shared/images/no_img.gif';
+        insert_button_obj.disabled = false;
+      }
+
+      preview_caption_obj.nodeValue = file.name;
+      preview_description_obj.nodeValue = file.description;
+      preview_size_obj.nodeValue = 'Size:' + file.size + ' bytes';
+      preview_mime_obj.nodeValue = 'Mime-type:' + file.mime_type;
+    }
+
+    file_select_frame.location = start_path;
+  }
+
+  add_event(window, 'load', get_file);
+
+</script>

@@ -1,0 +1,5 @@
+ErrorDocument 404		/root/404
+
+<FilesMatch "^(root)$">
+  ForceType application/x-httpd-php
+</FilesMatch>
