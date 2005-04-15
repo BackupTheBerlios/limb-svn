@@ -1,3 +1,38 @@
+Version 2.3(final)
+
+We've decided to release 2.3 final version without new admin GUI since we'd like to stabilize 2.3
+branch development. The new admin GUI stuff will go into 2.4(surprize).
+
+This is mostly a bugfix version with some quite important user usability improvements:
+
+1)One of the most frustrating usability issues we had prior this release was quite awkward output of
+the form error summary. We had ugly non-localizibale 'title' attribute for every form input which
+was used in form error summary report. Now we're using <label> tag for this purpose which is way
+cleaner and more flexible. However this techique will work only with js switched on in browser, well
+anyway most of the LIMB GUI stuff will work if js is enabled.
+
+2)We splitted a quite bloated common.js into small and highly specialized modules which are plugged in
+with include(src) function. This is the first attempt to handle js chaos.
+
+3)richedit tag has beta support for multiple richedit components. Currently is supports htmlArea,
+FckEditor, wysisygPro js editors. By default htmlArea is used. Richedit type can be set via 'DEAULT_RICHEDIT'
+constant.
+
+4)New "group by referers" functionality added to stat reports. You can setup how to group certain types
+of referers using masks. These masks are stored in /core/settings/referers_groups.ini. Here's a short
+example of what can be inside this file:
+
+  groups[] = *google.*
+  groups[] = *yandex.ru*
+  groups[] = *rambler.ru*
+
+Thus all http://www.google.com/..., http://google.ru/... referers will match *google.* group and will
+be summarized by this group.
+
+4)Many little yet very annoying bugs were spotted and fixed.
+
+See CHANGELOG for more details
+
 Version 2.3RC3
 
 This is mostly a bugfix version with some improved functionality:

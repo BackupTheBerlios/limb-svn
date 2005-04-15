@@ -13,9 +13,12 @@
 $AVAILABLE_LOCALES = explode(',', AVAILABLE_LOCALES);//!!!refactor
 
 //making bullet proof settings
-$url = parse_url($_SERVER['REQUEST_URI']);
-$_SERVER['QUERY_STRING'] = isset($url['query']) ? $url['query'] : '';
-$_SERVER['PHP_SELF'] = $url['path'];
+if(isset($_SERVER['REQUEST_URI']))
+{
+  $url = parse_url($_SERVER['REQUEST_URI']);
+  $_SERVER['QUERY_STRING'] = isset($url['query']) ? $url['query'] : '';
+  $_SERVER['PHP_SELF'] = $url['path'];
+}
 
 @define('ADMINISTRATOR_EMAIL', 'admin@dot.com');
 @define('DEVELOPER_EMAIL', 'developer@dot.com');
