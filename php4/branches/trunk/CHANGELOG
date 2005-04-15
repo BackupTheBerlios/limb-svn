@@ -1,5 +1,5 @@
 Version 2.3
-(15 April 2005, from /php4/branches/trunk r1228)
+(15 April 2005, from /php4/branches/trunk r1230)
 svn://svn.berlios.de/limb/php4/tags/2.3RC
 
   --  fixed: image_cache_manager couldn't process images paths like '/root?node_id=1123&amporiginal'
