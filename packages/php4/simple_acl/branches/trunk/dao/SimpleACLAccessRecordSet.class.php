@@ -76,7 +76,7 @@ class SimpleACLAccessRecordSet extends IteratorDbDecorator
 
   function & getAuthorizer()
   {
-    if ($this->authorizer)
+    if (is_object($this->authorizer))
       return $this->authorizer;
 
     $toolkit =& Limb :: toolkit('SimpleACL');

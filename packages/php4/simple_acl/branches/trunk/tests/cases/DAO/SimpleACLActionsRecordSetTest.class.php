@@ -34,16 +34,17 @@ class SimpleACLActionsRecordSetTest extends LimbTestCase
 
   function testApplyAccess()
   {
-    $services = array($service1 = array('whatever1'),
-                     $service2 = array('whatever2'));
+    $records = array(array('path' => $path1 = 'path1', '_service_name' => $service_name1 = 'service_name1'),
+                     array('path' => $path2 = 'path2', '_service_name' => $service_name2 = 'service_name2'));
 
-    $rs = new SimpleACLActionsRecordSet(new PagedArrayDataSet($services));
+    $rs = new SimpleACLActionsRecordSet(new PagedArrayDataSet($records));
 
     $authorizer = new MockSimpleACLAuthorizer($this);
     $rs->setAuthorizer($authorizer);
 
-    $authorizer->expectArgumentsAt(0, 'assignActions', array(new IsAExpectation('DataSpace')));
-    $authorizer->expectCallCount('assignActions', 2);
+    $authorizer->expectArgumentsAt(0, 'getAccessibleActions', array($path1, $service_name1));
+    $authorizer->expectArgumentsAt(1, 'getAccessibleActions', array($path2, $service_name2));
+    $authorizer->expectCallCount('getAccessibleActions', 2);
 
     $rs->rewind();
 

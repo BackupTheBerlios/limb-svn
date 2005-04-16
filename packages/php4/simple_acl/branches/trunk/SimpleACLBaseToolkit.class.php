@@ -28,7 +28,7 @@ class SimpleACLBaseToolkit// implements LimbToolkit
     include_once(dirname(__FILE__) . '/SimpleACLAuthorizer.class.php');
     $this->authorizer = new SimpleACLAuthorizer();
 
-    include_once(dirname(__FILE__) . '/$SimpleACLIniBasedPolicyLoader.class.php');
+    include_once(dirname(__FILE__) . '/SimpleACLIniBasedPolicyLoader.class.php');
     $loader = new SimpleACLIniBasedPolicyLoader();
 
     $loader->load($this->authorizer);

@@ -19,9 +19,13 @@ class SimpleACLActionsRecordSet extends IteratorDbDecorator
     $record =& parent :: current();
 
     $authorizer =& $this->getAuthorizer();
-    $authorizer->assignActions($record);
 
-    return $record;
+    $path = $record->get('path');
+    $service_name = $record->get('_service_name');
+
+    $actions = $authorizer->getAccessibleActions($path, $service_name);
+
+    return $record->set('actions', $actions);
   }
 
   function setAuthorizer(&$authorizer)
@@ -31,7 +35,7 @@ class SimpleACLActionsRecordSet extends IteratorDbDecorator
 
   function & getAuthorizer()
   {
-    if ($this->authorizer)
+    if (is_object($this->authorizer))
       return $this->authorizer;
 
     $toolkit =& Limb :: toolkit('SimpleACL');

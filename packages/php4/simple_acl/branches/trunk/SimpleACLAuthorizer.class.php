@@ -19,28 +19,22 @@ class SimpleACLAuthorizer// implements Authorizer
     $this->policy[] = array($path, $group_name, $access);
   }
 
-  function canDo($action_name, &$object)
+  function canDo($action_name, $path, $service_name)
   {
-    $this->assignActions(&$object);
-
-    $actions = $object->get('actions');
+    $actions = $this->getAccessibleActions($path, $service_name);
 
     return isset($actions[$action_name]);
   }
 
-  function assignActions(&$object)
+  function getAccessibleActions($path, $service_name)
   {
-    if($actions = $object->get('actions'))
-      return;
-
-    $service =& new Service($object->get('service_name'));
+    $service =& new Service($service_name);
 
     $actions = $service->getActionsList();
 
-    $path = $object->get('path');
     $accessible_actions = array();
 
-    $access = $this->_determineWhatAccessApplyToObject(&$object);
+    $access = $this->_determineWhatAccessApply($path);
 
     foreach($actions as $action)
     {
@@ -50,10 +44,10 @@ class SimpleACLAuthorizer// implements Authorizer
         $accessible_actions[$action] = $action_propery;
     }
 
-    $object->set('actions', $accessible_actions);
+    return $accessible_actions;
   }
 
-  function _determineWhatAccessApplyToObject(&$object)
+  function _determineWhatAccessApply($path)
   {
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
@@ -63,7 +57,6 @@ class SimpleACLAuthorizer// implements Authorizer
     if (!count($groups))
       return $result;
 
-    $path = $object->get('path');
     foreach($groups as $group)
     {
       $current_group_access = $this->_getAccessAppliedToGroup($path, $group);
