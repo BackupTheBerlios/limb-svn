@@ -39,8 +39,7 @@ class CurrentEntityDirectChildrenDAO extends SQLBasedDAODecorator
 
     $this->dao->addCriteria($critetia);
 
-    include_once(LIMB_DIR . '/core/DAO/ChildItemsPathAssignerRecordSet.class.php');
-    return new ChildItemsPathAssignerRecordSet($this->dao->fetch());
+    return $this->dao->fetch();
   }
 
   function & getTreeBranchCriteria()

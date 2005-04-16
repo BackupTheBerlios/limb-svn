@@ -90,7 +90,7 @@ class CurrentEntityDirectChildrenDAOTest extends LimbTestCase
     $dao->CurrentEntityDirectChildrenDAO($decorated_dao);
     $dao->setReturnReference('getTreeBranchCriteria', $criteria);
 
-    $this->assertIsA($dao->fetch(), 'ChildItemsPathAssignerRecordSet');
+    $this->assertNotNull($dao->fetch());
 
     $decorated_dao->tally();
 

@@ -19,7 +19,7 @@ class PathAssignerRecordSet extends IteratorDbDecorator
     $toolkit =& Limb :: toolkit();
 
     $path2id_translator =& $toolkit->getPath2IdTranslator();
-    $record->set('path', $path2id_translator->getPathToNode($record->get('_tree_id')));
+    $record->set('path', $path2id_translator->getPathToNode($record->get('_node_id')));
 
     return $record;
   }

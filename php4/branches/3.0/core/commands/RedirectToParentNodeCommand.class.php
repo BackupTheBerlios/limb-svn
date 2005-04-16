@@ -29,8 +29,11 @@ class RedirectToParentNodeCommand
       return LIMB_STATUS_ERROR;
 
     $path2id_translator =& $toolkit->getPath2IdTranslator();
-    $path = $path2id_translator->getPathToNode((integer)$node->get('parent_id'));
-    $command =& $this->getRedirectCommand($path);
+    if(!$path = $path2id_translator->getPathToNode((integer)$node->get('parent_id')))
+      $command =& $this->getRedirectCommand('/');
+    else
+      $command =& $this->getRedirectCommand($path);
+
     return $command->perform($context);
   }
 

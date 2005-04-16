@@ -69,9 +69,9 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $object = new Object();
 
     $record = new Dataspace();
-    $record->import(array('_tree_id' => $node_id = 10,
-                          '_tree_parent_id' => $parent_node_id = 100,
-                          '_tree_identifier' => $identifier = 'test',
+    $record->import(array('_node_id' => $node_id = 10,
+                          '_node_parent_id' => $parent_node_id = 100,
+                          '_node_identifier' => $identifier = 'test',
                           ));
 
     $mapper->load($record, $object);

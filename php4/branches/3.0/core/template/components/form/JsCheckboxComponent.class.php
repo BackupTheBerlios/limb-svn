@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/template/components/form/InputFormElement.class.php');
+require_once WACT_ROOT . 'template/components/form/form.inc.php';
 
 class JsCheckboxComponent extends InputFormElement
 {
@@ -28,7 +28,6 @@ class JsCheckboxComponent extends InputFormElement
     else
       $checked = '';
 
-    $name = $this->_processNameAttribute($name);
     $js = "onclick=\"this.form.elements['{$name}'].value = 1*this.checked\"";
 
     echo "<input type='checkbox' id='{$id}_checkbox' {$checked} {$js}>";

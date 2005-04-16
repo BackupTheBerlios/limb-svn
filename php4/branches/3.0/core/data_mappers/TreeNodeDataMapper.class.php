@@ -14,9 +14,9 @@ class TreeNodeDataMapper extends AbstractDataMapper
 {
   function load(&$record, &$object)
   {
-    $object->set('id', $record->get('_tree_id'));
-    $object->set('parent_id', $record->get('_tree_parent_id'));
-    $object->set('identifier', $record->get('_tree_identifier'));
+    $object->set('id', $record->get('_node_id'));
+    $object->set('parent_id', $record->get('_node_parent_id'));
+    $object->set('identifier', $record->get('_node_identifier'));
   }
 
   function insert(&$object)

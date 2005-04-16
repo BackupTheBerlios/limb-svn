@@ -42,6 +42,8 @@ class User extends Object
   function logout()
   {
     $this->_is_logged_in = false;
+
+    $this->removeAll();
   }
 
   function isLoggedIn()

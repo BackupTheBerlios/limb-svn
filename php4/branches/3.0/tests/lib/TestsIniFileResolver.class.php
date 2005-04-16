@@ -12,7 +12,7 @@
 class TestsIniFileResolver// implements FileResolver
 {
   function resolve($file_name, $params = array())
-  {
+  {for($i=0;$i<5;$i++)restore_error_handler();trigger_error('!', E_USER_WARNING);
     if (file_exists(LIMB_DIR . '/tests/settings/' . $file_name))
       $dir = LIMB_DIR . '/tests/settings/';
     elseif (file_exists(LIMB_DIR . '/settings/' . $file_name))
