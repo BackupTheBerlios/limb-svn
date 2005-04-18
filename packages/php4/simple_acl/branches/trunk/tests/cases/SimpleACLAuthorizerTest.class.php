@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../SimpleACLAuthorizer.class.php');
-require_once(LIMB_DIR . '/core/Object.class.php');
+require_once(LIMB_DIR . '/core/entity/Entity.class.php');
 
 class SimpleACLAuthorizerTest extends LimbTestCase
 {
@@ -46,57 +46,46 @@ class SimpleACLAuthorizerTest extends LimbTestCase
 
   function testAssignActionsWithPathExactMatchingAccess()
   {
-    $object = new Object();
-    $object->set('path', $path = '/root');
-    $object->set('service_name', 'SimpleACLAuthorizerTestService');
-
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
     $user->set('groups', array('visitors'));
 
     $this->authorizer->attachPolicy('/root', 'visitors', 1);
-    $this->authorizer->assignActions($object);
+    $actions = $this->authorizer->getAccessibleActions($path = '/root',
+                                                       $service_name = 'SimpleACLAuthorizerTestService');
 
-    $actions = $object->get('actions');
     $this->assertEqual(sizeof($actions), 1);
     $this->assertEqual($actions['read']['access'], 1);
   }
 
   function testAssignActionsWithNearestParentAccess()
   {
-    $object = new Object();
-    $object->set('path', $path = '/root/docs/some_doc');
-    $object->set('service_name', 'SimpleACLAuthorizerTestService');
-
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
     $user->set('groups', array('visitors'));
 
     $this->authorizer->attachPolicy('/root/docs', 'visitors', 1);
     $this->authorizer->attachPolicy('/root', 'visitors', 128);
-    $this->authorizer->assignActions($object);
+    $actions = $this->authorizer->getAccessibleActions($path = '/root/docs/some_doc',
+                                                       $service_name = 'SimpleACLAuthorizerTestService');
 
-    $actions = $object->get('actions');
     $this->assertEqual(sizeof($actions), 1);
     $this->assertEqual($actions['read']['access'], 1);
   }
 
   function testCanDo()
   {
-    $object = new Object();
-    $object->set('path', $path = '/root/docs/some_doc');
-    $object->set('service_name', 'SimpleACLAuthorizerTestService');
-
     $toolkit =& Limb :: toolkit();
     $user =& $toolkit->getUser();
     $user->set('groups', array('visitors'));
 
     $this->authorizer->attachPolicy('/root/docs', 'visitors', 1);
     $this->authorizer->attachPolicy('/root', 'visitors', 128);
-    $this->authorizer->assignActions($object);
+    $actions = $this->authorizer->getAccessibleActions($path = '/root/docs/some_doc',
+                                                       $service_name = 'SimpleACLAuthorizerTestService');
 
-    $this->assertTrue($this->authorizer->canDo('read', $object));
-    $this->assertFalse($this->authorizer->canDo('edit', $object));
+    $this->assertTrue($this->authorizer->canDo('read', $path, $service_name));
+    $this->assertFalse($this->authorizer->canDo('edit', $path, $service_name));
   }
 }
 
