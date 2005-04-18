@@ -29,7 +29,9 @@ example of what can be inside this file:
 Thus all http://www.google.com/..., http://google.ru/... referers will match *google.* group and will
 be summarized by this group.
 
-4)Many little yet very annoying bugs were spotted and fixed.
+5)Many little yet very annoying bugs were spotted and fixed.
+
+You should exeperience no problem using previous releases of demo and empty projects.
 
 See CHANGELOG for more details
 

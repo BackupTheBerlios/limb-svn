@@ -25,13 +25,13 @@ class limb_application
   {
     $f = array();
 
-    $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/output_buffering_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/session_startup_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/locale_definition_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/authentication_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/logging_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/full_page_cache_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/jip_filter');
+    $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/output_buffering_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/site_object_controller_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/session_history_filter');
   }
