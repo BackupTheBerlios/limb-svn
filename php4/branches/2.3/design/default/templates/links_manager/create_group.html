@@ -1,0 +1,14 @@
+<core:WRAP file="/admin/popup.html" placeholder="content">
+
+<h2><locale:STRING name='links_group_creation' file='links'></h2>
+<form method="post" name="links_group" id="links_group">
+  <table width="100%" border="0" cellspacing="2" cellpadding="3">
+    <core:INCLUDE file="/links_manager/group_form_fields.html">
+    <tr>
+      <td colspan=2 align=center height=30><action_button action="create_group" name="create" type="submit" id="create" locale_value="create" class="button">
+      &nbsp;
+      <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+      </td>
+    </tr>
+  </table>
+</form>

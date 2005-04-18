@@ -1,0 +1,27 @@
+<grid:LIST id='admin_wide_menu'>
+<grid:ITERATOR>
+    <div class='btitle1'>
+    <table width='100%' cellpadding='0' cellspacing='0'>
+      <tr>
+        <td align='right'><img id='img_{$id}_big' src='/shared/images/minus.gif' onclick='this.style.cursor = "default"; toggle_submenu("{$id}_big");' alt='Show/Hide' title='Show/Hide'></td>
+        <td width='100%' align='left'><img src='{$image_path}{$image_name}.32.gif' alt='{$title}' title='{$title}' onclick='this.style.cursor = "default"; toggle_submenu("{$id}_big");'><b>{$title}</b></td>
+      </tr>
+    </table>
+    </div>
+    <core:DATA_TRANSFER hash_id='child_items' target='navi_children'>
+    <grid:LIST id='navi_children'>
+      <div id="{^id}_big" style='display: block;'>
+      <table width='100%' border=0 cellspacing=5 cellpadding=2>
+      <tr>
+      <grid:ITERATOR>
+        <grid:SEPARATOR count='3'></tr><tr></grid:SEPARATOR>
+        <td align='center' width='33%'>
+          <a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>><img src='{$image_path}{$image_name}.32.gif' alt='{$title}' title='{$title}' border='0'></a>
+          <br><a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>>{$title}</a></td>
+      </grid:ITERATOR>
+      </tr>
+      </table>
+      </div>
+      </grid:LIST>
+  </grid:ITERATOR>
+</grid:LIST>

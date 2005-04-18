@@ -1,0 +1,27 @@
+<fieldset>
+  <legend style='color:#000000'>Report filter</legend>
+  <table>
+  <form id='routes_form' name='routes_form' method='post'>
+    <tr>
+      <td nowrap><label for="identifier">Start date</label></td>
+      <td>
+        <date name="stats_start_date" type="text" id="stats_start_date" class='input' function='fStartPop(document["routes_form"]["stats_start_date"],document["routes_form"]["stats_finish_date"])'>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><label for="identifier">Finish date</label></td>
+      <td>
+        <date name="stats_finish_date" type="text" id="stats_finish_date" class='input' function='fEndPop(document["routes_form"]["stats_start_date"],document["routes_form"]["stats_finish_date"])'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      </td>
+      <td>
+        <action_button action="routes_report" name="update" type="submit" id="update" value="Filter" class="button">
+        <input class='button' type='reset' value='Reset'>
+      </td>
+    </tr>
+  </form>
+  </table>
+</fieldset>

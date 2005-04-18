@@ -1,0 +1,116 @@
+<PUBLIC:COMPONENT>
+<PUBLIC:ATTACH EVENT="ondrag" ONEVENT="fnOnDrag()" />
+<PUBLIC:ATTACH EVENT="onmouseover" ONEVENT="fnOnMouseOver()" />
+<PUBLIC:ATTACH EVENT="onmouseout" ONEVENT="fnOnMouseOut()" />
+<PUBLIC:ATTACH EVENT="ondragstart" ONEVENT="fnOnDragStart()" />
+<PUBLIC:ATTACH EVENT="ondragend" ONEVENT="fnOnDragEnd()" />
+<PUBLIC:ATTACH EVENT="ondragover" ONEVENT="fnOnDragOver()" />
+<PUBLIC:ATTACH EVENT="ondragenter" ONEVENT="fnOnDragEnter()" />
+<PUBLIC:ATTACH EVENT="ondragleave" ONEVENT="fnOnDragLeave()" />
+<PUBLIC:METHOD NAME="isInCenter" />
+
+
+<script language="javascript">
+
+var mainDoc = top.document
+var moved_id = element.row_id
+var tmp_backgroundColor = element.style.backgroundColor
+var is_over = false
+	
+	if(typeof(mainDoc.all['dd_line_obj'])=='undefined')
+	{
+		var str = '<table id=dd_line_obj width=' + element.parentElement.parentElement.offsetWidth + ' height=2 class=com2 style="position:absolute; display:none" border=0 cellspacing=0 cellpadding=0><tr><td></td></tr></table>'
+		mainDoc.body.insertAdjacentHTML("beforeEnd",str)	
+	}
+	
+
+function fnOnDragStart()
+{
+		element.transp_elem = mainDoc.createElement('div')
+		element.transp_elem.innerHTML = '<table  border=0 cellspacing=0 cellpadding=0><tr>' + element.innerHTML + '</tr></table>'
+		element.transp_elem.style.position = 'absolute'
+		element.transp_elem.style.left = event.x
+		element.transp_elem.style.top = event.y
+		mainDoc.body.appendChild(element.transp_elem)
+		
+	try
+	{
+		var data = document.parentWindow.event.dataTransfer
+		
+		document.parentWindow.DRAG_STATUS = moved_id
+		
+		data.setData("text", moved_id)
+	
+		data.effectAllowed = "copy"
+		
+	}
+	catch(e){}
+
+}
+function fnOnDragEnd()
+{
+	element.transp_elem.innerHTML = ''
+}
+function fnOnDrag()
+{
+		element.transp_elem.style.left = event.x
+		element.transp_elem.style.top = event.y
+}
+function fnOnDragOver()
+{
+	var data = document.parentWindow.event.dataTransfer
+	
+//	document.parentWindow.cancel_default_action()
+	
+	data.dropEffect = "copy"
+	if(!is_over)
+	{
+		if(isInCenter())
+		{ 
+			element.style.backgroundColor = "#AAB3E2"
+			mainDoc.all['dd_line_obj'].style.display = 'none'
+		}
+		else
+		{
+			mainDoc.all['dd_line_obj'].style.width = element.parentElement.parentElement.offsetWidth - 2
+			mainDoc.all['dd_line_obj'].style.left = element.getClientRects().item(0).left + mainDoc.body.scrollLeft - 2
+			mainDoc.all['dd_line_obj'].style.top  = element.getClientRects().item(0).top + mainDoc.body.scrollTop
+			mainDoc.all['dd_line_obj'].style.display = 'block'
+			
+			element.style.backgroundColor = ""
+			
+		}
+	}
+	else
+	{
+//		element.style.backgroundColor = "#F0F2FC"
+		data.dropEffect = "none"
+	}
+
+}
+function fnOnDragEnter()
+{
+	document.parentWindow.cancel_default_action()
+}
+function fnOnDragLeave()
+{
+	element.style.backgroundColor = ""
+	mainDoc.all['dd_line_obj'].style.display = 'none'
+}
+function fnOnMouseOver()
+{	
+	element.style.backgroundColor = "#F0F2FC"
+	is_over = true
+}
+function fnOnMouseOut()
+{
+	element.style.backgroundColor = tmp_backgroundColor
+	is_over = false
+}
+function isInCenter()
+{
+	return Math.abs(document.parentWindow.event.y - (element.getClientRects().item(0).top + element.getClientRects().item(0).bottom)/2) <= 6
+}
+
+</script>
+</PUBLIC:COMPONENT>
