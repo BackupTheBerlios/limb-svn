@@ -1,0 +1,25 @@
+<core:WRAP file="page.html" placeholder="page_placeholder">
+
+<h1>Modify service node</h1>
+<form id='service_node_form' name='service_node_form' method='post' runat='server'>
+    <ERRORSUMMARY id='Summary'>
+    <table>
+    <list:ITEM>
+        <tr valign="top">
+          <td width="20%">&nbsp;</td>
+          <td width="80%"><FONT COLOR="RED">{$ErrorMessage}</FONT></td>
+        </tr>
+    </list:ITEM>
+    </table>
+    </ERRORSUMMARY>
+
+Identifier : <input id='identifier' name='identifier' type='text' size='20'><br>
+Title : <input id='title' name='title' type='text' size='60'><br>
+Parent path (leave blank to use current service as a parent) : <input id='path' name='path' type='text' size='60'><br>
+Service name : <input id='service_name' name='service_name' type='text' size='60'><br>
+
+<input name='submitted' type='hidden' value='1' runat='client'>
+<input name='action' type='hidden' value='edit' runat='client'>
+
+<input id='button' type='submit' value='Edit'>
+</form>
