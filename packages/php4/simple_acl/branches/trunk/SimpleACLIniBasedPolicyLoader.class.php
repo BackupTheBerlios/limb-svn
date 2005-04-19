@@ -17,7 +17,7 @@ class SimpleACLIniBasedPolicyLoader
     $toolkit =& Limb :: toolkit();
     $ini =& $toolkit->getIni('acl.ini');
 
-    if(catch('LimbException', $e))
+    if(catch_error('LimbException', $e))
       return;
 
     if(!$ini->hasOption('policy'))

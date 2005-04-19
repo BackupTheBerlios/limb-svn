@@ -76,7 +76,7 @@ class TabsTag extends CompilerDirectiveTag
 
     if(!$this->tabs ||  !$active_tab ||  !in_array($active_tab, $this->tabs))
     {
-      return throw(new WactException('invalid tabs declaration. Check your tabs settings',
+      return throw_error(new WactException('invalid tabs declaration. Check your tabs settings',
           array('tag' => $this->tag,
           'file' => $this->source_file,
           'line' => $this->starting_line_no)));

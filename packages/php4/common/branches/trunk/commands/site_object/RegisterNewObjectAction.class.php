@@ -72,14 +72,14 @@ class RegisterNewObjectAction extends FormAction
 
     $object->create($is_root);
 
-    if(catch($e, 'LimbException'))
+    if(catch_error($e, 'LimbException'))
     {
       MessageBox :: writeNotice('object wasn\'t registered!');
       $request->setStatus(Request :: STATUS_FAILURE);
       return;
     }
-    elseif(catch($e, 'Exception'))
-      return throw($e);
+    elseif(catch_error($e, 'LimbException'))
+      return throw_error($e);
 
     if (!$is_root)
     {

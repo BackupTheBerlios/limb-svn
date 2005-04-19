@@ -48,6 +48,9 @@ class BreadcrumbsDAO
     $path = '';
     $translator =& $this->getPath2IdTranslator();
     $path_elements = $uri->getPathElements();
+
+    $ids = array();
+
     foreach($path_elements as $element)
     {
       if($element == "" ) continue;

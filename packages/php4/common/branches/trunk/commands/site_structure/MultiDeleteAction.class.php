@@ -70,11 +70,11 @@ class MultiDeleteAction extends FormAction
 
       $site_object->delete();
 
-      if(catch('LimbException', $e)
+      if(catch_error('LimbException', $e)
       {
         MessageBox :: writeNotice("object {$id} - {$item['title']} couldn't be deleted!");
         $request->setStatus(Request :: STATUS_FAILURE);
-        return throw($e);
+        return throw_error($e);
       }
     }
 

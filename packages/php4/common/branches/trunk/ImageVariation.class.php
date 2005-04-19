@@ -92,11 +92,11 @@ class ImageVariation extends DomainObject
 
     $image_library->commit();
 
-    if(catch('Exception', $e))//even more ugly :(
+    if(catch_error('LimbException', $e))//even more ugly :(
     {
       if(file_exists($output_file))
         $this->_unlinkTempFile($output_file);
-      return throw($e);
+      return throw_error($e);
     }
 
     $this->_updateDimensionsUsingFile($output_file);

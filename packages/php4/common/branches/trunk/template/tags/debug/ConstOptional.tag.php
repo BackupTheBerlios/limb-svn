@@ -26,7 +26,7 @@ class ConstOptionalTag extends CompilerDirectiveTag
   {
     if (!isset($this->attributes['name']))
     {
-      return throw(new WactException('missing required attribute',
+      return throw_error(new WactException('missing required attribute',
           array('tag' => $this->tag,
           'attribute' => 'name',
           'file' => $this->source_file,

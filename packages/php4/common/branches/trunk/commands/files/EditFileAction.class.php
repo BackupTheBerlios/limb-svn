@@ -50,7 +50,7 @@ class EditFileAction extends FormEditSiteObjectAction
     {
       if(($_FILES[$this->name]['size']['file']) > ini_get('upload_max_filesize')*1024*1024)
       {
-        return throw(new LimbException('uploaded file size exceeds limit'));
+        return throw_error(new LimbException('uploaded file size exceeds limit'));
       }
 
       $toolkit =& Limb :: toolkit();

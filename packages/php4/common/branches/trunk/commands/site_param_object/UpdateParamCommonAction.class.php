@@ -51,7 +51,7 @@ class UpdateParamCommonAction extends FormAction
     {
       $res = $sys_param->getParam($param_name, $param_type);
 
-      if(catch('LimbException', $e))
+      if(catch_error('LimbException', $e))
       {
         $res = '';
 
@@ -63,8 +63,8 @@ class UpdateParamCommonAction extends FormAction
           )
         );
       }
-      elseif(catch('Exception', $e))
-        return throw($e);
+      elseif(catch_error('LimbException', $e))
+        return throw_error($e);
 
      $data[$param_name] = $res;
 
@@ -80,9 +80,9 @@ class UpdateParamCommonAction extends FormAction
     {
       $sys_param->saveParam($param_name, $param_type, $data[$param_name]);
 
-      if(catch('SQLException', $e))
-        return throw($e);
-      elseif(catch('LimbException', $e))
+      if(catch_error('SQLException', $e))
+        return throw_error($e);
+      elseif(catch_error('LimbException', $e))
       {
         Debug :: writeWarning('couldnt save sys parameter',
            __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,

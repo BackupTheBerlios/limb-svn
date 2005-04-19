@@ -76,12 +76,12 @@ class CreateImageAction extends FormCreateSiteObjectAction
 
     parent :: _createObjectOperation();
 
-    if(catch('SQLException', $e))
-      return throw($e);
-    elseif(catch('LimbException', $e))
+    if(catch_error('SQLException', $e))
+      return throw_error($e);
+    elseif(catch_error('LimbException', $e))
       MessageBox :: writeNotice('Some variations were not resized');
-    elseif(catch('Exception', $e))
-      return throw($e);
+    elseif(catch_error('LimbException', $e))
+      return throw_error($e);
   }
 }
 

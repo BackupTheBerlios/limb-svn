@@ -40,7 +40,9 @@ class SimpleACLAuthorizer// implements Authorizer
     {
       $action_propery = $service->getActionProperties($action);
 
-      if ($action_propery['access'] <= $access)
+      if(!isset($action_propery['access']))
+        $accessible_actions[$action] = $action_propery;
+      elseif ($action_propery['access'] <= $access)
         $accessible_actions[$action] = $action_propery;
     }
 
@@ -75,7 +77,7 @@ class SimpleACLAuthorizer// implements Authorizer
     foreach($this->policy as $policy_record)
     {
       if(($policy_record[1] == $group) &&
-         $this->_isMoreAccurateMatching($policy_record[0], $object_path, &$prev_matching))
+         $this->_isMoreAccurateMatching($policy_record[0], $object_path, $prev_matching))
       {
         $result = $policy_record[2];
       }
