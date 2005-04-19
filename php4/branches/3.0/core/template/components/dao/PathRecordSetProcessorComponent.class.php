@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
-require_once(LIMB_DIR . '/core/DAO/PathAssignerRecordSet.class.php');
+require_once(LIMB_DIR . '/core/dao/PathAssignerRecordSet.class.php');
 
 class PathRecordSetProcessorComponent extends Component
 {

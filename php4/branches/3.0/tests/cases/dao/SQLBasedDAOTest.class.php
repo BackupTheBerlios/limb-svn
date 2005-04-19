@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
-require_once(LIMB_DIR . '/core/DAO/criteria/Criteria.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/criteria/Criteria.class.php');
 require_once(LIMB_DIR . '/core/db/ComplexSelectSQL.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(WACT_ROOT . '/db/drivers/mysql/driver.inc.php');

@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/UnitOfWork.class.php');
 require_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
-require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');

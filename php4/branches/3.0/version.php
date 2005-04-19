@@ -26,22 +26,22 @@ define('LIMB_SUBNAME', 'Lithesome Interactive Media Builder');
 /**
  * Major software version
  */
-define('LIMB_VERSION_MAJOR', '2');
+define('LIMB_VERSION_MAJOR', '3');
 
 /**
  * Minor software version
  */
-define('LIMB_VERSION_MINOR', '4');
+define('LIMB_VERSION_MINOR', '0');
 
 /**
  * Micro software version
  */
-define('LIMB_VERSION_MICRO', '');
+define('LIMB_VERSION_MICRO', '0');
 
 /**
  * Software version patch
  */
-define('LIMB_VERSION_PATCH', '-alpha');
+define('LIMB_VERSION_PATCH', '-alpha1');
 
 /**
  * Software release version
@@ -51,7 +51,7 @@ define('LIMB_RELEASE_NAME', '');
 /**
  * Software build (full) date
  */
-define('LIMB_VERSION_DATE', '----');
+define('LIMB_VERSION_DATE', 'April 19, 2005');
 
 
 // --- Do not change from here ----------------------------------------

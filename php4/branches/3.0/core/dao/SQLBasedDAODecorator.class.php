@@ -8,7 +8,7 @@
 * $Id: SQLBasedDAO.class.php 1163 2005-03-15 16:31:45Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 
 class SQLBasedDAODecorator extends SQLBasedDAO
 {

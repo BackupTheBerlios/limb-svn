@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
-require_once(LIMB_DIR . '/core/DAO/JIPActionsRecordSet.class.php');
+require_once(LIMB_DIR . '/core/dao/JIPActionsRecordSet.class.php');
 
 class JIPActionsRecordSetTest extends LimbTestCase
 {

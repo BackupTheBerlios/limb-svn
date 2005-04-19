@@ -26,13 +26,13 @@ class DAOFileResolverTest extends BasePackageFileResolverTest
   function testResolveDAOFileFromLimb()
   {
     $this->assertEqual($this->resolver->resolve('DAO'),
-                       LIMB_DIR . '/core/DAO/DAO.class.php');
+                       LIMB_DIR . '/core/dao/DAO.class.php');
   }
 
   function testResolveDAOFileOk()
   {
     $this->assertEqual($this->resolver->resolve('TestDAO'),
-                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/DAO/TestDAO.class.php');
+                       TEST_PACKAGES_RESOLVER_DIR . 'package2/1.0/dao/TestDAO.class.php');
   }
 
   function testResolveDAOFileFailed()

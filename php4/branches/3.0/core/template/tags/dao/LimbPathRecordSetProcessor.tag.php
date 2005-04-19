@@ -15,7 +15,7 @@ TagDictionary::registerTag($taginfo, __FILE__);
 
 class LimbPathRecordSetProcessorTag extends ServerComponentTag
 {
-  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/DAO/PathRecordSetProcessorComponent.class.php';
+  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/dao/PathRecordSetProcessorComponent.class.php';
   var $runtimeComponentName = 'PathRecordSetProcessorComponent';
 
    function preParse()

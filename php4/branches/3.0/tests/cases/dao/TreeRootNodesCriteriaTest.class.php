@@ -8,8 +8,8 @@
 * $Id: TreeBranchCriteriaTest.class.php 1209 2005-04-08 14:29:41Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
-require_once(LIMB_DIR . '/core/DAO/criteria/TreeRootNodesCriteria.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/criteria/TreeRootNodesCriteria.class.php');
 
 Mock :: generatePartial('SQLBasedDAO',
                         'SQLBasedDAOTRNCTestVersion',

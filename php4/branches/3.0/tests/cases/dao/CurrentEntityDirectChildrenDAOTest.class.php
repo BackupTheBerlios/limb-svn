@@ -8,14 +8,14 @@
 * $Id: ImageObjectsDAOTest.class.php 1093 2005-02-07 15:17:20Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/DAO/CurrentEntityDirectChildrenDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/CurrentEntityDirectChildrenDAO.class.php');
 include_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
-require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/entity/Entity.class.php');
 require_once(LIMB_DIR . '/core/NodeConnection.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/core/DAO/criteria/TreeBranchCriteria.class.php');
+require_once(LIMB_DIR . '/core/dao/criteria/TreeBranchCriteria.class.php');
 
 Mock :: generate('SQLBasedDAO');
 

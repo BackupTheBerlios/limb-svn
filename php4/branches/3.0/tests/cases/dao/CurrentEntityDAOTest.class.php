@@ -8,7 +8,7 @@
 * $Id: TreeBranchCriteriaTest.class.php 1173 2005-03-17 11:36:43Z seregalimb $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/DAO/CurrentEntityDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/CurrentEntityDAO.class.php');
 require_once(LIMB_DIR . '/core/entity/Entity.class.php');
 require_once(LIMB_DIR . '/core/NodeConnection.class.php');
 

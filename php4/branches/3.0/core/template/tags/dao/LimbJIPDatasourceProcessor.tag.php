@@ -15,7 +15,7 @@ TagDictionary::registerTag($taginfo, __FILE__);
 
 class LimbJipDatasourceProcessorTag extends ServerComponentTag
 {
-  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/DAO/JIPDatasourceProcessorComponent.class.php';
+  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/dao/JIPDatasourceProcessorComponent.class.php';
   var $runtimeComponentName = 'JIPDatasourceProcessorComponent';
 
   function generateContents(&$code)

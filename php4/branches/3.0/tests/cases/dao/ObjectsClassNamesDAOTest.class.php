@@ -12,8 +12,8 @@ require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/UnitOfWork.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
-require_once(LIMB_DIR . '/core/DAO/ObjectsClassNamesDAO.class.php');
-require_once(LIMB_DIR . '/core/DAO/criteria/SimpleConditionCriteria.class.php');
+require_once(LIMB_DIR . '/core/dao/ObjectsClassNamesDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/criteria/SimpleConditionCriteria.class.php');
 
 Mock :: generate('UnitOfWork');
 Mock :: generate('Request');

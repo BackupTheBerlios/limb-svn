@@ -8,7 +8,7 @@
 * $Id: CrudDomainObjectDAO.class.php 27 2005-02-26 18:57:22Z server $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/DAO/SQLBasedDAODecorator.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAODecorator.class.php');
 
 class CurrentEntityDirectChildrenDAO extends SQLBasedDAODecorator
 {
@@ -44,7 +44,7 @@ class CurrentEntityDirectChildrenDAO extends SQLBasedDAODecorator
 
   function & getTreeBranchCriteria()
   {
-    include_once(LIMB_DIR . '/core/DAO/criteria/TreeBranchCriteria.class.php');
+    include_once(LIMB_DIR . '/core/dao/criteria/TreeBranchCriteria.class.php');
     return new TreeBranchCriteria();
   }
 }

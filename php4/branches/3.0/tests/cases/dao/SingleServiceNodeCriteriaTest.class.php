@@ -10,9 +10,9 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/core/DAO/criteria/SingleServiceNodeCriteria.class.php');
+require_once(LIMB_DIR . '/core/dao/criteria/SingleServiceNodeCriteria.class.php');
 require_once(LIMB_DIR . '/core/db/ComplexSelectSQL.class.php');
-require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 
 Mock :: generatePartial('LimbBaseToolkit',
                         'SingleServiceNodeCriteriaTestToolkit',
