@@ -32,7 +32,7 @@ class ObjectFileResolverTest extends BasePackageFileResolverTest
   function testResolveObjectFileFailed()
   {
     $this->resolver->resolve('no_such_object');
-    $this->assertTrue(catch('Exception', $e));
+    $this->assertTrue(catch_error('LimbException', $e));
   }
 
 }

@@ -134,7 +134,7 @@ class Locale
     else
     {
       $this->is_valid = false;
-      return throw(new LimbException('Could not load country settings', array('country_code' => $this->country_code)));
+      return throw_error(new LimbException('Could not load country settings', array('country_code' => $this->country_code)));
     }
 
     if ($language_ini !== null)
@@ -142,7 +142,7 @@ class Locale
     else
     {
       $this->is_valid = false;
-      return throw(new LimbException('Could not load language settings', array('language_code' => $this->language_code)));
+      return throw_error(new LimbException('Could not load language settings', array('language_code' => $this->language_code)));
     }
     // load variation if any
     $locale_variation_ini = $this->getLocaleIni(true);

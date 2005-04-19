@@ -38,7 +38,7 @@ class DbTableFileResolverTest extends BasePackageFileResolverTest
   function testResolveDbTableFileFailed()
   {
     $this->resolver->resolve('no_such_db_table');
-    $this->assertTrue(catch('Exception', $e));
+    $this->assertTrue(catch_error('LimbException', $e));
   }
 
 }

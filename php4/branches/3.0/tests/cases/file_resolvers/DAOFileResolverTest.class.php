@@ -38,7 +38,7 @@ class DAOFileResolverTest extends BasePackageFileResolverTest
   function testResolveDAOFileFailed()
   {
     $this->resolver->resolve('no_such_dao');
-    $this->assertTrue(catch('Exception', $e));
+    $this->assertTrue(catch_error('LimbException', $e));
   }
 }
 

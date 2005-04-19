@@ -12,7 +12,7 @@ function writeUnhandledExceptions()
   Debug :: writeException($GLOBALS['global_exception']);
 }
 
-class Exception
+class LimbException
 {
   var $code;
   var $message;
@@ -25,7 +25,7 @@ class Exception
 
   var $backtrace;
 
-  function Exception($message, $code = 0, $backtrace = null)
+  function LimbException($message, $code = 0, $backtrace = null)
   {
     $this->code = $code;
     $this->message = $message;
@@ -156,7 +156,7 @@ class Exception
 }
 
 //idea taken from binarycloud
-function throw(&$exception)
+function throw_error(&$exception)
 {
   $use_html = php_sapi_name() != 'cli';
 
@@ -180,7 +180,7 @@ function throw(&$exception)
   $GLOBALS['global_exception'] =& $exception;
 }
 
-function catch($type, &$result)
+function catch_error($type, &$result)
 {
   if (!isset($GLOBALS['global_exception']) || $GLOBALS['global_exception'] === null)
     return false;

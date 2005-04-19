@@ -20,7 +20,7 @@ class IniBasedRequestResolverMapper // implements RequestResolverMapper
 
     $ini =& $toolkit->getIni('request_resolvers.ini');
 
-    if (catch('LimbException', $e) || !is_object($ini))
+    if (catch_error('LimbException', $e) || !is_object($ini))
       return null;
 
     $groups = $ini->getAll();

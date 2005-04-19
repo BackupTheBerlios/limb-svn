@@ -22,7 +22,7 @@ class ServiceLocationMapper extends AbstractDataMapper
   function insert(&$object)
   {
     if (!$object->get('oid'))
-      return throw(new LimbException('oid is not set'));
+      return throw_error(new LimbException('oid is not set'));
 
     $toolkit =& Limb :: toolkit();
     $service_db_table =& $toolkit->createDBTable('SysService');

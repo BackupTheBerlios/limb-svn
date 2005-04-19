@@ -247,7 +247,7 @@ class LimbDbTable
 
         if(!$db_table->hasColumn($column_name))
         {
-          return throw(new SQLException('column not found while cascade deleting',
+          return throw_error(new SQLException('column not found while cascade deleting',
             null,
             array(
               'table' => $table_name,

@@ -74,7 +74,7 @@ class LimbDAOComponent extends Component
       }
       else
       {
-        return throw(new WactException('target component not found',
+        return throw_error(new WactException('target component not found',
                                 array('target' => $target)));
       }
     }

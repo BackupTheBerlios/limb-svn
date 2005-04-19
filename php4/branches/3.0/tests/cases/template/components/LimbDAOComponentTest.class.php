@@ -132,7 +132,7 @@ class LimbDAOComponentTest extends LimbTestCase
 
     $component->setTargets('target1, target2');
     $component->process();
-    $this->assertTrue(catch('Exception', $e));
+    $this->assertTrue(catch_error('LimbException', $e));
 
     $component->tally();
   }

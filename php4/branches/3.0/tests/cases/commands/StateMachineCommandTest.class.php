@@ -96,9 +96,9 @@ class StateMachineCommandTest extends LimbTestCase
     $command = new MockCommand($this);
 
     $this->state_machine->registerState('some_state', $command);
-    $this->assertFalse(catch('Exception', $e));
+    $this->assertFalse(catch_error('LimbException', $e));
     $this->state_machine->registerState('some_state', $command);
-    $this->assertTrue(catch('Exception', $e));
+    $this->assertTrue(catch_error('LimbException', $e));
   }
 
   function testSeveralStatusesFlow()
@@ -169,7 +169,7 @@ class StateMachineCommandTest extends LimbTestCase
     $this->state_machine->registerState('next_state', $command2);
 
     $this->state_machine->perform($context);
-    $this->assertTrue(catch('Exception', $e));
+    $this->assertTrue(catch_error('LimbException', $e));
   }
 
   function testGetStateHistory()
@@ -186,7 +186,7 @@ class StateMachineCommandTest extends LimbTestCase
     $this->state_machine->registerState('state3', $command3);
 
     $this->state_machine->perform(new DataSpace());
-    $this->assertTrue(catch('Exception', $e));//because of the 'no_such_state'
+    $this->assertTrue(catch_error('LimbException', $e));//because of the 'no_such_state'
 
     $this->assertEqual($this->state_machine->getStateHistory(),
                        array(array('initial' => 'status1'),

@@ -16,7 +16,7 @@ class DisplayViewCommand// implements Command
     $toolkit =& Limb :: toolkit();
 
     if(!$view =& $toolkit->getView())
-      return throw(new LimbException('view is null'));
+      return throw_error(new LimbException('view is null'));
 
     ob_start();
 

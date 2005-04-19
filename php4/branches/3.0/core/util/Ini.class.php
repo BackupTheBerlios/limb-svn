@@ -75,7 +75,7 @@ class Ini
   function load()
   {
     if(!file_exists($this->file_path))
-      return throw(new FileNotFoundException('ini file not found', $this->file_path));
+      return throw_error(new FileNotFoundException('ini file not found', $this->file_path));
 
     if ($this->use_cache)
       $this->_loadCache();
@@ -95,7 +95,7 @@ class Ini
 
     Fs :: mkdir($cache_dir);
 
-    if(catch('IOException', $e))
+    if(catch_error('IOException', $e))
     {
       Debug :: writeWarning('could not create cache directory for ini',
       __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,

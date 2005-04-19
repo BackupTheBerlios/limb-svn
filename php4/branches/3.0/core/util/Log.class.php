@@ -57,7 +57,7 @@ class log
     else
     {
       umask($oldumask);
-      return throw(new IOException("Cannot open log file '$file_name' for writing\n" .
+      return throw_error(new IOException("Cannot open log file '$file_name' for writing\n" .
                          "The web server must be allowed to modify the file.\n" .
                          "File logging for '$file_name' is disabled."));
     }

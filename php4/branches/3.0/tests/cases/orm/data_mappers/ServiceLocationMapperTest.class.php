@@ -64,7 +64,7 @@ class ServiceLocationMapperTest extends LimbTestCase
     $mapper = new ServiceLocationMapper();
 
     $mapper->insert($object);
-    $this->assertTrue(catch('Exception', $e));
+    $this->assertTrue(catch_error('LimbException', $e));
     $this->assertEqual($e->getMessage(), 'oid is not set');
   }
 

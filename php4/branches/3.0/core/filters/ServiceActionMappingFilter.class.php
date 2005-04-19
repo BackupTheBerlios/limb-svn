@@ -17,7 +17,7 @@ class ServiceActionMappingFilter//implements InterceptingFilter
     $resolver =& $toolkit->getRequestResolver();
 
     if(!is_object($resolver))
-      return throw(new Exception('request resolver not set'));
+      return throw_error(new LimbException('request resolver not set'));
 
     $service =& $resolver->getRequestedService($request);
     if(!$action =& $resolver->getRequestedAction($request))

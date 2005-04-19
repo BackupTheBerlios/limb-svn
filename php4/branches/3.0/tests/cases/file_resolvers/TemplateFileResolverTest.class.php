@@ -90,7 +90,7 @@ class TemplateFileResolverTest extends BasePackageFileResolverTest
   function testResolveTemplateFileFailed()
   {
     $this->resolver->resolve('no_such_template.html');
-    $this->assertTrue(catch('Exception', $e));
+    $this->assertTrue(catch_error('LimbException', $e));
   }
 
 }

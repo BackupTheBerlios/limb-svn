@@ -30,10 +30,10 @@ class TemplateFileResolver extends FileResolverDecorator
 
     $res = $this->_resolver->resolve('design/' . $locale . $file_path, $params);
 
-    if(catch('Exception', $e))
+    if(catch_error('LimbException', $e))
       $res = $this->_resolver->resolve('design/'  . $file_path, $params);
 
-    if(catch('Exception', $e))
+    if(catch_error('LimbException', $e))
     {
       if(file_exists($shared_tmpl_path . $locale . $file_path))
         return $shared_tmpl_path . $locale . $file_path;
@@ -41,7 +41,7 @@ class TemplateFileResolver extends FileResolverDecorator
       if(file_exists($shared_tmpl_path . $file_path))
         return $shared_tmpl_path . $file_path;
 
-      throw($e);
+      throw_error($e);
     }
 
     return $res;

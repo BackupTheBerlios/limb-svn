@@ -24,7 +24,7 @@ class TreeNodeDataMapper extends AbstractDataMapper
     $gntr =& $this->_getIdentifierGenerator();
 
     if(!$identifier = $gntr->generate($object))
-      return throw(new LimbException('failed to generate identifier'));
+      return throw_error(new LimbException('failed to generate identifier'));
 
     $values['identifier'] = $identifier;
 
@@ -34,15 +34,15 @@ class TreeNodeDataMapper extends AbstractDataMapper
     if(!$parent_node_id = $object->get('parent_id'))
     {
       if (!$node_id = $tree->createRootNode($values))
-        return throw(new LimbException('could not create root tree node'));
+        return throw_error(new LimbException('could not create root tree node'));
     }
     else
     {
       if(!$tree->canAddNode($parent_node_id))
-        return throw(new LimbException('tree registering failed', array('parent_id' => $parent_node_id)));
+        return throw_error(new LimbException('tree registering failed', array('parent_id' => $parent_node_id)));
 
       if (!$node_id = $tree->createSubNode($parent_node_id, $values))
-        return throw(new LimbException('could not create tree node'));
+        return throw_error(new LimbException('could not create tree node'));
     }
 
     $object->set('identifier', $identifier);
@@ -52,10 +52,10 @@ class TreeNodeDataMapper extends AbstractDataMapper
   function update(&$object)
   {
     if(!$object->get('id'))
-      return throw(new LimbException('node id not set'));
+      return throw_error(new LimbException('node id not set'));
 
     if(!$object->get('parent_id'))
-      return throw(new LimbException('parent node id not set'));
+      return throw_error(new LimbException('parent node id not set'));
 
     $node_id = $object->get('id');
     $parent_node_id = $object->get('parent_id');
@@ -68,12 +68,12 @@ class TreeNodeDataMapper extends AbstractDataMapper
     if ($this->_isObjectMovedFromNode($parent_node_id, $node))
     {
       if(!$tree->canAddNode($parent_node_id))
-        return throw(new LimbException('new parent cant accept children',
+        return throw_error(new LimbException('new parent cant accept children',
                                 array('parent_id' => $parent_node_id)));
 
       if (!$tree->moveTree($node_id, $parent_node_id))
       {
-        return throw(new LimbException('could not move node',
+        return throw_error(new LimbException('could not move node',
           array(
             'id' => $node_id,
             'target_id' => $parent_node_id,
@@ -117,7 +117,7 @@ class TreeNodeDataMapper extends AbstractDataMapper
   function _canDeleteTreeNode(&$object)
   {
     if(!$object->get('id'))
-      return throw(new LimbException('node id not set'));
+      return throw_error(new LimbException('node id not set'));
 
     $toolkit =& Limb :: toolkit();
     $tree =& $toolkit->getTree();

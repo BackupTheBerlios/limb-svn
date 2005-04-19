@@ -27,7 +27,7 @@ class ObjectMapper extends AbstractDataMapper
   function insert(&$object)
   {
     if (!$class_id = $this->getClassId($object))
-      return throw(new LimbException('class id is empty'));
+      return throw_error(new LimbException('class id is empty'));
 
     $toolkit =& Limb :: toolkit();
     $db_table = $toolkit->createDBTable('SysObject');
@@ -37,8 +37,8 @@ class ObjectMapper extends AbstractDataMapper
     $raw_data['oid'] = $id;
     $db_table->insert($raw_data);
 
-    if(catch('Exception', $e))
-      return throw($e);
+    if(catch_error('LimbException', $e))
+      return throw_error($e);
 
     $object->set('class_id', $class_id);
     $object->set('oid', $id);
@@ -63,7 +63,7 @@ class ObjectMapper extends AbstractDataMapper
     }
     elseif($count > 1)
     {
-      return throw(new LimbException('there are more than 1 type found',
+      return throw_error(new LimbException('there are more than 1 type found',
         array('name' => $class_name)));
     }
 

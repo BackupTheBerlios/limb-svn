@@ -40,13 +40,7 @@ class LimbApplication
 
   function _registerFilters($filter_chain)
   {
-    $filters_dir = LIMB_DIR . '/core/filters/';
-
-    $filter_chain->registerFilter(new LimbHandle($filters_dir . 'SessionStartupFilter.class.php|SessionStartupFilter'));
-    $filter_chain->registerFilter(new LimbHandle($filters_dir . 'LocaleDefinitionFilter.class.php|LocaleDefinitionFilter'));
-    $filter_chain->registerFilter(new LimbHandle($filters_dir . 'AuthenticationFilter.class.php|AuthenticationFilter'));
-    $filter_chain->registerFilter(new LimbHandle($filters_dir . 'FullPageCacheFilter.class.php|FullPageCacheFilter'));
-    $filter_chain->registerFilter(new LimbHandle($filters_dir . 'SiteObjectControllerFilter.class.php|SiteObjectControllerFilter'));
+    die('abstract method!');
   }
 
   function _registerFileResolvers()
@@ -90,11 +84,11 @@ class LimbApplication
 
     $filter_chain->process();
 
-    if(catch('LimbException', $e))
+    if(catch_error('LimbException', $e))
     {
       Debug :: writeException($e);
     }
-    elseif(catch('Exception', $e))
+    elseif(catch_error('LimbException', $e))
     {
       echo  'Unexpected PHP exception in ' . $e->getFile() . ' in line ' . $e->getLine();
       echo  '<br>';
@@ -102,19 +96,8 @@ class LimbApplication
       echo    $e->getTraceAsString();
       echo  '</pre>';
       echo  'Report this error to the LIMB developers, please.';
-      exit;
+      exit();
     }
-
-    if( $response->getContentType() == 'text/html' &&
-        $response->getStatus() == 200)//only 200?
-    {
-      if (Debug :: isConsoleEnabled())
-        $response->append(Debug :: parseHtmlConsole());
-
-      $response->append(MessageBox :: parse());//It definitely should be somewhere else!
-    }
-
-    $response->commit();
   }
 }
 

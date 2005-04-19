@@ -15,10 +15,10 @@ class NodeConnectionMapper extends AbstractDataMapper
   function insert(&$object)
   {
     if (!$object->get('oid'))
-      return throw(new LimbException('oid is not set'));
+      return throw_error(new LimbException('oid is not set'));
 
     if (!$object->get('id'))
-      return throw(new LimbException('node id is not set'));
+      return throw_error(new LimbException('node id is not set'));
 
     $toolkit =& Limb :: toolkit();
     $db_table =& $toolkit->createDBTable('SysObject2Node');

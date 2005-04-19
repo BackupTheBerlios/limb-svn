@@ -20,7 +20,7 @@ class IniBasedRequestResolver // implements RequestResolver
     $path = $uri->getPath();
 
     $ini =& $toolkit->getIni('services.ini');
-    if (catch('LimbException', $e) || !is_object($ini))
+    if (catch_error('LimbException', $e) || !is_object($ini))
       return new Service('404');
 
     $groups = $ini->getAll();

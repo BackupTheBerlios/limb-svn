@@ -32,7 +32,7 @@ class ServiceFileResolverTest extends BasePackageFileResolverTest
   function testResolveServiceFileFailed()
   {
     $this->resolver->resolve('no_such_service');
-    $this->assertTrue(catch('Exception', $e));
+    $this->assertTrue(catch_error('LimbException', $e));
   }
 
 }

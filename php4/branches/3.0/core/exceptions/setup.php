@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/Exception.class.php');
 require_once(dirname(__FILE__) . '/LimbException.class.php');
 require_once(dirname(__FILE__) . '/SqlException.class.php');
 require_once(dirname(__FILE__) . '/FileNotFoundException.class.php');
