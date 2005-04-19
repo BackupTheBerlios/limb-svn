@@ -178,7 +178,9 @@ class LimbDbTable
 
     $this->_addConditions($sql, $conditions);
 
-    if($order)
+    if(is_array($order) && sizeof($order))
+      $sql->addOrder(key($order), reset($order));
+    elseif($order)
       $sql->addOrder($order);
 
     $this->_stmt =& $this->_conn->newStatement($sql->toString());

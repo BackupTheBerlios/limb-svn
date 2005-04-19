@@ -64,7 +64,7 @@ class SingleServiceNodeCriteriaTest extends LimbTestCase
     $criteria->setNodeId($node_id = 10);
 
     $this->dao->addCriteria($criteria);
-    $this->sql->expectOnce('addCondition', array('sys_tree.id = '. $node_id));
+    $this->sql->expectOnce('addCondition', array('tree.id = '. $node_id));
     $this->dao->fetch();
   }
 
@@ -84,7 +84,7 @@ class SingleServiceNodeCriteriaTest extends LimbTestCase
     $tree->expectOnce('getNodeByPath', array($path));
     $tree->setReturnValue('getNodeByPath', $node = array('id' => $node_id = 10), array($path));
 
-    $this->sql->expectOnce('addCondition', array('sys_tree.id = '. $node_id));
+    $this->sql->expectOnce('addCondition', array('tree.id = '. $node_id));
     $this->dao->fetch();
 
     Limb :: restoreToolkit();

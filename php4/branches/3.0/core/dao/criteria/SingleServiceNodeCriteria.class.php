@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: SingleServiceNodeCriteria.class.php 1101 2005-02-14 11:54:06Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -64,13 +64,13 @@ class SingleServiceNodeCriteria
 
     if ($this->node_id)
     {
-      $sql->addCondition('sys_tree.id = ' . $this->node_id);
+      $sql->addCondition('tree.id = ' . $this->node_id);
       return;
     }
 
     if ($this->path && $node_id = $this->_getNodeIdByPath())
     {
-      $sql->addCondition('sys_tree.id = ' . $node_id);
+      $sql->addCondition('tree.id = ' . $node_id);
       return;
     }
 
