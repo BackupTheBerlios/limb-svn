@@ -58,7 +58,7 @@ class Request extends Object
   function _initUri()
   {
     include_once(LIMB_DIR . '/core/http/Uri.class.php');
-    $this->uri = new Uri($_SERVER['REQUEST_URI']);
+    $this->uri = new Uri(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
   }
 }
 
