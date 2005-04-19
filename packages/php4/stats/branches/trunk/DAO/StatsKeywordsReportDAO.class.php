@@ -8,7 +8,7 @@
 * $Id: StatsIpsListDatasource.class.php 972 2004-12-20 15:58:13Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 
 class StatsKeywordsReportDAO extends SQLBasedDAO
 {

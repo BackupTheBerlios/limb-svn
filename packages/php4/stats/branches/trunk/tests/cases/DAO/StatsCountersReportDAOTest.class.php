@@ -8,7 +8,7 @@
 * $Id: StatsIpTest.class.php 1145 2005-03-05 13:09:48Z seregalimb $
 *
 ***********************************************************************************/
-require_once(LIMB_STATS_DIR . '/DAO/StatsCountersReportDAO.class.php');
+require_once(LIMB_STATS_DIR . '/dao/StatsCountersReportDAO.class.php');
 
 class StatsCountersReportDAOTest extends LimbTestCase
 {

@@ -8,7 +8,7 @@
 * $Id: ImageObjectsDAOTest.class.php 1093 2005-02-07 15:17:20Z pachanga $
 *
 ***********************************************************************************/
-require_once(dirname(__FILE__) . '/../../../DAO/SimpleACLIniBasedUsersDAO.class.php');
+require_once(dirname(__FILE__) . '/../../../dao/SimpleACLIniBasedUsersDAO.class.php');
 require_once(LIMB_DIR . '/core/util/Ini.class.php');
 
 class SimpleACLIniBasedUsersDAOTest extends LimbTestCase

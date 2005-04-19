@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
-require_once(dirname(__FILE__) . '/../../../DAO/SimpleACLAccessRecordSet.class.php');
+require_once(dirname(__FILE__) . '/../../../dao/SimpleACLAccessRecordSet.class.php');
 require_once(dirname(__FILE__) . '/../../../SimpleACLAuthorizer.class.php');
 
 Mock :: generate('SimpleACLAuthorizer');

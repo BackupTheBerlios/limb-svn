@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
-require_once(LIMB_SIMPLE_ACL_DIR . '/DAO/SimpleACLActionsRecordSet.class.php');
+require_once(LIMB_SIMPLE_ACL_DIR . '/dao/SimpleACLActionsRecordSet.class.php');
 
 class ActionsRecordSetProcessorComponent extends Component
 {

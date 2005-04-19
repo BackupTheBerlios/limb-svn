@@ -9,8 +9,8 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
-require_once(LIMB_STATS_DIR . '/DAO/StatsSearchReportsPercentageRecordSet.class.php');
-require_once(LIMB_STATS_DIR . '/DAO/StatsSearchEnginesHitsReportDAO.class.php');
+require_once(LIMB_STATS_DIR . '/dao/StatsSearchReportsPercentageRecordSet.class.php');
+require_once(LIMB_STATS_DIR . '/dao/StatsSearchEnginesHitsReportDAO.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
 Mock :: generatePartial('LimbBaseToolkit',

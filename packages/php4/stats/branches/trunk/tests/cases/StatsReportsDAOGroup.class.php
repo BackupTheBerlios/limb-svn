@@ -17,7 +17,7 @@ class StatsReportsDAOGroup extends LimbGroupTest
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectory(dirname(__FILE__) . '/DAO/');
+    return TestFinder::getTestCasesHandlesFromDirectory(dirname(__FILE__) . '/dao/');
   }
 }
 ?>

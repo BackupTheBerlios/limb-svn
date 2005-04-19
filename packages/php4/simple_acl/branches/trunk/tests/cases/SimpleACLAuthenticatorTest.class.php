@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/../../SimpleACLAuthenticator.class.php');
-require_once(dirname(__FILE__) . '/../../DAO/SimpleACLAbstractUsersDAO.class.php');
+require_once(dirname(__FILE__) . '/../../dao/SimpleACLAbstractUsersDAO.class.php');
 
 Mock :: generate('SimpleACLAbstractUsersDAO', 'MockAbstractUsersDAO');
 

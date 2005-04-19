@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
-require_once(LIMB_STATS_DIR . '/DAO/StatsCountersReportRecordSet.class.php');
+require_once(LIMB_STATS_DIR . '/dao/StatsCountersReportRecordSet.class.php');
 
 Mock :: generatePartial('PagedArrayDataSet',
                         'MockPagedArrayDataSetStatsCountersReportRecordSetTestVersion',

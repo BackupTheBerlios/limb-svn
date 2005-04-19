@@ -8,7 +8,7 @@
 * $Id: StatsHitsHostsByDaysReport.class.php 1032 2005-01-18 15:43:46Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/DAO/SQLBasedDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 
 class StatsSearchEnginesHitsReportDAO extends SQLBasedDAO
 {
@@ -25,7 +25,7 @@ class StatsSearchEnginesHitsReportDAO extends SQLBasedDAO
 
   function & fetch()
   {
-    include_once(LIMB_STATS_DIR . '/DAO/criteria/StatsPeriodCriteria.class.php');
+    include_once(LIMB_STATS_DIR . '/dao/criteria/StatsPeriodCriteria.class.php');
     $this->addCriteria(new StatsPeriodCriteria());
 
     return parent :: fetch();

@@ -44,7 +44,7 @@ class SimpleACLBaseToolkit// implements LimbToolkit
     include_once(dirname(__FILE__) . '/SimpleACLAuthenticator.class.php');
     $this->authenticator = new SimpleACLAuthenticator();
 
-    include_once(dirname(__FILE__) . '/DAO/SimpleACLIniBasedUsersDAO.class.php');
+    include_once(dirname(__FILE__) . '/dao/SimpleACLIniBasedUsersDAO.class.php');
     $this->dao = new SimpleACLIniBasedUsersDAO();
 
     $this->authenticator->setUsersDAO($this->dao);
