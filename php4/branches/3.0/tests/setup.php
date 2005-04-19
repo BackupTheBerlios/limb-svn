@@ -20,7 +20,7 @@ if (file_exists(dirname(__FILE__) . '/setup.override.php'))
 
 //WACT init
 @define('WACT_CONFIG_DIRECTORY', dirname(__FILE__) . '/settings/');
-@define('WACT_ROOT', dirname(__FILE__) . '/../../../../external/wact/framework/');
+@define('WACT_ROOT', dirname(__FILE__) . '/../external/wact/framework/');
 require_once(WACT_ROOT . '/common.inc.php');
 restore_error_handler();
 //@define('TMPL_FILESCHEME_PATH', WACT_ROOT . '/../tests/filescheme/');
@@ -43,9 +43,9 @@ registerFileResolver('action',      new LimbHandle(LIMB_DIR . '/tests/lib/TestsA
 registerFileResolver('strings',     new LimbHandle(LIMB_DIR . '/tests/lib/TestsStringsFileResolver'));
 registerFileResolver('db_table',    new DbTableFileResolver(new PackageFileResolver()));
 registerFileResolver('template',    new TemplateFileResolver(new PackageFileResolver()));
-registerFileResolver('service',   new ServiceFileResolver(new PackageFileResolver()));
-registerFileResolver('dao',  new DAOFileResolver(new PackageFileResolver()));
-registerFileResolver('object', new ObjectFileResolver(new PackageFileResolver()));
+registerFileResolver('service',     new ServiceFileResolver(new PackageFileResolver()));
+registerFileResolver('dao',         new DAOFileResolver(new PackageFileResolver()));
+registerFileResolver('object',      new ObjectFileResolver(new PackageFileResolver()));
 
 require_once(LIMB_DIR . '/tests/lib/test_utils.php');
 require_once(LIMB_DIR . '/tests/lib/TestFinder.class.php');
