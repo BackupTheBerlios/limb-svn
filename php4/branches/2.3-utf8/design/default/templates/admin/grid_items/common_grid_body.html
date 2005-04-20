@@ -1,0 +1,13 @@
+<core:INCLUDE file='/admin/grid_items/common_grid_header.html'>
+<grid:ITERATOR>
+<tr>
+  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <td><core:INCLUDE file='/admin/grid_items/priority_input.html'></td>
+  <td><core:INCLUDE file="published_status.html"></td>
+  <td>
+  <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
+  <a href='{$path}?action=admin_display'>{$title}</a>
+  </td>
+  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+</tr>
+</grid:ITERATOR>

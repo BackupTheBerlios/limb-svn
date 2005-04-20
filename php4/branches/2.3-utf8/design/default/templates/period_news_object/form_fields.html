@@ -1,0 +1,43 @@
+<tabs active_tab="tab1" class="tabulator">
+
+  <tabs:labels>
+    <tab_item:label tab_id="tab1"><locale:STRING name='properties'></tab_item:label>
+    <tab_item:label tab_id="tab2"><locale:STRING name='content'></tab_item:label>
+  </tabs:labels>
+  <table>
+  <core:INCLUDE file='/admin/admin_form_items/errors.html'>
+  </table>
+
+  <tabs:contents>
+    <tab_item:content tab_id="tab1">
+          <table width="100%" border="0" cellspacing="2" cellpadding="2">
+              <core:INCLUDE file='/admin/admin_form_items/title.html'>
+              <tr>
+                <td nowrap><span class=req>*</span><label for="news_date"><locale:STRING name='date'></label></td>
+                <td><date name="news_date" type="text" id="news_date" class='input'>
+                </td>
+              </tr>
+              <tr>
+                <td nowrap><span class=req>*</span><label for="start_date"><locale:STRING name='start_show_date'></label></td>
+                <td><date name="start_date" type="text" id="start_date" class='input' function='fStartPop(document["news_form"]["start_date"],document["news_form"]["finish_date"])'>
+                </td>
+              </tr>
+              <tr>
+                <td nowrap><span class=req>*</span><label for="finish_date"><locale:STRING name='finish_show_date'></label></td>
+                <td><date name="finish_date" type="text" id="finish_date" class='input' function='fEndPop(document["news_form"]["start_date"],document["news_form"]["finish_date"])'>
+                </td>
+              </tr>
+              <core:INCLUDE file='/admin/admin_form_items/req_annotation.html'>
+          </table>
+    </tab_item:content>
+
+    <tab_item:content tab_id="tab2">
+          <table width="100%" border="0" cellspacing="3" cellpadding="0" height="100%">
+          <tr>
+            <td colspan='2'><richedit name="news_content" id="news_content"></richedit>
+            </td>
+          </tr>
+          </table>
+    </tab_item:content>
+  </tabs:contents>
+</tabs>

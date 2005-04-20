@@ -1,0 +1,50 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/normal.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='images_folder' navigator="pager">
+  <core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<fetch:SUB_BRANCH target='images' navigator="pager2" >
+  <core:PARAMETER name='loader_class_name' value='image_object' >
+  <core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="/admin/pager.html">
+
+<grid:LIST id='images_folder'>
+<table border=0 cellspacing=2 cellpadding=0>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='image_folders_list' file='image'></td></tr>
+<core:INCLUDE file='/admin/grid_items/no_publish_folder_grid_body.html'>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
+</table>
+</grid:LIST>
+
+<core:INCLUDE file="/admin/pager2.html">
+
+<grid:LIST id='images'>
+<table border=0 cellspacing=2 cellpadding=0>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='images_list' file='image'></td></tr>
+<core:INCLUDE file='/admin/grid_items/no_publish_grid_header.html'>
+<grid:ITERATOR>
+<tr>
+  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <td><core:INCLUDE file='/admin/grid_items/priority_input.html'></td>
+  <td>
+    <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
+    <core:OPTIONAL for='title'>
+    <img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$title}</a>
+    </core:OPTIONAL>
+    <core:DEFAULT for='title'>
+    <img src='/root?node_id={$node_id}&icon' align=center>&nbsp;&nbsp;<a href='{$path}'>{$identifier}</a>
+    </core:DEFAULT>
+  </td>
+  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+</tr>
+</grid:ITERATOR>
+<core:INCLUDE file='/admin/grid_items/full_grid_footer.html'>
+</table>
+</grid:LIST>

@@ -1,0 +1,20 @@
+<fieldset>
+	<legend style='color:#000000'><locale:STRING name='fulltext_search' file='search' locale_type='content'></legend>
+	<table>
+	<form id='full_text_search_form' name='search_form' action='/root/search' method='get'>
+	  <tr>
+	    <td nowrap><label for="identifier"><locale:STRING name='search_query' file='search' locale_type='content'></label></td>
+	    <td><input type="text" id="search_query" name="search_query" class='input' size='40'></td>
+	  </tr>
+	  <tr>
+	    <td>
+			</td>
+	    <td>
+				<select id='fulltext_search_limit_options' name='limit' class='input' options_ini_file='limit_options'></select>
+		    <input type='submit' class='button' locale_value='search' locale_type='content' locale_file='search'>
+		    <core:LITERAL><input type='hidden' name='action' value='fulltext_search'></core:LITERAL>
+	    </td>
+	  </tr>
+	</form>
+	</table>
+</fieldset>

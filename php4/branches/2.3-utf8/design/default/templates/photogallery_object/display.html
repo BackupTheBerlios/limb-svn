@@ -1,0 +1,34 @@
+<html>
+
+<head>
+	<title><metadata:TITLE separator=' :: ' /></title>
+	<metadata:CHARSET>
+	<link href="/design/main/styles/main.css" rel="stylesheet" type="text/css">
+	<script language="javascript" src="/shared/js/common.js"></script>
+	<script language="javascript" src="/design/main/js/form_errors.js"></script>
+	<metadata:METADATA>
+	<meta name="description" content="{$description}">
+	<meta name="keywords" content="{$keywords}">
+	</metadata:METADATA>
+</head>
+
+<body>
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
+<tr>
+<td>
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/dropdown.html">
+<br>
+<locale:DATE_FORMAT hash_id="start_date" locale_format="short_date"><p>
+<img src='/root?node_id={$image_id}&original' align='center'><br>
+<core:OPTIONAL for='annotation'>
+{$annotation}
+</core:OPTIONAL>
+</td>
+<td>
+</fetch:MAPPED>
+</td>
+</tr>
+</table>
+</body>
+</html>

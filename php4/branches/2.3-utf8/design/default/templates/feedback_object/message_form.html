@@ -1,0 +1,36 @@
+<form method="post" name="feedback_form" id="feedback_form">
+<core:INCLUDE file="form_errors.html">
+  <table width="100%" border="0" cellspacing="2" cellpadding="3">
+    <input type="hidden" name="identifier" id="identifier">
+    <tr>
+      <td><span class=req>*</span><label for="subject"><locale:STRING name="subject" ></label></td>
+      <td><input type="text" name="subject" id="subject" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td><span class=req>*</span><label for="sender_name"><locale:STRING name="sender_firstname" file="feedback"></label></td>
+      <td><input type="text" name="sender_firstname" id="sender_firstname" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td><span class=req>*</span><label for="sender_lastname"><locale:STRING name="sender_lastname" file="feedback"></label></td>
+      <td><input type="text" name="sender_lastname" id="sender_lastname" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td><span class=req>*</span><label for="sender_email"><locale:STRING name="email" ></label></td>
+      <td><input type="text" name="sender_email" id="sender_email" class="input">
+      </td>
+    </tr>
+    <tr>
+      <td><span class=req>*</span><label for="body"><locale:STRING name="body" file="feedback"></label></td>
+      <td><textarea name="body" id="body" rows="15" cols="60" class="textarea"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><action_button action="display" name="create" type="submit" id="create" locale_value="send" locale_type='content' class='button'>
+      </td>
+    </tr>
+  </table>
+</form>

@@ -1,0 +1,14 @@
+    <tr class=com4>
+      <td colspan=2 class=pad4><core:INCLUDE file="form_errors.html"></td>
+    </tr>
+    <request_state name='group_id' attach_form_prefix='true'>
+    <request_state name='linker_node_id' attach_form_prefix='true'>
+    <tr>
+      <td><span class='req'>*</span><label for="target_node_id"><locale:STRING name='target_object' file='links'></label></td>
+      <td><node_select name="target_node_id" id="target_node_id" reset_button='true' only_parents='false'>
+      </td>
+    </tr>
+    <tr>
+      <td class=tab-bottom><img src='/shared/images/i.gif'></td>
+      <td width=100% class=tab-bottom><span class=desc><locale:STRING name='form_field_req'></span></td>
+    </tr>
