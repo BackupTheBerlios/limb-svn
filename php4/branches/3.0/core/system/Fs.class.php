@@ -48,10 +48,10 @@ class Fs
   */
   function mkdir($dir, $perm=0777, $parents=true)
   {
-    $dir = Fs :: cleanPath($dir);
-
     if(is_dir($dir))
       return;
+
+    $dir = Fs :: cleanPath($dir);
 
     if(!$parents)
     {
