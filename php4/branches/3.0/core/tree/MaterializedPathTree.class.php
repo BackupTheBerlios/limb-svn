@@ -108,9 +108,9 @@ class MaterializedPathTree// implements Tree
   /**
   * Fetch the parents of a node given by id
   */
-  function & getParents($id)
+  function & getParents($node)
   {
-    if (!$child = $this->getNode($id))
+    if(!$child = $this->getNode($node))
       return null;
 
     $join_table = $this->_node_table . '2';
@@ -136,9 +136,9 @@ class MaterializedPathTree// implements Tree
   /**
   * Fetch the immediate parent of a node given by id
   */
-  function getParent($id)
+  function getParent($node)
   {
-    if (!$child = $this->getNode($id))
+    if (!$child = $this->getNode($node))
       return null;
 
     if ($child['id'] == $child['root_id'])
@@ -150,9 +150,9 @@ class MaterializedPathTree// implements Tree
   /**
   * Fetch all siblings of the node given by id
   */
-  function & getSiblings($id)
+  function & getSiblings($node)
   {
-    if (!($sibling = $this->getNode($id)))
+    if (!($sibling = $this->getNode($node)))
       return null;
 
     $parent = $this->getParent($sibling['id']);
@@ -162,9 +162,9 @@ class MaterializedPathTree// implements Tree
   /**
   * Fetch the children _one level_ after of a node given by id
   */
-  function & getChildren($id)
+  function & getChildren($node)
   {
-    if (!$parent = $this->getNode($id))
+    if (!$parent = $this->getNode($node))
       return null;
 
     $sql = "SELECT " . $this->_getSelectFields() . "
@@ -177,26 +177,28 @@ class MaterializedPathTree// implements Tree
     return $stmt->getRecordSet();
   }
 
-  function countChildren($id)
+  function countChildren($node)
   {
-    if (!$parent = $this->getNode($id))
+    if (!$parent = $this->getNode($node))
       return null;
 
     $sql = "SELECT count(id) as counter FROM {$this->_node_table}
             WHERE parent_id = :parent_id:";
 
     $stmt =& $this->_conn->newStatement($sql);
-    $stmt->set('parent_id', $id);
+    $stmt->set('parent_id', $parent['id']);
     return $stmt->getOneValue();
   }
 
   /**
   * Fetch all the children of a node given by id
   */
-  function & getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false)
+  function & getSubBranch($node, $depth = -1, $include_parent = false, $check_expanded_parents = false)
   {
-    if (!$parent_node = $this->getNode($id))
+    if (!$parent_node = $this->getNode($node))
       return null;
+
+    $id = $parent_node['id'];
 
     if ($depth != -1)
       $depth_condition = " AND level <=" . ($parent_node['level'] + $depth);
@@ -265,14 +267,19 @@ class MaterializedPathTree// implements Tree
     if(!$parent_node = $this->getNodeByPath($path))
       return null;
 
-    return $this->getSubBranch($parent_node['id'], $depth, $include_parent, $check_expanded_parents);
+    return $this->getSubBranch($parent_node, $depth, $include_parent, $check_expanded_parents);
   }
 
   /**
   * Fetch the data of a node with the given id
   */
-  function getNode($id)
+  function getNode($node)
   {
+    if(is_array($node))
+      return $node;
+    else
+      $id = $node;
+
     $sql = "SELECT " . $this->_getSelectFields() . "
             FROM {$this->_node_table} WHERE id=:id:";
 
@@ -341,11 +348,8 @@ class MaterializedPathTree// implements Tree
 
   function getPathToNode($node, $delimeter = '/')
   {
-    if(!is_array($node))
-    {
-      if(!$node = $this->getNode($node))
-        return null;
-    }
+    if(!$node = $this->getNode($node))
+      return null;
 
     $parents =& $this->getParents($node['id']);
 
@@ -370,9 +374,9 @@ class MaterializedPathTree// implements Tree
     return $stmt->getRecordSet();
   }
 
-  function getMaxChildIdentifier($parent_id)
+  function getMaxChildIdentifier($node)
   {
-    if (!($parent = $this->getNode($parent_id)))
+    if (!($parent = $this->getNode($node)))
       return false;
 
     $sql = "SELECT identifier FROM {$this->_node_table}
@@ -398,8 +402,13 @@ class MaterializedPathTree// implements Tree
     return ($this->getNode($id) !== null);
   }
 
-  function isNodeExpanded($id)
+  function isNodeExpanded($node)
   {
+    if(is_array($node))
+      $id = $node['id'];
+    else
+      $id = $node;
+
     if(isset($this->_expanded_parents[$id]))
       return $this->_expanded_parents[$id]['status'];
     else
@@ -440,19 +449,19 @@ class MaterializedPathTree// implements Tree
     }
   }
 
-  function toggleNode($id)
+  function toggleNode($node)
   {
-    if(($node = $this->getNode($id)) === false)
+    if(!$node = $this->getNode($node))
       return false;
 
-    $this->_setExpandedParentStatus($node, !$this->isNodeExpanded($id));
+    $this->_setExpandedParentStatus($node, !$this->isNodeExpanded($node));
 
     return true;
   }
 
-  function expandNode($id)
+  function expandNode($node)
   {
-    if(($node = $this->getNode($id)) === false)
+    if(!$node = $this->getNode($node))
       return false;
 
     $this->_setExpandedParentStatus($node, true);
@@ -460,9 +469,9 @@ class MaterializedPathTree// implements Tree
     return true;
   }
 
-  function collapseNode($id)
+  function collapseNode($node)
   {
-    if(($node = $this->getNode($id)) === false)
+    if(!$node = $this->getNode($node))
       return false;
 
     $this->_setExpandedParentStatus($node, false);
@@ -538,7 +547,6 @@ class MaterializedPathTree// implements Tree
       return " SUBSTRING({$string} FROM {$offset} FOR {$limit}) ";
   }
 
-
   function _dbIn($column_name, $values)
   {
     $in_ids = implode('","', $values);
@@ -580,10 +588,12 @@ class MaterializedPathTree// implements Tree
   * </pre>
   *
   */
-  function createSubNode($parent_id, $values)
+  function createSubNode($node, $values)
   {
-    if (!$parent_node = $this->getNode($parent_id))
+    if (!$parent_node = $this->getNode($node))
       return false;
+
+    $parent_id = $parent_node['id'];
 
     $this->_verifyUserValues($values);
 
@@ -613,9 +623,9 @@ class MaterializedPathTree// implements Tree
   /**
   * Deletes a node
   */
-  function deleteNode($id)
+  function deleteNode($node)
   {
-    if (!$node = $this->getNode($id))
+    if (!$node = $this->getNode($node))
       return false;
 
     $stmt =& $this->_conn->newStatement("DELETE FROM {$this->_node_table}
@@ -643,19 +653,22 @@ class MaterializedPathTree// implements Tree
   /**
   * Moves node
   */
-  function moveTree($id, $target_id)
+  function moveTree($source_node, $target_node)
   {
-    if ($id == $target_id)
+    if ($source_node == $target_node)
       return false;
 
-    if (!$source_node = $this->getNode($id))
+    if (!$source_node = $this->getNode($source_node))
       return false;
 
-    if (!$target_node = $this->getNode($target_id))
+    if (!$target_node = $this->getNode($target_node))
       return false;
 
     if (strstr($target_node['path'], $source_node['path']) !== false)
       return false;
+
+    $id = $source_node['id'];
+    $target_id = $target_node['id'];
 
     $move_values = array('parent_id' => $target_id);
     $this->_db->update($this->_node_table, $move_values, array('id' => $id));
