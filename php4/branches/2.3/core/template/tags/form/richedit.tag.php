@@ -44,18 +44,10 @@ class richedit_tag extends control_tag
     parent :: prepare();
   }
 
-  function pre_generate(&$code)
-  {
-  }
-
   function generate_contents(&$code)
   {
     $code->write_php($this->get_component_ref_code() . '->init_richedit();');
     $code->write_php($this->get_component_ref_code() . '->render_contents();');
-  }
-
-  function post_generate(&$code)
-  {
   }
 }
 ?>
