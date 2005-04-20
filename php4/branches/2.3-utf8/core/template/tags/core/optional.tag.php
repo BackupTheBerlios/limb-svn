@@ -62,12 +62,12 @@ class core_attributeal_tag extends compiler_directive_tag
   {
     parent::pre_generate($code);
 
-		$tempvar = '$' . $code->get_temp_variable();
-    
-		$code->write_php($tempvar . ' = ' . $this->get_dataspace_ref_code() . '->get(\'' . $this->field . '\');');
-		$code->write_php('if (!is_array(' . $tempvar .' ))' . $tempvar . '= trim(' . $tempvar . ');');
-		$code->write_php('if (!empty(' . $tempvar . ')) {');
-	} 
+    $tempvar = '$' . $code->get_temp_variable();
+
+    $code->write_php($tempvar . ' = ' . $this->get_dataspace_ref_code() . '->get(\'' . $this->field . '\');');
+    $code->write_php('if (!is_array(' . $tempvar .' ))' . $tempvar . '= utf8_trim(' . $tempvar . ');');
+    $code->write_php('if (!empty(' . $tempvar . ')) {');
+  }
 
   /**
   *

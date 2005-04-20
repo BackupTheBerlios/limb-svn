@@ -21,7 +21,7 @@ class search_engine_yandex_rule extends search_engine_regex_rule
   {
     $phrase = parent :: get_matching_phrase();
 
-    if(strpos($this->uri, 'yandpage') !== false)
+    if(utf8_strpos($this->uri, 'yandpage') !== false)
       $phrase = convert_cyr_string(urldecode($phrase), 'k', 'w');
 
     return $phrase;

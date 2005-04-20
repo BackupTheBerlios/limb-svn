@@ -52,22 +52,22 @@ class core_default_tag extends compiler_directive_tag
     return PARSER_REQUIRE_PARSING;
   }
 
-	/**
-	* 
-	* @param code $ _writer
-	* @return void 
-	* @access protected 
-	*/
-	function pre_generate(&$code)
-	{
-		parent::pre_generate($code);
-    
-		$tempvar = '$' . $code->get_temp_variable();
+  /**
+  *
+  * @param code $ _writer
+  * @return void
+  * @access protected
+  */
+  function pre_generate(&$code)
+  {
+    parent::pre_generate($code);
 
-		$code->write_php($tempvar . ' = ' . $this->get_dataspace_ref_code() . '->get(\'' . $this->field . '\');');
-		$code->write_php('if (!is_array(' . $tempvar .' )) ' . $tempvar . ' = trim(' . $tempvar . ');');
-		$code->write_php('if (empty(' . $tempvar . ')) {');
-	} 
+    $tempvar = '$' . $code->get_temp_variable();
+
+    $code->write_php($tempvar . ' = ' . $this->get_dataspace_ref_code() . '->get(\'' . $this->field . '\');');
+    $code->write_php('if (!is_array(' . $tempvar .' )) ' . $tempvar . ' = utf8_trim(' . $tempvar . ');');
+    $code->write_php('if (empty(' . $tempvar . ')) {');
+  }
 
   /**
   *

@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 class template_highlight_handler
 {
@@ -86,7 +87,7 @@ class template_highlight_handler
 
   function data_handler(& $parser, $data)
   {
-    $data = str_replace("\t", '  ', $data);
+    $data = utf8_str_replace("\t", '  ', $data);
     $this->html .= $data;
   }
 
@@ -97,18 +98,18 @@ class template_highlight_handler
 
   function get_html()
   {
-    $this->html = preg_replace('~(\{(\$|\^|#)[^\}]+\})~', "<span style='background-color:lightgreen;font-weight:bold;'>\\1</span>", $this->html);
+    $this->html = preg_replace('~(\{(\$|\^|#)[^\}]+\})~u', "<span style='background-color:lightgreen;font-weight:bold;'>\\1</span>", $this->html);
 
-    $lines =& preg_split( "#\r\n|\r|\n#", $this->html);
+    $lines =& preg_split( "#\r\n|\r|\n#u", $this->html);
 
     $content = '';
     $max = sizeof($lines);
-    $digits = strlen("{$max}");
+    $digits = utf8_strlen("{$max}");
 
     for($i=0; $i < $max; $i++)
     {
       $j = $i + 1;
-      $content .= "<span style='font-family:courier;color:#c0c0c0;'>{$j}" . str_repeat('&nbsp;', $digits - strlen("{$j}")) . "</span> " .  $lines[$i] . "\n";
+      $content .= "<span style='font-family:courier;color:#c0c0c0;'>{$j}" . str_repeat('&nbsp;', $digits - utf8_strlen("{$j}")) . "</span> " .  $lines[$i] . "\n";
     }
 
     return $content;

@@ -104,10 +104,10 @@ class pager_component extends component
   function pager_component()
   {
     $this->base_url = $_SERVER['REQUEST_URI'];
-    $pos = strpos($this->base_url, '?');
+    $pos = utf8_strpos($this->base_url, '?');
     if (is_integer($pos))
     {
-      $this->base_url = substr($this->base_url, 0, $pos);
+      $this->base_url = utf8_substr($this->base_url, 0, $pos);
     }
   }
 

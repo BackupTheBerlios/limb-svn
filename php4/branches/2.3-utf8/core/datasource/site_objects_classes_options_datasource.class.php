@@ -61,7 +61,7 @@ class site_objects_classes_options_datasource extends datasource
 
   function _clean_class_path($class_path)
   {
-    preg_match('~^([^\.]*)\.class\.php$~', $class_path, $matches);
+    preg_match('~^([^\.]*)\.class\.php$~u', $class_path, $matches);
     return $matches[1];
   }
 }

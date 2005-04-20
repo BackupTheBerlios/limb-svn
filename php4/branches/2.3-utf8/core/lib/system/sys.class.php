@@ -29,7 +29,7 @@ class sys
   function sys()
   {
     // Determine OS specific settings
-    if ( substr( php_uname(), 0, 7 ) == 'Windows' )
+    if (substr(php_uname(), 0, 7 ) == 'Windows')
     {
       $this->os_type = 'win32';
       $this->file_system_type = 'win32';

@@ -29,7 +29,7 @@ http://www.w3.org/WAI/ER/IG/ert/iso639.htm
 currency/funds are specified by the ISO 4217
 http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90.xalter
 */
-
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 require_once(LIMB_DIR . '/core/lib/util/ini.class.php');
 
 if(!defined('LOCALE_DIR'))
@@ -238,7 +238,7 @@ class locale
     $country_ini->assign_option($this->short_date_time_format, 'short_date_time_format', 'date_time');
 
     if ($country_ini->has_option('is_monday_first', 'date_time'))
-      $this->is_monday_first = strtolower($country_ini->get_option('is_monday_first', 'date_time')) == 'yes';
+      $this->is_monday_first = utf8_strtolower($country_ini->get_option('is_monday_first', 'date_time')) == 'yes';
 
     if ($this->is_monday_first)
       $this->week_days = array(1, 2, 3, 4, 5, 6, 0);
@@ -352,19 +352,19 @@ class locale
   function get_locale_information($locale_string)
   {
     $info = null;
-    if (preg_match('/^' . locale::local_regexp() . '/', $locale_string, $regs))
+    if (preg_match('/^' . locale::local_regexp() . '/u', $locale_string, $regs))
     {
       $info = array();
-      $language = strtolower($regs[1]);
+      $language = utf8_strtolower($regs[1]);
       $country = '';
       if (isset($regs[3]))
-        $country = strtoupper($regs[3]);
+        $country = utf8_strtoupper($regs[3]);
       $charset = '';
       if (isset($regs[5]))
-        $charset = strtolower($regs[5]);
+        $charset = utf8_strtolower($regs[5]);
       $country_variation = '';
       if (isset($regs[7]))
-        $country_variation = strtolower($regs[7]);
+        $country_variation = utf8_strtolower($regs[7]);
       $locale = $language;
       if ($country !== '')
         $locale .= '-' . $country;
@@ -377,7 +377,7 @@ class locale
     else
     {
       $info = array();
-      $locale = strtolower($locale_string);
+      $locale = utf8_strtolower($locale_string);
       $language = $locale;
       $info['language'] = $language;
       $info['country'] = '';
@@ -509,7 +509,7 @@ class locale
   {
     return $this->currency_short_name;
   }
-  
+
   function get_currency_decimal_symbol()
   {
     return $this->currency_decimal_symbol;
@@ -644,7 +644,7 @@ class locale
   function get_meridiem_name($hour, $upcase = false)
   {
     $name = ($hour < 12) ? $this->am_name : $this->pm_name;
-    return ($upcase) ? strtoupper($name) : $name;
+    return ($upcase) ? utf8_strtoupper($name) : $name;
   }
 
   function get_pm_name()

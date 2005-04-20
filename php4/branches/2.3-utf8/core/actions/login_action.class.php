@@ -45,7 +45,7 @@ class login_action extends form_action
     if(!$redirect = $request->get_attribute('redirect'))
       return '';
 
-    if(!preg_match("/^([a-z0-9\.#\/\?&=\+\-_]+)/si", $redirect))
+    if(!preg_match("/^([a-z0-9\.#\/\?&=\+\-_]+)/siu", $redirect))
       return '';
 
     return $redirect;

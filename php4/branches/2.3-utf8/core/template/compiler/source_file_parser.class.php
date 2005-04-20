@@ -133,7 +133,7 @@ class source_file_parser
   */
   function initialize_variable_reference_pattern()
   {
-    $this->variable_reference_pattern = '/^(.*){(\$|\#|\^)([\w\[\]\'\"]+)}(.*)$/Usi';
+    $this->variable_reference_pattern = '/^(.*){(\$|\#|\^)([\w\[\]\'\"]+)}(.*)$/Usiu';
   }
   // --------------------------------------------------------------------------------
   /**
@@ -144,7 +144,7 @@ class source_file_parser
   */
   function initialize_attribute_pattern()
   {
-    $this->attribute_pattern = "/^(\\w+)\\s*(=\\s*(\"|')?((?(3)[^\\3]*?|[^\\s]*))(?(3)\\3))?\\s*/";
+    $this->attribute_pattern = "/^(\\w+)\\s*(=\\s*(\"|')?((?(3)[^\\3]*?|[^\\s]*))(?(3)\\3))?\\s*/u";
   }
   // --------------------------------------------------------------------------------
   /**
@@ -159,8 +159,8 @@ class source_file_parser
   {
     if (preg_match($pattern, $this->rawtext, $match))
     {
-      $this->rawtext = substr($this->rawtext, strlen($match[0]));
-      $this->cur_line_no += preg_match_all("/\r\n|\n|\r/", $match[0], $discarded);
+      $this->rawtext = utf8_substr($this->rawtext, utf8_strlen($match[0]));
+      $this->cur_line_no += preg_match_all("/\r\n|\n|\r/u", $match[0], $discarded);
       return true;
     }
     else
@@ -218,7 +218,7 @@ class source_file_parser
   {
     while (preg_match($this->variable_reference_pattern, $text, $match))
     {
-      if (strlen($match[1]) > 0)
+      if (utf8_strlen($match[1]) > 0)
       {
         $component = &$this->get_text_node($match[1]);
         $parent_component->add_child($component);
@@ -231,7 +231,7 @@ class source_file_parser
       $parent_component->add_child($component);
       $text = $match[4];
     }
-    if (strlen($text) > 0)
+    if (utf8_strlen($text) > 0)
     {
       $component = &$this->get_text_node($text);
       $parent_component->add_child($component);
@@ -321,8 +321,9 @@ class source_file_parser
         {
           $this->parse_attributes($component);
 
-          if (!$this->match_text('/^\/?>/', $start_maches))
+          if (!$this->match_text('/^\/?>/u', $start_maches))
           {
+            for($i=0;$i<10;$i++)restore_error_handler();trigger_error('!', E_USER_WARNING);
             error('EXPECTING_>', __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__,
               array('file' => $this->source_file,
                     'line' => $this->cur_line_no,
@@ -339,7 +340,7 @@ class source_file_parser
         {
           if ($parsing_policy == PARSER_FORBID_PARSING)
           {
-            if ($this->match_text('/^(.*)' . preg_quote('</' . $component->tag . '>', '/') . '/Usi', $literal_match))
+            if ($this->match_text('/^(.*)' . preg_quote('</' . $component->tag . '>', '/') . '/Usiu', $literal_match))
             {
               $literal_component = &$this->get_text_node($literal_match[1]);
               $component->add_child($literal_component);

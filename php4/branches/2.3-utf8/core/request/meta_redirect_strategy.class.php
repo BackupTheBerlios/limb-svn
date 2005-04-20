@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 class meta_redirect_strategy
 {
@@ -31,20 +32,20 @@ class meta_redirect_strategy
   function _prepare_response_using_template($template_file, $message, $path)
   {
     $content = file_get_contents($template_file);
-    $content = str_replace('{$path}', $path, $content);
-    return str_replace('{$message}', $message, $content);
+    $content = utf8_str_replace('{$path}', $path, $content);
+    return utf8_str_replace('{$message}', $message, $content);
   }
 
   function _prepare_default_response($message, $path)
   {
-    return "<html><head><meta http-equiv=refresh content='0;url={$path}'></head>
+    return "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'><meta http-equiv=refresh content='0;url={$path}'></head>
             <body bgcolor=white>{$message}</body></html>";
   }
 
   function _prepare_localized_message($path)
   {
     $message = strings :: get('redirect_message');//???
-    return str_replace('%path%', $path, $message);
+    return utf8_str_replace('%path%', $path, $message);
   }
 
   function _find_template()

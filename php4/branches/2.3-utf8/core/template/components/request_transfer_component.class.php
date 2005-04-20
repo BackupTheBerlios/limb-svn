@@ -37,7 +37,7 @@ class request_transfer_component extends tag_component
 
   function _replace_callback($matches)
   {
-    if(strpos($matches[3], '?') === false)
+    if(utf8_strpos($matches[3], '?') === false)
       $matches[3] .= '?';
 
     $matches[3] .= '&' . $this->attributes_string;

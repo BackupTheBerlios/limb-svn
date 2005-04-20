@@ -119,8 +119,7 @@ class TestFinder
 
   function _hasExpectedExtension($file, $extension)
   {
-    return $extension ==
-    strtolower(substr($file, (0 - strlen($extension))));
+    return $extension == strtolower(substr($file, (0 - strlen($extension))));
   }
 }
 ?>

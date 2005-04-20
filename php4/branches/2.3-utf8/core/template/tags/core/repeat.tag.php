@@ -29,7 +29,7 @@ class core_data_repeat_tag extends compiler_directive_tag
 
     if (isset($this->attributes['hash_id']))
     {
-      $code->write_php($value . ' = trim(' . $this->get_dataspace_ref_code() . '->get(\'' . $this->attributes['hash_id'] . '\'));');
+      $code->write_php($value . ' = utf8_trim(' . $this->get_dataspace_ref_code() . '->get(\'' . $this->attributes['hash_id'] . '\'));');
     }
     else
     {

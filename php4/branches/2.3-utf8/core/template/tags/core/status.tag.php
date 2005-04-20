@@ -60,7 +60,7 @@ class core_status_tag extends compiler_directive_tag
       $value = 'false';
 
     $tempvar = $code->get_temp_variable();
-    $code->write_php('$' . $tempvar . ' = trim(' . $this->get_dataspace_ref_code() . '->get("status"));');
+    $code->write_php('$' . $tempvar . ' = utf8_trim(' . $this->get_dataspace_ref_code() . '->get("status"));');
     $code->write_php('if ((boolean)(constant("' . $this->const . '") & $' . $tempvar . ') === ' . $value . ') {');
   }
 

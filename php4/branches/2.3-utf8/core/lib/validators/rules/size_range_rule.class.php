@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/validators/rules/single_field_rule.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 /**
 * For fields have a minimum and maximum length
@@ -62,11 +63,11 @@ class size_range_rule extends single_field_rule
   */
   function check($value)
   {
-    if (!is_null($this->min_len) && (strlen($value) < $this->min_len))
+    if (!is_null($this->min_len) && (utf8_strlen($value) < $this->min_len))
     {
       $this->error(strings :: get('size_too_small', 'error'));
     }
-    elseif (strlen($value) > $this->max_len)
+    elseif (utf8_strlen($value) > $this->max_len)
     {
       $this->error(strings :: get('size_too_big', 'error'));
     }

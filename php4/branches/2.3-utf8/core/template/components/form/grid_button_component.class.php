@@ -54,7 +54,7 @@ class grid_button_component extends form_element
     else
       $action_path = $this->path;
 
-    if (strpos($action_path, '?') === false)
+    if (utf8_strpos($action_path, '?') === false)
       $action_path .= '?';
     else
       $action_path .= '&';

@@ -154,9 +154,10 @@ class form_component extends tag_component
 
       $url = parse_url($_SERVER['PHP_SELF']);
 
-      if (strpos($this->attributes['action'], '/') !== 0)
+      if (utf8_strpos($this->attributes['action'], '/') !== 0)
       {
         $host .= $url['path'];
+
         if (strrpos($host, '/') != (strlen($host) - 1))
           $host .= '/';
       }

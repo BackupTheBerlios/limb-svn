@@ -8,6 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
+
 /**
 * Determines the full path to a source template file.
 */
@@ -59,7 +61,7 @@ function write_template_file($file, $data)
     fs :: mkdir(dirname($file), 0777, true);
 
   $fp = fopen($file, "wb");
-  if (fwrite($fp, $data, strlen($data)))
+  if (fwrite($fp, $data, utf8_strlen($data)))
   {
     fclose($fp);
   }

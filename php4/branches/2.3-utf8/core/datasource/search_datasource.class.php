@@ -8,11 +8,11 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/core/datasource/fetch_datasource.class.php');
 require_once(LIMB_DIR . '/core/search_fetcher.class.php');
 require_once(LIMB_DIR . '/core/model/search/search_query.class.php');
 require_once(LIMB_DIR . '/core/model/search/normalizers/search_text_normalizer.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 class search_datasource extends fetch_datasource
 {
@@ -45,7 +45,7 @@ class search_datasource extends fetch_datasource
   function _init_search_query_object()
   {
     $request = request :: instance();
-    if ($search_query = trim($request->get_attribute('search_query')))
+    if ($search_query = utf8_trim($request->get_attribute('search_query')))
     {
       $this->query_object->add(search_text_normalizer :: process($search_query));
     }

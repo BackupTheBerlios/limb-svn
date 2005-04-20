@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/core/fetcher.class.php');
 require_once(LIMB_DIR . '/core/model/search/full_text_search.class.php');
 

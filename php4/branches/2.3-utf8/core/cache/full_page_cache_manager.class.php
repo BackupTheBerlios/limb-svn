@@ -124,7 +124,7 @@ class full_page_cache_manager
 
     foreach($rules as $rule)
     {
-      if(!preg_match($rule['path_regex'], $uri_path))
+      if(!preg_match($rule['path_regex'] . 'u', $uri_path))
         continue;
 
       if(isset($rule['groups']))

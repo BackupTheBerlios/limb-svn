@@ -14,6 +14,7 @@ define( 'DIR_SEPARATOR_DOS', 3 );
 define( 'WIN32_NET_PREFIX', '\\\\' );
 
 require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 class fs
 {
@@ -34,8 +35,9 @@ class fs
   {
     $path = fs :: clean_path($path);
 
+    //FIX: non utf8 strrpos!!!
     if (($dir_pos = strrpos($path, fs :: separator())) !== false )
-      return substr($path, 0, $dir_pos);
+      return utf8_substr($path, 0, $dir_pos);
 
     return $path;
   }
@@ -144,7 +146,7 @@ class fs
 
     $separator = fs :: separator();
 
-    $dir_elements = explode($separator, $path);
+    $dir_elements = utf8_explode($separator, $path);
 
     if(sizeof($dir_elements) > 1 && $dir_elements[sizeof($dir_elements)-1] === '')
       array_pop($dir_elements);
@@ -162,8 +164,8 @@ class fs
   function chop($path)
   {
     $path = fs :: clean_path($path);
-    if(substr($path, -1) == fs :: separator())
-      $path = substr($path, 0, -1);
+    if(utf8_substr($path, -1) == fs :: separator())
+      $path = utf8_substr($path, 0, -1);
 
     return $path;
   }
@@ -324,7 +326,7 @@ class fs
 
     $path = fs :: _normalize_separators($path, $separator);
 
-    $path_elements= explode($separator, $path);
+    $path_elements= utf8_explode($separator, $path);
     $newpath_elements= array();
 
     foreach ($path_elements as $path_element)
@@ -356,9 +358,9 @@ class fs
 
   function _has_win32_net_prefix($path)
   {
-    if(sys :: os_type() == 'win32' && strlen($path) > 2)
+    if(sys :: os_type() == 'win32' && utf8_strlen($path) > 2)
     {
-      return (substr($path, 0, 2) == WIN32_NET_PREFIX);
+      return (utf8_substr($path, 0, 2) == WIN32_NET_PREFIX);
     }
     return false;
   }
@@ -377,12 +379,12 @@ class fs
     $path = implode($separator, $names);
     $path = fs :: clean_path($path, $type);
 
-    $has_end_separator = (strlen($path) > 0 && $path[strlen($path) - 1] == $separator);
+    $has_end_separator = (utf8_strlen($path) > 0 && $path[utf8_strlen($path) - 1] == $separator);
 
     if ($include_end_separator && !$has_end_separator)
       $path .= $separator;
     elseif (!$include_end_separator && $has_end_separator)
-      $path = substr($path, 0, strlen($path) - 1);
+      $path = utf8_substr($path, 0, utf8_strlen($path) - 1);
 
     return $path;
   }
@@ -396,7 +398,7 @@ class fs
 
   function _do_recursive_find($dir, $file, $params, &$return_params)
   {
-    if(preg_match('/' . $params['regex'] . '$/', $file))
+    if(preg_match('/' . $params['regex'] . '$/u', $file))
     {
       $return_params[] = $dir . $params['separator'] . $file;
     }

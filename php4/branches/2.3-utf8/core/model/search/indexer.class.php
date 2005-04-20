@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/db/db_factory.class.php');
 require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 class indexer
 {
@@ -48,11 +49,11 @@ class indexer
 
       $text =& indexer :: normalize_string($attributes[$attribute_name]);
 
-      $words_array =& explode(' ', $text);
+      $words_array =& utf8_explode(' ', $text);
 
       for($i=0, $j=1, $max_count = 1000; $i < sizeof($words_array); $i++)
       {
-        if (!($word = trim($words_array[$i])))
+        if (!($word = utf8_trim($words_array[$i])))
           continue;
 
         $index_array_only_words[] = $word;
@@ -178,10 +179,10 @@ class indexer
 
   function & normalize_string(&$content)
   {
-    $content = strtolower($content);
-    $content = str_replace("\n", ' ', $content );
-    $content = str_replace("\t", ' ', $content );
-    $content = str_replace("\r", ' ', $content );
+    $content = utf8_strtolower($content);
+    $content = utf8_str_replace("\n", ' ', $content );
+    $content = utf8_str_replace("\t", ' ', $content );
+    $content = utf8_str_replace("\r", ' ', $content );
 
     $search = array (
                 "'<script[^>]*?>.*?</script>'si",  // Strip out javascript
@@ -195,37 +196,40 @@ class indexer
 
     $content = preg_replace ($search, $replace, $content);
 
-    $content = preg_replace( "#(\.){2,}#", ' ', $content );
-    $content = preg_replace( "#^\.#", ' ', $content );
-    $content = preg_replace( "#\s\.#", ' ', $content );
-    $content = preg_replace( "#\.\s#", ' ', $content );
-    $content = preg_replace( "#\.$#", ' ', $content );
+    $content = preg_replace( "#(\.){2,}#", ' ', $content);
+    $content = preg_replace( "#^\.#", ' ', $content);
+    $content = preg_replace( "#\s\.#", ' ', $content);
+    $content = preg_replace( "#\.\s#", ' ', $content);
+    $content = preg_replace( "#\.$#", ' ', $content);
 
-    $content = str_replace("'", ' ', $content );
-    $content = str_replace("\"", ' ', $content );
-    $content = str_replace("”", ' ', $content );
-    $content = str_replace("“", ' ', $content );
-    $content = str_replace("`", ' ', $content );
-    $content = str_replace("&nbsp;", ' ', $content );
-    $content = str_replace(":", ' ', $content );
-    $content = str_replace(",", ' ', $content );
-    $content = str_replace(";", ' ', $content );
-    $content = str_replace("(", ' ', $content );
-    $content = str_replace(")", ' ', $content );
-    $content = str_replace("-", ' ', $content );
-    $content = str_replace("+", ' ', $content );
-    $content = str_replace("/", ' ', $content );
-    $content = str_replace("!", ' ', $content );
-    $content = str_replace("?", ' ', $content );
-    $content = str_replace("[", ' ', $content );
-    $content = str_replace("]", ' ', $content );
-    $content = str_replace("$", ' ', $content );
-    $content = str_replace("\\", ' ', $content );
-    $content = str_replace("<", ' ', $content );
-    $content = str_replace(">", ' ', $content );
-    $content = str_replace("*", ' ', $content );
+    $content = utf8_str_replace("'", ' ', $content);
+    $content = utf8_str_replace("\"", ' ', $content);
 
-    $content = trim(preg_replace("(\s+)", ' ', $content));
+    //non utf8 chars(ï¿½,ï¿½)
+    $content = utf8_str_replace("ï¿½", ' ', $content);
+    $content = utf8_str_replace("ï¿½", ' ', $content);
+
+    $content = utf8_str_replace("`", ' ', $content);
+    $content = utf8_str_replace("&nbsp;", ' ', $content);
+    $content = utf8_str_replace(":", ' ', $content);
+    $content = utf8_str_replace(",", ' ', $content);
+    $content = utf8_str_replace(";", ' ', $content);
+    $content = utf8_str_replace("(", ' ', $content);
+    $content = utf8_str_replace(")", ' ', $content);
+    $content = utf8_str_replace("-", ' ', $content);
+    $content = utf8_str_replace("+", ' ', $content);
+    $content = utf8_str_replace("/", ' ', $content);
+    $content = utf8_str_replace("!", ' ', $content);
+    $content = utf8_str_replace("?", ' ', $content);
+    $content = utf8_str_replace("[", ' ', $content);
+    $content = utf8_str_replace("]", ' ', $content);
+    $content = utf8_str_replace("$", ' ', $content);
+    $content = utf8_str_replace("\\", ' ', $content);
+    $content = utf8_str_replace("<", ' ', $content);
+    $content = utf8_str_replace(">", ' ', $content);
+    $content = utf8_str_replace("*", ' ', $content);
+
+    $content = utf8_trim(preg_replace("~\s+~u", ' ', $content));
 
     return $content;
   }

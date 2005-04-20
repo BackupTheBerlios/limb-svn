@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . '/core/datasource/datasource.class.php');
 require_once(LIMB_DIR . '/core/model/search/search_query.class.php');
 require_once(LIMB_DIR . '/core/model/search/normalizers/search_text_normalizer.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 require_once(SEARCH_SPIDER_DIR . '/FullTextSearcher.class.php');
 
 class fulltext_search_datasource extends datasource
@@ -47,7 +48,7 @@ class fulltext_search_datasource extends datasource
 
     $request = request :: instance();
 
-    if (!$search_query = trim($request->get_attribute('search_query')))
+    if (!$search_query = utf8_trim($request->get_attribute('search_query')))
       return null;
 
     $this->query_object = new search_query();

@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/i18n/locale.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 require_once(LIMB_DIR . '/core/lib/date/date_time_zone.class.php');
 
 define('DATE_FORMAT_ISO', "%Y-%m-%d %T"); //YYYY-MM-DD HH:MM:SS
@@ -220,15 +221,15 @@ class date
 
   function _explode_time_string_by_format($time_string, $fmt)
   {
-    $fmt_len = strlen($fmt);
-    $time_string_len = strlen($time_string);
+    $fmt_len = utf8_strlen($fmt);
+    $time_string_len = utf8_strlen($time_string);
 
     $time_array = array();
 
     $fmt_pos = 0;
     $time_string_pos = 0;
 
-    while(($fmt_pos = strpos($fmt, '%', $fmt_pos)) !== false)
+    while(($fmt_pos = utf8_strpos($fmt, '%', $fmt_pos)) !== false)
     {
       $current_time_char = $fmt{++$fmt_pos};
 
@@ -237,14 +238,14 @@ class date
       elseif($time_string_pos <= $time_string_len)
       {
         $current_delimiter = $fmt{++$fmt_pos};
-        $delimiter_pos = strpos($time_string, $current_delimiter, $time_string_pos);
+        $delimiter_pos = utf8_strpos($time_string, $current_delimiter, $time_string_pos);
         if($delimiter_pos === false)
           $delimiter_pos = $time_string_len;
       }
 
       $delimiter_len = $delimiter_pos - $time_string_pos;
 
-      $value = substr($time_string, $time_string_pos, $delimiter_len);
+      $value = utf8_substr($time_string, $time_string_pos, $delimiter_len);
 
       $time_array['%' . $current_time_char] = $value;
 
@@ -360,12 +361,12 @@ class date
 
     $locale = locale :: instance();
 
-    for($strpos = 0; $strpos < strlen($format); $strpos++)
+    for($strpos = 0; $strpos < utf8_strlen($format); $strpos++)
     {
-      $char = substr($format, $strpos, 1);
+      $char = utf8_substr($format, $strpos, 1);
       if ($char == '%')
       {
-        $nextchar = substr($format, $strpos + 1, 1);
+        $nextchar = utf8_substr($format, $strpos + 1, 1);
         switch ($nextchar)
         {
           case 'a':
@@ -459,7 +460,7 @@ class date
               $output .= $this->get_week_of_year();
               break;
           case 'y':
-              $output .= substr($this->year, 2, 2);
+              $output .= utf8_substr($this->year, 2, 2);
               break;
           case 'Y':
               $output .= $this->year;
@@ -716,8 +717,8 @@ class date
 
   function date_to_days()
   {
-    $century = (int) substr("{$this->year}", 0, 2);
-    $year = (int) substr("{$this->year}", 2, 2);
+    $century = (int) utf8_substr("{$this->year}", 0, 2);
+    $year = (int) utf8_substr("{$this->year}", 2, 2);
     $month = $this->month;
     $day = $this->day;
 

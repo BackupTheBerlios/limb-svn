@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-
 require_once(LIMB_DIR . '/core/lib/i18n/locale.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 class currency
 {
@@ -25,8 +25,8 @@ class currency
     $num = $neg ? -$number : $number;
     $num_text =& number_format( $num, $locale->get_currency_fract_digits(),
                                 $locale->get_currency_decimal_symbol(), $locale->get_currency_thousand_separator() );
-    $text =& str_replace( array( '%c', '%p', '%q' ),
-                          array( $locale->get_currency_symbol(),
+    $text =& utf8_str_replace(array('%c', '%p', '%q' ),
+                              array($locale->get_currency_symbol(),
                                  $neg ? $locale->get_currency_negative_symbol() : $locale->get_currency_positive_symbol(),
                                  $num_text ),
                           $neg ? $locale->get_currency_negative_format() : $locale->get_currency_positive_format());

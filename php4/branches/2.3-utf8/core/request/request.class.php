@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . '/core/model/object.class.php');
 require_once(LIMB_DIR . '/core/lib/system/objects_support.inc.php');
 require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 define('REQUEST_STATUS_DONT_TRACK', 0);
 
@@ -95,9 +96,9 @@ class request extends object
     foreach($result as $key => $value)
       $query .= $key . '=' . $value . '&';
 
-    $query = rtrim($query, '&');
+    $query = utf8_rtrim($query, '&');
 
-    return rtrim($uri->to_string() . '?' . $query, '?');
+    return utf8_rtrim($uri->to_string() . '?' . $query, '?');
   }
 
   function get_uri()

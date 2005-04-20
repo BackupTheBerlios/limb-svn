@@ -8,7 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-
 /**
 * Define compile component states which determine parse behaviour
 */
@@ -17,6 +16,7 @@ define('PARSER_FORBID_PARSING', false);
 define('PARSER_ALLOW_PARSING', null);
 
 require_once (LIMB_DIR . '/core/template/compiler/xml_pull.inc.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 /**
 * The source template parser which uses the xml_pull parser
@@ -133,7 +133,7 @@ class source_file_parser
   {
     while (preg_match($this->variable_reference_pattern, $text, $match))
     {
-      if (strlen($match[1]) > 0)
+      if (utf8_strlen($match[1]) > 0)
       {
         $component = &$this->get_text_node($match[1]);
         $parent_component->add_child($component);
@@ -148,7 +148,7 @@ class source_file_parser
       $parent_component->add_child($component);
       $text = $match[4];
     }
-    if (strlen($text) > 0)
+    if (utf8_strlen($text) > 0)
     {
       $component = &$this->get_text_node($text);
       $parent_component->add_child($component);
@@ -378,13 +378,13 @@ class source_file_parser
     static $lines;
     if (is_null($text))
     {
-      $text = explode("\n", $this->rawtext);
+      $text = utf8_explode("\n", $this->rawtext);
       $lines = count ($text);
     }
 
     for (;$lineno < $lines;$lineno++)
     {
-      $index += strlen($text[$lineno]);
+      $index += utf8_strlen($text[$lineno]);
       if ($index > $this->cur_byte_index)
         return ($lineno + 1);
     }

@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
 {
@@ -215,7 +216,7 @@ class ini
 
   function _parse_string(&$contents)
   {
-    $lines =& preg_split("#\r\n|\r|\n#", $contents);
+    $lines =& preg_split("#\r\n|\r|\n#u", $contents);
     unset($contents);
 
     if ($lines === false)
@@ -230,34 +231,34 @@ class ini
       return false;
 
     // check for charset
-    if (preg_match("/#charset[^=]*=(.+)/", $lines[0], $match))
+    if (preg_match("/#charset[^=]*=(.+)/u", $lines[0], $match))
     {
-      $this->charset = trim($match[1]);
+      $this->charset = utf8_trim($match[1]);
     }
 
     foreach ($lines as $line)
     {
-      if (($line = trim($line)) == '')
+      if (($line = utf8_trim($line)) == '')
         continue;
       // removing comments after #, not after # inside ""
 
-      $line = preg_replace('/([^"#]+|"(.*?)")|(#[^#]*)/', "\\1", $line);
+      $line = preg_replace('/([^"#]+|"(.*?)")|(#[^#]*)/u', "\\1", $line);
       // check for new group
-      if (preg_match("#^\[(.+)\]\s*$#", $line, $new_group_name_array))
+      if (preg_match("#^\[(.+)\]\s*$#u", $line, $new_group_name_array))
       {
-        $new_group_name = trim($new_group_name_array[1]);
+        $new_group_name = utf8_trim($new_group_name_array[1]);
         $current_group = $new_group_name;
         $this->group_values[$current_group] = array();
         continue;
       }
       // check for variable
-      if (preg_match("#^([a-zA-Z0-9_-]+)(\[([a-zA-Z0-9_-]*)\]){0,1}(\s*)=(.*)$#", $line, $value_array))
+      if (preg_match("#^([a-zA-Z0-9_-]+)(\[([a-zA-Z0-9_-]*)\]){0,1}(\s*)=(.*)$#u", $line, $value_array))
       {
-        $var_name = trim($value_array[1]);
+        $var_name = utf8_trim($value_array[1]);
 
-        $var_value = trim($value_array[5]);
+        $var_value = utf8_trim($value_array[5]);
 
-        if (preg_match('/^"(.*)"$/', $var_value, $m))
+        if (preg_match('/^"(.*)"$/u', $var_value, $m))
           $var_value = $m[1];
 
         if ($value_array[2])

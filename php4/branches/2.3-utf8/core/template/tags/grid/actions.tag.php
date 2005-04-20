@@ -116,7 +116,7 @@ class grid_actions_tag extends compiler_directive_tag
     else
       $action_path = $option['path'];
 
-    if (strpos($action_path, '?') === false)
+    if (utf8_strpos($action_path, '?') === false)
       $action_path .= '?';
     else
       $action_path .= '&';

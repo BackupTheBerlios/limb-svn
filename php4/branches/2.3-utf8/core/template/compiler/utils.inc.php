@@ -24,8 +24,8 @@ function get_new_server_id()
 */
 function preg_replacement_quote($replacement)
 {
-  $replacement = str_replace("\\", "\\\\", $replacement);
-  $replacement = str_replace("$", "\\$", $replacement);
+  $replacement = utf8_str_replace("\\", "\\\\", $replacement);
+  $replacement = utf8_str_replace("$", "\\$", $replacement);
   return $replacement;
 }
 

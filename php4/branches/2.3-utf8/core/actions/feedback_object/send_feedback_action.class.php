@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/lib/util/complex_array.class.php');
 require_once(LIMB_DIR . '/core/lib/mail/mail.inc.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 require_once(LIMB_DIR . '/core/actions/form_action.class.php');
 require_once(LIMB_DIR . '/core/model/sys_param.class.php');
 
@@ -61,7 +62,7 @@ class send_feedback_action extends form_action
                     $mail_data['sender_email'],
                     $mail_data['body']);
 
-    $body = str_replace('<br>', "\n", $body);
+    $body = utf8_str_replace('<br>', "\n", $body);
 
     $subject = $this->_get_mail_subject();
 

@@ -33,10 +33,10 @@ class meta_redirect_strategy_test extends LimbTestCase
 
     $path = '/to/some/place?t=1&t=2';
     $message = strings :: get('redirect_message');
-    $message = str_replace('%path%', $path, $message);
+    $message = utf8_str_replace('%path%', $path, $message);
 
     $this->response->expectOnce('write',
-                                array(new WantedPatternExpectation("~^<html><head><meta http-equiv=refresh content='0;" .
+                                array(new WantedPatternExpectation("~^<meta http-equiv=refresh content='0;" .
                                                                    "url=" . preg_quote($path) . "'~")));
 
     $strategy->redirect($this->response, $path);
@@ -50,10 +50,10 @@ class meta_redirect_strategy_test extends LimbTestCase
 
     $path = '/to/some/place?t=1&t=2';
     $message = strings :: get('redirect_message');
-    $message = str_replace('%path%', $path, $message);
+    $message = utf8_str_replace('%path%', $path, $message);
 
     $this->response->expectOnce('write',
-                                array(new WantedPatternExpectation("~^<html><head><meta http-equiv=refresh content='0;" .
+                                array(new WantedPatternExpectation("~^<meta http-equiv=refresh content='0;" .
                                                                    "url=" . preg_quote($path) . "'></head>" .
                                                                    "<body bgcolor=white><font color=707070>~")));
 

@@ -12,6 +12,7 @@ require_once(LIMB_DIR . '/core/lib/error/error.inc.php');
 require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
 require_once(LIMB_DIR . '/core/lib/date/date.class.php');
 require_once(LIMB_DIR . '/core/lib/i18n/locale.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 define('DB_TRANSACTION_STATUS_IN', 1);
 define('DB_TRANSACTION_STATUS_OUT', 0);
@@ -286,7 +287,7 @@ class db_module
       break;
       case 'float':
         $value = str_replace(',', '.', $value);
-    		return str_replace(',', '.', "'" . floatval($value) . "'");
+        return str_replace(',', '.', "'" . floatval($value) . "'");
       break;
       case 'string':
         return $this->_process_string_value($value);

@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
 require_once(LIMB_DIR . '/core/lib/security/user.class.php');
 require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 if(!defined('ERROR_HANDLER_TYPE'))
   debug :: set_handle_type('custom');
@@ -88,9 +89,9 @@ function get_trace_back()
         else
         {
           $trace_string .= '"';
-          $trace_string .= htmlspecialchars(substr((string) @$arg, 0, 32));
+          $trace_string .= htmlspecialchars(utf8_substr((string) @$arg, 0, 32));
 
-          if (strlen($arg) > 32)
+          if (utf8_strlen($arg) > 32)
             $trace_string .= '...';
 
           $trace_string .= '"';

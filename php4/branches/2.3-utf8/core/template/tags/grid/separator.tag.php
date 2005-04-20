@@ -59,7 +59,7 @@ class grid_separator_tag extends compiler_directive_tag
 
     $counter = '$' . $code->get_temp_variable();
 
-    $code->write_php($counter . ' = trim(' . $this->get_dataspace_ref_code() . '->get_counter());');
+    $code->write_php($counter . ' = utf8_trim(' . $this->get_dataspace_ref_code() . '->get_counter());');
 
     $code->write_php(
         "if (	($counter > 0) &&

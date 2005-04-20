@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/template/fileschemes/simpleroot/compiler_support.inc.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 // Line breaks in the file must match the line breaks used by the host OS
 // Now that this is done at compile time, many other attributes are available.
@@ -24,17 +25,17 @@ function parse_var_file($filename)
 
   while (list(, $line) = each($raw_lines))
   {
-    $equal_pos = strpos($line, '=');
+    $equal_pos = utf8_strpos($line, '=');
     if ($equal_pos === false)
     {
-      $result[trim($line)] = null;
+      $result[utf8_trim($line)] = null;
     }
     else
     {
-      $key = trim(substr($line, 0, $equal_pos));
-      if (strlen($key) > 0)
+      $key = utf8_trim(utf8_substr($line, 0, $equal_pos));
+      if (utf8_strlen($key) > 0)
       {
-        $result[$key] = trim(substr($line, $equal_pos + 1));
+        $result[$key] = utf8_trim(utf8_substr($line, $equal_pos + 1));
       }
     }
   }

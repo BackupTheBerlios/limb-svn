@@ -8,8 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-
 define('RELOAD_SELF_URL', '');
+
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 function add_url_query_items($url, $items=array())
 {
@@ -20,16 +21,16 @@ function add_url_query_items($url, $items=array())
   if (($node_id = $request->get_attribute('node_id')) && !isset($items['node_id']))
     $items['node_id'] = $node_id;
 
-  if(strpos($url, '?') === false)
+  if(utf8_strpos($url, '?') === false)
     $url .= '?';
 
   foreach($items as $key => $val)
   {
-    $url = preg_replace("/&*{$key}=[^&]*/", '', $url);
+    $url = preg_replace("/&*{$key}=[^&]*/u", '', $url);
     $str_params .= "&$key=$val";
   }
 
-  $items = explode('#', $url);
+  $items = utf8_explode('#', $url);
 
   $url = $items[0];
   $fragment = isset($items[1]) ? '#' . $items[1] : '';

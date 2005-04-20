@@ -15,6 +15,7 @@ define( 'MESSAGE_LEVEL', 4 );
 
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 require_once(LIMB_DIR . '/core/lib/session/session.class.php');
+require_once(LIMB_DIR . '/core/lib/i18n/utf8.inc.php');
 
 class message_box
 {
@@ -74,10 +75,9 @@ class message_box
   */
   function write( $string, $verbosity_level = MESSAGE_LEVEL_NOTICE, $label='' )
   {
-    $this->strings[] = array(
-                                        'string' => str_replace("'", "\'", $string),
-                                        'level' => $verbosity_level,
-                                        'label' => str_replace("'", "\'", $label)
+    $this->strings[] = array('string' => utf8_str_replace("'", "\'", $string),
+                             'level' => $verbosity_level,
+                             'label' => utf8_str_replace("'", "\'", $label)
     );
   }
 

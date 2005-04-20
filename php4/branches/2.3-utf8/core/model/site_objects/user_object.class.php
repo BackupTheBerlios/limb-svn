@@ -211,21 +211,21 @@ class user_object extends content_object
       $filename = LIMB_DIR . '/design/default/templates/user/generated_password_mail.html';
 
     if(!file_exists($filename))
-      error('template file for pa ssword notification email not found!',
+      error('template file for password notification email not found!',
         __FILE__ . ' : ' . __LINE__ . ' : ' .  __FUNCTION__, array('file_name' => $filename));
 
     $fd = fopen ($filename, "r");
     $contents = fread ($fd, filesize ($filename));
     fclose ($fd);
 
-    $contents = str_replace('%website_name%', $http_host, $contents);
-    $contents = str_replace('%user_name%', $user_data['name']. ' '. $user_data['lastname'], $contents);
-    $contents = str_replace('%new_password%', $password, $contents);
-    $contents = str_replace('%website_href%', $http_host, $contents);
-    $contents = str_replace('%website_email%', ADMINISTRATOR_EMAIL, $contents);
+    $contents = utf8_str_replace('%website_name%', $http_host, $contents);
+    $contents = utf8_str_replace('%user_name%', $user_data['name']. ' '. $user_data['lastname'], $contents);
+    $contents = utf8_str_replace('%new_password%', $password, $contents);
+    $contents = utf8_str_replace('%website_href%', $http_host, $contents);
+    $contents = utf8_str_replace('%website_email%', ADMINISTRATOR_EMAIL, $contents);
 
     $activate_href = 'http://'. $http_host. '/root/activate_password?user='. $user_data['email'] .'&id='. $user_data['password'];
-    $contents = str_replace('%activate_href%', $activate_href, $contents);
+    $contents = utf8_str_replace('%activate_href%', $activate_href, $contents);
 
     if(!send_plain_mail(
                   array($user_data['email']),
