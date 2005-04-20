@@ -1,15 +1,11 @@
-function trim(value)
+
+String.prototype.trim = function(){
+     var r=/^\s+|\s+$/;
+     return this.replace(r,'');
+}
+
+function trim(str)
 {
-   var temp = value;
-   var obj = /^(\s*)([\W\w]*)(\b\s*$)/;
-
-   if (obj.test(temp))
-    temp = temp.replace(obj, '$2');
-
-   var obj = / +/g;
-   temp = temp.replace(obj, " ");
-   if (temp == " ")
-    temp = "";
-
-   return temp;
+  var r=/^\s+|\s+$/;
+  return str.replace(r,'');
 }
