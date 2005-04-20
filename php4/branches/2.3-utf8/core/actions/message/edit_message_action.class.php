@@ -27,7 +27,7 @@ class edit_message_action extends form_edit_site_object_action
     return complex_array :: array_merge(
         parent :: _define_datamap(),
         array(
-          'content' => 'content',
+          'message_content' => 'content',
         )
     );
   }
@@ -37,7 +37,7 @@ class edit_message_action extends form_edit_site_object_action
     parent :: _init_validator();
 
     $this->validator->add_rule($v1 = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'title'));
-    $this->validator->add_rule($v2 = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'content'));
+    $this->validator->add_rule($v2 = array(LIMB_DIR . '/core/lib/validators/rules/required_rule', 'message_content'));
   }
 }
 

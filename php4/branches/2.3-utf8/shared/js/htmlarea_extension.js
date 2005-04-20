@@ -245,9 +245,9 @@ function insert_limb_repository_file(e, id)
 prevGetHTML = HTMLArea.getHTML;
 HTMLArea.getHTML = function(root, outputRoot, editor)
 {
-  res = trim(prevGetHTML(root, outputRoot, editor));
+  res = prevGetHTML(root, outputRoot, editor);
 
-  if(res == '<br />')
+  if(outputRoot == false && trim(res) == '<br />')
     return '';
 
   return res;
