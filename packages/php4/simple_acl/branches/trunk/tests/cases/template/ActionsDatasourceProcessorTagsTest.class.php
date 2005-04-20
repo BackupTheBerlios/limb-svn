@@ -47,7 +47,7 @@ class ActionsDatasourceProcessorTagsTestCase extends LimbTestCase
 
   function testTag()
   {
-    $data = array('path' => $path = '/cms/limb/',
+    $data = array('_node_path' => $path = '/cms/limb/',
                   '_service_name' => $service_name = 'TestService');
 
     $this->authorizer->expectOnce('getAccessibleActions', array($path, $service_name));

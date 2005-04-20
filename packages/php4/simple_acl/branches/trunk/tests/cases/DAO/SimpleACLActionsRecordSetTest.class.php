@@ -34,8 +34,8 @@ class SimpleACLActionsRecordSetTest extends LimbTestCase
 
   function testApplyAccess()
   {
-    $records = array(array('path' => $path1 = 'path1', '_service_name' => $service_name1 = 'service_name1'),
-                     array('path' => $path2 = 'path2', '_service_name' => $service_name2 = 'service_name2'));
+    $records = array(array('_node_path' => $path1 = 'path1', '_service_name' => $service_name1 = 'service_name1'),
+                     array('_node_path' => $path2 = 'path2', '_service_name' => $service_name2 = 'service_name2'));
 
     $rs = new SimpleACLActionsRecordSet(new PagedArrayDataSet($records));
 

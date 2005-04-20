@@ -20,7 +20,7 @@ class ActionsDatasourceProcessorComponent extends Component
 
     $datasource =& $this->parent->getDataSource();
 
-    if(!$path = $datasource->get('path'))
+    if(!$path = $datasource->get('_node_path'))
       return;
 
     if(!$service_name = $datasource->get('_service_name'))

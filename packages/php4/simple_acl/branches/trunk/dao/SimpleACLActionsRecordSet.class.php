@@ -20,7 +20,7 @@ class SimpleACLActionsRecordSet extends IteratorDbDecorator
 
     $authorizer =& $this->getAuthorizer();
 
-    $path = $record->get('path');
+    $path = $record->get('_node_path');
     $service_name = $record->get('_service_name');
 
     $actions = $authorizer->getAccessibleActions($path, $service_name);
