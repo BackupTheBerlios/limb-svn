@@ -42,7 +42,7 @@ class Sys
   function _collectSystemParams()
   {
     // Determine OS specific settings
-    if ( substr( php_uname(), 0, 7 ) == 'Windows' )
+    if (substr( php_uname(), 0, 7) == 'Windows')
     {
       $this->os_type = 'win32';
       $this->file_system_type = 'win32';
@@ -51,7 +51,7 @@ class Sys
       $this->env_separator = ';';
       $this->backup_filename = '.bak';
     }
-    elseif ( substr( php_uname(), 0, 3 ) == 'Mac' )
+    elseif (substr( php_uname(), 0, 3 ) == 'Mac')
     {
       $this->os_type = 'mac';
       $this->file_system_type = 'unix';

@@ -13,21 +13,35 @@ class CacheRegistry
 {
   var $cache = array();
 
-  function put($key, &$value, $group = 'default')
+  function _normalizeKey($key)
   {
+    if(is_scalar($key))
+      return $key;
+    else
+      return md5(serialize($key));
+  }
+
+  function put($raw_key, &$value, $group = 'default')
+  {
+    $key = $this->_normalizeKey($raw_key);
+
     $this->cache[$group][$key] =& $value;
   }
 
-  function & get($key, $group = 'default')
+  function & get($raw_key, $group = 'default')
   {
+    $key = $this->_normalizeKey($raw_key);
+
     if(isset($this->cache[$group][$key]))
       return $this->cache[$group][$key];
     else
       return null;
   }
 
-  function purge($key, $group = 'default')
+  function purge($raw_key, $group = 'default')
   {
+    $key = $this->_normalizeKey($raw_key);
+
     if(isset($this->cache[$group][$key]))
       unset($this->cache[$group][$key]);
   }

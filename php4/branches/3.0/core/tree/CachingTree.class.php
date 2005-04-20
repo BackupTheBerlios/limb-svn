@@ -24,48 +24,56 @@ class CachingTree extends TreeDecorator
     $this->cache =& $toolkit->getCache();
   }
 
-  function getNode($id)
+  function getNode($lazy_node)
   {
+    $id = $this->_getIdLazy($lazy_node);
+
     if($node = $this->cache->get(array('node' => $id), CACHING_TREE_CACHE_GROUP))
       return $node;
 
-    $node = $this->_tree->getNode($id);
+    $node = $this->_tree->getNode($lazy_node);
 
     $this->cache->put(array('node' => $id), $node, CACHING_TREE_CACHE_GROUP);
 
     return $node;
   }
 
-  function getParents($id)
+  function getParents($lazy_node)
   {
-    if($node = $this->cache->get(array('parents' => $id), CACHING_TREE_CACHE_GROUP))
-      return $node;
+    $id = $this->_getIdLazy($lazy_node);
 
-    $parents = $this->_tree->getParents($id);
+    if($parents = $this->cache->get(array('parents' => $id), CACHING_TREE_CACHE_GROUP))
+      return $parents;
+
+    $parents = $this->_tree->getParents($lazy_node);
 
     $this->cache->put(array('parents' => $id), $parents, CACHING_TREE_CACHE_GROUP);
 
     return $parents;
   }
 
-  function getChildren($id)
+  function getChildren($lazy_node)
   {
-    if($node = $this->cache->get(array('children' => $id), CACHING_TREE_CACHE_GROUP))
-      return $node;
+    $id = $this->_getIdLazy($lazy_node);
 
-    $children = $this->_tree->getChildren($id);
+    if($children = $this->cache->get(array('children' => $id), CACHING_TREE_CACHE_GROUP))
+      return $children;
+
+    $children = $this->_tree->getChildren($lazy_node);
 
     $this->cache->put(array('children' => $id), $children, CACHING_TREE_CACHE_GROUP);
 
     return $children;
   }
 
-  function countChildren($id)
+  function countChildren($lazy_node)
   {
-    if($node = $this->cache->get(array('count_children' => $id), CACHING_TREE_CACHE_GROUP))
-      return $node;
+    $id = $this->_getIdLazy($lazy_node);
 
-    $count = $this->_tree->countChildren($id);
+    if($count = $this->cache->get(array('count_children' => $id), CACHING_TREE_CACHE_GROUP))
+      return $count;
+
+    $count = $this->_tree->countChildren($lazy_node);
 
     $this->cache->put(array('count_children' => $id), $count, CACHING_TREE_CACHE_GROUP);
 
@@ -157,6 +165,14 @@ class CachingTree extends TreeDecorator
     $this->cache->put(array('root_nodes'), $nodes, CACHING_TREE_CACHE_GROUP);
 
     return $nodes;
+  }
+
+  function _getIdLazy($node)
+  {
+    if(is_array($node))
+      return $node['id'];
+    else
+      return $node;
   }
 }
 

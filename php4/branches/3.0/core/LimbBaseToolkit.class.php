@@ -146,10 +146,10 @@ class LimbBaseToolkit// implements LimbToolkit
     if(is_object($this->tree))
       return $this->tree;
 
-    include_once(LIMB_DIR . '/core/tree/TreeDecorator.class.php');
+    include_once(LIMB_DIR . '/core/tree/CachingTree.class.php');
     include_once(LIMB_DIR . '/core/tree/MaterializedPathTree.class.php');
 
-    $this->tree = new TreeDecorator(new MaterializedPathTree());
+    $this->tree = new CachingTree(new MaterializedPathTree());
 
     return $this->tree;
   }

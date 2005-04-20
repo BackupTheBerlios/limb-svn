@@ -10,6 +10,8 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
 
+class CacheableFooClass{}
+
 class CacheRegistryTest extends LimbTestCase
 {
   var $cache;
@@ -31,6 +33,20 @@ class CacheRegistryTest extends LimbTestCase
     $this->assertNull($this->cache->get($key));
   }
 
+  function testGetNullArrayKey()
+  {
+    $key = array('empty');
+
+    $this->assertNull($this->cache->get($key));
+  }
+
+  function testGetNullObjectKey()
+  {
+    $key = new CacheableFooClass();
+
+    $this->assertNull($this->cache->get($key));
+  }
+
   function testGetNull2()
   {
     $key = 'empty';
@@ -47,12 +63,74 @@ class CacheRegistryTest extends LimbTestCase
     $this->assertEqual($this->cache->get($key), 'value');
   }
 
+  function testPutToCacheNoGroupArrayKey()
+  {
+    $key = array(1);
+    $this->cache->put($key, $v = 'value');
+
+    $this->assertEqual($this->cache->get($key), 'value');
+  }
+
+  function testPutToCacheNoGroupObjectKey()
+  {
+    $key = new CacheableFooClass();
+    $this->cache->put($key, $v = 'value');
+
+    $this->assertEqual($this->cache->get($key), 'value');
+  }
+
   function testPutToCacheWithGroup()
   {
     $key = 1;
     $this->cache->put($key, $v = 'value', 'test-group');
 
     $this->assertEqual($this->cache->get($key, 'test-group'), $v);
+  }
+
+  function testPutToCacheWithGroupArrayKey()
+  {
+    $key = array(1);
+    $this->cache->put($key, $v = 'value', 'test-group');
+
+    $this->assertEqual($this->cache->get($key, 'test-group'), $v);
+  }
+
+  function testPutToCacheWithGroupObjectKey()
+  {
+    $key = new CacheableFooClass();
+    $this->cache->put($key, $v = 'value', 'test-group');
+
+    $this->assertEqual($this->cache->get($key, 'test-group'), $v);
+  }
+
+  function testPurge()
+  {
+    $key = 1;
+    $this->cache->put($key, $v = 'value');
+
+    $this->cache->purge($key);
+
+    $this->assertNull($this->cache->get($key));
+  }
+
+  function testPurgeArrayKey()
+  {
+    $key = array(1);
+    $this->cache->put($key, $v = 'value');
+
+    $this->cache->purge($key);
+
+    $this->assertNull($this->cache->get($key));
+  }
+
+  function testPurgeObjectKey()
+  {
+    $key = new CacheableFooClass();
+    $this->cache->put($key, $v = 'value');
+
+    $this->cache->purge($key);
+
+    $this->assertNull($this->cache->get($key));
   }
 
   function testFlushAll()
