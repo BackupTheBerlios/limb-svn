@@ -13,29 +13,18 @@ include_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/entity/Entity.class.php');
 require_once(LIMB_DIR . '/core/NodeConnection.class.php');
-require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/core/dao/criteria/TreeBranchCriteria.class.php');
+require_once(LIMB_DIR . '/core/dao/criteria/TreeNodeSiblingsCriteria.class.php');
 
 Mock :: generate('SQLBasedDAO');
 
-Mock :: generatePartial('LimbBaseToolkit',
-                        'LimbBaseToolkitCurrentEntityDirectChildrenDAOTestVersion',
-                        array('getTree'));
-
-Mock :: generate('TreeBranchCriteria');
-Mock :: generate('Tree');
+Mock :: generate('TreeNodeSiblingsCriteria');
 
 Mock :: generatePartial('CurrentEntityDirectChildrenDAO',
                         'CurrentEntityDirectChildrenDAOTestVersion',
-                        array('getTreeBranchCriteria'));
+                        array('getTreeNodeSiblingsCriteria'));
 
 class CurrentEntityDirectChildrenDAOTest extends LimbTestCase
 {
-  var $db;
-  var $toolkit;
-  var $tree;
-
   function CurrentEntityDirectChildrenDAOTest()
   {
     parent :: LimbTestCase(__FILE__);
@@ -43,19 +32,11 @@ class CurrentEntityDirectChildrenDAOTest extends LimbTestCase
 
   function setUp()
   {
-    $this->tree = new MockTree($this);
-
-    $this->toolkit = new LimbBaseToolkitCurrentEntityDirectChildrenDAOTestVersion($this);
-    $this->toolkit->setReturnReference('getTree', $this->tree);
-
-    Limb :: registerToolkit($this->toolkit);
+    Limb :: saveToolkit();
   }
 
   function tearDown()
   {
-    $this->toolkit->tally();
-    $this->tree->tally();
-
     Limb :: restoreToolkit();
   }
 
@@ -66,10 +47,8 @@ class CurrentEntityDirectChildrenDAOTest extends LimbTestCase
     $node->set('id', $id = 10);
     $entity->registerPart('node', $node);
 
-    $this->toolkit->setCurrentEntity($entity);
-
-    $this->tree->expectOnce('getPathToNode', array($id));
-    $this->tree->setReturnValue('getPathToNode', $path = 'whatever');
+    $toolkit =& Limb :: toolkit();
+    $toolkit->setCurrentEntity($entity);
 
     $result = new PagedArrayDataset(array());
 
@@ -83,12 +62,12 @@ class CurrentEntityDirectChildrenDAOTest extends LimbTestCase
     $rs = new PagedArrayDataset($data);
     $decorated_dao->setReturnReference('fetch', $rs);
 
-    $criteria = new MockTreeBranchCriteria($this);
-    $criteria->expectOnce('setPath', array($path));
+    $criteria = new MockTreeNodeSiblingsCriteria($this);
+    $criteria->expectOnce('setParentNodeId', array($id));
 
     $dao = new CurrentEntityDirectChildrenDAOTestVersion($this);
     $dao->CurrentEntityDirectChildrenDAO($decorated_dao);
-    $dao->setReturnReference('getTreeBranchCriteria', $criteria);
+    $dao->setReturnReference('getTreeNodeSiblingsCriteria', $criteria);
 
     $this->assertNotNull($dao->fetch());
 
@@ -100,7 +79,7 @@ class CurrentEntityDirectChildrenDAOTest extends LimbTestCase
   function testGetTreeBranchCriteria()
   {
     $dao = new CurrentEntityDirectChildrenDAO(new SQLBasedDAO());
-    $this->assertIsA($dao->getTreeBranchCriteria(), 'TreeBranchCriteria');
+    $this->assertIsA($dao->getTreeNodeSiblingsCriteria(), 'TreeNodeSiblingsCriteria');
   }
 
 }

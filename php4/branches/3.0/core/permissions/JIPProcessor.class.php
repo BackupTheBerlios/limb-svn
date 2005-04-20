@@ -17,7 +17,7 @@ class JIPProcessor
     if (!$actions = $object->get('actions'))
       return;
 
-    $path = $object->get('path');
+    $path = $object->get('_node_path');
     $jip_actions = array();
     foreach($actions as $key => $action)
     {

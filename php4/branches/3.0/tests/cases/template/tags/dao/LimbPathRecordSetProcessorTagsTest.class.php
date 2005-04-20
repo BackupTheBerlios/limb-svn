@@ -58,7 +58,7 @@ class LimbPathRecordSetProcessorTagTestCase extends LimbTestCase
 
     $template = '<limb:recordset_processor:PATH source="list1">'.
                  '<list:LIST id="list1">'.
-                   '<list:ITEM>{$path}_{$_node_id}|</list:ITEM>'.
+                   '<list:ITEM>{$_node_path}_{$_node_id}|</list:ITEM>'.
                  '</list:LIST>';
 
     RegisterTestingTemplate('/limb/path_record_set_processor.html', $template);

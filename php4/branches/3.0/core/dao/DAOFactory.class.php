@@ -31,17 +31,20 @@ class DAOFactory
 
   function & create($class_path)
   {
+    if(class_exists($class_path))
+      return new $class_path();
+
     $class_name = end(explode('/', $class_path));
 
-    if(!class_exists($class_name))
-    {
-      $resolver =& Handle :: resolve(getFileResolver('dao'));
+    if(class_exists($class_name))
+      return new $class_name();
 
-      if(!$full_path = $resolver->resolve($class_path))
-        return null;
+    $resolver =& Handle :: resolve(getFileResolver('dao'));
 
-      include_once($full_path);
-    }
+    if(!$full_path = $resolver->resolve($class_path))
+      return null;
+
+    include_once($full_path);
 
     return new $class_name();
   }

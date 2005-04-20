@@ -131,6 +131,20 @@ class Path2IdTranslatorTest extends LimbTestCase
     $this->assertEqual($id, $translator->toId('/limb/cmf/test1'));
   }
 
+  function testToIdCaching()
+  {
+    $this->tree->expectOnce('getNodeByPath', array($path = '/root/test1'));
+    $this->tree->setReturnValue('getNodeByPath', array('id' => $node_id = 10), array($path));
+
+    $this->db->insert('sys_object_to_node', array('oid' => $id = 200, 'node_id' => $node_id));
+
+    $translator = new Path2IdTranslator();
+    $id1 = $translator->toId('/root/test1');
+    $id2 = $translator->toId('/root/test1');
+
+    $this->assertEqual($id1, $id2);
+  }
+
   function testToPathNotFound()
   {
     $translator = new Path2IdTranslator();

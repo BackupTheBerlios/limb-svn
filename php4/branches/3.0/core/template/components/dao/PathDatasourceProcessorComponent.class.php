@@ -12,27 +12,25 @@ require_once(WACT_ROOT . '/template/template.inc.php');
 
 class PathDatasourceProcessorComponent extends Component
 {
-  var $translator;
+  var $processor;
 
   function process()
   {
-    $translator =& $this->_getTranslator();
+    $processor =& $this->_getPathProcessor();
     $datasource =& $this->parent->getDataSource();
-    if(!$node_id = $datasource->get('_node_id'))
-      return;
 
-    $datasource->set('path', $translator->getPathToNode($node_id));
+    $processor->process($datasource);
   }
 
-  function & _getTranslator()
+  function & _getPathProcessor()
   {
-    if(is_object($this->translator))
-      return $this->translator;
+    if(is_object($this->processor))
+      return $this->processor;
 
-    $toolkit =& Limb :: toolkit();
-    $this->translator =& $toolkit->getPath2IdTranslator();
+    require_once(LIMB_DIR . '/core/dao/processors/PathRecordProcessor.class.php');
+    $this->processor = new PathRecordProcessor();
 
-    return $this->translator;
+    return $this->processor;
   }
 }
 

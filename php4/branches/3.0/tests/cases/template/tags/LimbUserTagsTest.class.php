@@ -69,5 +69,35 @@ class LimbUserTagsTestCase extends LimbTestCase
 
     $this->assertEqual($page->capture(), 'logged!');
   }
+
+  function testIsLoggedInTag()
+  {
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
+    $user->login();
+
+    $template = '<limb:user:IS_LOGGED_IN>logged!</limb:user:IS_LOGGED_IN>';
+
+    RegisterTestingTemplate('/limb/user_is_logged_in_tag.html', $template);
+
+    $page =& new Template('/limb/user_is_logged_in_tag.html');
+
+    $this->assertEqual($page->capture(), 'logged!');
+  }
+
+  function testIsNotLoggedInTag()
+  {
+    $toolkit =& Limb :: toolkit();
+    $user =& $toolkit->getUser();
+    $user->logout();
+
+    $template = '<limb:user:IS_NOT_LOGGED_IN>NotLogged!</limb:user:IS_NOT_LOGGED_IN>';
+
+    RegisterTestingTemplate('/limb/user_is_not_logged_in_tag.html', $template);
+
+    $page =& new Template('/limb/user_is_not_logged_in_tag.html');
+
+    $this->assertEqual($page->capture(), 'NotLogged!');
+  }
 }
 ?>

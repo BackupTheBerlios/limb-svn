@@ -9,17 +9,24 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/IteratorDbDecorator.class.php');
+require_once(LIMB_DIR . '/core/dao/processors/PathRecordProcessor.class.php');
 
 class PathAssignerRecordSet extends IteratorDbDecorator
 {
+  var $processor;
+
+  function PathAssignerRecordSet(&$iterator)
+  {
+    parent :: IteratorDbDecorator($iterator);
+
+    $this->processor = new PathRecordProcessor();
+  }
+
   function & current()
   {
     $record =& parent :: current();
 
-    $toolkit =& Limb :: toolkit();
-
-    $path2id_translator =& $toolkit->getPath2IdTranslator();
-    $record->set('path', $path2id_translator->getPathToNode($record->get('_node_id')));
+    $this->processor->process($record);
 
     return $record;
   }

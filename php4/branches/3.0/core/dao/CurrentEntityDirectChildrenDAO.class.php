@@ -26,26 +26,24 @@ class CurrentEntityDirectChildrenDAO extends SQLBasedDAODecorator
       return new PagedArrayDataset(array());
     }
 
-    $node =& $entity->getPart('node');
-    $tree =& $toolkit->getTree();
-    if(!$path = $tree->getPathToNode($node->get('id')))
+    if(!$node =& $entity->getPart('node'))
     {
       include_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
       return new PagedArrayDataset(array());
     }
 
-    $critetia =& $this->getTreeBranchCriteria();
-    $critetia->setPath($path);
+    $criteria =& $this->getTreeNodeSiblingsCriteria();
+    $criteria->setParentNodeId($node->get('id'));
 
-    $this->dao->addCriteria($critetia);
+    $this->dao->addCriteria($criteria);
 
     return $this->dao->fetch();
   }
 
-  function & getTreeBranchCriteria()
+  function & getTreeNodeSiblingsCriteria()
   {
-    include_once(LIMB_DIR . '/core/dao/criteria/TreeBranchCriteria.class.php');
-    return new TreeBranchCriteria();
+    include_once(LIMB_DIR . '/core/dao/criteria/TreeNodeSiblingsCriteria.class.php');
+    return new TreeNodeSiblingsCriteria();
   }
 }
 

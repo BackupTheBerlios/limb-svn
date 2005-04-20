@@ -25,7 +25,7 @@ class JIPProcessorTest extends LimbTestCase
                      'create' => array('jip' => true));
 
     $object = new Object();
-    $object->set('path', $path = 'whatever');
+    $object->set('_node_path', $path = 'whatever');
     $object->set('actions', $actions);
 
     $processor = new JIPProcessor();

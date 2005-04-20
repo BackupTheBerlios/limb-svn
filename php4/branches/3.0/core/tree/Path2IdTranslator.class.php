@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 define('PATH_TO_ID', 'path_to_id_group');
+define('ID_TO_PATH', 'id_to_path_group');
 
 class Path2IdTranslator
 {
@@ -36,9 +37,15 @@ class Path2IdTranslator
     return $path;
   }
 
-  function toId($path)
+  function toId($raw_path)
   {
-    $path = $this->_applyPathOffsets($path);
+    $toolkit =& Limb :: toolkit();
+    $cache =& $toolkit->getCache();
+
+    if($id = $cache->get($raw_path, ID_TO_PATH))
+      return $id;
+
+    $path = $this->_applyPathOffsets($raw_path);
 
     $toolkit = Limb :: toolkit();
     $tree =& $toolkit->getTree();
@@ -52,7 +59,10 @@ class Path2IdTranslator
     if(!$row = $rs->getRow())
       return null;
 
-    return $row['oid'];
+    $oid = $row['oid'];
+    $cache->put($raw_path, $oid, ID_TO_PATH);
+
+    return $oid;
   }
 
   function toPath($id)

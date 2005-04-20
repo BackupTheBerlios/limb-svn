@@ -54,7 +54,7 @@ class LimbPathDatasourceProcessorTagsTestCase extends LimbTestCase
     $this->translator->setReturnValue('getPathToNode', $path);
 
     $template = '<core:DATASOURCE id="realm"><limb:datasource_processor:Path>'.
-                '{$path}'.
+                '{$_node_path}'.
                 '</core:DATASOURCE>';
 
     RegisterTestingTemplate('/limb/path_datasource_processor.html', $template);

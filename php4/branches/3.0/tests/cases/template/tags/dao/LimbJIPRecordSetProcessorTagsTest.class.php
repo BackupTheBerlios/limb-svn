@@ -25,12 +25,12 @@ class LimbJIPRecordSetProcessorTagTestCase extends LimbTestCase
 
   function testTag()
   {
-    $object1_data = array('path' => '/path1/',
+    $object1_data = array('_node_path' => '/path1/',
                           'id' => 1,
                           'actions' => array('create' => array('jip' => true),
                                               'edit' => array('jip' => true)));
 
-    $object2_data = array('path' => $path1 = '/path2/',
+    $object2_data = array('_node_path' => $path1 = '/path2/',
                           'id' => 2,
                           'actions' => array('create' => array('jip' => true),
                                               'edit' => array('jip' => true)));

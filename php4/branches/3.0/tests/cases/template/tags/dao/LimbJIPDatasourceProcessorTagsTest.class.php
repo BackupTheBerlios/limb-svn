@@ -24,7 +24,7 @@ class LimbJIPDatasourceProcessorTagsTestCase extends LimbTestCase
 
   function testTag()
   {
-    $data = array('path' => $path1 = '/cms/limb/',
+    $data = array('_node_path' => $path1 = '/cms/limb/',
                   'actions' => array('create' => array('jip' => true),
                                       'edit' => array('jip' => true),
                                       'display' => array(),
