@@ -15,11 +15,11 @@
 FullPage.I18N = {
 	"Alternate style-sheet:":		"Template CSS alternativ:",
 	"Background color:":			"Culoare de fundal:",
-	"Cancel":				"Renunţă",
+	"Cancel":				"RenunЕЈДѓ",
 	"DOCTYPE:":				"DOCTYPE:",
-	"Document properties":			"Proprietăţile documentului",
+	"Document properties":			"ProprietДѓЕЈile documentului",
 	"Document title:":			"Titlul documentului:",
-	"OK":					"Acceptă",
+	"OK":					"AcceptДѓ",
 	"Primary style-sheet:":			"Template CSS principal:",
 	"Text color:":				"Culoare text:"
 };

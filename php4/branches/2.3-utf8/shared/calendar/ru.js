@@ -15,12 +15,12 @@ var gPosOffset=[0,0];	// Offsets used to adjust the pop-up postion, [leftOffset,
 var gbFixedPos=false;	// true: pop the calendar absolutely at gPosOffset; false: pop it relatively.
 
 // ---- Common Options ----
-var gMonths=["Янв","Фев","Мар","Апр","Май","Июнь","Июль","Авг","Сен","Окт","Ноя","Дек"];
-var gWeekDay=["Вск","Пн","Вт","Ср","Чт","Пт","Сб"];	// weekday caption from Sunday to Saturday
+var gMonths=["РЇРЅРІ","Р¤РµРІ","РњР°СЂ","РђРїСЂ","РњР°Р№","РСЋРЅСЊ","РСЋР»СЊ","РђРІРі","РЎРµРЅ","РћРєС‚","РќРѕСЏ","Р”РµРє"];
+var gWeekDay=["Р’СЃРє","РџРЅ","Р’С‚","РЎСЂ","Р§С‚","РџС‚","РЎР±"];	// weekday caption from Sunday to Saturday
 
 var gBegin=[1980,1,1];	// static calendar range begin from [Year,Month,Date]
 var gEnd=[2030,12,31];	// static calendar range end at [Year,Month,Date]
-var gsOutOfRange="Извините, Вам нельзя уходить за указанную дату!";	// out-of-date-range error message
+var gsOutOfRange="РР·РІРёРЅРёС‚Рµ, Р’Р°Рј РЅРµР»СЊР·СЏ СѓС…РѕРґРёС‚СЊ Р·Р° СѓРєР°Р·Р°РЅРЅСѓСЋ РґР°С‚Сѓ!";	// out-of-date-range error message
 var guOutOfRange=null;	// the background image url for the out-range dates.
 
 var gbEuroCal=true;	// true: ISO-8601 calendar layout - Monday is the 1st day of week; false: US layout - Sunday is the 1st day of week.
@@ -40,7 +40,7 @@ var gsNavPrev="<img src='/shared/images/arr_prev.gif' border=0 width=11 height=1
 var gsNavNext="<img src='/shared/images/arr_next.gif' border=0 width=11 height=11 onclick='fNextMonth();this.blur();'>";	// the content of the right month navigator
 
 var gbHideBottom=false;	// true: hide the bottom section; false: show it with gsBottom.
-var gsBottom="<A href='javascript:void(0)' class='Today' onclick='if(!NN4)this.blur();if(!fSetDate(gToday[0],gToday[1],gToday[2]))alert(\"Нельзя выбрать эту дату!\");return false;' onmouseover='return true;' title='Today'>Сегодня : "+gToday[2]+" "+gMonths[gToday[1]-1]+" "+gToday[0]+"</A>";	// the content of the bottom section.
+var gsBottom="<A href='javascript:void(0)' class='Today' onclick='if(!NN4)this.blur();if(!fSetDate(gToday[0],gToday[1],gToday[2]))alert(\"РќРµР»СЊР·СЏ РІС‹Р±СЂР°С‚СЊ СЌС‚Сѓ РґР°С‚Сѓ!\");return false;' onmouseover='return true;' title='Today'>РЎРµРіРѕРґРЅСЏ : "+gToday[2]+" "+gMonths[gToday[1]-1]+" "+gToday[0]+"</A>";	// the content of the bottom section.
 
 var giCellWidth=18;	// calendar cell width;
 var giCellHeight=14;	// calendar cell height;

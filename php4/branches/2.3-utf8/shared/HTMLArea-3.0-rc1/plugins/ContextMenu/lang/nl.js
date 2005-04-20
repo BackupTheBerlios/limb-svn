@@ -18,7 +18,7 @@ ContextMenu.I18N = {
 	// letter to become underlined and be shortcut for that menu option.
 
 	"Cut"                                                   : "Knippen",
-	"Copy"                                                  : "Kopiëren",
+	"Copy"                                                  : "KopiÐ»ren",
 	"Paste"                                                 : "Plakken",
 	"Image Properties"                                      : "Eigenschappen afbeelding...",
 	"Modify Link"                                           : "Hyperlin_k aanpassen...",
