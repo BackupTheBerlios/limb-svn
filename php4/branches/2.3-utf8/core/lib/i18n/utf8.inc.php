@@ -111,6 +111,14 @@ function utf8_strlen($string){
  * @see    substr()
  */
 function utf8_substr($str, $start, $length=null){
+  if($start < 0) {
+    $start = utf8_strlen($str) + $start;
+  }
+
+  if($length < 0) {
+    $length = utf8_strlen($str) + $length;
+  }
+
   if ( is_null($length) ) {
     $length = '*';
   } else {
@@ -218,11 +226,10 @@ function utf8_strtolower($string){
   if(!defined('UTF8_NOMBSTRING') && function_exists('mb_strtolower'))
     return mb_strtolower($string,'utf-8');
 
-  global $UTF8_UPPER_TO_LOWER;
   $uni = utf8_to_unicode($string);
   for ($i=0; $i < count($uni); $i++){
-    if($UTF8_UPPER_TO_LOWER[$uni[$i]]){
-      $uni[$i] = $UTF8_UPPER_TO_LOWER[$uni[$i]];
+    if(isset($GLOBALS['UTF8_UPPER_TO_LOWER'][$uni[$i]])){
+      $uni[$i] = $GLOBALS['UTF8_UPPER_TO_LOWER'][$uni[$i]];
     }
   }
   return unicode_to_utf8($uni);
@@ -241,11 +248,10 @@ function utf8_strtoupper($string){
   if(!defined('UTF8_NOMBSTRING') && function_exists('mb_strtolower'))
     return mb_strtolower($string,'utf-8');
 
-  global $UTF8_LOWER_TO_UPPER;
   $uni = utf8_to_unicode($string);
   for ($i=0; $i < count($uni); $i++){
-    if($UTF8_LOWER_TO_UPPER[$uni[$i]]){
-      $uni[$i] = $UTF8_LOWER_TO_UPPER[$uni[$i]];
+    if(isset($GLOBALS['UTF8_LOWER_TO_UPPER'][$uni[$i]])){
+      $uni[$i] = $GLOBALS['UTF8_LOWER_TO_UPPER'][$uni[$i]];
     }
   }
   return unicode_to_utf8($uni);
@@ -309,10 +315,10 @@ function utf8_stripspecials($string,$repl='',$keep=''){
  */
 function utf8_strpos($haystack, $needle, $offset=0) {
   if(!defined('UTF8_NOMBSTRING') && function_exists('mb_strpos'))
-    return mb_strpos($haystack,$needle,$offset,'utf-8');
+    return mb_strpos($haystack, $needle, $offset, 'utf-8');
 
   if(!$offset){
-    $ar = utf8_explode($needle, $str);
+    $ar = utf8_explode($needle, $haystack);
     if ( count($ar) > 1 ) {
        return utf8_strlen($ar[0]);
     }
@@ -323,9 +329,9 @@ function utf8_strpos($haystack, $needle, $offset=0) {
       return false;
     }
 
-    $str = utf8_substr($str, $offset);
+    $haystack = utf8_substr($haystack, $offset);
 
-    if ( false !== ($pos = utf8_strpos($str,$needle))){
+    if ( false !== ($pos = utf8_strpos($haystack, $needle))){
        return $pos + $offset;
     }
     return false;
@@ -396,7 +402,7 @@ function unicode_to_utf8( $str ) {
  *
  * @author Andreas Gohr <andi@splitbrain.org>
  */
-$UTF8_LOWER_TO_UPPER = array(
+$GLOBALS['UTF8_LOWER_TO_UPPER'] = array(
   0x0061=>0x0041, 0x03C6=>0x03A6, 0x0163=>0x0162, 0x00E5=>0x00C5, 0x0062=>0x0042,
   0x013A=>0x0139, 0x00E1=>0x00C1, 0x0142=>0x0141, 0x03CD=>0x038E, 0x0101=>0x0100,
   0x0491=>0x0490, 0x03B4=>0x0394, 0x015B=>0x015A, 0x0064=>0x0044, 0x03B3=>0x0393,
@@ -450,7 +456,7 @@ $UTF8_LOWER_TO_UPPER = array(
  *
  * @author Andreas Gohr <andi@splitbrain.org>
  */
-$UTF8_UPPER_TO_LOWER = @array_flip($UTF8_LOWER_TO_UPPER);
+$GLOBALS['UTF8_UPPER_TO_LOWER'] = @array_flip($GLOBALS['UTF8_LOWER_TO_UPPER']);
 
 /**
  * UTF-8 lookup table for lower case accented letters
@@ -461,7 +467,7 @@ $UTF8_UPPER_TO_LOWER = @array_flip($UTF8_LOWER_TO_UPPER);
  * @author Andreas Gohr <andi@splitbrain.org>
  * @see    utf8_deaccent()
  */
-$UTF8_LOWER_ACCENTS = array(
+$GLOBALS['UTF8_LOWER_ACCENTS'] = array(
   'à' => 'a', 'ô' => 'o', 'ď' => 'd', 'ḟ' => 'f', 'ë' => 'e', 'š' => 's', 'ơ' => 'o',
   'ß' => 'ss', 'ă' => 'a', 'ř' => 'r', 'ț' => 't', 'ň' => 'n', 'ā' => 'a', 'ķ' => 'k',
   'ŝ' => 's', 'ỳ' => 'y', 'ņ' => 'n', 'ĺ' => 'l', 'ħ' => 'h', 'ṗ' => 'p', 'ó' => 'o',
@@ -488,7 +494,7 @@ $UTF8_LOWER_ACCENTS = array(
  * @author Andreas Gohr <andi@splitbrain.org>
  * @see    utf8_deaccent()
  */
-$UTF8_UPPER_ACCENTS = array(
+$GLOBALS['UTF8_UPPER_ACCENTS'] = array(
   'à' => 'A', 'ô' => 'O', 'ď' => 'D', 'ḟ' => 'F', 'ë' => 'E', 'š' => 'S', 'ơ' => 'O',
   'ß' => 'Ss', 'ă' => 'A', 'ř' => 'R', 'ț' => 'T', 'ň' => 'N', 'ā' => 'A', 'ķ' => 'K',
   'ŝ' => 'S', 'ỳ' => 'Y', 'ņ' => 'N', 'ĺ' => 'L', 'ħ' => 'H', 'ṗ' => 'P', 'ó' => 'O',
@@ -519,7 +525,7 @@ $UTF8_UPPER_ACCENTS = array(
  * @author Andreas Gohr <andi@splitbrain.org>
  * @see    utf8_stripspecials()
  */
-$UTF8_SPECIAL_CHARS = array(
+$GLOBALS['UTF8_SPECIAL_CHARS'] = array(
   0x001a, 0x001b, 0x001c, 0x001d, 0x001e, 0x001f, 0x0020, 0x0021, 0x0022, 0x0023,
   0x0024, 0x0025, 0x0026, 0x0027, 0x0028, 0x0029, 0x002a, 0x002b, 0x002c, 0x002d,
   0x002e, 0x002f, 0x003a, 0x003b, 0x003c, 0x003d, 0x003e, 0x003f, 0x0040, 0x005b,

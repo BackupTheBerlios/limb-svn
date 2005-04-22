@@ -25,7 +25,7 @@ class fs
 
     if($path{0} == $separator)
       return true;
-    elseif(sys :: os_type() == 'win32' && preg_match('~^[a-zA-Z]+:~', $path))
+    elseif(sys :: os_type() == 'win32' && preg_match('~^[a-zA-Z]+:~u', $path))
       return true;
     else
       return false;
@@ -49,10 +49,10 @@ class fs
   */
   function mkdir($dir, $perm=0777, $parents=true)
   {
-    $dir = fs :: clean_path($dir);
-
     if(is_dir($dir))
       return true;
+
+    $dir = fs :: clean_path($dir);
 
     if(!$parents)
       return fs :: _do_mkdir($dir, $perm);
@@ -221,7 +221,7 @@ class fs
     if ($as_child)
     {
       $separator_regex = preg_quote($separator);
-      if (preg_match( "#^.+{$separator_regex}([^{$separator_regex}]+)$#", $src, $matches))
+      if (preg_match( "#^.+{$separator_regex}([^{$separator_regex}]+)$#u", $src, $matches))
       {
         fs :: _do_mkdir($dest . $separator . $matches[1], 0777);
         $dest .= $separator . $matches[1];
@@ -310,7 +310,7 @@ class fs
   function convert_separators($path, $to_type = DIR_SEPARATOR_UNIX)
   {
     $separator = fs :: separator($to_type);
-    return preg_replace("#[/\\\\]#", $separator, $path);
+    return preg_replace("#[/\\\\]#u", $separator, $path);
   }
 
   /*
@@ -348,7 +348,7 @@ class fs
 
   function _normalize_separators($path, $separator)
   {
-    $clean_path = preg_replace( "#$separator$separator+#", $separator, $path);
+    $clean_path = preg_replace("#$separator$separator+#u", $separator, $path);
 
     if(fs :: _has_win32_net_prefix($path))
       $clean_path = '\\' . $clean_path;
@@ -459,7 +459,7 @@ class fs
           continue;
         if (!$include_hidden && $element[0] == '.')
           continue;
-        if ($exclude_regex && preg_match($exclude_regex, $element))
+        if ($exclude_regex && preg_match($exclude_regex . 'u', $element))
           continue;
         if (is_dir($dir . $separator . $element) && strpos($types, 'd') === false)
           continue;
