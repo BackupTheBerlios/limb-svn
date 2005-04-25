@@ -179,6 +179,7 @@ function utf8_ltrim($str,$charlist=''){
 
   $chars = preg_split('//u', $charlist, -1, PREG_SPLIT_NO_EMPTY);
   $regex = '(' . implode('|', $chars) . ')';
+  $regex = preg_replace('~(\?|\.|\+|\*)+~u', '\\\$1', $regex);
 
   return preg_replace('/^' . $regex . '+/u', '', $str);
 }
@@ -195,6 +196,7 @@ function  utf8_rtrim($str, $charlist=''){
 
   $chars = preg_split('//u', $charlist, -1, PREG_SPLIT_NO_EMPTY);
   $regex = '(' . implode('|', $chars) . ')';
+  $regex = preg_replace('~(\?|\.|\+|\*)+~u', '\\\$1', $regex);
 
   return preg_replace('/' . $regex . '+$/u', '', $str);
 }

@@ -37,6 +37,7 @@ class utf8_test extends LimbTestCase
   function test_rtrim()
   {
      $this->assertEqual(utf8_rtrim("τελευτατελ\0\n\n\t"), "τελευτατελ");
+     $this->assertEqual(utf8_rtrim("τελευτατε?++?", "?+"), "τελευτατε");
      //intervals stuff not working yet
      //$this->assertEqual(utf8_rtrim("τελευτατε\n\t", "\0x00..\0x1F"), "τελευτατε");
   }
