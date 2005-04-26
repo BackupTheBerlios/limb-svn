@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/filters/FilterChain.class.php');
-require_once(LIMB_DIR . '/core/filters/InterceptingFilter.interface.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(LIMB_DIR . '/core/request/HttpResponse.class.php');
 
@@ -17,81 +16,50 @@ Mock :: generate('InterceptingFilter');
 Mock :: generate('Request');
 Mock :: generate('HttpResponse');
 
-class SpecialInterceptingFilter extends MockInterceptingFilter
+class InterceptingFilterStub
 {
   var $captured = array();
+  var $run = false;
 
-  function SpecialInterceptingFilter(&$test)
+  function run(&$fc, &$request, &$response, &$context)
   {
-    parent :: MockinterceptingFilter($test);
-  }
-
-  function run(&$fc, &$request, &$response)
-  {
+    $this->run = true;
     $this->captured['filter_chain'] =& $fc;
     $this->captured['request'] =& $request;
     $this->captured['response'] =& $response;
+    $this->captured['context'] =& $context;
 
     $fc->next();
-
-    return parent::run($fc, $request, $response);
   }
 }
 
-class OutputFilter1 extends MockInterceptingFilter
+class OutputFilter1
 {
-  function OutputFilter1($test)
-  {
-    parent :: MockinterceptingFilter($test);
-  }
-
-  function run(&$fc, &$request, &$response)
+  function run(&$fc, &$request, &$response, &$context)
   {
     echo '<filter1>';
-
     $fc->next();
-
     echo '</filter1>';
-
-    return parent::run($fc, $request, $response);
   }
 }
 
-class OutputFilter2 extends MockInterceptingFilter
+class OutputFilter2
 {
-  function OutputFilter2($test)
-  {
-    parent :: MockinterceptingFilter($test);
-  }
-
-  function run(&$fc, &$request, &$response)
+  function run(&$fc, &$request, &$response, &$context)
   {
     echo '<filter2>';
-
     $fc->next();
-
     echo '</filter2>';
-
-    return parent::run($fc, $request, $response);
   }
 }
 
-class OutputFilter3 extends MockInterceptingFilter
+class OutputFilter3
 {
-  function OutputFilter3(&$test)
-  {
-    parent :: MockinterceptingFilter($test);
-  }
-
-  function run(&$fc, &$request, &$response)
+  function run(&$fc, &$request, &$response, &$context)
   {
     echo '<filter3>';
-
     $fc->next();
-
     echo '</filter3>';
-
-    return parent::run($fc, $request, $response);
   }
 }
 
@@ -100,6 +68,7 @@ class FilterChainTest extends LimbTestCase
   var $fc;
   var $request;
   var $response;
+  var $context;
 
   function FilterChainTest()
   {
@@ -110,62 +79,53 @@ class FilterChainTest extends LimbTestCase
   {
     $this->request = new MockRequest($this);
     $this->response = new MockHttpResponse($this);
-    $this->fc = new FilterChain($this->request, $this->response);
-  }
-
-  function tearDown()
-  {
+    $this->dataspace = new Object();
+    $this->fc = new FilterChain($this->request, $this->response, $this->dataspace);
   }
 
   function testRegisterFilter()
   {
-    $ref = new LimbHandle('MockInterceptingFilter', array($this));
+    $ref = new LimbHandle('InterceptingFilterStub');
     $this->fc->registerFilter($ref);
 
-    $this->assertTrue($this->fc->hasFilter('MockInterceptingFilter'));
+    $this->assertTrue($this->fc->hasFilter('InterceptingFilterStub'));
     $this->assertFalse($this->fc->hasFilter('no_such_filter'));
   }
 
   function testProcess()
   {
-    $mock_filter = new SpecialInterceptingFilter($this);
+    $mock_filter = new InterceptingFilterStub();
 
     $this->fc->registerFilter($mock_filter);
 
-    $mock_filter->expectOnce('run');
+    $this->assertFalse($mock_filter->run);
 
     $this->fc->process();
+
+    $this->assertTrue($mock_filter->run);
 
     $this->assertIsA($mock_filter->captured['filter_chain'], 'FilterChain');
     $this->assertIsA($mock_filter->captured['request'], 'MockRequest');
     $this->assertIsA($mock_filter->captured['response'], 'MockHttpResponse');
-
-    $mock_filter->tally();
+    $this->assertEqual($mock_filter->captured['context'], new Object());
   }
 
   function testProcessProperNesting()
   {
-    $f1 = new OutputFilter1($this);
-    $f2 = new OutputFilter2($this);
+    $f1 = new OutputFilter1();
+    $f2 = new OutputFilter2();
 
     $this->fc->registerFilter($f1);
     $this->fc->registerFilter($f2);
-
-    $f1->expectOnce('run');
-    $f2->expectOnce('run');
 
     ob_start();
 
     $this->fc->process();
 
     $str = ob_get_contents();
-
     ob_end_clean();
 
     $this->assertEqual($str, '<filter1><filter2></filter2></filter1>');
-
-    $f1->tally();
-    $f2->tally();
   }
 }
 

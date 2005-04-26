@@ -12,15 +12,17 @@
 class FilterChain
 {
   var $filters = array();
-  var $counter = 0;
+  var $counter = -1;
 
   var $request;
   var $response;
+  var $context;
 
-  function FilterChain(&$request, &$response)
+  function FilterChain(&$request, &$response, &$context)
   {
     $this->request =& $request;
     $this->response =& $response;
+    $this->context =& $context;
   }
 
   function registerFilter(&$filter)
@@ -47,19 +49,14 @@ class FilterChain
     if(isset($this->filters[$this->counter]))
     {
       $filter =& Handle :: resolve($this->filters[$this->counter]);
-      $filter->run($this, $this->request, $this->response);
+      $filter->run($this, $this->request, $this->response, $this->context);
     }
   }
 
   function process()
   {
-    $this->counter = 0;
-
-    if(sizeof($this->filters) > 0)
-    {
-      $this->filters[0] =& Handle :: resolve($this->filters[0]);
-      $this->filters[0]->run($this, $this->request, $this->response);
-    }
+    $this->counter = -1;
+    $this->next();
   }
 
 }

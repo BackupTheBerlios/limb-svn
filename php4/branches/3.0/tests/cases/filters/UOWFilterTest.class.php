@@ -54,7 +54,7 @@ class UOWFilterTest extends LimbTestCase
     $fc = new MockFilterChain($this);
     $fc->expectOnce('next');
 
-    $filter->run($fc, $request, $response);
+    $filter->run($fc, $request, $response, new DataSpace());
 
     $fc->tally();
   }

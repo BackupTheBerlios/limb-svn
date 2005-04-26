@@ -11,7 +11,7 @@
 
 class UOWFilter//implements InterceptingFilter
 {
-  function run(&$filter_chain, &$request, &$response)
+  function run(&$filter_chain, &$request, &$response, &$context)
   {
     $toolkit =& Limb :: toolkit();
     $uow =& $toolkit->getUOW();

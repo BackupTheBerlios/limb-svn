@@ -11,7 +11,7 @@
 
 class ServiceActionMappingFilter//implements InterceptingFilter
 {
-  function run(&$filter_chain, &$request, &$response)
+  function run(&$filter_chain, &$request, &$response, &$context)
   {
     $toolkit =& Limb :: toolkit();
     $action_resolver =& $toolkit->getRequestResolver('action');
@@ -24,18 +24,18 @@ class ServiceActionMappingFilter//implements InterceptingFilter
     if(!$action =& $action_resolver->resolve($request))
     {
       $service->setCurrentAction($service->getDefaultAction());
-      $toolkit->setCurrentService($service);
+      $context->setObject('Service', $service);
     }
     elseif($service->actionExists($action))
     {
       $service->setCurrentAction($action);
-      $toolkit->setCurrentService($service);
+      $context->setObject('Service', $service);
     }
     else
     {
       $service404 = new Service('404');
       $service404->setCurrentAction($service404->getDefaultAction());
-      $toolkit->setCurrentService($service404);
+      $context->setObject('Service', $service404);
     }
 
     $filter_chain->next();

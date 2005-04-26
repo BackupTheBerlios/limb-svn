@@ -77,11 +77,10 @@ class ServiceActionMappingFilterTest extends LimbTestCase
 
     $filter = new ServiceActionMappingFilter();
 
-    $filter->run($this->fc, $request, $response);
+    $context = new DataSpace();
+    $filter->run($this->fc, $request, $response, $context);
 
-    $service =& $toolkit->getCurrentService();
-
-    $this->assertIsA($service, 'MockService');
+    $this->assertIsA($context->getObject('Service'), 'MockService');
   }
 
   function testRunOkEmptyAction()
@@ -105,11 +104,11 @@ class ServiceActionMappingFilterTest extends LimbTestCase
     $this->service->expectOnce('setCurrentAction', array($action));
 
     $filter = new ServiceActionMappingFilter();
-    $filter->run($this->fc, $request, $response);
 
-    $service =& $toolkit->getCurrentService();
+    $context = new DataSpace();
+    $filter->run($this->fc, $request, $response, $context);
 
-    $this->assertIsA($service, 'MockService');
+    $this->assertIsA($context->getObject('Service'), 'MockService');
   }
 
   function testRunOkActionNotFound()
@@ -135,10 +134,10 @@ class ServiceActionMappingFilterTest extends LimbTestCase
     $this->service->setReturnValue('actionExists', false);
 
     $filter = new ServiceActionMappingFilter();
-    $filter->run($this->fc, $request, $response);
 
-    $service404 =& $toolkit->getCurrentService();
-
+    $context = new DataSpace();
+    $filter->run($this->fc, $request, $response, $context);
+    $service404 = $context->getObject('Service');
     $this->assertEqual($service404->getName(), '404');
     $this->assertEqual($service404->getCurrentAction(), 'display');
 

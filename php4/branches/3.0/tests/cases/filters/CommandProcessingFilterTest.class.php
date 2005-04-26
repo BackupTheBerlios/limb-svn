@@ -15,7 +15,18 @@ require_once(LIMB_DIR . '/core/commands/Command.interface.php');
 
 Mock :: generate('FilterChain');
 Mock :: generate('Service');
-Mock :: generate('Command');
+
+class CommandStub
+{
+  var $performed = false;
+  var $context;
+
+  function perform(&$context)
+  {
+    $this->context =& $context;
+    $this->performed = true;
+  }
+}
 
 class CommandProcessingFilterTest extends LimbTestCase
 {
@@ -24,22 +35,11 @@ class CommandProcessingFilterTest extends LimbTestCase
     parent :: LimbTestCase(__FILE__);
   }
 
-  function setUp()
-  {
-    Limb :: saveToolkit();
-  }
-
-  function tearDown()
-  {
-    Limb :: restoreToolkit();
-  }
-
   function testRunOk()
   {
-    $toolkit =& Limb :: toolkit();
+    $context = new DataSpace();
 
-    $command = new MockCommand($this);
-    $command->expectOnce('perform');
+    $command = new CommandStub();
 
     $service =& new MockService($this);
     $service->expectOnce('getCurrentAction');
@@ -47,20 +47,21 @@ class CommandProcessingFilterTest extends LimbTestCase
     $service->expectOnce('getActionCommand', array($action));
     $service->setReturnReference('getActionCommand', $command);
 
-    $toolkit->setCurrentService($service);
+    $context->setObject('Service', $service);
 
     $filter = new CommandProcessingFilter();
 
     $fc = new MockFilterChain($this);
     $fc->expectOnce('next');
 
-    $filter->run($fc, $request, $response);
+    $filter->run($fc, $request, $response, $context);
+
+    $this->assertReference($command->context, $context);
+    $this->assertTrue($command->performed);
 
     $fc->tally();
     $service->tally();
-    $command->tally();
   }
-
 }
 
 ?>

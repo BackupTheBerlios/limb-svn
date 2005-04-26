@@ -77,8 +77,9 @@ class LimbApplication
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
     $response =& $toolkit->getResponse();
+    $context = new DataSpace();
 
-    $filter_chain = new FilterChain($request, $response);
+    $filter_chain = new FilterChain($request, $response, $context);
 
     $this->_registerFilters($filter_chain);
 

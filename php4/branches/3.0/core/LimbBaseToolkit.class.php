@@ -23,7 +23,6 @@ class LimbBaseToolkit// implements LimbToolkit
   var $cache;
   var $uow;
   var $processed_object;
-  var $current_service;
   var $request_resolvers;
   var $path2id_translator;
   var $ini_cache = array();
@@ -43,7 +42,6 @@ class LimbBaseToolkit// implements LimbToolkit
     $this->cache = null;
     $this->uow = null;
     $this->processed_object = null;
-    $this->current_service = null;
     $this->request_resolvers = array();
     $this->path2id_translator = null;
     $this->ini_cache = array();
@@ -281,16 +279,6 @@ class LimbBaseToolkit// implements LimbToolkit
   {
     $this->view =& Handle :: resolve($this->view);
     return $this->view;
-  }
-
-  function setCurrentService(&$service)
-  {
-    $this->current_service =& $service;
-  }
-
-  function & getCurrentService()
-  {
-    return $this->current_service;
   }
 
   function setRequestResolver($name, &$resolver)
