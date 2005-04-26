@@ -61,7 +61,7 @@ function write_template_file($file, $data)
     fs :: mkdir(dirname($file), 0777, true);
 
   $fp = fopen($file, "wb");
-  if (fwrite($fp, $data, utf8_strlen($data)))
+  if (fwrite($fp, $data, strlen($data)))//note not utf8_strlen!!!
   {
     fclose($fp);
   }
