@@ -5,26 +5,19 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: Service.class.php 1191 2005-03-25 14:04:13Z seregalimb $
+* $Id: FiltersGroup.class.php 1209 2005-04-08 14:29:41Z pachanga $
 *
 ***********************************************************************************/
-class NotFoundRequestResolver //implements RequestResolver
+class DAOCriteriasGroup extends LimbGroupTest
 {
-  function & getRequestedService(&$request)
+  function DAOCriteriasGroup()
   {
-    include_once(LIMB_DIR . '/core/services/Service.class.php');
-    return new Service('404');
+    parent :: LimbGroupTest(__FILE__);
   }
 
-  function getRequestedAction(&$request)
+  function getTestCasesHandles()
   {
-    return 'display';
-  }
-
-  function getRequestedEntity(&$request)
-  {
-    return new Object();
+    return TestFinder::getTestCasesHandlesFromDirectory(dirname(__FILE__) . '/criteria/');
   }
 }
-
 ?>

@@ -8,18 +8,13 @@
 * $Id: DAO.class.php 1159 2005-03-14 10:10:35Z pachanga $
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/dao/RequestResolverResultDAO.class.php');
 
-class CurrentEntityDAO
+class TreeBasedEntityDAO extends RequestResolverResultDAO
 {
-  function CurrentEntityDAO(){}
-
-  function & fetch()
+  function TreeBasedEntityDAO()
   {
-    $toolkit =& Limb :: toolkit();
-    $entity =& $toolkit->getCurrentEntity();
-    $record = new Dataspace();
-    $record->import($entity->export());
-    return $record;
+    parent :: RequestResolverResultDAO('tree_based_entity');
   }
 }
 

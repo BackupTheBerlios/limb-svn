@@ -10,9 +10,7 @@
 ***********************************************************************************/
 class RequestResolver
 {
-  function & getRequestedService(&$request){}
-  function & getRequestedAction(&$request){}
-  function & getRequestedEntity(&$request){}
+  function & resolve(&$request){}
 }
 
 ?>

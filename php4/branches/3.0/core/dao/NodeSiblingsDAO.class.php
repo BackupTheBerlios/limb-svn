@@ -10,30 +10,24 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAODecorator.class.php');
 
-class CurrentEntityDirectChildrenDAO extends SQLBasedDAODecorator
+class NodeSiblingsDAO extends SQLBasedDAODecorator
 {
-  function CurrentEntityDirectChildrenDAO(&$dao)
+  var $node_dao;
+
+  function NodeSiblingsDAO(&$dao, &$node_dao)
   {
+    $this->node_dao =& $node_dao;
+
     parent :: SQLBasedDAODecorator($dao);
   }
 
   function fetch()
   {
     $toolkit =& Limb :: toolkit();
-    if(!$entity =& $toolkit->getCurrentEntity())
-    {
-      include_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
-      return new PagedArrayDataset(array());
-    }
-
-    if(!$node =& $entity->getPart('node'))
-    {
-      include_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
-      return new PagedArrayDataset(array());
-    }
+    $record =& $this->node_dao->fetch();
 
     $criteria =& $this->getTreeNodeSiblingsCriteria();
-    $criteria->setParentNodeId($node->get('id'));
+    $criteria->setParentNodeId($record->get('_node_id'));
 
     $this->dao->addCriteria($criteria);
 

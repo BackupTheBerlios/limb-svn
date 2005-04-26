@@ -10,18 +10,17 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/services/Service.class.php');
 
-class IniBasedRequestResolverMapper // implements RequestResolverMapper
+class IniBasedServiceRequestResolver
 {
-  function & map(&$request)
+  function & resolve(&$request)
   {
     $toolkit =& Limb :: toolkit();
     $uri =& $request->getUri();
     $path = $uri->getPath();
 
-    $ini =& $toolkit->getIni('request_resolvers.ini');
-
+    $ini =& $toolkit->getIni('services.ini');
     if (catch_error('LimbException', $e) || !is_object($ini))
-      return null;
+      return new Service('404');
 
     $groups = $ini->getAll();
 
@@ -35,18 +34,10 @@ class IniBasedRequestResolverMapper // implements RequestResolverMapper
       if(!preg_match('~^' . $regex . '$~', $path))
         continue;
 
-      $handle = new LimbHandle($value['handle']);
-      return Handle :: resolve($handle);
+      return new Service($value['service_name']);
     }
 
-    if($ini->hasOption('default_handle'))
-    {
-      $default = $ini->getOption('default_handle');
-      $handle = new LimbHandle($default);
-      return Handle :: resolve($handle);
-    }
-    else
-      return null;
+    return new Service('404');
   }
 }
 

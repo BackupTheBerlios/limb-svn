@@ -14,13 +14,14 @@ class ServiceActionMappingFilter//implements InterceptingFilter
   function run(&$filter_chain, &$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
-    $resolver =& $toolkit->getRequestResolver();
+    $action_resolver =& $toolkit->getRequestResolver('action');
+    $service_resolver =& $toolkit->getRequestResolver('service');
 
-    if(!is_object($resolver))
-      return throw_error(new LimbException('request resolver not set'));
+    if(!is_object($service_resolver) || !is_object($action_resolver))
+      return throw_error(new LimbException('request resolvers not set'));
 
-    $service =& $resolver->getRequestedService($request);
-    if(!$action =& $resolver->getRequestedAction($request))
+    $service =& $service_resolver->resolve($request);
+    if(!$action =& $action_resolver->resolve($request))
     {
       $service->setCurrentAction($service->getDefaultAction());
       $toolkit->setCurrentService($service);
@@ -36,8 +37,6 @@ class ServiceActionMappingFilter//implements InterceptingFilter
       $service404->setCurrentAction($service404->getDefaultAction());
       $toolkit->setCurrentService($service404);
     }
-
-    $toolkit->setCurrentEntity($resolver->getRequestedEntity($request));
 
     $filter_chain->next();
   }

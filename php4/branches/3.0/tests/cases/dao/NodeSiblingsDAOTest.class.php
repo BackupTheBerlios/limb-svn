@@ -8,24 +8,23 @@
 * $Id: ImageObjectsDAOTest.class.php 1093 2005-02-07 15:17:20Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/dao/CurrentEntityDirectChildrenDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/NodeSiblingsDAO.class.php');
 include_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
-require_once(LIMB_DIR . '/core/entity/Entity.class.php');
-require_once(LIMB_DIR . '/core/NodeConnection.class.php');
+require_once(LIMB_DIR . '/core/dao/RequestResolverResultDAO.class.php');
 require_once(LIMB_DIR . '/core/dao/criteria/TreeNodeSiblingsCriteria.class.php');
 
 Mock :: generate('SQLBasedDAO');
-
+Mock :: generate('RequestResolverResultDAO');
 Mock :: generate('TreeNodeSiblingsCriteria');
 
-Mock :: generatePartial('CurrentEntityDirectChildrenDAO',
-                        'CurrentEntityDirectChildrenDAOTestVersion',
+Mock :: generatePartial('NodeSiblingsDAO',
+                        'NodeSiblingsDAOTestVersion',
                         array('getTreeNodeSiblingsCriteria'));
 
-class CurrentEntityDirectChildrenDAOTest extends LimbTestCase
+class NodeSiblingsDAOTest extends LimbTestCase
 {
-  function CurrentEntityDirectChildrenDAOTest()
+  function NodeSiblingsDAOTest()
   {
     parent :: LimbTestCase(__FILE__);
   }
@@ -42,13 +41,8 @@ class CurrentEntityDirectChildrenDAOTest extends LimbTestCase
 
   function testFetch()
   {
-    $entity = new Entity();
-    $node = new NodeConnection();
-    $node->set('id', $id = 10);
-    $entity->registerPart('node', $node);
-
-    $toolkit =& Limb :: toolkit();
-    $toolkit->setCurrentEntity($entity);
+    $entity = new DataSpace();
+    $entity->set('_node_id', $id = 10);
 
     $result = new PagedArrayDataset(array());
 
@@ -65,20 +59,25 @@ class CurrentEntityDirectChildrenDAOTest extends LimbTestCase
     $criteria = new MockTreeNodeSiblingsCriteria($this);
     $criteria->expectOnce('setParentNodeId', array($id));
 
-    $dao = new CurrentEntityDirectChildrenDAOTestVersion($this);
-    $dao->CurrentEntityDirectChildrenDAO($decorated_dao);
+    $node_dao = new MockRequestResolverResultDAO($this);
+    $node_dao->expectOnce('fetch');
+    $node_dao->setReturnReference('fetch', $entity);
+
+    $dao = new NodeSiblingsDAOTestVersion($this);
+    $dao->NodeSiblingsDAO($decorated_dao, $node_dao);
     $dao->setReturnReference('getTreeNodeSiblingsCriteria', $criteria);
 
     $this->assertNotNull($dao->fetch());
 
     $decorated_dao->tally();
+    $node_dao->tally();
 
     $criteria->tally();
   }
 
   function testGetTreeBranchCriteria()
   {
-    $dao = new CurrentEntityDirectChildrenDAO(new SQLBasedDAO());
+    $dao = new NodeSiblingsDAO(new SQLBasedDAO(), new RequestResolverResultDAO('whatever'));
     $this->assertIsA($dao->getTreeNodeSiblingsCriteria(), 'TreeNodeSiblingsCriteria');
   }
 

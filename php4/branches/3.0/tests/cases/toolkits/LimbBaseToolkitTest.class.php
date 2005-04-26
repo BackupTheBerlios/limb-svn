@@ -150,20 +150,21 @@ class LimbBaseToolkitTest extends LimbTestCase
                      'ViewTestVersion');
   }
 
-  function testSetGetCurrentEntity()
-  {
-    $object = new Object();
-    $this->toolkit->setCurrentEntity($object);
-
-    $object->set('id', 'whatever');
-
-    $this->assertEqual($this->toolkit->getCurrentEntity(), $object);
-  }
-
   function testGetPath2IdTranslator()
   {
     $this->assertIsA($this->toolkit->getPath2IdTranslator(),
                      'Path2IdTranslator');
+  }
+
+  function testGetNullRequestResolver()
+  {
+    $this->assertNull($this->toolkit->getRequestResolver('null'));
+  }
+
+  function testGetRequestResolver()
+  {
+    $this->toolkit->setRequestResolver('test', $o = new Object());
+    $this->assertEqual($this->toolkit->getRequestResolver('test'), $o);
   }
 }
 

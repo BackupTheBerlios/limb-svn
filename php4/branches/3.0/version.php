@@ -53,6 +53,10 @@ define('LIMB_RELEASE_NAME', '');
  */
 define('LIMB_VERSION_DATE', 'April 19, 2005');
 
+/**
+ * Software logo
+ */
+define('LIMB_LOGO', '/shared/images/logo.version.gif');
 
 // --- Do not change from here ----------------------------------------
 

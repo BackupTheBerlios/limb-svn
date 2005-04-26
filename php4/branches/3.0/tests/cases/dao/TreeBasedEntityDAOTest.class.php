@@ -8,13 +8,14 @@
 * $Id: TreeBranchCriteriaTest.class.php 1173 2005-03-17 11:36:43Z seregalimb $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/dao/CurrentEntityDAO.class.php');
-require_once(LIMB_DIR . '/core/entity/Entity.class.php');
-require_once(LIMB_DIR . '/core/NodeConnection.class.php');
+require_once(LIMB_DIR . '/core/dao/TreeBasedEntityDAO.class.php');
+require_once(LIMB_DIR . '/core/request_resolvers/RequestResolver.interface.php');
 
-class CurrentEntityDAOTest extends LimbTestCase
+Mock :: generate('RequestResolver');
+
+class TreeBasedEntityDAOTest extends LimbTestCase
 {
-  function CurrentEntityDAOTest()
+  function TreeBasedEntityDAOTest()
   {
     parent :: LimbTestCase(__FILE__);
   }
@@ -32,20 +33,21 @@ class CurrentEntityDAOTest extends LimbTestCase
   function testFetch()
   {
     $toolkit =& Limb :: toolkit();
+    $resolver = new MockRequestResolver($this);
+    $toolkit->setRequestResolver('tree_based_entity', $resolver);
 
-    $entity = new Entity();
-    $node = new NodeConnection();
-    $node->set('id', $id = 10);
+    $resolver->tally();
+
+    $entity = new Object();
     $entity->set('class_name', $class_name = 'TestArticle');
-    $entity->registerPart('node', $node);
 
-    $toolkit->setCurrentEntity($entity);
+    $request =& $toolkit->getRequest();
+    $resolver->setReturnReference('resolve', $entity, array($request));
 
-    $dao = new CurrentEntityDAO();
+    $dao = new TreeBasedEntityDAO();
     $result =& $dao->fetch();
     $expected_result = new Dataspace();
     $expected_result->set('class_name', $class_name);
-    $expected_result->set('_node_id', $id);
 
     $this->assertEqual($result, $expected_result);
   }

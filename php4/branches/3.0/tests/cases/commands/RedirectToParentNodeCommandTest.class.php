@@ -61,8 +61,6 @@ class RedirectToParentNodeCommandTest extends LimbTestCase
     $context = new Dataspace();
     $context->setObject($field_name = 'whatever', $entity);
 
-    $this->toolkit->setCurrentEntity($object);
-
     $this->path2id_translator->expectNever('getPathToNode');
 
     $command = new RedirectToParentNodeCommandTestVersion($this);
@@ -74,8 +72,6 @@ class RedirectToParentNodeCommandTest extends LimbTestCase
   function testPerformFailedNoContextField()
   {
     $context = new Dataspace();
-
-    $this->toolkit->setCurrentEntity($object);
 
     $this->path2id_translator->expectNever('getPathToNode');
 
@@ -95,8 +91,6 @@ class RedirectToParentNodeCommandTest extends LimbTestCase
 
     $context = new Dataspace();
     $context->setObject($entity_name = 'whatever', $entity);
-
-    $this->toolkit->setCurrentEntity($object);
 
     $this->path2id_translator->expectOnce('getPathToNode', array($parent_node_id));
     $this->path2id_translator->setReturnValue('getPathToNode', $path = 'any path');

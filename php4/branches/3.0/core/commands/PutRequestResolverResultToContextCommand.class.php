@@ -9,20 +9,25 @@
 *
 ***********************************************************************************/
 
-class PutCurrentEntityToContextCommand
+class PutRequestResolverResultToContextCommand
 {
   var $field_name;
+  var $resolver_name;
 
-  function PutCurrentEntityToContextCommand($field_name)
+  function PutRequestResolverResultToContextCommand($resolver_name, $field_name)
   {
+    $this->resolver_name = $resolver_name;
     $this->field_name = $field_name;
   }
 
   function perform(&$context)
   {
     $toolkit =& Limb :: toolkit();
-    if(!$entity =& $toolkit->getCurrentEntity())
+    if(!$resolver =& $toolkit->getRequestResolver($this->resolver_name))
       return LIMB_STATUS_ERROR;
+
+    $request =& $toolkit->getRequest();
+    $entity =& $resolver->resolve($request);
 
     $context->setObject($this->field_name, $entity);
 

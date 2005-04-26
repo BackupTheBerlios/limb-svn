@@ -8,17 +8,13 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/request_resolvers/IniBasedRequestResolver.class.php');
+require_once(LIMB_DIR . '/core/request_resolvers/IniBasedServiceRequestResolver.class.php');
 
-class IniBasedRequestResolverTest extends LimbTestCase
+class IniBasedServiceRequestResolverTest extends LimbTestCase
 {
-  function IniBasedRequestResolverTest()
+  function IniBasedServiceRequestResolverTest()
   {
     parent :: LimbTestCase(__FILE__);
-  }
-
-  function setUp()
-  {
   }
 
   function tearDown()
@@ -30,9 +26,9 @@ class IniBasedRequestResolverTest extends LimbTestCase
   {
     $toolkit =& Limb :: toolkit();
     $request = $toolkit->getRequest();
-    $resolver = new IniBasedRequestResolver();
+    $resolver = new IniBasedServiceRequestResolver();
 
-    $service = $resolver->getRequestedService($request);
+    $service = $resolver->resolve($request);
 
     $this->assertEqual($service->getName(), '404');
   }
@@ -48,9 +44,9 @@ class IniBasedRequestResolverTest extends LimbTestCase
 
     $toolkit =& Limb :: toolkit();
     $request = $toolkit->getRequest();
-    $resolver = new IniBasedRequestResolver();
+    $resolver = new IniBasedServiceRequestResolver();
 
-    $service = $resolver->getRequestedService($request);
+    $service = $resolver->resolve($request);
 
     $this->assertEqual($service->getName(), '404');
   }
@@ -66,11 +62,11 @@ class IniBasedRequestResolverTest extends LimbTestCase
 
     $toolkit =& Limb :: toolkit();
     $request = $toolkit->getRequest();
-    $resolver = new IniBasedRequestResolver();
+    $resolver = new IniBasedServiceRequestResolver();
     $uri =& $request->getUri();
     $uri->setPath('/news');
 
-    $service = $resolver->getRequestedService($request);
+    $service = $resolver->resolve($request);
 
     $this->assertEqual($service->getName(), 'NewsService');
   }
@@ -86,11 +82,11 @@ class IniBasedRequestResolverTest extends LimbTestCase
 
     $toolkit =& Limb :: toolkit();
     $request = $toolkit->getRequest();
-    $resolver = new IniBasedRequestResolver();
+    $resolver = new IniBasedServiceRequestResolver();
     $uri =& $request->getUri();
     $uri->setPath('/news/10/10');
 
-    $service = $resolver->getRequestedService($request);
+    $service = $resolver->resolve($request);
 
     $this->assertEqual($service->getName(), 'NewsService');
   }

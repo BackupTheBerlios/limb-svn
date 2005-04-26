@@ -8,39 +8,10 @@
 * $Id: Service.class.php 1191 2005-03-25 14:04:13Z seregalimb $
 *
 ***********************************************************************************/
-class TreeBasedRequestResolver // implements ServiceTranslator
+
+class TreeBasedEntityRequestResolver
 {
-  function & getRequestedService(&$request)
-  {
-    if(!$id = $this->_getId($request))
-      return new Service('404');
-
-    $toolkit =& Limb :: toolkit();
-
-    $conn =& $toolkit->getDbConnection();
-    $sql = 'SELECT sys_service.name FROM sys_object, sys_object_to_service, sys_service
-            WHERE sys_object.oid = sys_object_to_service.oid
-            AND sys_service.id = sys_object_to_service.service_id
-            AND sys_object.oid = :id:';
-
-    $stmt =& $conn->newStatement($sql);
-    $stmt->setInteger('id', $id);
-
-    if(!$class_name = $stmt->getOneValue())
-      return new Service('404');
-
-    return new Service($class_name);
-  }
-
-  function getRequestedAction(&$request)
-  {
-    if($action = $request->get('action'))
-      return $action;
-
-    return false;
-  }
-
-  function & getRequestedEntity(&$request)
+  function & resolve(&$request)
   {
     if(!$id = $this->_getId($request))
       return false;

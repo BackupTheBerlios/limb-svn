@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/dao/criteria/OneTableObjectsCriteria.class.php');
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
-require_once(dirname(__FILE__) . '/../orm/data_mappers/OneTableObjectMapperTestDbTable.class.php');
+require_once(LIMB_DIR . '/tests/cases/orm/data_mappers/OneTableObjectMapperTestDbTable.class.php');
 
 Mock :: generatePartial('SQLBasedDAO',
                         'SQLBasedDAOOTOCTestVersion',

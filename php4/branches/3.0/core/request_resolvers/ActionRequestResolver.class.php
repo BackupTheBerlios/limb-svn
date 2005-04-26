@@ -8,9 +8,15 @@
 * $Id: Service.class.php 1191 2005-03-25 14:04:13Z seregalimb $
 *
 ***********************************************************************************/
-class RequestResolverMapper
+class ActionRequestResolver
 {
-  function map(&$request){}
+  function resolve(&$request)
+  {
+    if($action = $request->get('action'))
+      return $action;
+
+    return false;
+  }
 }
 
 ?>

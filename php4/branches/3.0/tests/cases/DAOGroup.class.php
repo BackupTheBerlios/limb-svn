@@ -17,7 +17,7 @@ class DAOGroup extends LimbGroupTest
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectoryRecursive(LIMB_DIR . '/tests/cases/dao');
+    return TestFinder::getTestCasesHandlesFromDirectory(LIMB_DIR . '/tests/cases/dao');
   }
 }
 ?>

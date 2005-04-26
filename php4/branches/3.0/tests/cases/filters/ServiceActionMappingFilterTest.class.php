@@ -19,6 +19,11 @@ Mock :: generate('RequestResolver');
 
 class ServiceActionMappingFilterTest extends LimbTestCase
 {
+  var $action_resolver;
+  var $service_resolver;
+  var $service;
+  var $fc;
+
   function ServiceActionMappingFilterTest()
   {
     parent :: LimbTestCase(__FILE__);
@@ -28,11 +33,26 @@ class ServiceActionMappingFilterTest extends LimbTestCase
   {
     Limb :: saveToolkit();
 
+    $toolkit =& Limb :: toolkit();
+
+    $this->action_resolver = new MockRequestResolver($this);
+    $this->service_resolver = new MockRequestResolver($this);
+    $this->service = new MockService($this);
+
+    $toolkit->setRequestResolver('action', $this->action_resolver);
+    $toolkit->setRequestResolver('service', $this->service_resolver);
+
+    $this->fc = new MockFilterChain($this);
   }
 
   function tearDown()
   {
     Limb :: restoreToolkit();
+
+    $this->action_resolver->tally();
+    $this->service_resolver->tally();
+    $this->service->tally();
+    $this->fc->tally();
   }
 
   function testRunOkActionFound()
@@ -42,41 +62,26 @@ class ServiceActionMappingFilterTest extends LimbTestCase
     $request =& $toolkit->getRequest();
     $response = $toolkit->getResponse();
 
-    $resolver = new MockRequestResolver($this);
-    $service = new MockService($this);
+    $this->fc->expectOnce('next');
 
-    $toolkit->setRequestResolver($resolver);
+    $this->service_resolver->expectOnce('resolve', array($request));
+    $this->service_resolver->setReturnReference('resolve', $this->service);
+
+    $this->action_resolver->expectOnce('resolve', array($request));
+    $this->action_resolver->setReturnValue('resolve', $action = 'do');
+
+    $this->service->expectOnce('actionExists', array($action));
+    $this->service->setReturnValue('actionExists', true);
+
+    $this->service->expectOnce('setCurrentAction', array($action));
 
     $filter = new ServiceActionMappingFilter();
 
-    $fc = new MockFilterChain($this);
-    $fc->expectOnce('next');
-
-    $resolver->expectOnce('getRequestedService', array($request));
-    $resolver->setReturnReference('getRequestedService', $service);
-
-    $resolver->expectOnce('getRequestedAction', array($request));
-    $resolver->setReturnValue('getRequestedAction', $action = 'do');
-
-    $resolver->expectOnce('getRequestedEntity', array($request));
-    $resolver->setReturnReference('getRequestedEntity', $entity = new Object());
-
-    $service->expectOnce('actionExists', array($action));
-    $service->setReturnValue('actionExists', true);
-
-    $service->expectOnce('setCurrentAction', array($action));
-
-    $filter->run($fc, $request, $response);
+    $filter->run($this->fc, $request, $response);
 
     $service =& $toolkit->getCurrentService();
 
     $this->assertIsA($service, 'MockService');
-
-    $this->assertEqual($toolkit->getCurrentEntity(), $entity);
-
-    $fc->tally();
-    $resolver->tally();
-    $service->tally();
   }
 
   function testRunOkEmptyAction()
@@ -86,36 +91,25 @@ class ServiceActionMappingFilterTest extends LimbTestCase
     $request =& $toolkit->getRequest();
     $response = $toolkit->getResponse();
 
-    $resolver = new MockRequestResolver($this);
-    $service = new MockService($this);
+    $this->fc->expectOnce('next');
 
-    $toolkit->setRequestResolver($resolver);
+    $this->service_resolver->expectOnce('resolve', array($request));
+    $this->service_resolver->setReturnReference('resolve', $this->service);
+
+    $this->action_resolver->expectOnce('resolve', array($request));
+    $this->action_resolver->setReturnValue('resolve', '');
+
+    $this->service->expectOnce('getDefaultAction');
+    $this->service->setReturnValue('getDefaultAction', $action = 'whatever');
+
+    $this->service->expectOnce('setCurrentAction', array($action));
 
     $filter = new ServiceActionMappingFilter();
-
-    $fc = new MockFilterChain($this);
-    $fc->expectOnce('next');
-
-    $resolver->expectOnce('getRequestedService', array($request));
-    $resolver->setReturnReference('getRequestedService', $service);
-
-    $resolver->expectOnce('getRequestedAction', array($request));
-    $resolver->setReturnValue('getRequestedAction', '');
-
-    $service->expectOnce('getDefaultAction');
-    $service->setReturnValue('getDefaultAction', $action = 'whatever');
-
-    $service->expectOnce('setCurrentAction', array($action));
-
-    $filter->run($fc, $request, $response);
+    $filter->run($this->fc, $request, $response);
 
     $service =& $toolkit->getCurrentService();
 
     $this->assertIsA($service, 'MockService');
-
-    $fc->tally();
-    $resolver->tally();
-    $service->tally();
   }
 
   function testRunOkActionNotFound()
@@ -129,40 +123,24 @@ class ServiceActionMappingFilterTest extends LimbTestCase
     $request =& $toolkit->getRequest();
     $response = $toolkit->getResponse();
 
-    $resolver = new MockRequestResolver($this);
-    $service = new MockService($this);
+    $this->fc->expectOnce('next');
 
-    $toolkit->setRequestResolver($resolver);
+    $this->service_resolver->expectOnce('resolve', array($request));
+    $this->service_resolver->setReturnReference('resolve', $this->service);
+
+    $this->action_resolver->expectOnce('resolve', array($request));
+    $this->action_resolver->setReturnValue('resolve', $action = 'do');
+
+    $this->service->expectOnce('actionExists', array($action));
+    $this->service->setReturnValue('actionExists', false);
 
     $filter = new ServiceActionMappingFilter();
-
-    $fc = new MockFilterChain($this);
-    $fc->expectOnce('next');
-
-    $resolver->expectOnce('getRequestedService', array($request));
-    $resolver->setReturnReference('getRequestedService', $service);
-
-    $resolver->expectOnce('getRequestedEntity', array($request));
-    $resolver->setReturnReference('getRequestedEntity', $entity = new Object());
-
-    $resolver->expectOnce('getRequestedAction', array($request));
-    $resolver->setReturnValue('getRequestedAction', $action = 'do');
-
-    $service->expectOnce('actionExists', array($action));
-    $service->setReturnValue('actionExists', false);
-
-    $filter->run($fc, $request, $response);
+    $filter->run($this->fc, $request, $response);
 
     $service404 =& $toolkit->getCurrentService();
 
     $this->assertEqual($service404->getName(), '404');
     $this->assertEqual($service404->getCurrentAction(), 'display');
-
-    $this->assertEqual($toolkit->getCurrentEntity(), $entity);
-
-    $fc->tally();
-    $resolver->tally();
-    $service->tally();
 
     clearTestingIni();
   }
