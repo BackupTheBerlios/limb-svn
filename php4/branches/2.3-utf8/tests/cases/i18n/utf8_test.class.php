@@ -37,7 +37,7 @@ class utf8_test extends LimbTestCase
   function test_rtrim()
   {
      $this->assertEqual(utf8_rtrim("τελευτατελ\0\n\n\t"), "τελευτατελ");
-     $this->assertEqual(utf8_rtrim("τελευτατε?++?", "?+"), "τελευτατε");
+     $this->assertEqual(utf8_rtrim("τελευτατε?++.*?", ".*?+"), "τελευτατε");
      //intervals stuff not working yet
      //$this->assertEqual(utf8_rtrim("τελευτατε\n\t", "\0x00..\0x1F"), "τελευτατε");
   }
@@ -46,6 +46,7 @@ class utf8_test extends LimbTestCase
   {
      $this->assertEqual(utf8_ltrim("\0\n\n\tτελευτατελ"), "τελευτατελ");
      $this->assertEqual(utf8_ltrim("λτελευτατε", "λ"), "τελευτατε");
+     $this->assertEqual(utf8_ltrim("?+.*+?τελευτατε", "?.*+"), "τελευτατε");
   }
 
   function test_trim()
@@ -53,6 +54,7 @@ class utf8_test extends LimbTestCase
     $this->assertEqual(utf8_trim(" \n\t\0 τελευτατελ\0\n\n\t"), "τελευτατελ");
     $this->assertEqual(utf8_trim("pτελεpυτατελp", "p"), "τελεpυτατελ");
     $this->assertEqual(utf8_trim("pτελεpυτατελp", "pλ"), "τελεpυτατε");
+    $this->assertEqual(utf8_trim("?*++?τελευτατε?+.+?", "?.+*"), "τελευτατε");
   }
 
   function test_str_replace()

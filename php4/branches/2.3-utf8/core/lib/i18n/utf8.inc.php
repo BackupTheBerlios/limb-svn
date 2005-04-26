@@ -1,5 +1,5 @@
 <?php
-//original author Andreas Gohr <andi@splitbrain.org>
+//original ideas by Andreas Gohr <andi@splitbrain.org>
 
 /**
  * URL-Encode a filename to allow unicodecharacters
@@ -14,10 +14,11 @@
  * @author Andreas Gohr <andi@splitbrain.org>
  * @see    urlencode
  */
-function utf8_encodeFN($file,$safe=true){
-  if($safe && preg_match('#^[a-zA-Z0-9/_\-.%]+$#',$file)){
+function utf8_encodeFN($file,$safe=true)
+{
+  if($safe && preg_match('#^[a-zA-Z0-9/_\-.%]+$#',$file))
     return $file;
-  }
+
   $file = urlencode($file);
   $file = str_replace('%2F','/',$file);
   return $file;
@@ -31,7 +32,8 @@ function utf8_encodeFN($file,$safe=true){
  * @author Andreas Gohr <andi@splitbrain.org>
  * @see    urldecode
  */
-function utf8_decodeFN($file){
+function utf8_decodeFN($file)
+{
   $file = urldecode($file);
   return $file;
 }
@@ -41,10 +43,11 @@ function utf8_decodeFN($file){
  *
  * @author Andreas Gohr <andi@splitbrain.org>
  */
-function utf8_isASCII($str){
-  for($i=0; $i<strlen($str); $i++){
+function utf8_isASCII($str)
+{
+  for($i=0; $i<strlen($str); $i++)
     if(ord($str{$i}) >127) return false;
-  }
+
   return true;
 }
 
@@ -55,12 +58,13 @@ function utf8_isASCII($str){
  *
  * @author Andreas Gohr <andi@splitbrain.org>
  */
-function utf8_strip($str){
+function utf8_strip($str)
+{
   $ascii = '';
-  for($i=0; $i<strlen($str); $i++){
-    if(ord($str{$i}) <128){
+  for($i=0; $i<strlen($str); $i++)
+  {
+    if(ord($str{$i}) <128)
       $ascii .= $str{$i};
-    }
   }
   return $ascii;
 }
@@ -71,21 +75,25 @@ function utf8_strip($str){
  * @author <bmorel@ssi.fr>
  * @link   http://www.php.net/manual/en/function.utf8-encode.php
  */
-function utf8_check($Str) {
- for ($i=0; $i<strlen($Str); $i++) {
-  if (ord($Str[$i]) < 0x80) continue; # 0bbbbbbb
-  elseif ((ord($Str[$i]) & 0xE0) == 0xC0) $n=1; # 110bbbbb
-  elseif ((ord($Str[$i]) & 0xF0) == 0xE0) $n=2; # 1110bbbb
-  elseif ((ord($Str[$i]) & 0xF8) == 0xF0) $n=3; # 11110bbb
-  elseif ((ord($Str[$i]) & 0xFC) == 0xF8) $n=4; # 111110bb
-  elseif ((ord($Str[$i]) & 0xFE) == 0xFC) $n=5; # 1111110b
-  else return false; # Does not match any model
-  for ($j=0; $j<$n; $j++) { # n bytes matching 10bbbbbb follow ?
-   if ((++$i == strlen($Str)) || ((ord($Str[$i]) & 0xC0) != 0x80))
-   return false;
-  }
- }
- return true;
+function utf8_check($str)
+{
+    for ($i=0; $i<strlen($str); $i++)
+    {
+      if (ord($str[$i]) < 0x80) continue; # 0bbbbbbb
+      elseif ((ord($str[$i]) & 0xE0) == 0xC0) $n=1; # 110bbbbb
+      elseif ((ord($str[$i]) & 0xF0) == 0xE0) $n=2; # 1110bbbb
+      elseif ((ord($str[$i]) & 0xF8) == 0xF0) $n=3; # 11110bbb
+      elseif ((ord($str[$i]) & 0xFC) == 0xF8) $n=4; # 111110bb
+      elseif ((ord($str[$i]) & 0xFE) == 0xFC) $n=5; # 1111110b
+      else return false; # Does not match any model
+
+      for($j=0; $j<$n; $j++) # n bytes matching 10bbbbbb follow ?
+      {
+        if ((++$i == strlen($str)) || ((ord($str[$i]) & 0xC0) != 0x80))
+          return false;
+      }
+    }
+    return true;
 }
 
 /**
@@ -99,7 +107,8 @@ function utf8_check($Str) {
  * @see    strlen()
  * @see    utf8_decode()
  */
-function utf8_strlen($string){
+function utf8_strlen($string)
+{
   return strlen(utf8_decode($string));
 }
 
@@ -110,26 +119,25 @@ function utf8_strlen($string){
  * @author Harry Fuecks <hfuecks@gmail.com>
  * @see    substr()
  */
-function utf8_substr($str, $start, $length=null){
-  if($start < 0) {
+function utf8_substr($str, $start, $length=null)
+{
+  if($start < 0)
     $start = utf8_strlen($str) + $start;
-  }
 
-  if($length < 0) {
+  if($length < 0)
     $length = utf8_strlen($str) + $length - $start;
-  }
 
-  if ( is_null($length) ) {
+  if ( is_null($length) )
     $length = '*';
-  } else {
+  else
     $length = '{0,'.$length.'}';
-  }
+
   $pattern = '/^.{'.$start.'}(.'.$length.')/us';
   preg_match($pattern, $str, $matches);
 
-  if ( isset($matches[1]) ) {
+  if (isset($matches[1]))
     return $matches[1];
-  }
+
   return false;
 }
 
@@ -140,13 +148,15 @@ function utf8_substr($str, $start, $length=null){
  * @author Harry Fuecks <hfuecks@gmail.com>
  * @see    explode();
  */
-function utf8_explode($sep, $str) {
-  if ( $sep == '' ) {
-    trigger_error('Empty delimiter',E_USER_WARNING);
+function utf8_explode($sep, $str)
+{
+  if ($sep == '')
+  {
+    trigger_error('Empty delimiter', E_USER_WARNING);
     return FALSE;
   }
 
-  return preg_split('!'.preg_quote($sep,'!').'!u',$str);
+  return preg_split('!' . preg_quote($sep, '!') . '!u',$str);
 }
 
 /**
@@ -156,13 +166,14 @@ function utf8_explode($sep, $str) {
  * @author Harry Fuecks <hfuecks@gmail.com>
  * @see    strreplace();
  */
-function utf8_str_replace($s,$r,$str){
-  if(!is_array($s)){
+function utf8_str_replace($s,$r,$str)
+{
+  if(!is_array($s))
     $s = '!'.preg_quote($s,'!').'!u';
-  }else{
-    foreach ($s as $k => $v) {
+  else
+  {
+    foreach ($s as $k => $v)
       $s[$k] = '!'.preg_quote($v).'!u';
-    }
   }
   return preg_replace($s,$r,$str);
 }
@@ -174,12 +185,13 @@ function utf8_str_replace($s,$r,$str){
  * @see    ltrim()
  * @return string
  */
-function utf8_ltrim($str,$charlist=''){
-  if($charlist == '') return ltrim($str);
+function utf8_ltrim($str,$charlist='')
+{
+  if($charlist == '')
+    return ltrim($str);
 
   $chars = preg_split('//u', $charlist, -1, PREG_SPLIT_NO_EMPTY);
-  $regex = '(' . implode('|', $chars) . ')';
-  $regex = preg_replace('~(\?|\.|\+|\*)+~u', '\\\$1', $regex);
+  $regex = '(' . implode('|', array_map('preg_quote', $chars)) . ')';
 
   return preg_replace('/^' . $regex . '+/u', '', $str);
 }
@@ -191,12 +203,13 @@ function utf8_ltrim($str,$charlist=''){
  * @see    rtrim()
  * @return string
  */
-function  utf8_rtrim($str, $charlist=''){
-  if($charlist == '') return rtrim($str);
+function  utf8_rtrim($str, $charlist='')
+{
+  if($charlist == '')
+    return rtrim($str);
 
   $chars = preg_split('//u', $charlist, -1, PREG_SPLIT_NO_EMPTY);
-  $regex = '(' . implode('|', $chars) . ')';
-  $regex = preg_replace('~(\?|\.|\+|\*)+~u', '\\\$1', $regex);
+  $regex = '(' . implode('|', array_map('preg_quote', $chars)) . ')';
 
   return preg_replace('/' . $regex . '+$/u', '', $str);
 }
@@ -208,8 +221,10 @@ function  utf8_rtrim($str, $charlist=''){
  * @see    trim()
  * @return string
  */
-function  utf8_trim($str,$charlist='') {
-  if($charlist == '') return trim($str);
+function  utf8_trim($str,$charlist='')
+{
+  if($charlist == '')
+    return trim($str);
 
   return utf8_ltrim(utf8_rtrim($str, $charlist), $charlist);
 }
@@ -224,15 +239,17 @@ function  utf8_trim($str,$charlist='') {
  * @see    strtolower()
  * @see    utf8_strtoupper()
  */
-function utf8_strtolower($string){
+function utf8_strtolower($string)
+{
   if(!defined('UTF8_NOMBSTRING') && function_exists('mb_strtolower'))
     return mb_strtolower($string,'utf-8');
 
+  global $UTF8_UPPER_TO_LOWER;
   $uni = utf8_to_unicode($string);
-  for ($i=0; $i < count($uni); $i++){
-    if(isset($GLOBALS['UTF8_UPPER_TO_LOWER'][$uni[$i]])){
-      $uni[$i] = $GLOBALS['UTF8_UPPER_TO_LOWER'][$uni[$i]];
-    }
+  for ($i=0; $i < count($uni); $i++)
+  {
+    if(isset($UTF8_UPPER_TO_LOWER[$uni[$i]]))
+      $uni[$i] = $UTF8_UPPER_TO_LOWER[$uni[$i]];
   }
   return unicode_to_utf8($uni);
 }
@@ -246,15 +263,17 @@ function utf8_strtolower($string){
  * @see    strtoupper()
  * @see    utf8_strtoupper()
  */
-function utf8_strtoupper($string){
+function utf8_strtoupper($string)
+{
   if(!defined('UTF8_NOMBSTRING') && function_exists('mb_strtolower'))
     return mb_strtolower($string,'utf-8');
 
+  global $UTF8_LOWER_TO_UPPER;
   $uni = utf8_to_unicode($string);
-  for ($i=0; $i < count($uni); $i++){
-    if(isset($GLOBALS['UTF8_LOWER_TO_UPPER'][$uni[$i]])){
-      $uni[$i] = $GLOBALS['UTF8_LOWER_TO_UPPER'][$uni[$i]];
-    }
+  for ($i=0; $i < count($uni); $i++)
+  {
+    if(isset($UTF8_LOWER_TO_UPPER[$uni[$i]]))
+      $uni[$i] = $UTF8_LOWER_TO_UPPER[$uni[$i]];
   }
   return unicode_to_utf8($uni);
 }
@@ -267,12 +286,15 @@ function utf8_strtoupper($string){
  *
  * @author Andreas Gohr <andi@splitbrain.org>
  */
-function utf8_deaccent($string,$case=0){
-  if($case <= 0){
+function utf8_deaccent($string,$case=0)
+{
+  if($case <= 0)
+  {
     global $UTF8_LOWER_ACCENTS;
     $string = str_replace(array_keys($UTF8_LOWER_ACCENTS),array_values($UTF8_LOWER_ACCENTS),$string);
   }
-  if($case >= 0){
+  if($case >= 0)
+  {
     global $UTF8_UPPER_ACCENTS;
     $string = str_replace(array_keys($UTF8_UPPER_ACCENTS),array_values($UTF8_UPPER_ACCENTS),$string);
   }
@@ -293,13 +315,13 @@ function utf8_deaccent($string,$case=0){
  * @param  string $repl   Replace special with this string
  * @param  string $keep   Special chars to keep (in UTF8)
  */
-function utf8_stripspecials($string,$repl='',$keep=''){
+function utf8_stripspecials($string,$repl='',$keep='')
+{
   global $UTF8_SPECIAL_CHARS;
-  if($keep != ''){
+  if($keep != '')
     $specials = array_diff($UTF8_SPECIAL_CHARS, utf8_to_unicode($keep));
-  }else{
+  else
     $specials = $UTF8_SPECIAL_CHARS;
-  }
 
   $specials = unicode_to_utf8($specials);
   $specials = preg_quote($specials, '/');
@@ -315,27 +337,32 @@ function utf8_stripspecials($string,$repl='',$keep=''){
  * @author Harry Fuecks <hfuecks@gmail.com>
  * @see    strpos()
  */
-function utf8_strpos($haystack, $needle, $offset=0) {
+function utf8_strpos($haystack, $needle, $offset=0)
+{
   if(!defined('UTF8_NOMBSTRING') && function_exists('mb_strpos'))
     return mb_strpos($haystack, $needle, $offset, 'utf-8');
 
-  if(!$offset){
+  if(!$offset)
+  {
     $ar = utf8_explode($needle, $haystack);
-    if ( count($ar) > 1 ) {
+    if ( count($ar) > 1 )
        return utf8_strlen($ar[0]);
-    }
+
     return false;
-  }else{
-    if ( !is_int($offset) ) {
-      trigger_error('Offset must be an integer',E_USER_WARNING);
+  }
+  else
+  {
+    if (!is_int($offset))
+    {
+      trigger_error('Offset must be an integer', E_USER_WARNING);
       return false;
     }
 
     $haystack = utf8_substr($haystack, $offset);
 
-    if ( false !== ($pos = utf8_strpos($haystack, $needle))){
+    if ( false !== ($pos = utf8_strpos($haystack, $needle)))
        return $pos + $offset;
-    }
+
     return false;
   }
 }
@@ -348,24 +375,32 @@ function utf8_strpos($haystack, $needle, $offset=0) {
  * @link   http://www.randomchaos.com/document.php?source=php_and_unicode
  * @see    unicode_to_utf8()
  */
-function utf8_to_unicode( $str ) {
+function utf8_to_unicode($str)
+{
   $unicode = array();
   $values = array();
   $lookingFor = 1;
 
-  for ($i = 0; $i < strlen( $str ); $i++ ) {
+  for ($i = 0; $i < strlen( $str ); $i++ )
+  {
     $thisValue = ord( $str[ $i ] );
-    if ( $thisValue < 128 ) $unicode[] = $thisValue;
-    else {
-      if ( count( $values ) == 0 ) $lookingFor = ( $thisValue < 224 ) ? 2 : 3;
+    if( $thisValue < 128)
+      $unicode[] = $thisValue;
+    else
+    {
+      if ( count( $values ) == 0 )
+        $lookingFor = ( $thisValue < 224 ) ? 2 : 3;
+
       $values[] = $thisValue;
-      if ( count( $values ) == $lookingFor ) {
-  $number = ( $lookingFor == 3 ) ?
-    ( ( $values[0] % 16 ) * 4096 ) + ( ( $values[1] % 64 ) * 64 ) + ( $values[2] % 64 ):
-    ( ( $values[0] % 32 ) * 64 ) + ( $values[1] % 64 );
-  $unicode[] = $number;
-  $values = array();
-  $lookingFor = 1;
+
+      if ( count( $values ) == $lookingFor )
+      {
+        $number = ( $lookingFor == 3 ) ?
+          ( ( $values[0] % 16 ) * 4096 ) + ( ( $values[1] % 64 ) * 64 ) + ( $values[2] % 64 ):
+          ( ( $values[0] % 32 ) * 64 ) + ( $values[1] % 64 );
+        $unicode[] = $number;
+        $values = array();
+        $lookingFor = 1;
       }
     }
   }
@@ -381,16 +416,22 @@ function utf8_to_unicode( $str ) {
  */
 function unicode_to_utf8( $str ) {
   $utf8 = '';
-  foreach( $str as $unicode ) {
-    if ( $unicode < 128 ) {
-      $utf8.= chr( $unicode );
-    } elseif ( $unicode < 2048 ) {
-      $utf8.= chr( 192 +  ( ( $unicode - ( $unicode % 64 ) ) / 64 ) );
-      $utf8.= chr( 128 + ( $unicode % 64 ) );
-    } else {
-      $utf8.= chr( 224 + ( ( $unicode - ( $unicode % 4096 ) ) / 4096 ) );
-      $utf8.= chr( 128 + ( ( ( $unicode % 4096 ) - ( $unicode % 64 ) ) / 64 ) );
-      $utf8.= chr( 128 + ( $unicode % 64 ) );
+  foreach( $str as $unicode )
+  {
+    if ( $unicode < 128 )
+    {
+      $utf8 .= chr( $unicode );
+    }
+    elseif ($unicode < 2048)
+    {
+      $utf8 .= chr( 192 +  ( ( $unicode - ( $unicode % 64 ) ) / 64 ) );
+      $utf8 .= chr( 128 + ( $unicode % 64 ) );
+    }
+    else
+    {
+      $utf8 .= chr( 224 + ( ( $unicode - ( $unicode % 4096 ) ) / 4096 ) );
+      $utf8 .= chr( 128 + ( ( ( $unicode % 4096 ) - ( $unicode % 64 ) ) / 64 ) );
+      $utf8 .= chr( 128 + ( $unicode % 64 ) );
     }
   }
   return $utf8;
