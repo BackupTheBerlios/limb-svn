@@ -23,8 +23,14 @@ class RequestResolverResultDAO
   {
     $toolkit =& Limb :: toolkit();
     $resolver =& $toolkit->getRequestResolver($this->resolver_name);
-    $entity =& $resolver->resolve($toolkit->getRequest());
+    if(!is_object($resolver))
+      die($this->resolver_name . ' request resolver not set');
+
     $record = new Dataspace();
+
+    if(!$entity =& $resolver->resolve($toolkit->getRequest()))
+      return $record;
+
     $record->import($entity->export());
     return $record;
   }

@@ -31,6 +31,9 @@ class LimbDAOComponent extends Component
     $toolkit =& Limb :: toolkit();
     $this->dao =& $toolkit->createDAO($this->class_path);
 
+    if(!is_object($this->dao))
+      die('DAO ' . $this->class_path . ' could not be created!');
+
     return $this->dao;
   }
 

@@ -23,11 +23,14 @@ class PutRequestResolverResultToContextCommand
   function perform(&$context)
   {
     $toolkit =& Limb :: toolkit();
-    if(!$resolver =& $toolkit->getRequestResolver($this->resolver_name))
+    $resolver =& $toolkit->getRequestResolver($this->resolver_name);
+    if(!is_object($resolver))
       return LIMB_STATUS_ERROR;
 
     $request =& $toolkit->getRequest();
-    $entity =& $resolver->resolve($request);
+
+    if(!$entity =& $resolver->resolve($request))
+      return LIMB_STATUS_ERROR;
 
     $context->setObject($this->field_name, $entity);
 

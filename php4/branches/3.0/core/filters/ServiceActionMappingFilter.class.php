@@ -14,6 +14,7 @@ class ServiceActionMappingFilter//implements InterceptingFilter
   function run(&$filter_chain, &$request, &$response, &$context)
   {
     $toolkit =& Limb :: toolkit();
+
     $action_resolver =& $toolkit->getRequestResolver('action');
     $service_resolver =& $toolkit->getRequestResolver('service');
 
