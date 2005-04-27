@@ -13,6 +13,7 @@ require_once(LIMB_DIR . '/tests/cases/orm/data_mappers/OneTableObjectMapperTestD
 require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentServiceNode.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentServiceNodeMapper.class.php');
 require_once(WACT_ROOT . '/template/template.inc.php');
+require_once(LIMB_DIR . '/core/request_resolvers/TreeBasedEntityRequestResolver.class.php');
 
 class CommonServiceNodeDeleteCommandTest extends LimbTestCase
 {
@@ -35,6 +36,9 @@ class CommonServiceNodeDeleteCommandTest extends LimbTestCase
     $this->command = new CommonServiceNodeDeleteCommand();
 
     Limb :: saveToolkit();
+
+    $toolkit =& Limb :: toolkit();
+    $toolkit->setRequestResolver('tree_based_entity', new TreeBasedEntityRequestResolver());
   }
 
   function tearDown()
@@ -56,7 +60,7 @@ class CommonServiceNodeDeleteCommandTest extends LimbTestCase
     $this->db->delete('test_one_table_object');
   }
 
-  function _registerRootObject()
+  function & _registerRootObject()
   {
     $toolkit =& Limb :: toolkit();
     $uow =& $toolkit->getUOW();
@@ -86,7 +90,6 @@ class CommonServiceNodeDeleteCommandTest extends LimbTestCase
   function testPerformInitFailed()
   {
     $this->assertEqual($this->command->perform(new DataSpace()), LIMB_STATUS_OK);
-
     $this->assertEqual($this->command->getStateHistory(), array(
                                                      array('init_object' => LIMB_STATUS_ERROR),
                                                      array('error' => LIMB_STATUS_OK),
@@ -97,9 +100,10 @@ class CommonServiceNodeDeleteCommandTest extends LimbTestCase
   function testPerformDelete()
   {
     $entity =& $this->_registerRootObject();
-
     $toolkit =& Limb :: toolkit();
-    $toolkit->setCurrentEntity($entity);
+    $request =& $toolkit->getRequest();
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
 
     $this->assertEqual($this->command->perform(new DataSpace()), LIMB_STATUS_OK);
 

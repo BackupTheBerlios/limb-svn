@@ -19,6 +19,7 @@ class ContentServiceNodeEditCommand extends StateMachineCommand
                                          $content_map)
   {
     $entity_field_name = 'entity';
+    $resolver_name = 'tree_based_entity';
 
     $this->registerState('initial',
                          new LimbHandle(LIMB_DIR . '/core/commands/UseViewCommand',
@@ -27,8 +28,8 @@ class ContentServiceNodeEditCommand extends StateMachineCommand
 
     $this->registerState('init_service_node',
                          new LimbHandle(LIMB_DIR .
-                                        '/core/commands/PutCurrentEntityToContextCommand',
-                                        array($entity_field_name)),
+                                        '/core/commands/PutRequestResolverResultToContextCommand',
+                                        array($resolver_name, $entity_field_name)),
                          array(LIMB_STATUS_OK => 'form',
                                LIMB_STATUS_ERROR => 'error',
                                ));
@@ -40,7 +41,8 @@ class ContentServiceNodeEditCommand extends StateMachineCommand
                                 LIMB_STATUS_FORM_DISPLAYED => 'map_to_dataspace'));
 
     $this->registerState('map_to_dataspace',
-                          new LimbHandle(LIMB_SERVICE_NODE_DIR . '/commands/MapContentServiceNodeToDataspaceCommand',
+                          new LimbHandle(LIMB_SERVICE_NODE_DIR .
+                                         '/commands/MapContentServiceNodeToDataspaceCommand',
                                          array($entity_field_name, array_flip($content_map))),
                           array(LIMB_STATUS_OK => 'render'));
 
@@ -52,13 +54,14 @@ class ContentServiceNodeEditCommand extends StateMachineCommand
                                 LIMB_STATUS_FORM_NOT_VALID => 'render'));
 
     $this->registerState('map_to_service_node',
-                          new LimbHandle(LIMB_SERVICE_NODE_DIR . '/commands/MapDataspaceToContentServiceNodeCommand',
+                          new LimbHandle(LIMB_SERVICE_NODE_DIR .
+                                         '/commands/MapDataspaceToContentServiceNodeCommand',
                                          array($entity_field_name, $content_map)),
                           array(LIMB_STATUS_OK => 'redirect'));
 
     $this->registerState('redirect',
                           new LimbHandle(LIMB_DIR .
-                                         '/core/commands/RedirectToMappedNodeCommand'));
+                                         '/core/commands/RedirectToTreeBasedEntityRRResultCommand'));
 
     $this->registerState('error',
                           new LimbHandle(LIMB_DIR . '/core/commands/UseViewCommand',

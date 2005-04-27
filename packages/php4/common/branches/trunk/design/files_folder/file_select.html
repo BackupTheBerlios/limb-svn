@@ -8,20 +8,20 @@
 <body>
 <table width=100% border=0 cellspacing=0 cellpadding=0>
 <tr>
-	<td style='padding:0 25px 3px 0' class=path>
-	<metadata:BREADCRUMBS offset_path='/root'>
-	<grid:LIST>
-		<grid:ITERATOR>
-			<core:DEFAULT for='is_last'>
-			<a href="{$path}?action=file_select">{$title}</a> &gt;
-			</core:DEFAULT>
-			<core:OPTIONAL for='is_last'>
-			{$title}
-			</core:OPTIONAL>
-		</grid:ITERATOR>
-	</grid:LIST>
-	</metadata:BREADCRUMBS>
-	</td>
+  <td style='padding:0 25px 3px 0' class=path>
+  <metadata:BREADCRUMBS offset_path='/root'>
+  <grid:LIST>
+    <grid:ITERATOR>
+      <core:DEFAULT for='is_last'>
+      <a href="{$_node_path}?action=file_select">{$title}</a> &gt;
+      </core:DEFAULT>
+      <core:OPTIONAL for='is_last'>
+      {$title}
+      </core:OPTIONAL>
+    </grid:ITERATOR>
+  </grid:LIST>
+  </metadata:BREADCRUMBS>
+  </td>
 </tr>
 <td>
 <fetch:MAPPED>
@@ -31,11 +31,11 @@
 </table>
 
 <fetch:SUB_BRANCH target="folders">
-	<core:PARAMETER name='loader_class_name' value='files_folder'>
+  <core:PARAMETER name='loader_class_name' value='files_folder'>
 </fetch:SUB_BRANCH>
 
 <fetch:SUB_BRANCH navigator='pager' target="files">
-	<core:PARAMETER name='loader_class_name' value='file_object'>
+  <core:PARAMETER name='loader_class_name' value='file_object'>
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="pager.html">
@@ -43,12 +43,12 @@
 <grid:LIST id='folders'>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <grid:ITERATOR>
-				<tr class='jip'>
-					<td jip='object' class='jip_object'><img src='/shared/images/folder.gif' align='center'>&nbsp;<a href="{$path}?action=file_select">{$title}({$children})</a></td>
-					<td jip='action'><core:INCLUDE file="jip_actions/simple.html"></td>
-				</tr>
+        <tr class='jip'>
+          <td jip='object' class='jip_object'><img src='/shared/images/folder.gif' align='center'>&nbsp;<a href="{$_node_path}?action=file_select">{$title}({$children})</a></td>
+          <td jip='action'><core:INCLUDE file="jip_actions/simple.html"></td>
+        </tr>
     </grid:ITERATOR>
-			</table>
+      </table>
 </grid:LIST>
 
 <table width="100%" border="0" cellspacing="5" cellpadding="5">

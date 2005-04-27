@@ -14,6 +14,7 @@ require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentSer
 require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentServiceNodeMapper.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/CreateTestContentServiceNodeValidator.class.php');
 require_once(WACT_ROOT . '/template/template.inc.php');
+require_once(LIMB_DIR . '/core/request_resolvers/TreeBasedEntityRequestResolver.class.php');
 
 class ContentServiceNodeCreateCommandTest extends LimbTestCase
 {
@@ -55,6 +56,9 @@ class ContentServiceNodeCreateCommandTest extends LimbTestCase
                                                          $extra_dataspace_data);
 
     Limb :: saveToolkit();
+
+    $toolkit =& Limb :: toolkit();
+    $toolkit->setRequestResolver('tree_based_entity', new TreeBasedEntityRequestResolver());
   }
 
   function tearDown()
@@ -78,7 +82,7 @@ class ContentServiceNodeCreateCommandTest extends LimbTestCase
     $this->db->delete('test_one_table_object');
   }
 
-  function _registerRootObject()
+  function & _registerRootObject()
   {
     $toolkit =& Limb :: toolkit();
     $uow =& $toolkit->getUOW();
@@ -124,7 +128,8 @@ class ContentServiceNodeCreateCommandTest extends LimbTestCase
 
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
-    $toolkit->setCurrentEntity($entity);
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
 
     $this->assertEqual($this->command->perform(new DataSpace()), LIMB_STATUS_OK);
 
@@ -143,7 +148,8 @@ class ContentServiceNodeCreateCommandTest extends LimbTestCase
     $toolkit =& Limb :: toolkit();
 
     $request =& $toolkit->getRequest();
-    $toolkit->setCurrentEntity($entity);
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
     $request->set('submitted', 1);
 
     $this->assertEqual($this->command->perform(new DataSpace()), LIMB_STATUS_OK);
@@ -162,8 +168,9 @@ class ContentServiceNodeCreateCommandTest extends LimbTestCase
     $entity =& $this->_registerRootObject();
 
     $toolkit =& Limb :: toolkit();
-    $toolkit->setCurrentEntity($entity);
     $request =& $toolkit->getRequest();
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
 
     $node =& $entity->getPart('node');
     $request->set('parent_node_id', $node->get('id'));

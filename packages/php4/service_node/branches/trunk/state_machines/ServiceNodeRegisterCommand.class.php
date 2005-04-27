@@ -14,9 +14,11 @@ class ServiceNodeRegisterCommand extends StateMachineCommand
 {
   function ServiceNodeRegisterCommand()
   {
+    for($i=0;$i<5;$i++)restore_error_handler();trigger_error('!', E_USER_WARNING);
     parent :: StateMachineCommand();
 
     $entity_field_name = 'entity';
+    $resolve_name = 'service_node';
 
     $this->registerState('initial',
                           new LimbHandle(LIMB_DIR . '/core/commands/UseViewCommand',
@@ -31,7 +33,8 @@ class ServiceNodeRegisterCommand extends StateMachineCommand
 
     $this->registerState('init',
                           new LimbHandle(LIMB_SERVICE_NODE_DIR .
-                                         '/commands/InitCreateServiceNodeDataspaceCommand'),
+                                         '/commands/InitCreateServiceNodeDataspaceFromRRResultCommand',
+                                         array($resolve_name)),
                           array(LIMB_STATUS_OK => 'render',
                                 LIMB_STATUS_ERROR => 'error'));
 
@@ -60,9 +63,8 @@ class ServiceNodeRegisterCommand extends StateMachineCommand
                           array(LIMB_STATUS_OK => 'redirect'));
 
     $this->registerState('redirect',
-                          new LimbHandle(LIMB_DIR .
-                                         '/core/commands/RedirectCommand',
-                                         array('/service_nodes')));
+                          new LimbHandle(LIMB_SERVICE_NODE_DIR .
+                                         '/commands/RedirectToServiceNodeCommand'));
 
     $this->registerState('error',
                           new LimbHandle(LIMB_DIR . '/core/commands/UseViewCommand',

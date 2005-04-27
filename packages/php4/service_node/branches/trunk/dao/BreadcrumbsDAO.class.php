@@ -23,18 +23,19 @@ class BreadcrumbsDAO
     if(!count($ids = $this->_getObjectIds()))
       return new PagedArrayDataset(array());
 
-    $dao =& $this->getObjectClassNamesDAO();
-    $criteria = new SimpleConditionCriteria('sys_object.oid IN (' . implode(",", $ids) .')');
+    $dao =& $toolkit->createDAO('ObjectsClassNamesDAO');
+    $criteria = new SimpleConditionCriteria('sys_object.oid IN (' . implode(",", array_keys($ids)) .')');
     $dao->addCriteria($criteria);
 
     $rs =& new SimpleDbDataset($dao->fetch());
     $class_names = $rs->getArray('oid');
 
     $uow =& $toolkit->getUOW();
-    foreach($ids as $id)
+    foreach($ids as $id => $path)
     {
       $object = $uow->load($class_names[$id]['name'], $id);
       $objects[$id] = $object->export();
+      $objects[$id]['_node_path'] = $path;
     }
 
     return new PagedArrayDataset($objects);
@@ -46,7 +47,7 @@ class BreadcrumbsDAO
     $request =& $toolkit->getRequest();
     $uri =& $request->getUri();
     $path = '';
-    $translator =& $this->getPath2IdTranslator();
+    $translator =& $toolkit->getPath2IdTranslator();
     $path_elements = $uri->getPathElements();
 
     $ids = array();
@@ -56,25 +57,11 @@ class BreadcrumbsDAO
       if($element == "" ) continue;
       $path .= '/' . $element;
       if($id = $translator->toId($path))
-        $ids[] = $id;
+        $ids[$id] = $path;
     }
 
     return $ids;
   }
-
-  function & getPath2IdTranslator()
-  {
-    include_once(LIMB_DIR . '/core/tree/Path2IdTranslator.class.php');
-    $translator  = new Path2IdTranslator();
-    return $translator;
-  }
-
-  function & getObjectClassNamesDAO()
-  {
-    $toolkit =& Limb :: toolkit();
-    return $toolkit->createDAO('ObjectsClassNamesDAO');
-  }
-
 }
 
 ?>

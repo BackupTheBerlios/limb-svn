@@ -8,8 +8,8 @@
 
 <hr>
 <fetch:SUB_BRANCH target='items'>
-	<core:PARAMETER name='loader_class_name' value='navigation_item'>
-	<core:PARAMETER name='order' value='priority=ASC'>
+  <core:PARAMETER name='loader_class_name' value='navigation_item'>
+  <core:PARAMETER name='order' value='priority=ASC'>
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='items'>
@@ -26,16 +26,16 @@
 <tr class='jip'>
 <td><core:INCLUDE file="/admin/selector.html"></td>
 <td><core:INCLUDE file="published_status.html"></td>
-<td jip='object' class='jip_object'><a href="{$path}">{$title}({$children})</a></td>
+<td jip='object' class='jip_object'><a href="{$_node_path}">{$title}({$children})</a></td>
 <td><a href='{$url}' target='_blank'>{$url}</a></td>
 <td><core:INCLUDE file='/admin/priority_input.html'></td>
 <td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
 </tr>
 </grid:ITERATOR>
 <tr>
-	<td colspan='3' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
-	<td colspan='2' align='right'><core:INCLUDE file='/admin/priority_button.html'></td>
-	<td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
+  <td colspan='3' align='left'><core:INCLUDE file='/admin/delete_button.html'></td>
+  <td colspan='2' align='right'><core:INCLUDE file='/admin/priority_button.html'></td>
+  <td><core:INCLUDE file='/admin/toggle_publish_status_button.html'></td>
 </tr>
 </table>
 </grid:LIST>

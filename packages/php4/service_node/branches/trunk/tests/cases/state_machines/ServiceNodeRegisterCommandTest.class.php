@@ -12,6 +12,7 @@ require_once(LIMB_SERVICE_NODE_DIR . '/state_machines/ServiceNodeRegisterCommand
 require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentServiceNode.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentServiceNodeMapper.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/request_resolvers/ServiceNodeRequestResolver.class.php');
 
 class ServiceNodeRegisterCommandTest extends LimbTestCase
 {
@@ -31,6 +32,9 @@ class ServiceNodeRegisterCommandTest extends LimbTestCase
     $this->_cleanUp();
 
     Limb :: saveToolkit();
+
+    $toolkit =& Limb :: toolkit();
+    $toolkit->setRequestResolver('service_node', new ServiceNodeRequestResolver());
   }
 
   function tearDown()
@@ -163,7 +167,6 @@ class ServiceNodeRegisterCommandTest extends LimbTestCase
     $response =& $toolkit->getResponse();
     $this->assertTrue($response->isRedirected());
   }
-
 }
 
 ?>

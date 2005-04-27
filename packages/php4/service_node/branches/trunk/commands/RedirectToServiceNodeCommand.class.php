@@ -10,18 +10,23 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/RedirectCommand.class.php');
 
-class RedirectToMappedServiceNodeCommand
+class RedirectToServiceNodeCommand
 {
   function perform(&$context)
   {
-    $toolkit =& Limb :: toolkit('service_node_toolkit');
-    $locator =& $toolkit->getServiceNodeLocator();
+    $toolkit =& Limb :: toolkit();
 
-    if(!$entity =& $locator->getCurrentServiceNode())
+    $resolver =& $toolkit->getRequestResolver('service_node');
+    if(!is_object($resolver))
       return LIMB_STATUS_ERROR;
 
-    $path = '?id='. $entity->get('oid');
-    $redirect_command = new RedirectCommand($path);
+    if($entity = $resolver->resolve($toolkit->getRequest()))
+    {
+      $path = '?id='. $entity->get('oid');
+      $redirect_command = new RedirectCommand($path);
+    }
+    else
+      $redirect_command = new RedirectCommand('/service_nodes');
 
     return $redirect_command->perform();
   }

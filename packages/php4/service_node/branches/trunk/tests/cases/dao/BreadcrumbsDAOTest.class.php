@@ -17,13 +17,11 @@ require_once(LIMB_DIR . '/core/tree/Path2IdTranslator.class.php');
 
 Mock :: generatePartial('LimbBaseToolkit',
                         'LimbBaseToolkitObjectMetadataDAOTestVersion',
-                        array('getUOW'));
+                        array('getUOW',
+                              'getPath2IdTranslator'));
 
 Mock :: generate('UnitOfWork');
 Mock :: generate('Path2IdTranslator');
-Mock :: generatePartial('BreadcrumbsDAO',
-                        'BreadcrumbsDAOTestVersion',
-                        array('getPath2IdTranslator'));
 
 class BreadcrumbsDAOTest extends LimbTestCase
 {
@@ -43,11 +41,11 @@ class BreadcrumbsDAOTest extends LimbTestCase
     $this->db = new SimpleDB($this->conn);
 
     $this->uow = new MockUnitOfWork($this);
+    $this->translator = new MockPath2IdTranslator($this);
 
     $this->toolkit = new LimbBaseToolkitObjectMetadataDAOTestVersion($this);
     $this->toolkit->setReturnReference('getUOW', $this->uow);
-
-    $this->translator = new MockPath2IdTranslator($this);
+    $this->toolkit->setReturnReference('getPath2IdTranslator', $this->translator);
 
     Limb :: registerToolkit($this->toolkit);
     $this->_cleanUp();
@@ -75,18 +73,14 @@ class BreadcrumbsDAOTest extends LimbTestCase
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
     $uri =& $request->getUri();
-    $uri->setPath($path = '/about/news/1');
+    $uri->setPath($path1 = '/about/news/1');
 
     $object1 = new Dataspace();
     $object1->set('title', $title1 = 'title1');
-    $object1->set('path', $path1 = '/about/news/1');
     $object2 = new Dataspace();
     $object2->set('title', $title2 = 'title2');
-    $object2->set('path', $path2 = '/about/news');
     $object3 = new Dataspace();
     $object3->set('title', $title3 = 'title1');
-    $object3->set('path', $path3 = '/about');
-
 
     $this->db->insert('sys_object', array('oid' => $oid1 = 100, 'class_id' => $class_id1 = 1));
     $this->db->insert('sys_object', array('oid' => $oid2 = 101, 'class_id' => $class_id2 = 2));
@@ -103,8 +97,7 @@ class BreadcrumbsDAOTest extends LimbTestCase
     $this->translator->setReturnValueAt(2, 'toId', $oid1);
     $this->translator->expectCallCount('toId' , 3);
 
-    $dao = new BreadcrumbsDAOTestVersion($this);
-    $dao->setReturnReference('getPath2IdTranslator', $this->translator);
+    $dao = new BreadcrumbsDAO();
 
     $this->uow->expectArgumentsAt(0, 'load', array($class_name3, $oid3));
     $this->uow->setReturnValueAt(0, 'load', $object3);
@@ -120,26 +113,18 @@ class BreadcrumbsDAOTest extends LimbTestCase
     $rs->rewind();
     $record =& $rs->current();
     $this->assertEqual($record->get('title'), $title3);
-    $this->assertEqual($record->get('path'), $path3);
+    $this->assertEqual($record->get('_node_path'), $path3);
 
     $rs->next();
     $record =& $rs->current();
     $this->assertEqual($record->get('title'), $title2);
-    $this->assertEqual($record->get('path'), $path2);
+    $this->assertEqual($record->get('_node_path'), $path2);
 
     $rs->next();
     $record =& $rs->current();
     $this->assertEqual($record->get('title'), $title1);
-    $this->assertEqual($record->get('path'), $path1);
-
+    $this->assertEqual($record->get('_node_path'), $path1);
   }
-
-  function testGetPath2IdTranslator()
-  {
-    $dao = new BreadcrumbsDAO();
-    $this->assertIsA($dao->getPath2IdTranslator(), 'Path2IdTranslator');
-  }
-
 }
 
 ?>

@@ -11,8 +11,13 @@
 
 $PACKAGE_NAME = 'LIMB_SERVICE_NODE';
 
-require_once(dirname(__FILE__) . '/ServiceNodePackageToolkit.class.php');
+require_once(dirname(__FILE__) . '/request_resolvers/ServiceNodeRequestResolver.class.php');
 
+$toolkit =& Limb :: toolkit();
+$toolkit->setRequestResolver('service_node', new ServiceNodeRequestResolver());
+
+
+require_once(dirname(__FILE__) . '/ServiceNodePackageToolkit.class.php');
 $service_node_toolkit = new ServiceNodePackageToolkit();
 
 Limb :: registerToolkit($service_node_toolkit, 'service_node_toolkit');

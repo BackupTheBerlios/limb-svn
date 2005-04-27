@@ -14,10 +14,12 @@ class ServiceNodeRegisterValidator extends Validator
 {
   function validate(&$DataSource)
   {
-    $toolkit =& Limb :: toolkit('service_node_toolkit');
-    $locator =& $toolkit->getServiceNodeLocator();
+    $toolkit =& Limb :: toolkit();
+    $resolver =& $toolkit->getRequestResolver('service_node');
+    if(!is_object($resolver))
+      die('service_node request resolver not set');
 
-    if($entity =& $locator->getCurrentServiceNode())
+    if($entity =& $resolver->resolve($toolkit->getRequest()))
     {
       $node =& $entity->getPart('node');
       $parent_node_id = $node->get('id');

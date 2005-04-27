@@ -19,7 +19,6 @@ Mock :: generate('FilterChain');
 
 class SimpleACLAccessFilterTest extends LimbTestCase
 {
-
   function SimpleACLAccessFilterTest()
   {
     parent :: LimbTestCase(__FILE__);
@@ -48,6 +47,21 @@ class SimpleACLAccessFilterTest extends LimbTestCase
     ClearTestingIni();
   }
 
+  function testRunOkIfServiceNotFound()
+  {
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+
+    $filter = new SimpleACLAccessFilter();
+
+    $fc = new MockFilterChain($this);
+    $fc->expectOnce('next');
+
+    $filter->run($fc, $request, $response, new DataSpace());
+
+    $fc->tally();
+  }
+
   function testRunOk()
   {
     $toolkit =& Limb :: toolkit();
@@ -57,7 +71,6 @@ class SimpleACLAccessFilterTest extends LimbTestCase
 
     $service = new Service($service_name = 'TestService');
     $service->setCurrentAction($action = 'some_action');
-    $toolkit->setCurrentService($service);
 
     $this->authorizer->expectOnce('canDo', array($action, $path, $service_name));
     $this->authorizer->setReturnValue('canDo', true);
@@ -67,7 +80,10 @@ class SimpleACLAccessFilterTest extends LimbTestCase
     $fc = new MockFilterChain($this);
     $fc->expectOnce('next');
 
-    $filter->run($fc, $request, $response);
+    $context = new DataSpace();
+    $context->setObject('Service', $service);
+
+    $filter->run($fc, $request, $response, $context);
 
     $fc->tally();
   }
@@ -87,7 +103,6 @@ class SimpleACLAccessFilterTest extends LimbTestCase
 
     $service = new Service($service_name = 'TestService');
     $service->setCurrentAction($action = 'some_action');
-    $toolkit->setCurrentService($service);
 
     $this->authorizer->expectOnce('canDo', array($action, $path, $service_name));
     $this->authorizer->setReturnValue('canDo', false);
@@ -97,15 +112,17 @@ class SimpleACLAccessFilterTest extends LimbTestCase
     $fc = new MockFilterChain($this);
     $fc->expectOnce('next');
 
-    $filter->run($fc, $request, $response);
+    $context = new DataSpace();
+    $context->setObject('service', $service);
 
-    $new_service =& $toolkit->getCurrentService();
+    $filter->run($fc, $request, $response, $context);
+
+    $new_service =& $context->getObject('service');
     $this->assertEqual($new_service->getName(), '403');
     $this->assertEqual($new_service->getCurrentAction(), 'display');
 
     $fc->tally();
   }
-
 }
 
 ?>

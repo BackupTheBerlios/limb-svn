@@ -11,6 +11,7 @@
 require_once(LIMB_SERVICE_NODE_DIR . '/state_machines/CommonServiceNodeEditCommand.class.php');
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
+require_once(LIMB_DIR . '/core/request_resolvers/TreeBasedEntityRequestResolver.class.php');
 
 class CommonServiceNodeEditCommandTest extends LimbTestCase
 {
@@ -39,6 +40,9 @@ class CommonServiceNodeEditCommandTest extends LimbTestCase
                                                       $form_name);
 
     Limb :: saveToolkit();
+
+    $toolkit =& Limb :: toolkit();
+    $toolkit->setRequestResolver('tree_based_entity', new TreeBasedEntityRequestResolver());
   }
 
   function _registerRootObject()
@@ -103,8 +107,9 @@ class CommonServiceNodeEditCommandTest extends LimbTestCase
     $entity =& $this->_registerRootObject();
 
     $toolkit =& Limb :: toolkit();
-    $toolkit->setCurrentEntity($entity);
     $request =& $toolkit->getRequest();
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
 
     $context = new DataSpace();
 
@@ -128,8 +133,9 @@ class CommonServiceNodeEditCommandTest extends LimbTestCase
     $entity =& $this->_registerRootObject();
 
     $toolkit =& Limb :: toolkit();
-    $toolkit->setCurrentEntity($entity);
     $request =& $toolkit->getRequest();
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
     $request->set('submitted', 1);
 
     $context = new DataSpace();
@@ -150,8 +156,9 @@ class CommonServiceNodeEditCommandTest extends LimbTestCase
     $entity =& $this->_registerRootObject();
 
     $toolkit =& Limb :: toolkit();
-    $toolkit->setCurrentEntity($entity);
     $request =& $toolkit->getRequest();
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
 
     $node =& $entity->getPart('node');
     $request->set('parent_node_id', $node->get('id'));

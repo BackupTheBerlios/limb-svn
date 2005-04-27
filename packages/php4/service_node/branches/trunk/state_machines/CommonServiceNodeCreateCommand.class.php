@@ -19,6 +19,7 @@ class CommonServiceNodeCreateCommand extends StateMachineCommand
     parent :: StateMachineCommand();
 
     $entity_field_name = 'entity';
+    $resolver_name = 'tree_based_entity';
 
     $this->registerState('initial',
                           new LimbHandle(LIMB_DIR . '/core/commands/UseViewCommand',
@@ -38,7 +39,8 @@ class CommonServiceNodeCreateCommand extends StateMachineCommand
 
     $this->registerState('init',
                           new LimbHandle(LIMB_SERVICE_NODE_DIR .
-                                         '/commands/InitCreateContentServiceNodeDataspaceCommand'),
+                                         '/commands/InitCreateServiceNodeDataspaceFromRRResultCommand',
+                                         array($resolver_name)),
                           array(LIMB_STATUS_OK => 'render',
                                 LIMB_STATUS_ERROR => 'error'));
 
@@ -69,7 +71,7 @@ class CommonServiceNodeCreateCommand extends StateMachineCommand
 
     $this->registerState('redirect',
                           new LimbHandle(LIMB_DIR .
-                                         '/core/commands/RedirectToMappedNodeCommand'));
+                                         '/core/commands/RedirectToTreeBasedEntityRRResultCommand'));
 
     $this->registerState('error',
                           new LimbHandle(LIMB_DIR . '/core/commands/UseViewCommand',

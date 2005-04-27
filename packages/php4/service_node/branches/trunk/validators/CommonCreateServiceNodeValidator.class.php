@@ -15,8 +15,11 @@ class CommonCreateServiceNodeValidator extends Validator
   function validate(&$DataSource)
   {
     $toolkit =& Limb :: toolkit();
+    $resolver =& $toolkit->getRequestResolver('tree_based_entity');
+    if(!is_object($resolver))
+      return die('tree_based_entity not set');
 
-    if($entity =& $toolkit->getCurrentEntity())
+    if($entity =& $resolver->resolve($toolkit->getRequest()))
     {
       $node =& $entity->getPart('node');
       $parent_node_id = $node->get('id');

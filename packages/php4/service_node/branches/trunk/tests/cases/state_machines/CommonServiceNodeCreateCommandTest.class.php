@@ -11,6 +11,7 @@
 require_once(LIMB_SERVICE_NODE_DIR . '/state_machines/CommonServiceNodeCreateCommand.class.php');
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
+require_once(LIMB_DIR . '/core/request_resolvers/TreeBasedEntityRequestResolver.class.php');
 
 class CommonServiceNodeCreateCommandTest extends LimbTestCase
 {
@@ -43,6 +44,10 @@ class CommonServiceNodeCreateCommandTest extends LimbTestCase
                                                          $extra_dataspace_data);
 
     Limb :: saveToolkit();
+
+    $toolkit =& Limb :: toolkit();
+    $toolkit->setRequestResolver('tree_based_entity', new TreeBasedEntityRequestResolver());
+
   }
 
   function tearDown()
@@ -65,7 +70,7 @@ class CommonServiceNodeCreateCommandTest extends LimbTestCase
     $this->db->delete('sys_object_to_node');
   }
 
-  function _registerRootObject()
+  function & _registerRootObject()
   {
     $toolkit =& Limb :: toolkit();
     $uow =& $toolkit->getUOW();
@@ -106,7 +111,8 @@ class CommonServiceNodeCreateCommandTest extends LimbTestCase
 
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
-    $toolkit->setCurrentEntity($entity);
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
 
     $this->assertEqual($this->command->perform(new DataSpace()), LIMB_STATUS_OK);
 
@@ -125,7 +131,8 @@ class CommonServiceNodeCreateCommandTest extends LimbTestCase
     $toolkit =& Limb :: toolkit();
 
     $request =& $toolkit->getRequest();
-    $toolkit->setCurrentEntity($entity);
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
     $request->set('submitted', 1);
 
     $this->assertEqual($this->command->perform(new DataSpace()), LIMB_STATUS_OK);
@@ -144,8 +151,9 @@ class CommonServiceNodeCreateCommandTest extends LimbTestCase
     $entity =& $this->_registerRootObject();
 
     $toolkit =& Limb :: toolkit();
-    $toolkit->setCurrentEntity($entity);
     $request =& $toolkit->getRequest();
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
 
     $node =& $entity->getPart('node');
     $request->set('parent_node_id', $node->get('id'));

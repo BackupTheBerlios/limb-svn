@@ -17,10 +17,12 @@ class CommonServiceNodeDeleteCommand extends StateMachineCommand
     parent :: StateMachineCommand();
 
     $entity_field_name = 'entity';
+    $resolver_name = 'tree_based_entity';
 
     $this->registerState('init_object',
-                          new LimbHandle(LIMB_DIR . '/core/commands/PutCurrentEntityToContextCommand',
-                                         array($entity_field_name)),
+                          new LimbHandle(LIMB_DIR .
+                                         '/core/commands/PutRequestResolverResultToContextCommand',
+                                         array($resolver_name, $entity_field_name)),
                           array(LIMB_STATUS_OK => 'delete',
                                 LIMB_STATUS_ERROR => 'error'));
 

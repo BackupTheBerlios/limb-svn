@@ -1,19 +1,19 @@
-<tr>	
-	<td class="linksmall">
-	<metadata:BREADCRUMBS>
-		<grid:LIST>
-			<grid:ITERATOR>
-				<core:OPTIONAL for='is_last'>
-					{$title}
-				</core:OPTIONAL>
-				<core:DEFAULT for='is_last'>
-					<a href="{$path}">{$title}</a> &raquo; 
-				</core:DEFAULT>
-			</grid:ITERATOR>
-		</grid:LIST>
-	</metadata:BREADCRUMBS>
-	</td>
+<tr>
+  <td class="linksmall">
+  <metadata:BREADCRUMBS>
+    <grid:LIST>
+      <grid:ITERATOR>
+        <core:OPTIONAL for='is_last'>
+          {$title}
+        </core:OPTIONAL>
+        <core:DEFAULT for='is_last'>
+          <a href="{$_node_path}">{$title}</a> &raquo;
+        </core:DEFAULT>
+      </grid:ITERATOR>
+    </grid:LIST>
+  </metadata:BREADCRUMBS>
+  </td>
 </tr>
-<tr> 
-	<td  height="1" align="left" bgcolor="#DEDEDE"><img src="/shared/images/1x1.gif"></td>
+<tr>
+  <td  height="1" align="left" bgcolor="#DEDEDE"><img src="/shared/images/1x1.gif"></td>
 </tr>

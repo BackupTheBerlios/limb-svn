@@ -22,7 +22,8 @@ class ServiceNodeModifyCommand extends StateMachineCommand
                          array(LIMB_STATUS_OK => 'init_service_node'));
 
     $this->registerState('init_service_node',
-                         new LimbHandle(LIMB_SERVICE_NODE_DIR . '/commands/InitServiceNodeCommand',
+                         new LimbHandle(LIMB_SERVICE_NODE_DIR .
+                                        '/commands/PutServiceNodeRequestResolverResultToContextCommand',
                                         array($entity_field_name)),
                          array(LIMB_STATUS_OK => 'form',
                                LIMB_STATUS_ERROR => 'error',
@@ -55,7 +56,7 @@ class ServiceNodeModifyCommand extends StateMachineCommand
 
     $this->registerState('redirect',
                           new LimbHandle(LIMB_SERVICE_NODE_DIR .
-                                         '/commands/RedirectToMappedServiceNodeCommand'));
+                                         '/commands/RedirectToServiceNodeCommand'));
 
     $this->registerState('error',
                           new LimbHandle(LIMB_DIR . '/core/commands/UseViewCommand',

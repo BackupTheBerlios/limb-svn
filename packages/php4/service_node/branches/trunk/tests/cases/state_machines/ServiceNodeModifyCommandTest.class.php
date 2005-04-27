@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_SERVICE_NODE_DIR . '/state_machines/ServiceNodeModifyCommand.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/request_resolvers/ServiceNodeRequestResolver.class.php');
 
 class ServiceNodeModifyCommandTest extends LimbTestCase
 {
@@ -29,9 +30,12 @@ class ServiceNodeModifyCommandTest extends LimbTestCase
     $this->_cleanUp();
 
     Limb :: saveToolkit();
+
+    $toolkit =& Limb :: toolkit();
+    $toolkit->setRequestResolver('service_node', new ServiceNodeRequestResolver());
   }
 
-  function _registerServiceNode()
+  function & _registerServiceNode()
   {
     $toolkit =& Limb :: toolkit();
     $uow =& $toolkit->getUOW();
@@ -87,7 +91,6 @@ class ServiceNodeModifyCommandTest extends LimbTestCase
                                                      array('error' =>  LIMB_STATUS_OK),
                                                      array('render' =>  LIMB_STATUS_OK)));
   }
-
 
   function testPerformFormDisplayed()
   {

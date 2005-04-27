@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_SERVICE_NODE_DIR . '/state_machines/ServiceNodeDisplayCommand.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/request_resolvers/ServiceNodeRequestResolver.class.php');
 
 class ServiceNodeDisplayCommandTest extends LimbTestCase
 {
@@ -20,11 +21,13 @@ class ServiceNodeDisplayCommandTest extends LimbTestCase
   function setUp()
   {
     Limb :: saveToolkit();
+
+    $toolkit =& Limb :: toolkit();
+    $toolkit->setRequestResolver('service_node', new ServiceNodeRequestResolver());
   }
 
   function tearDown()
   {
-    for($i=0;$i<5;$i++)restore_error_handler();trigger_error('!', E_USER_WARNING);
     Limb :: restoreToolkit();
   }
 

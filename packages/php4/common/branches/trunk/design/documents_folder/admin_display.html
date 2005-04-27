@@ -6,23 +6,23 @@
 </span>
 
 <fetch:SUB_BRANCH target='folders' >
-	<core:PARAMETER name='loader_class_name' value='documents_folder' >
-	<core:PARAMETER name='order' value='priority=ASC' >
+  <core:PARAMETER name='loader_class_name' value='documents_folder' >
+  <core:PARAMETER name='order' value='priority=ASC' >
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='folders'>
 <table width=100%>
 <tr>
-	<th><locale:STRING name='published_status' ></th>
-	<th><locale:STRING name='documents_folder' file='document'></th>
-	<th><locale:STRING name='modified_date'></th>
-	<th><locale:STRING name='items_order'></th>
-	<th><locale:STRING name='actions'></th>
+  <th><locale:STRING name='published_status' ></th>
+  <th><locale:STRING name='documents_folder' file='document'></th>
+  <th><locale:STRING name='modified_date'></th>
+  <th><locale:STRING name='items_order'></th>
+  <th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
 <tr class="jip">
 <td align="center"><core:INCLUDE file="published_status.html"></td>
-<td jip='object'><a href="{$path}?action=admin_display">{$title}</a></td>
+<td jip='object'><a href="{$_node_path}?action=admin_display">{$title}</a></td>
 <td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
 <td><core:INCLUDE file='/admin/priority_input.html'></td>
 <td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>
@@ -33,8 +33,8 @@
 </grid:LIST>
 
 <fetch:SUB_BRANCH target='documents' navigator="pager" >
-	<core:PARAMETER name='loader_class_name' value='document' >
-	<core:PARAMETER name='order' value='priority=ASC' >
+  <core:PARAMETER name='loader_class_name' value='document' >
+  <core:PARAMETER name='order' value='priority=ASC' >
 </fetch:SUB_BRANCH>
 
 <core:INCLUDE file="pager.html">
@@ -42,16 +42,16 @@
 <grid:LIST id='documents'>
 <table width=100%>
 <tr>
-	<th><locale:STRING name='document' file='document'></th>
-	<th><locale:STRING name='published_status'></th>
-	<th><locale:STRING name='modified_date'></th>
-	<th><locale:STRING name='items_order'></th>
-	<th><locale:STRING name='actions'></th>
+  <th><locale:STRING name='document' file='document'></th>
+  <th><locale:STRING name='published_status'></th>
+  <th><locale:STRING name='modified_date'></th>
+  <th><locale:STRING name='items_order'></th>
+  <th><locale:STRING name='actions'></th>
 </tr>
 <grid:ITERATOR>
 <tr class="jip">
 <td align="center"><core:INCLUDE file="published_status.html"></td>
-<td jip='object'><a href="{$path}" target="_blank">{$title}</a></td>
+<td jip='object'><a href="{$_node_path}" target="_blank">{$title}</a></td>
 <td><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
 <td><core:INCLUDE file='/admin/priority_input.html'></td>
 <td jip='action'><core:INCLUDE file="jip_actions/normal.html"></td>

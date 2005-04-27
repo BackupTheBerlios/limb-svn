@@ -10,15 +10,23 @@
 ***********************************************************************************/
 require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
 
-class InitCreateContentServiceNodeDataspaceCommand
+class InitCreateServiceNodeDataspaceFromRRResultCommand
 {
-  function InitCreateContentServiceNodeDataspaceCommand(){}
+  var $resolver_name;
+
+  function InitCreateServiceNodeDataspaceFromRRResultCommand($resolver_name)
+  {
+    $this->resolver_name = $resolver_name;
+  }
 
   function perform(&$context)
   {
     $toolkit =& Limb :: toolkit();
+    $resolver =& $toolkit->getRequestResolver($this->resolver_name);
+    if(!is_object($resolver))
+      return LIMB_STATUS_ERROR;
 
-    if(!$entity =& $toolkit->getCurrentEntity())
+    if(!$entity =& $resolver->resolve($toolkit->getRequest()))
       return LIMB_STATUS_ERROR;
 
     if(!$node =& $entity->getPart('node'))

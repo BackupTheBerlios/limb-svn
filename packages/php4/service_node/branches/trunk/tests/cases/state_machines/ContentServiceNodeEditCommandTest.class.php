@@ -14,6 +14,7 @@ require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentSer
 require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentServiceNodeMapper.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/EditTestContentServiceNodeValidator.class.php');
 require_once(WACT_ROOT . '/template/template.inc.php');
+require_once(LIMB_DIR . '/core/request_resolvers/TreeBasedEntityRequestResolver.class.php');
 
 class ContentServiceNodeEditCommandTest extends LimbTestCase
 {
@@ -51,9 +52,12 @@ class ContentServiceNodeEditCommandTest extends LimbTestCase
                                                          $content_map);
 
     Limb :: saveToolkit();
+
+    $toolkit =& Limb :: toolkit();
+    $toolkit->setRequestResolver('tree_based_entity', new TreeBasedEntityRequestResolver());
   }
 
-  function _registerRootObject()
+  function & _registerRootObject()
   {
     $toolkit =& Limb :: toolkit();
     $uow =& $toolkit->getUOW();
@@ -121,8 +125,9 @@ class ContentServiceNodeEditCommandTest extends LimbTestCase
     $entity =& $this->_registerRootObject();
 
     $toolkit =& Limb :: toolkit();
-    $toolkit->setCurrentEntity($entity);
     $request =& $toolkit->getRequest();
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
 
     $context = new DataSpace();
 
@@ -146,8 +151,9 @@ class ContentServiceNodeEditCommandTest extends LimbTestCase
     $entity =& $this->_registerRootObject();
 
     $toolkit =& Limb :: toolkit();
-    $toolkit->setCurrentEntity($entity);
     $request =& $toolkit->getRequest();
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
     $request->set('submitted', 1);
 
     $context = new DataSpace();
@@ -168,8 +174,9 @@ class ContentServiceNodeEditCommandTest extends LimbTestCase
     $entity =& $this->_registerRootObject();
 
     $toolkit =& Limb :: toolkit();
-    $toolkit->setCurrentEntity($entity);
     $request =& $toolkit->getRequest();
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
 
     $node =& $entity->getPart('node');
     $request->set('parent_node_id', $node->get('id'));

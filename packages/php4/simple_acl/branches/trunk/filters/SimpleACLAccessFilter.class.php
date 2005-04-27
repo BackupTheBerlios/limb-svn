@@ -11,16 +11,17 @@
 
 class SimpleACLAccessFilter //implements InterceptingFilter
 {
-  function run(&$filter_chain, &$request, &$response)
+  function run(&$filter_chain, &$request, &$response, &$context)
   {
-    $toolkit =& Limb :: toolkit();
-    if(!$service =& $toolkit->getCurrentService())
+    if(!$service =& $context->getObject('Service'))
+    {
+      $filter_chain->next();
       return;
+    }
 
     $service_name = $service->getName();
     $action = $service->getCurrentAction();
 
-    $request =& $toolkit->getRequest();
     $uri =& $request->getUri();
 
     $path =& $uri->getPath();
@@ -35,7 +36,7 @@ class SimpleACLAccessFilter //implements InterceptingFilter
 
     $new_service = new Service('403');
     $new_service->setCurrentAction($new_service->getDefaultAction());
-    $toolkit->setCurrentService($new_service);
+    $context->setObject('service', $new_service);
     $filter_chain->next();
   }
 }

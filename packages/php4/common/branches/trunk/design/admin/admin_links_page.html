@@ -7,21 +7,21 @@
 </fetch:MAPPED>
 
 <fetch:SUB_BRANCH target='objects'>
-	<core:PARAMETER name='loader_class_name' value='site_object'>
-	<core:PARAMETER name='restrict_by_class' value='0' type='boolean'>
+  <core:PARAMETER name='loader_class_name' value='site_object'>
+  <core:PARAMETER name='restrict_by_class' value='0' type='boolean'>
 </fetch:SUB_BRANCH>
 
 <grid:LIST id='objects'>
- 	<table width="100%" border="0" cellspacing="0" cellpadding="8" bordercolor="#cccccc">
+  <table width="100%" border="0" cellspacing="0" cellpadding="8" bordercolor="#cccccc">
     <grid:ITERATOR>
-			<tr class=jip>
-				<td jip='object' class=jip-object>
-					<a href="{$path}?action=admin_display">{$title}</a>
-				</td>
-				<td>
-					<core:INCLUDE file="jip_actions/normal.html">
-				</td>
-			</tr>
+      <tr class=jip>
+        <td jip='object' class=jip-object>
+          <a href="{$_node_path}?action=admin_display">{$title}</a>
+        </td>
+        <td>
+          <core:INCLUDE file="jip_actions/normal.html">
+        </td>
+      </tr>
     </grid:ITERATOR>
-	</table>
+  </table>
 </grid:LIST>

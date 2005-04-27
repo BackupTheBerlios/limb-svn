@@ -23,10 +23,13 @@ class OneBranchServiceNodesDAO extends SQLBasedDAODecorator
 
   function fetch()
   {
-    $service_node_toolkit =& Limb :: toolkit('service_node_toolkit');
-    $locator =& $service_node_toolkit->getServiceNodeLocator();
+    $toolkit =& Limb :: toolkit();
+    $resolver =& $toolkit->getRequestResolver('service_node');
 
-    if(!$entity =& $locator->getCurrentServiceNode())
+    if(!is_object($resolver))
+      return new PagedArrayDataSet(array());
+
+    if(!$entity =& $resolver->resolve($toolkit->getRequest()))
       $this->_addTreeRootNodesCriteria();
     else
       $this->_addTreeBranchCriteria($entity);
@@ -44,14 +47,12 @@ class OneBranchServiceNodesDAO extends SQLBasedDAODecorator
   function _addTreeBranchCriteria(&$entity)
   {
     $toolkit =& Limb :: toolkit();
-    $node =& $entity->getPart('node');
-    $tree =& $toolkit->getTree();
-    if(!$path = $tree->getPathToNode($node->get('id')))
-      return;
 
-    include_once(LIMB_DIR . '/core/dao/criteria/TreeBranchCriteria.class.php');
-    $criteria = new TreeBranchCriteria();
-    $criteria->setPath($path);
+    $node =& $entity->getPart('node');
+
+    include_once(LIMB_DIR . '/core/dao/criteria/TreeNodeSiblingsCriteria.class.php');
+    $criteria = new TreeNodeSiblingsCriteria();
+    $criteria->setParentNodeId($node->get('id'));
 
     $this->dao->addCriteria($criteria);
   }
