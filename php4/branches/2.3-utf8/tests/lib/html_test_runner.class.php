@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/test_runner.class.php');
 
 class HTMLTestRunner extends TestRunner
 {
-  var $encoding = 'windows-1251';
+  var $encoding = 'utf-8';
 
   function setEncoding($encoding)
   {
