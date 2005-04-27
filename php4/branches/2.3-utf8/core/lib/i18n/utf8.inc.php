@@ -3,7 +3,7 @@
 //this a bit improved and refactored version of that module
 //with proper credits to original authors in utf8_base_imp.class.php
 
-if(function_exists('mb_strlen'))//?
+if(!defined('UTF8_NO_MBSTRING') && function_exists('mb_strlen'))//?
 {
   include_once(dirname(__FILE__) . '/utf8_mbstring_imp.class.php');
   $GLOBALS['UTF8_DRIVER_IMP'] = new utf8_mbstring_imp();
