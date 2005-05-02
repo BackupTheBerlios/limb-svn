@@ -54,7 +54,7 @@ function start_user_session()
     return false;
 
   if(defined('SESSION_USE_DB') && constant('SESSION_USE_DB'))
-    _register_session_db_functions();
+    _register_session_functions();
 
   if(sys :: exec_mode() != 'cli')
     @session_start();
@@ -67,6 +67,9 @@ function commit_user_session()
 {
   if(user_session_has_started())
     @session_write_close();
+
+  if(defined('SESSION_USE_DB') && constant('SESSION_USE_DB'))
+    _unregister_session_functions();
 }
 
 function user_session_has_started()
@@ -74,29 +77,33 @@ function user_session_has_started()
   return (isset($GLOBALS['session_has_started']) && $GLOBALS['session_has_started']);
 }
 
-function _register_session_db_functions()
+function _register_session_functions()
 {
-  session_module_name('user');
   session_set_save_handler(
-      '_session_db_open',
-      '_session_db_close',
-      '_session_db_read',
-      '_session_db_write',
-      '_session_db_destroy',
-      '_session_db_garbage_collector' );
+      '_session_open',
+      '_session_close',
+      '_session_read',
+      '_session_write',
+      '_session_destroy',
+      '_session_garbage_collector');
 }
 
-function _session_db_open()
+function _unregister_session_functions()
+{
+  session_set_save_handler('', '', '', '', '', '');
+}
+
+function _session_open()
 {
   return true;
 }
 
-function _session_db_close()
+function _session_close()
 {
   return true;
 }
 
-function & _session_db_read($session_id)
+function & _session_read($session_id)
 {
   $db =& db_factory :: instance();
 
@@ -118,7 +125,7 @@ function & _session_db_read($session_id)
     return false;
 }
 
-function _session_db_write($session_id, $value)
+function _session_write($session_id, $value)
 {
   $db =& db_factory :: instance();
 
@@ -145,14 +152,14 @@ function _session_db_write($session_id, $value)
                         'session_id' => "{$session_id}"));
 }
 
-function _session_db_destroy($session_id)
+function _session_destroy($session_id)
 {
   $db =& db_factory :: instance();
 
   $db->sql_delete('sys_session', array('session_id' => $session_id));
 }
 
-function _session_db_garbage_collector($max_life_time)
+function _session_garbage_collector($max_life_time)
 {
   $db =& db_factory :: instance();
 

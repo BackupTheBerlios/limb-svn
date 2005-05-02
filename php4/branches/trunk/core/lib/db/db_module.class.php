@@ -106,7 +106,7 @@ class db_module
       {
         $this->_executed_sql[$md5]['times']++;
 
-        debug :: write_debug("same SQL query at: #" . $this->_executed_sql[$md5]['pos'] .
+        debug :: write_debug("same SQL at: #" . $this->_executed_sql[$md5]['pos'] .
           ' already executed for ' . $this->_executed_sql[$md5]['times'] . ' times'
         );
       }

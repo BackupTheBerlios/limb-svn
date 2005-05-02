@@ -438,9 +438,9 @@ class fs
   }
 
   /*
-   Returns sub-items in the specific folder
+  * Searchs items in the specific folder
   */
-  function find_subitems($dir, $types = 'dfl', $exclude_regex = '', $add_path = true, $include_hidden = false)
+  function find($dir, $types = 'dfl', $include_regex = '', $exclude_regex = '', $add_path = true, $include_hidden = false)
   {
     $dir = fs :: clean_path($dir);
     $dir = fs :: chop($dir);
@@ -456,6 +456,8 @@ class fs
         if ($element == '.' || $element == '..')
           continue;
         if (!$include_hidden && $element[0] == '.')
+          continue;
+        if ($include_regex && !preg_match($include_regex, $element))
           continue;
         if ($exclude_regex && preg_match($exclude_regex, $element))
           continue;
@@ -481,6 +483,13 @@ class fs
     return $items;
   }
 
+  //obsolete!!!
+  function find_subitems($dir, $types = 'dfl', $exclude_regex = '', $add_path = true, $include_hidden = false)
+  {
+    return fs :: find($dir, $types, '', $exclude_regex, $add_path, $include_hidden);
+  }
+
+  //obsolete!!!
   function find_subdirs($dir, $full_path = false, $include_hidden = false, $exclude_items = false)
   {
     return fs :: find_subitems($dir, 'd', $full_path, $include_hidden, $exclude_items);
