@@ -22,6 +22,8 @@ class session_startup_filter extends intercepting_filter
     debug :: add_timing_point('session startup filter finished');
 
     $filter_chain->next();
+
+    commit_user_session();
   }
 }
 ?>

@@ -98,21 +98,23 @@ class db_module
 
     if($this->is_debug_enabled())
     {
-      $md5 = md5($sql);
+      $debug_sql = preg_replace("~(\n|\r|\t)~", '', $sql);
+      $debug_sql = preg_replace("~\s+~", ' ', $debug_sql);
+      $md5 = md5($debug_sql);
 
       if(isset($this->_executed_sql[$md5]))
       {
         $this->_executed_sql[$md5]['times']++;
 
-        debug :: write_debug('same SQL query at: ' .
-          '<a href=#' . $this->_executed_sql[$md5]['pos'] . '><b>' . $this->_executed_sql[$md5]['pos'] . '</b></a>' .
+        debug :: write_debug("same SQL query at: #" . $this->_executed_sql[$md5]['pos'] .
           ' already executed for ' . $this->_executed_sql[$md5]['times'] . ' times'
         );
       }
       else
       {
-        debug :: write_debug($sql);
-        $this->_executed_sql[$md5] = array('pos' => debug :: sizeof(), 'times' => 0);
+        $pos = sizeof($this->_executed_sql);
+        debug :: write_debug('#' . $pos . ' ' . $debug_sql);
+        $this->_executed_sql[$md5] = array('pos' => $pos, 'times' => 0);
       }
 
       debug :: accumulator_start('db', 'sql_exec');
@@ -286,7 +288,7 @@ class db_module
       break;
       case 'float':
         $value = str_replace(',', '.', $value);
-    		return str_replace(',', '.', "'" . floatval($value) . "'");
+        return str_replace(',', '.', "'" . floatval($value) . "'");
       break;
       case 'string':
         return $this->_process_string_value($value);

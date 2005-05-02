@@ -28,14 +28,13 @@ class log
     $log_name = $log_file_data[1];
     $file_name = $log_dir . $log_name;
 
-    if (!is_dir($log_dir))
-      fs :: mkdir($log_dir, 0775, true);
+    fs :: mkdir($log_dir, 0775, true);
 
-    $oldumask = @umask(0);
-    $file_existed = @file_exists( $file_name );
-    $log_file = @fopen($file_name, 'a');
+    $oldumask = umask(0);
+    $file_existed = file_exists($file_name);
+    $log_file = fopen($file_name, 'a');
 
-    if ( $log_file )
+    if ($log_file)
     {
       $time = strftime("%b %d %Y %H:%M:%S", strtotime('now'));
 
@@ -48,17 +47,17 @@ class log
 
       $notice .= '[' . sys::client_ip() . '] [' . (isset($_SERVER['REQUEST_URI']) ?  $_SERVER['REQUEST_URI'] : '') . "]\n" . $string . "\n\n";
 
-      @fwrite($log_file, $notice);
-      @fclose($log_file);
+      fwrite($log_file, $notice);
+      fclose($log_file);
       if (!$file_existed)
-        @chmod($file_name, 0664);
+        chmod($file_name, 0664);
 
-      @umask($oldumask);
+      umask($oldumask);
       $result = true;
     }
     else
     {
-      @umask($oldumask);
+      umask($oldumask);
       $result = false;
       debug :: write_error( "Cannot open log file '$file_name' for writing\n" .
                          "The web server must be allowed to modify the file.\n" .

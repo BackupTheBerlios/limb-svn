@@ -100,7 +100,7 @@ class debug_mock extends debug
       return;
     }
 
-    if($args[0] != DEBUG_TIMING_POINT)
+    if($args[0] != DEBUG_TIMING_POINT && $args[0] != DEBUG_LEVEL)
     {
       $this->mock->_invoke('write', array($args[0], $args[1], $args[3]));
 

@@ -287,10 +287,7 @@ class debug
       return;
 
     $debug =& debug::instance();
-    if ($debug->handle_type == 'trigger')
-      trigger_error($string, E_USER_NOTICE);
-    else
-      $debug->write(DEBUG_LEVEL, $string, $code_line, $params);
+    $debug->write(DEBUG_LEVEL, $string, $code_line, $params);
   }
 
   function _send_mail($debug_info)

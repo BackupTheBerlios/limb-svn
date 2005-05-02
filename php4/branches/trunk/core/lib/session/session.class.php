@@ -50,9 +50,7 @@ class session
 
 function start_user_session()
 {
-  $has_started =& $GLOBALS['session_is_started'];
-
-  if (isset($has_started) && $has_started)
+  if (user_session_has_started())
     return false;
 
   if(defined('SESSION_USE_DB') && constant('SESSION_USE_DB'))
@@ -61,8 +59,19 @@ function start_user_session()
   if(sys :: exec_mode() != 'cli')
     @session_start();
 
-  $has_started = true;
+  $GLOBALS['session_has_started'] = true;
   return true;
+}
+
+function commit_user_session()
+{
+  if(user_session_has_started())
+    @session_write_close();
+}
+
+function user_session_has_started()
+{
+  return (isset($GLOBALS['session_has_started']) && $GLOBALS['session_has_started']);
 }
 
 function _register_session_db_functions()

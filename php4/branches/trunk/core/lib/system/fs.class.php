@@ -47,10 +47,10 @@ class fs
   */
   function mkdir($dir, $perm=0777, $parents=true)
   {
-    $dir = fs :: clean_path($dir);
-
     if(is_dir($dir))
       return true;
+
+    $dir = fs :: clean_path($dir);
 
     if(!$parents)
       return fs :: _do_mkdir($dir, $perm);
