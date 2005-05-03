@@ -281,7 +281,7 @@ class image_cache_manager
   {
     fs :: mkdir(IMAGE_CACHE_DIR);
 
-    $files = fs :: find_subitems(IMAGE_CACHE_DIR, 'f');
+    $files = fs :: find(IMAGE_CACHE_DIR, 'f');
 
     foreach($files as $file)
     {
@@ -293,7 +293,7 @@ class image_cache_manager
   {
     fs :: mkdir(IMAGE_CACHE_DIR);
 
-    $files = fs :: find_subitems(IMAGE_CACHE_DIR, 'f');
+    $files = fs :: find(IMAGE_CACHE_DIR, 'f');
 
     $size = 0;
 

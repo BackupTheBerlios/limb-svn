@@ -72,7 +72,7 @@ class fetch_tree_datasource extends fetch_sub_branch_datasource
 
       $tree_array[$id]['level_' . $tree_array[$id]['level']] = 1;
 
-      $tree_array[$id]['is_expanded'] = $tree->is_node_expanded($tree_item['node_id']);
+      $tree_array[$id]['is_expanded'] = $tree->is_node_expanded($tree_item);
       $tree_array[$id]['is_last_child'] = $is_last_child;
       $tree_array[$id]['is_first_child'] = $is_first_child;
       $tree_array[$id]['levels_status'] = $levels_status_array;

@@ -36,7 +36,7 @@ class controllers_classes_options_datasource extends datasource
 
   function _add_limb_controllers(&$result)
   {
-    $items = fs :: find_subitems(LIMB_DIR . '/core/controllers/', 'f', '~site_object_controller~', false);
+    $items = fs :: find(LIMB_DIR . '/core/controllers/', 'f', null, '~site_object_controller~', false);
 
     sort($items);
     foreach($items as $item)
@@ -48,7 +48,7 @@ class controllers_classes_options_datasource extends datasource
 
   function _add_project_controllers(&$result)
   {
-    $items = fs :: find_subitems(PROJECT_DIR . '/core/controllers/', 'f', '', false);
+    $items = fs :: find(PROJECT_DIR . '/core/controllers/', 'f', null, null, false);
 
     sort($items);
     foreach($items as $item)

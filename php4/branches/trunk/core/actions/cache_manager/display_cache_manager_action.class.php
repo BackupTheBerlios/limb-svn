@@ -42,7 +42,7 @@ class display_cache_manager_action extends action
   function _get_template_cache_size()
   {
     $size = 0;
-    $files = fs :: find_subitems(VAR_DIR . '/compiled', 'f');
+    $files = fs :: find(VAR_DIR . '/compiled', 'f');
     foreach($files as $file)
       $size += filesize($file);
 
@@ -52,7 +52,7 @@ class display_cache_manager_action extends action
   function _get_ini_cache_size()
   {
     $size = 0;
-    $files = fs :: find_subitems(CACHE_DIR, 'f');
+    $files = fs :: find(VAR_DIR . '/ini', 'f');
     foreach($files as $file)
       $size += filesize($file);
 

@@ -19,6 +19,23 @@ class cache_registry_test extends LimbTestCase
   function setUp()
   {
     $this->cache = new cache_registry();
+    $this->cache->flush();
+  }
+
+  function test_assign_array_key_false()
+  {
+    $key = array('empty');
+
+    $this->assertFalse($this->cache->assign($var, $key));
+  }
+
+  function test_assign_array_key_true()
+  {
+    $key = array('empty');
+    $this->cache->put($key, $v = 'value');
+
+    $this->assertTrue($this->cache->assign($var, $key));
+    $this->assertEqual($v, $var);
   }
 
   function test_get_null()

@@ -15,7 +15,7 @@ class flush_template_cache_action extends action
 {
   function perform(&$request, &$response)
   {
-    $files = fs :: find_subitems(VAR_DIR . '/compiled', 'f');
+    $files = fs :: find(VAR_DIR . '/compiled', 'f');
     foreach($files as $file)
       unlink($file);
 

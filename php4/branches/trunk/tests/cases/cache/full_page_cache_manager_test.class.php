@@ -553,7 +553,7 @@ class full_page_cache_manager_test extends LimbTestCase
     $cache_manager =& new full_page_cache_manager();
     $cache_manager->flush();
 
-    $files = fs :: find_subitems(PAGE_CACHE_DIR);
+    $files = fs :: find(PAGE_CACHE_DIR);
 
     $this->assertEqual(sizeof($files), 1);
 

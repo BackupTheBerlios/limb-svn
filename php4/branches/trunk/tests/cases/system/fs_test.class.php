@@ -23,7 +23,6 @@ class special_dir_walker
     static $counter = 0;
 
     $this->walked[] = fs :: clean_path($dir . $params['separator'] .  $file);
-
     $return_params[] = $counter++;
   }
 }
@@ -177,7 +176,6 @@ class fs_test extends LimbTestCase
     $a1 = array('test1_1', 'test1_2', 'test1_3', 'wow');
     sort($a1);
     $a2 =  fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/');
-    sort($a2);
 
     $this->assertEqual($a1, $a2);
     $this->assertEqual(array('hey', 'test2_1', 'test2_2', 'test2_3'), fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow'));
@@ -236,7 +234,6 @@ class fs_test extends LimbTestCase
     $this->_create_file_system();
 
     $res = fs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp');
-    sort($res);
 
     $this->assertEqual(
       $res,
@@ -262,7 +259,7 @@ class fs_test extends LimbTestCase
     $this->_remove_file_system();
   }
 
-  function test_cp_as_shild()
+  function test_cp_as_child()
   {
     $this->_create_file_system();
 
@@ -283,8 +280,7 @@ class fs_test extends LimbTestCase
   {
     $this->_create_file_system();
 
-    $res = fs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', false, '/hey/');
-    sort($res);
+    $res = fs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', false, null, '/hey/');
 
     $this->assertEqual(
       $res,
@@ -301,12 +297,32 @@ class fs_test extends LimbTestCase
     $this->_remove_file_system();
   }
 
-  function test_find_subitems()
+  function test_cp_with_include()
   {
     $this->_create_file_system();
 
-    $res = fs :: find_subitems(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey');
-  sort($res);
+    $res = fs :: cp(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow', TEST_DIR_ABSOLUTE_PATH . '/tmp/cp', false, '/test2/');
+
+    $this->assertEqual(
+      $res,
+      array('test2_1', 'test2_2', 'test2_3')
+    );
+
+    $this->assertEqual(
+      $res,
+      fs :: ls(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/')
+    );
+
+    $this->assertFalse(is_dir(TEST_DIR_ABSOLUTE_PATH . '/tmp/cp/hey'));
+
+    $this->_remove_file_system();
+  }
+
+  function test_find()
+  {
+    $this->_create_file_system();
+
+    $res = fs :: find(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/hey');
 
     $this->assertEqual(
       $res,
@@ -317,7 +333,7 @@ class fs_test extends LimbTestCase
       )
     );
 
-    $res = fs :: find_subitems(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/', 'f', '/^test2_1$/');
+    $res = fs :: find(TEST_DIR_ABSOLUTE_PATH . '/tmp/wow/', 'f', null, '/^test2_1$/');
     sort($res);
 
     $this->assertEqual(

@@ -37,7 +37,7 @@ class site_objects_classes_options_datasource extends datasource
   function _add_limb_site_objects(&$result)
   {
     //media object can't really be a valid site object(refactor!!!)
-    $items = fs :: find_subitems(LIMB_DIR . '/core/model/site_objects/', 'f', '~media_object~', false);
+    $items = fs :: find(LIMB_DIR . '/core/model/site_objects/', 'f', null, '~media_object~', false);
 
     sort($items);
     foreach($items as $item)
@@ -49,7 +49,7 @@ class site_objects_classes_options_datasource extends datasource
 
   function _add_project_site_objects(&$result)
   {
-    $items = fs :: find_subitems(PROJECT_DIR . '/core/model/site_objects/', 'f', '', false);
+    $items = fs :: find(PROJECT_DIR . '/core/model/site_objects/', 'f', null, null, false);
 
     sort($items);
     foreach($items as $item)

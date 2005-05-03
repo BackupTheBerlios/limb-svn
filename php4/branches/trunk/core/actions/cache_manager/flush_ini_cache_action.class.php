@@ -15,7 +15,7 @@ class flush_ini_cache_action extends action
 {
   function perform(&$request, &$response)
   {
-    $files = fs :: find_subitems(CACHE_DIR, 'f');
+    $files = fs :: find(INI_CACHE_DIR, 'f');
     foreach($files as $file)
       unlink($file);
 

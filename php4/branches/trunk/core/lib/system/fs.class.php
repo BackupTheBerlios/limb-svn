@@ -197,11 +197,8 @@ class fs
   /*
    Copies a directory (and optionally all it's subitems) to another directory.
   */
-  function cp($src, $dest, $as_child = false, $exclude_regex = '', $include_hidden = false)
+  function cp($src, $dest, $as_child = false, $include_regex = '', $exclude_regex = '', $include_hidden = false)
   {
-    $src = fs :: clean_path($src);
-    $dest = fs :: clean_path($dest);
-
     if (!is_dir($src))
     {
       debug :: write_error('no such a directory',
@@ -214,6 +211,8 @@ class fs
     if(!fs :: mkdir($dest))
       return false;
 
+    $src = fs :: clean_path($src);
+    $dest = fs :: clean_path($dest);
     $separator = fs :: separator();
 
     if ($as_child)
@@ -227,7 +226,7 @@ class fs
       else
         return false;//???
     }
-    $items = fs :: find_subitems($src, 'df', $exclude_regex, false, $include_hidden);
+    $items = fs :: find($src, 'df', $include_regex, $exclude_regex, false, $include_hidden);
 
     $total_items = $items;
     while (count($items) > 0)
@@ -243,7 +242,7 @@ class fs
         {
           fs :: _do_mkdir($dest . $separator . $item, 0777);
 
-          $new_items = fs :: find_subitems($full_path, 'df', $exclude_regex, $item, $include_hidden);
+          $new_items = fs :: find($full_path, 'df', $include_regex, $exclude_regex, $item, $include_hidden);
 
           $items = array_merge($items, $new_items);
           $total_items = array_merge($total_items, $new_items);
@@ -253,7 +252,10 @@ class fs
       }
     }
     if($total_items)
+    {
+      sort($total_items);
       clearstatcache();
+    }
 
     return $total_items;
   }
@@ -276,6 +278,7 @@ class fs
       }
       closedir($handle);
     }
+    sort($files);
     return $files;
   }
 
@@ -480,19 +483,8 @@ class fs
       }
       closedir($handle);
     }
+    sort($items);
     return $items;
-  }
-
-  //obsolete!!!
-  function find_subitems($dir, $types = 'dfl', $exclude_regex = '', $add_path = true, $include_hidden = false)
-  {
-    return fs :: find($dir, $types, '', $exclude_regex, $add_path, $include_hidden);
-  }
-
-  //obsolete!!!
-  function find_subdirs($dir, $full_path = false, $include_hidden = false, $exclude_items = false)
-  {
-    return fs :: find_subitems($dir, 'd', $full_path, $include_hidden, $exclude_items);
   }
 }
 ?>

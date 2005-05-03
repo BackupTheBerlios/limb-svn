@@ -11,6 +11,8 @@
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
 
+@define('INI_CACHE_DIR', VAR_DIR . '/ini/');
+
 function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
 {
   $ini =& get_ini($file_path, $use_cache);
@@ -74,7 +76,7 @@ class ini
 
     $this->file_path = $file_path;
     $this->use_cache = $use_cache;
-    $this->cache_dir = CACHE_DIR;
+    $this->cache_dir = INI_CACHE_DIR;
 
     $this->load();
   }

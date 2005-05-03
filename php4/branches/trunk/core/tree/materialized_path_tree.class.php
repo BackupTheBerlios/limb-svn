@@ -16,6 +16,8 @@ define('TREE_ERROR_RECURSION', 3);
 
 class materialized_path_tree//implements tree
 {
+  var $_root_nodes_cache = null;
+
   var $_node_table = 'sys_site_object_tree';
 
   var $_db = null;
@@ -225,10 +227,8 @@ class materialized_path_tree//implements tree
   */
   function & get_root_nodes($add_sql = array())
   {
-    static $root_nodes = null;
-
-    if($root_nodes !== null)
-      return $root_nodes;
+    if(isset($this->_root_nodes_cache))
+      return $this->_root_nodes_cache;
 
     $sql = sprintf('SELECT %s %s FROM %s %s WHERE %s.parent_id=0 %s',
                     $this->_get_select_fields(),
@@ -238,9 +238,8 @@ class materialized_path_tree//implements tree
                     $this->_node_table,
                     $this->_add_sql($add_sql, 'append'));
 
-    $root_nodes =& $this->_get_result_set($sql);
-
-    return $root_nodes;
+    $this->_root_nodes_cache =& $this->_get_result_set($sql);
+    return $this->_root_nodes_cache;
   }
 
   /**
