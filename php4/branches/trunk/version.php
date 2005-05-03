@@ -36,7 +36,7 @@ define('LIMB_VERSION_MINOR', '3');
 /**
  * Micro software version
  */
-define('LIMB_VERSION_MICRO', '0');
+define('LIMB_VERSION_MICRO', '1');
 
 /**
  * Software version patch
