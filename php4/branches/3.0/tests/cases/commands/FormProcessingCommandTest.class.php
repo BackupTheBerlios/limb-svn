@@ -9,25 +9,11 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/FormProcessingCommand.class.php');
-require_once(LIMB_DIR . '/core/request/Request.class.php');
-require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
-require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
+require_once(WACT_ROOT . '/validation/validator.inc.php');
 require_once(WACT_ROOT . '/template/template.inc.php');
-require_once(WACT_ROOT . '/template/components/form/form.inc.php');
-
-Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
-Mock :: generate('Request');
-Mock :: generate('Dataspace');
-Mock :: generate('FormComponent');
 
 class FormProcessingCommandTest extends LimbTestCase
 {
-  var $dataspace;
-  var $request;
-  var $toolkit;
-  var $form_id = 'test_form';
-  var $form_component;
-
   function FormProcessingCommandTest()
   {
     parent :: LimbTestCase(__FILE__);
@@ -35,124 +21,40 @@ class FormProcessingCommandTest extends LimbTestCase
 
   function setUp()
   {
-    $this->dataspace = new MockDataspace($this);
-    $this->request = new MockRequest($this);
+    Limb :: saveToolkit();
 
-    $this->toolkit = new MockLimbToolkit($this);
-    $this->toolkit->setReturnReference('getRequest', $this->request);
+    $template = "<form id='test_form' runat='server'></form>";
+    registerTestingTemplate('FormProcessingCommandTest.html', $template);
 
-    $view = new Component();
-    $this->toolkit->expectOnce('getView');
-    $this->toolkit->setReturnReference('getView', $view);
+    $toolkit =& Limb :: toolkit();
 
-    $this->form_component = new MockFormComponent($this);
-    $view->addChild($this->form_component, $this->form_id);
-
-    Limb :: registerToolkit($this->toolkit);
+    $template = new Template('FormProcessingCommandTest.html');
+    $toolkit->setView($template);
   }
 
   function tearDown()
   {
+    clearTestingTemplates();
+
     Limb :: restoreToolkit();
-
-    $this->dataspace->tally();
-    $this->request->tally();
-    $this->toolkit->tally();
-    $this->form_component->tally();
   }
 
-  function testMultiFormDisplay()
+  function testPerformFormDisplayed()
   {
-    $form_command = new FormProcessingCommand($form_id = 'test_form', LIMB_MULTI_FORM, array());
-
-    $this->toolkit->setReturnReference('switchDataspace', $this->dataspace, array($form_id));
-
-    $this->request->expectOnce('get');
-    $this->request->setReturnValue('get', array('submitted' => 0), array($form_id));
-
-    $this->form_component->expectOnce('registerDataSource', array($this->dataspace));
-
-    $this->assertEqual($form_command->perform(), LIMB_STATUS_FORM_DISPLAYED);
+    $validator = new Validator();
+    $command = new FormProcessingCommand('test_form', LIMB_SINGLE_FORM, $validator);
+    $this->assertEqual($command->perform(), LIMB_STATUS_FORM_DISPLAYED);
   }
 
-  function testSingleFormDisplay()
+  function testPerformFormValid()
   {
-    $form_command = new FormProcessingCommand($form_id = 'test_form', LIMB_SINGLE_FORM, array());
+    $validator = new Validator();
 
-    $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
-
-    $this->request->expectOnce('export');
-    $this->request->setReturnValue('export', array('submitted' => 0));
-
-    $this->form_component->expectOnce('registerDataSource', array($this->dataspace));
-
-    $this->assertEqual($form_command->perform(), LIMB_STATUS_FORM_DISPLAYED);
-  }
-
-  function testMultiFormSubmit()
-  {
-    $map = array('request_field1' => 'dataspace_field1',
-                 'request_field2' => 'dataspace_field2');
-
-    $form_command = new FormProcessingCommand($form_id = 'test_form', LIMB_MULTI_FORM, $map);
-
-    $this->toolkit->setReturnReference('switchDataspace', $this->dataspace, array('test_form'));
-
-    $this->request->setReturnValue('get',
-                                   $request = array('request_field1' => 1,
-                                                    'submitted' => 1),
-                                   array($form_id));
-
-    $this->dataspace->expectOnce('merge', array(array('dataspace_field1' => 1)));
-
-    $this->form_component->expectOnce('registerDataSource', array($this->dataspace));
-
-    $this->assertEqual($form_command->perform(), LIMB_STATUS_FORM_SUBMITTED);
-  }
-
-  function testSingleFormSubmit()
-  {
-    $map = array('request_field1' => 'dataspace_field1',
-                 'request_field2' => 'dataspace_field2');
-
-    $form_command = new FormProcessingCommand($form_id = 'test_form', LIMB_SINGLE_FORM, $map);
-
-    $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
-
-    $this->request->setReturnValue('export',
-                                   $request = array('request_field1' => 1,
-                                                    'request_field2' => 10,
-                                                    'junk_field' => 100,
-                                                    'submitted' => 1));
-
-    $this->dataspace->expectOnce('merge', array(array('dataspace_field1' => 1,
-                                                      'dataspace_field2' => 10,
-                                                      )));
-
-    $this->form_component->expectOnce('registerDataSource', array($this->dataspace));
-
-    $this->assertEqual($form_command->perform(), LIMB_STATUS_FORM_SUBMITTED);
-  }
-
-  function testToMappingIfNoMapAttribute()
-  {
-    $form_command = new FormProcessingCommand($form_id = 'test_form', LIMB_SINGLE_FORM);
-
-    $this->toolkit->setReturnReference('getDataspace', $this->dataspace);
-
-    $this->request->setReturnValue('export',
-                                   $request = array('request_field1' => 1,
-                                                    'request_field2' => 10,
-                                                    'submitted' => 1));
-
-    $this->dataspace->expectOnce('merge', array(array('request_field1' => 1,
-                                                      'request_field2' => 10,
-                                                      'submitted' => 1
-                                                      )));
-
-    $this->form_component->expectOnce('registerDataSource', array($this->dataspace));
-
-    $this->assertEqual($form_command->perform(), LIMB_STATUS_FORM_SUBMITTED);
+    $toolkit =& Limb :: toolkit();
+    $request =& $toolkit->getRequest();
+    $request->set('submitted', 1);
+    $command = new FormProcessingCommand('test_form', LIMB_SINGLE_FORM, $validator);
+    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
   }
 }
 

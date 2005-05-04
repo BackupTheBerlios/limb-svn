@@ -13,21 +13,22 @@ define('STATE_MACHINE_BY_DEFAULT', 255);
 
 class StateMachineCommand
 {
+  var $factory;
   var $states = array();
   var $state_history = array();
   var $initial_state = null;
 
-  function StateMachineCommand()
+  function StateMachineCommand(&$factory)
   {
+    $this->factory =& $factory;
   }
 
-  function registerState($state_name, &$command, $transitions_matrix = array())
+  function registerState($state_name, $transitions_matrix = array())
   {
     if (isset($this->states[$state_name]))
       return throw_error(new LimbException('state has already been registered',
                               array('state_name' => $state_name)));
 
-    $this->states[$state_name]['command'] =& $command;
     $this->states[$state_name]['transitions'] = $transitions_matrix;
 
     return true;
@@ -38,7 +39,7 @@ class StateMachineCommand
     $this->initial_state = $state;
   }
 
-  function perform(&$context)
+  function perform()
   {
     if (!count($this->states))
       return;
@@ -54,7 +55,7 @@ class StateMachineCommand
     while($next_state != false)
     {
       $state = $next_state;
-      $result = $this->_performStateCommand($state, $context);
+      $result = $this->_performStateCommand($state);
 
       if (isset($this->states[$state]['transitions'][$result]))
         $next_state = $this->states[$state]['transitions'][$result];
@@ -68,7 +69,7 @@ class StateMachineCommand
     }
   }
 
-  function _performStateCommand($state, &$context)
+  function _performStateCommand($state)
   {
     if (!isset($this->states[$state]))
     {
@@ -76,9 +77,8 @@ class StateMachineCommand
                             array('state_name' => $state)));
     }
 
-    $command =& Handle :: resolve($this->states[$state]['command']);
-
-    $result = $command->perform($context);
+    $method = 'perform' .  $state;
+    $result = $this->factory->$method();
 
     $this->state_history[] = array($state => $result);
 

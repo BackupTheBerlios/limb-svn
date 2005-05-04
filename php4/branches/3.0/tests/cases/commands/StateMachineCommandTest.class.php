@@ -12,7 +12,14 @@ require_once(LIMB_DIR . '/core/commands/StateMachineCommand.class.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/core/commands/Command.interface.php');
 
-Mock :: generate('Command');
+class TestCommandsFactory
+{
+  function performInitial(){}
+  function performNextState(){}
+  function performExtraState(){}
+}
+
+Mock :: generate('TestCommandsFactory', 'MockCommandsFactory');
 
 class StateMachineCommandTest extends LimbTestCase
 {
@@ -23,202 +30,178 @@ class StateMachineCommandTest extends LimbTestCase
     parent :: LimbTestCase(__FILE__);
   }
 
-  function setUp()
-  {
-    $this->state_machine = new StateMachineCommand();
-  }
-
-  function tearDown()
-  {
-    $this->state_machine->reset();
-  }
-
   function testRunNoStatesOk()
   {
-    $this->state_machine->perform(new DataSpace());
+    $factory = new MockCommandsFactory($this);
+    $state_machine = new StateMachineCommand($factory);
+    $this->assertNull($state_machine->perform($factory));
   }
 
   function testSimpleFlow()
   {
-    $context = new DataSpace();
+    $factory = new MockCommandsFactory($this);
+    $state_machine = new StateMachineCommand($factory);
 
-    $command1 = new MockCommand($this);
-    $command1->setReturnValue('perform', $result1 = 'some_status');
-    $this->state_machine->registerState('initial', $command1, array($result1 => 'next_state'));
+    $state_machine->registerState('Initial', array('foo' => 'NextState'));
+    $state_machine->registerState('NextState');
+    $state_machine->registerState('ExtraState');
 
-    $command2 = new MockCommand($this);
-    $command2->setReturnValue('perform', $result2 = 'final_status');
-    $this->state_machine->registerState('next_state', $command2);
+    $factory->expectOnce('performInitial');
+    $factory->setReturnValue('performInitial', 'foo');
+    $factory->expectOnce('performNextState');
+    $factory->setReturnValue('performNextState', 'bar');
 
-    $command3 = new MockCommand($this);
-    $this->state_machine->registerState('extra_state', $command3);
+    $factory->expectNever('performExtraState');
 
-    $command1->expectOnce('perform', array($context));
-    $command2->expectOnce('perform', array($context));
-    $command3->expectNever('perform', array($context));
+    $this->assertEqual($state_machine->perform(), 'bar');
 
-    $this->assertEqual($this->state_machine->perform($context), $result2);
-
-    $command1->tally();
-    $command2->tally();
-    $command3->tally();
+    $factory->tally();
   }
 
   function testRunFromInitialState()
   {
-    $context = new DataSpace();
+    $factory = new MockCommandsFactory($this);
+    $state_machine = new StateMachineCommand($factory);
 
-    $command1 = new MockCommand($this);
-    $this->state_machine->registerState('initial', $command1, array('some_status' => 'next_state'));
+    $state_machine->registerState('Initial', array('foo' => 'NextState'));
+    $state_machine->registerState('NextState');
+    $state_machine->registerState('ExtraState');
 
-    $command2 = new MockCommand($this);
-    $command2->setReturnValue('perform', $result1 = 'some_other_status');
-    $this->state_machine->registerState('next_state', $command2, array('some_other_status' => 'extra_state'));
+    $factory->expectNever('performInitial');
+    $factory->expectOnce('performNextState');
+    $factory->setReturnValue('performNextState', 'bar');
+    $factory->expectNever('performExtraState');
 
-    $command3 = new MockCommand($this);
-    $command3->setReturnValue('perform', $result2 = 'final_status');
-    $this->state_machine->registerState('extra_state', $command3);
+    $state_machine->setInitialState('NextState');
+    $this->assertEqual($state_machine->perform(), 'bar');
 
-    $command1->expectNever('perform', array($context));
-    $command2->expectOnce('perform', array($context));
-    $command3->expectOnce('perform', array($context));
-
-    $this->state_machine->setInitialState('next_state');
-    $this->assertEqual($this->state_machine->perform($context), $result2);
-
-    $command1->tally();
-    $command2->tally();
-    $command3->tally();
+    $factory->tally();
   }
 
   function testRegisterStateTwice()
   {
-    $command = new MockCommand($this);
+    $factory = new MockCommandsFactory($this);
+    $state_machine = new StateMachineCommand($factory);
 
-    $this->state_machine->registerState('some_state', $command);
+    $state_machine->registerState('some_state');
     $this->assertFalse(catch_error('LimbException', $e));
-    $this->state_machine->registerState('some_state', $command);
+    $state_machine->registerState('some_state');
     $this->assertTrue(catch_error('LimbException', $e));
   }
 
   function testSeveralStatusesFlow()
   {
-    $context = new DataSpace();
+    $factory = new MockCommandsFactory($this);
+    $state_machine = new StateMachineCommand($factory);
 
-    $command1 = new MockCommand($this);
-    $command1->setReturnValueAt(0, 'perform', 'some_status');
-    $command1->setReturnValueAt(1, 'perform', 'some_other_status');
-    $this->state_machine->registerState('initial', $command1,
-                                        array('some_status' => 'variant1_state',
-                                              'some_other_status' => 'variant2_state'));
+    $state_machine->registerState('Initial', array('some_result' => 'NextState',
+                                                   'some_other_result' => 'ExtraState'));
+    $state_machine->registerState('NextState');
+    $state_machine->registerState('ExtraState');
 
-    $command2 = new MockCommand($this);
-    $this->state_machine->registerState('variant1_state', $command2);
+    $factory->expectOnce('performInitial');
+    $factory->setReturnValueAt(0, 'performInitial', 'some_other_result');
+    $factory->expectNever('performNextState');
+    $factory->setReturnValue('performExtraState', 'bar');
 
-    $command3 = new MockCommand($this);
-    $this->state_machine->registerState('variant2_state', $command3);
+    $factory->expectNever('performNextState');
 
-    $command1->expectCallCount('perform', 2);
-    $command2->expectOnce('perform', array($context));
-    $command3->expectOnce('perform', array($context));
+    $this->assertEqual($state_machine->perform(), 'bar');
 
-    $this->state_machine->perform($context);
-    $this->state_machine->perform($context);
-
-    $command1->tally();
-    $command2->tally();
-    $command3->tally();
+    $factory->tally();
   }
 
   function testStateByDefault()
   {
-    $context = new DataSpace();
+    $factory = new MockCommandsFactory($this);
+    $state_machine = new StateMachineCommand($factory);
 
-    $command1 = new MockCommand($this);
-    $command1->setReturnValue('perform', 'some_status');
-    $this->state_machine->registerState('initial', $command1, array(STATE_MACHINE_BY_DEFAULT => 'next_state1'));
+    $state_machine->registerState('Initial', array('some_result' => 'NextState',
+                                                   STATE_MACHINE_BY_DEFAULT => 'ExtraState'));
+    $state_machine->registerState('NextState');
+    $state_machine->registerState('ExtraState');
 
-    $command2 = new MockCommand($this);
-    $command2->setReturnValue('perform', 'some_other_status');
-    $this->state_machine->registerState('next_state1', $command2, array(STATE_MACHINE_BY_DEFAULT => 'next_state2'));
+    $factory->expectOnce('performInitial');
+    $factory->setReturnValueAt(0, 'performInitial', 'some_other_result');
+    $factory->expectNever('performNextState');
+    $factory->setReturnValue('performExtraState', 'bar');
 
-    $command3 = new MockCommand($this);
-    $command3->setReturnValue('perform', 'some_other_status_also');
-    $this->state_machine->registerState('next_state2', $command3);
+    $factory->expectNever('performNextState');
 
-    $command1->expectOnce('perform', array($context));
-    $command2->expectOnce('perform', array($context));
-    $command3->expectOnce('perform', array($context));
+    $this->assertEqual($state_machine->perform(), 'bar');
 
-    $this->state_machine->perform($context);
-
-    $command1->tally();
-    $command2->tally();
-    $command3->tally();
+    $factory->tally();
   }
 
   function testStateWithBrokenTransitions()
   {
-    $context = new DataSpace();
+    $factory = new MockCommandsFactory($this);
+    $state_machine = new StateMachineCommand($factory);
 
-    $command1 = new MockCommand($this);
-    $command1->setReturnValue('perform', 'some_status');
-    $this->state_machine->registerState('initial', $command1, array('some_status' => 'no_such_state'));
+    $state_machine->registerState('Initial', array('some_result' => 'NoSuchState'));
+    $state_machine->registerState('NextState');
+    $state_machine->registerState('ExtraState');
 
-    $command2 = new MockCommand($this);
-    $this->state_machine->registerState('next_state', $command2);
-
-    $this->state_machine->perform($context);
+    $factory->expectOnce('performInitial');
+    $factory->setReturnValueAt(0, 'performInitial', 'some_result');
+    $factory->expectNever('performNextState');
+    $factory->expectNever('performExtraState');
+    $state_machine->perform();
     $this->assertTrue(catch_error('LimbException', $e));
   }
 
   function testGetStateHistory()
   {
-    $command1 = new MockCommand($this);
-    $command1->setReturnValue('perform', 'status1');
-    $this->state_machine->registerState('initial', $command1, array('status1' => 'state2'));
+    $factory = new MockCommandsFactory($this);
+    $state_machine = new StateMachineCommand($factory);
 
-    $command2 = new MockCommand($this);
-    $command2->setReturnValue('perform', 'status2');
-    $this->state_machine->registerState('state2', $command2, array('status2' => 'no_such_state'));
+    $state_machine->registerState('Initial', array('foo' => 'NextState'));
+    $state_machine->registerState('NextState');
+    $state_machine->registerState('ExtraState');
 
-    $command3 = new MockCommand($this);
-    $this->state_machine->registerState('state3', $command3);
+    $factory->expectOnce('performInitial');
+    $factory->setReturnValue('performInitial', 'foo');
+    $factory->expectOnce('performNextState');
+    $factory->setReturnValue('performNextState', 'bar');
 
-    $this->state_machine->perform(new DataSpace());
-    $this->assertTrue(catch_error('LimbException', $e));//because of the 'no_such_state'
+    $factory->expectNever('performExtraState');
 
-    $this->assertEqual($this->state_machine->getStateHistory(),
-                       array(array('initial' => 'status1'),
-                             array('state2' => 'status2')));
+    $this->assertEqual($state_machine->perform(), 'bar');
 
-    $this->assertEqual($this->state_machine->getEndState(), array('state2' => 'status2'));
+    $this->assertEqual($state_machine->getStateHistory(),
+                       array(array('Initial' => 'foo'),
+                             array('NextState' => 'bar')));
+
+    $factory->tally();
   }
 
   function testGetStateHistoryAllCommandsInHistory()
   {
-    $command1 = new MockCommand($this);
-    $command1->setReturnValue('perform', 'status1');
-    $this->state_machine->registerState('initial', $command1, array('status1' => 'state2'));
+    $factory = new MockCommandsFactory($this);
+    $state_machine = new StateMachineCommand($factory);
 
-    $command2 = new MockCommand($this);
-    $command2->setReturnValue('perform', 'status2');
-    $this->state_machine->registerState('state2', $command2, array('status2' => 'state3'));
+    $state_machine->registerState('Initial', array('foo' => 'NextState'));
+    $state_machine->registerState('NextState', array('bar' => 'ExtraState'));
+    $state_machine->registerState('ExtraState');
 
-    $command3 = new MockCommand($this);
-    $command3->setReturnValue('perform', 'whatever');
-    $this->state_machine->registerState('state3', $command3);
+    $factory->expectOnce('performInitial');
+    $factory->setReturnValue('performInitial', 'foo');
+    $factory->expectOnce('performNextState');
+    $factory->setReturnValue('performNextState', 'bar');
+    $factory->expectOnce('performExtraState');
+    $factory->setReturnValue('performExtraState', 'some_result');
 
-    $this->state_machine->perform(new DataSpace());
-    $this->assertEqual($this->state_machine->getStateHistory(),
-                       array(array('initial' => 'status1'),
-                             array('state2' => 'status2'),
-                             array('state3' => 'whatever')));
+    $this->assertEqual($state_machine->perform(), 'some_result');
 
-    $this->assertEqual($this->state_machine->getEndState(), array('state3' => 'whatever'));
+    $this->assertEqual($state_machine->getStateHistory(),
+                       array(array('Initial' => 'foo'),
+                             array('NextState' => 'bar'),
+                             array('ExtraState' => 'some_result')));
+
+    $this->assertEqual($state_machine->getEndState(), array('ExtraState' => 'some_result'));
+
+    $factory->tally();
   }
-
-  function testCatchCircularFlow(){}
 }
 
 ?>

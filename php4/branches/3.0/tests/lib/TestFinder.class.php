@@ -73,7 +73,7 @@ class TestFinder
     if(preg_match_all('~SimpleTestOptions\s?::\s?ignore\((\'|")([^\'"]+)(\'|")\)~', $file, $matches))
       $excludes = $matches[2];
 
-    if(!preg_match_all("~class\s+?([^\s]+)\s+?extends\s+?[a-zA-Z_]+[T,t]est~", $file, $matches))
+    if(!preg_match_all("~class\s+?([^\s]+)\s+?extends\s+.*test~i", $file, $matches))
       return array();
 
     return array_diff($matches[1], $excludes);

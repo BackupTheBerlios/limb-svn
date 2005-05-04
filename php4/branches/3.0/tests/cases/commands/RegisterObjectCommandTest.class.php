@@ -9,7 +9,6 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/RegisterObjectCommand.class.php');
-require_once(dirname(__FILE__) . '/simple_object.inc.php');
 
 class RegisterObjectCommandTest extends LimbTestCase
 {
@@ -18,31 +17,17 @@ class RegisterObjectCommandTest extends LimbTestCase
     parent :: LimbTestCase(__FILE__);
   }
 
-  function testPerformError()
-  {
-    $context = new DataSpace();
-
-    $toolkit =& Limb :: toolkit();
-
-    $command = new RegisterObjectCommand($field_name = 'whatever');
-
-    $this->assertEqual($command->perform($context), LIMB_STATUS_ERROR);
-  }
-
   function testPerformOK()
   {
-    $context = new DataSpace();
-
-    $object = new SimpleObject();
+    $object = new Object();
+    $object->__class_name = 'Object';
     $object->set('title', $title = 'any title');
-
-    $context->setObject($entity_name = 'whatever', $object);
 
     $toolkit =& Limb :: toolkit();
 
-    $command = new RegisterObjectCommand($entity_name);
+    $command = new RegisterObjectCommand($object);
 
-    $this->assertEqual($command->perform($context), LIMB_STATUS_OK);
+    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
     $uow =& $toolkit->getUOW();
 

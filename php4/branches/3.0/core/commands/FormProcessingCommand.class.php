@@ -8,102 +8,40 @@
 * $Id$
 *
 ***********************************************************************************/
-define('LIMB_ANY_FORM_WILDCARD', '*');
-define('LIMB_MULTI_FORM', true);
-define('LIMB_SINGLE_FORM', false);
+require_once(LIMB_DIR . '/core/commands/FormInitCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/state_machines/FormProcessingStateMachine.class.php');
 
-require_once(LIMB_DIR . '/core/util/ComplexArray.class.php');
-
-class FormProcessingCommand// implements Command
+class FormProcessingCommand
 {
   var $form_id;
   var $is_multi;
-  var $map;
+  var $validator;
 
-  function FormProcessingCommand($form_id, $is_multi = LIMB_SINGLE_FORM, $map = array())
+  function FormProcessingCommand($form_id, $is_multi, &$validator)
   {
     $this->form_id = $form_id;
     $this->is_multi = $is_multi;
-    $this->map = $map;
+    $this->validator =& $validator;
   }
 
   function perform()
   {
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-
-    $dataspace =& $this->_switchDataSpace();
-    $form =& $this->getFormComponent();
-    $form->registerDataSource($dataspace);
-
-    if($this->_isFirstTime($request))
-      return LIMB_STATUS_FORM_DISPLAYED;
-    else
-    {
-      $this->_mergeDataspaceWithRequest($dataspace, $request);
-      return LIMB_STATUS_FORM_SUBMITTED;
-    }
+    $state_machine = new FormProcessingStateMachine($this);
+    return $state_machine->perform();
   }
 
-  function _isFirstTime(&$request)
+  function performInit()
   {
-    $arr = $this->_getRequestData($request);
-    if(isset($arr['submitted']) &&  $arr['submitted'])
-      return false;
-    else
-      return true;
+    include_once(LIMB_DIR . '/core/commands/FormInitCommand.class.php');
+    $command = new FormInitCommand($this->form_id, $this->is_multi);
+    return $command->perform();
   }
 
-  function _mergeDataspaceWithRequest(&$dataspace, &$request)
+  function performValidate()
   {
-    $data = array();
-    if($this->map)
-    {
-      ComplexArray :: map($this->map,
-                        $this->_getRequestData($request),
-                        $data);
-    }
-    else
-    {
-      $data = $this->_getRequestData($request);
-    }
-
-    $dataspace->merge($data);
-  }
-
-  function _getRequestData(&$request)
-  {
-    if($this->is_multi)
-      return $request->get($this->form_id);
-    else
-      return $request->export();
-  }
-
-  function &_switchDataSpace()
-  {
-    $toolkit =& Limb :: toolkit();
-
-    if($this->is_multi)
-      return $toolkit->switchDataspace($this->form_id);
-    else
-      return $toolkit->getDataspace();
-  }
-
-  function & getFormComponent()
-  {
-    $toolkit =& Limb :: toolkit();
-    $view =& $toolkit->getView();
-    return $view->findChild($this->form_id);
-  }
-
-  function _htmlspecialcharsDataspaceValue(&$dataspace, $name)
-  {
-    if(!$value = $dataspace->get($name))
-      return;
-
-    $this->dataspace->set($name, htmlspecialchars($value));
+    include_once(LIMB_DIR . '/core/commands/FormValidateCommand.class.php');
+    $command = new FormValidateCommand($this->form_id, $this->validator);
+    return $command->perform();
   }
 }
-
-
 ?>

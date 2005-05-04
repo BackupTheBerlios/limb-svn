@@ -11,22 +11,19 @@
 
 class RegisterObjectCommand
 {
-  var $field_name;
+  var $object;
 
-  function RegisterObjectCommand($field_name)
+  function RegisterObjectCommand(&$object)
   {
-    $this->field_name = $field_name;
+    $this->object =& $object;
   }
 
-  function perform(&$context)
+  function perform()
   {
-    if(!$object =& $context->getObject($this->field_name))
-      return LIMB_STATUS_ERROR;
-
     $toolkit =& Limb :: toolkit();
     $uow =& $toolkit->getUOW();
 
-    $uow->register($object);
+    $uow->register($this->object);
 
     return LIMB_STATUS_OK;
   }
