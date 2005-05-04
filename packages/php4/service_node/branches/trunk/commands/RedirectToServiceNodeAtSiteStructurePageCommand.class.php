@@ -10,26 +10,18 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/RedirectCommand.class.php');
 
-class RedirectToServiceNodeCommand
+class RedirectToServiceNodeAtSiteStructurePageCommand
 {
   var $service_node;
 
-  function RedirectToServiceNodeCommand(&$service_node)
+  function RedirectToServiceNodeAtSiteStructurePageCommand(&$service_node)
   {
     $this->service_node =& $service_node;
   }
 
   function perform()
   {
-    if(!is_a($this->service_node, 'ServiceNode'))
-      return LIMB_STATUS_ERROR;
-
-    $toolkit =& Limb :: toolkit();
-
-    $node =& $this->service_node->getPart('node');
-    $path2id_translator =& $toolkit->getPath2IdTranslator();
-    $path = $path2id_translator->getPathToNode($node->get('id'));
-
+    $path = '?id='. $this->service_node->get('oid');
     $redirect_command = new RedirectCommand($path);
     return $redirect_command->perform();
   }

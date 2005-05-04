@@ -87,16 +87,6 @@ class CommonServiceNodeDeleteCommandTest extends LimbTestCase
     return $entity;
   }
 
-  function testPerformInitFailed()
-  {
-    $this->assertEqual($this->command->perform(new DataSpace()), LIMB_STATUS_OK);
-    $this->assertEqual($this->command->getStateHistory(), array(
-                                                     array('init_object' => LIMB_STATUS_ERROR),
-                                                     array('error' => LIMB_STATUS_OK),
-                                                     array('render' => LIMB_STATUS_OK),
-                                                     ));
-  }
-
   function testPerformDelete()
   {
     $entity =& $this->_registerRootObject();
@@ -105,13 +95,7 @@ class CommonServiceNodeDeleteCommandTest extends LimbTestCase
     $uri =& $request->getUri();
     $uri->setPath('/services');
 
-    $this->assertEqual($this->command->perform(new DataSpace()), LIMB_STATUS_OK);
-
-    $this->assertEqual($this->command->getStateHistory(), array(
-                                                     array('init_object' => LIMB_STATUS_OK),
-                                                     array('delete' => LIMB_STATUS_OK),
-                                                     array('redirect' => LIMB_STATUS_OK),
-                                                     ));
+    $this->assertEqual($this->command->perform(), LIMB_STATUS_OK);
 
     $response =& $toolkit->getResponse();
     $this->assertTrue($response->isRedirected());

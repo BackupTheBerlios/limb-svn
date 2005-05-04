@@ -12,30 +12,23 @@ require_once(LIMB_DIR . '/core/commands/StateMachineCommand.class.php');
 
 class CommonServiceNodeDeleteCommand extends StateMachineCommand
 {
-  function CommonServiceNodeDeleteCommand()
+  function perform()
   {
-    parent :: StateMachineCommand();
-
-    $entity_field_name = 'entity';
-    $resolver_name = 'tree_based_entity';
-
-    $this->registerState('init_object',
-                          new LimbHandle(LIMB_DIR .
-                                         '/core/commands/PutRequestResolverResultToContextCommand',
-                                         array($resolver_name, $entity_field_name)),
-                          array(LIMB_STATUS_OK => 'delete',
-                                LIMB_STATUS_ERROR => 'error'));
+    $toolkit =& Limb :: toolkit();
+    $resolver =& $toolkit->getRequestResolver('tree_based_entity');
+    $entity =& $resolver->resolve($toolkit->getRequest());
 
     $this->registerState('delete',
                           new LimbHandle(LIMB_SERVICE_NODE_DIR .
                                          '/commands/DeleteServiceNodeCommand',
-                                         array($entity_field_name)),
+                                         array(&$entity)),
                           array(LIMB_STATUS_OK => 'redirect',
                                 LIMB_STATUS_ERROR => 'error'));
 
     $this->registerState('redirect',
-                          new LimbHandle(LIMB_DIR . '/core/commands/RedirectToParentNodeCommand',
-                                         array($entity_field_name)));
+                          new LimbHandle(LIMB_SERVICE_NODE_DIR .
+                                         '/commands/RedirectToServiceNodeCommand',
+                                         array(&$entity)));
 
     $this->registerState('error',
                           new LimbHandle(LIMB_DIR . '/core/commands/UseViewCommand',
@@ -44,6 +37,8 @@ class CommonServiceNodeDeleteCommand extends StateMachineCommand
 
     $this->registerState('render',
                           new LimbHandle(LIMB_DIR . '/core/commands/DisplayViewCommand'));
+
+    return parent :: perform();
   }
 }
 

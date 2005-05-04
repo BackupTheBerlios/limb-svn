@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_SERVICE_NODE_DIR . '/commands/MapServiceNodeToDataspaceCommand.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
 
 class MapServiceNodeToDataspaceCommandTest extends LimbTestCase
 {
@@ -29,24 +30,19 @@ class MapServiceNodeToDataspaceCommandTest extends LimbTestCase
 
   function testPerformOk()
   {
-    $node = new NodeConnection();
+    $service_node = new ServiceNode();
+    $node =& $service_node->getPart('node');
+    $service =& $service_node->getPart('service');
+
     $node->set('id', $node_id = 50);
     $node->set('parent_id', $parent_id = 100);
     $node->set('identifier', $identifier = 'test identifier');
 
-    $service_location = new ServiceLocation();
-    $service_location->set('name', $service_name = 'test service');
-    $service_location->set('title', $title = 'test title');
+    $service->set('name', $service_name = 'test service');
+    $service->set('title', $title = 'test title');
 
-    $entity = new Entity();
-    $entity->registerPart('node', $node);
-    $entity->registerPart('service', $service_location);
-
-    $context = new Dataspace();
-    $context->setObject($entity_field_name = 'entity', $entity);
-
-    $command = new MapServiceNodeToDataspaceCommand($entity_field_name);
-    $this->assertEqual($command->perform($context), LIMB_STATUS_OK);
+    $command = new MapServiceNodeToDataspaceCommand($service_node);
+    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
     $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();

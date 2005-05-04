@@ -5,16 +5,22 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: DAO.class.php 1159 2005-03-14 10:10:35Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/PutRequestResolverResultToContextCommand.class.php');
 
-class PutServiceNodeRequestResolverResultToContextCommand extends PutRequestResolverResultToContextCommand
+class TreeBasedEntityDAO
 {
-  function PutServiceNodeRequestResolverResultToContextCommand($entity_field_name)
+  function TreeBasedEntityDAO(){}
+
+  function & fetch()
   {
-    parent :: PutRequestResolverResultToContextCommand('service_node', $entity_field_name);
+    $toolkit =& Limb :: toolkit();
+    $resolver =& $toolkit->getRequestResolver('tree_based_entity');
+    $entity =& $resolver->resolve($toolkit->getRequest());
+    $record = new Dataspace();
+    $record->import($entity->export());
+    return $record;
   }
 }
 

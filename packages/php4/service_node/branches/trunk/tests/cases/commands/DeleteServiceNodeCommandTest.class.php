@@ -46,19 +46,8 @@ class DeleteServiceNodeCommandTest extends LimbTestCase
     Limb :: restoreToolkit();
   }
 
-  function testPeformError()
-  {
-    $context = new DataSpace();
-
-    $command = new DeleteServiceNodeCommand($field_name = 'whatever');
-
-    $this->assertEqual($command->perform($context), LIMB_STATUS_ERROR);
-  }
-
   function testPerformOK()
   {
-    $context = new DataSpace();
-
     $entity = new ServiceNode();
     $entity->set('oid', $id = 1001);
 
@@ -68,11 +57,9 @@ class DeleteServiceNodeCommandTest extends LimbTestCase
     $this->tree->expectOnce('countChildren', array($node_id));
     $this->tree->setReturnValue('countChildren', 0);
 
-    $context->setObject($field_name = 'whatever', $entity);
+    $command = new DeleteServiceNodeCommand($entity);
 
-    $command = new DeleteServiceNodeCommand($field_name);
-
-    $this->assertEqual($command->perform($context), LIMB_STATUS_OK);
+    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
     $uow =& $this->toolkit->getUOW();
     $this->assertTrue($uow->isDeleted($entity));
@@ -80,8 +67,6 @@ class DeleteServiceNodeCommandTest extends LimbTestCase
 
   function testPerformFailedEntityHasChildren()
   {
-    $context = new DataSpace();
-
     $entity = new ServiceNode();
     $entity->set('oid', $id = 1001);
 
@@ -91,11 +76,9 @@ class DeleteServiceNodeCommandTest extends LimbTestCase
     $this->tree->expectOnce('countChildren', array($node_id));
     $this->tree->setReturnValue('countChildren', 1);
 
-    $context->setObject($field_name = 'whatever', $entity);
+    $command = new DeleteServiceNodeCommand($entity);
 
-    $command = new DeleteServiceNodeCommand($field_name);
-
-    $this->assertEqual($command->perform($context), LIMB_STATUS_ERROR);
+    $this->assertEqual($command->perform(), LIMB_STATUS_ERROR);
 
     $uow =& $this->toolkit->getUOW();
     $this->assertFalse($uow->isDeleted($entity));

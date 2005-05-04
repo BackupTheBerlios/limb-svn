@@ -11,24 +11,21 @@
 
 class DeleteServiceNodeCommand
 {
-  var $context_field;
+  var $service_node;
 
-  function DeleteServiceNodeCommand($context_field)
+  function DeleteServiceNodeCommand(&$service_node)
   {
-    $this->context_field = $context_field;
+    $this->service_node =& $service_node;
   }
 
-  function perform(&$context)
+  function perform()
   {
     $toolkit =& Limb :: toolkit();
 
-    if(!$entity =& $context->getObject($this->context_field))
+    if(!is_a($this->service_node, 'ServiceNode'))
       return LIMB_STATUS_ERROR;
 
-    if(!is_a($entity, 'ServiceNode'))
-      return LIMB_STATUS_ERROR;
-
-    $node =& $entity->getPart('node');
+    $node =& $this->service_node->getPart('node');
     $tree =& $toolkit->getTree();
 
     if($children =& $tree->countChildren($node->get('id')))
@@ -36,7 +33,7 @@ class DeleteServiceNodeCommand
 
     $uow =& $toolkit->getUOW();
 
-    $uow->delete($entity);
+    $uow->delete($this->service_node);
 
     return LIMB_STATUS_OK;
   }

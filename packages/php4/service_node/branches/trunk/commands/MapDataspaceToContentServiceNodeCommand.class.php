@@ -13,31 +13,30 @@ require_once(LIMB_SERVICE_NODE_DIR . '/commands/MapDataspaceToServiceNodeCommand
 class MapDataspaceToContentServiceNodeCommand
 {
   var $content_map;
+  var $service_node;
 
-  function MapDataspaceToContentServiceNodeCommand($entity_field_name, $content_map)
+  function MapDataspaceToContentServiceNodeCommand(&$service_node, $content_map)
   {
-    $this->entity_field_name = $entity_field_name;
+    $this->service_node =& $service_node;
     $this->content_map = $content_map;
   }
 
-  function perform(&$context)
+  function perform()
   {
-    $toolkit =& Limb :: toolkit();
-    if(!$entity =& $context->getObject($this->entity_field_name))
+    if(!is_a($this->service_node, 'ContentServiceNode'))
       return LIMB_STATUS_ERROR;
 
-    if(!$content =& $entity->getPart('content'))
-      return LIMB_STATUS_ERROR;
+    $content =& $entity->getPart('content');
 
     $map_content_command = new MapDataspaceToObjectCommand($this->content_map, $content);
 
-    $map_service_node_command = new MapDataspaceToServiceNodeCommand($this->entity_field_name);
+    $map_service_node_command = new MapDataspaceToServiceNodeCommand($this->service_node);
 
     $map_command = new StateMachineCommand();
     $map_command->registerState('first', $map_content_command, array(LIMB_STATUS_OK => 'second'));
     $map_command->registerState('second', $map_service_node_command);
 
-    return $map_command->perform($context);
+    return $map_command->perform();
   }
 }
 

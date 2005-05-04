@@ -61,20 +61,17 @@ class MapDataspaceToServiceNodeCommandTest extends LimbTestCase
     $this->tree->expectOnce('getNodeByPath', array($path));
     $this->tree->setReturnValue('getNodeByPath', $node = array('id' => $new_parent_node_id = 101));
 
-    $entity = new ServiceNode();
+    $service_node = new ServiceNode();
 
-    $context = new DataSpace();
-    $context->setObject($entity_field_name = 'entity', $entity);
+    $command = new MapDataspaceToServiceNodeCommand($service_node);
 
-    $command = new MapDataspaceToServiceNodeCommand($entity_field_name);
+    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
-    $this->assertEqual($command->perform($context), LIMB_STATUS_OK);
-
-    $node =& $entity->getPart('node');
+    $node =& $service_node->getPart('node');
     $this->assertEqual($node->get('parent_id'), $new_parent_node_id);
     $this->assertEqual($node->get('identifier'), $identifier);
 
-    $service =& $entity->getPart('service');
+    $service =& $service_node->getPart('service');
     $this->assertEqual($service->get('name'), $service_name);
     $this->assertEqual($service->get('title'), $title);
   }

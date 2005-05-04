@@ -13,24 +13,20 @@ require_once(LIMB_DIR . '/core/commands/StateMachineCommand.class.php');
 
 class MapDataspaceToServiceNodeCommand
 {
-  var $map = array();
+  var $service_node;
 
-  function MapDataspaceToServiceNodeCommand($entity_field_name)
+  function MapDataspaceToServiceNodeCommand(&$service_node)
   {
-    $this->entity_field_name = $entity_field_name;
+    $this->service_node =& $service_node;
   }
 
-  function perform(&$context)
+  function perform()
   {
-    $toolkit =& Limb :: toolkit();
-    if(!$entity =& $context->getObject($this->entity_field_name))
+    if(!is_a($this->service_node,'ServiceNode'))
       return LIMB_STATUS_ERROR;
 
-    if(!$node =& $entity->getPart('node'))
-      return LIMB_STATUS_ERROR;
-
-    if(!$service =& $entity->getPart('service'))
-      return LIMB_STATUS_ERROR;
+    $node =& $this->service_node->getPart('node');
+    $service =& $this->service_node->getPart('service');
 
     $this->_processPath();
 
@@ -48,7 +44,7 @@ class MapDataspaceToServiceNodeCommand
     $map_command->registerState('first', $map_node_command, array(LIMB_STATUS_OK => 'second'));
     $map_command->registerState('second', $map_service_command);
 
-    return $map_command->perform($context);
+    return $map_command->perform();
   }
 
   function _processPath()
