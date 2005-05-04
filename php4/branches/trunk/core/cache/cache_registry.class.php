@@ -131,7 +131,7 @@ class cache_registry
 
   function _get_cache_file_prefix($group = false)
   {
-    return CACHE_FILE_PREFIX . ($group ? '_' . $group : '');
+    return CACHE_FILE_PREFIX . ($group ? $group : '');
   }
 
   function _get_cache_file_name($group, $key)
