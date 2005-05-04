@@ -159,7 +159,7 @@ class materialized_path_tree//implements tree
     }
   }
 
-  function set_expanded_parents(& $expanded_parents)
+  function set_expanded_parents(&$expanded_parents)
   {
     $this->_expanded_parents =& $expanded_parents;
 

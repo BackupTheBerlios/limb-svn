@@ -5,16 +5,18 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: db_mysql_test.class.php 916 2004-11-23 09:14:28Z pachanga $
 *
 ***********************************************************************************/
 require_once(dirname(__FILE__) . '/db_driver_test.class.php');
 
-class db_mysql_test extends db_driver_test
+SimpleTestOptions :: ignore('db_postgres_test');
+
+class db_postgres_test extends db_driver_test
 {
-  function &_create_db_driver()
+  function _create_db_driver()
   {
-    return db_factory :: instance();
+    return db_factory :: instance('postgres');
   }
 }
 ?>

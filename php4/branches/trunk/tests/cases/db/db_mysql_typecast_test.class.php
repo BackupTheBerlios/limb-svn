@@ -15,11 +15,6 @@ class db_mysql_typecast_test extends LimbTestCase
 {
   var $db = null;
 
-  function db_mysql_typecast_test($name = 'mysql db test case')
-  {
-    parent :: LimbTestCase($name);
-  }
-
   function setUp()
   {
     $this->db =& db_factory :: instance();

@@ -135,7 +135,6 @@ class access_policy
     return $result;
   }
 
-
   function & get_action_access_by_controller($controller_id, $accessor_type)
   {
     $db_table =& db_table_factory :: instance('sys_action_access');
