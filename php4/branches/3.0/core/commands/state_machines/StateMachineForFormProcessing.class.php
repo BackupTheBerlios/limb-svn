@@ -10,16 +10,16 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/StateMachineCommand.class.php');
 
-class FormProcessingStateMachine extends StateMachineCommand
+class StateMachineForFormProcessing extends StateMachineCommand
 {
-  function FormProcessingStateMachine(&$factory)
+  function StateMachineForFormProcessing(&$factory)
   {
     parent :: StateMachineCommand($factory);
 
-    $this->registerState('init',
-                          array(LIMB_STATUS_FORM_SUBMITTED => 'validate'));
+    $this->registerState('Init',
+                          array(LIMB_STATUS_FORM_SUBMITTED => 'Validate'));
 
-    $this->registerState('validate');
+    $this->registerState('Validate');
   }
 }
 ?>

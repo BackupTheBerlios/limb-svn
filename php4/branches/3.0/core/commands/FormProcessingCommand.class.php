@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/FormInitCommand.class.php');
-require_once(LIMB_DIR . '/core/commands/state_machines/FormProcessingStateMachine.class.php');
+require_once(LIMB_DIR . '/core/commands/state_machines/StateMachineForFormProcessing.class.php');
 
 class FormProcessingCommand
 {
@@ -26,7 +26,7 @@ class FormProcessingCommand
 
   function perform()
   {
-    $state_machine = new FormProcessingStateMachine($this);
+    $state_machine = new StateMachineForFormProcessing($this);
     return $state_machine->perform();
   }
 

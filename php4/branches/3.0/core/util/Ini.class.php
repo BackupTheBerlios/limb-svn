@@ -235,7 +235,7 @@ class Ini
       if (preg_match("#^\[(.+)\]\s*$#", $line, $new_group_name_array))
       {
         $new_group_name = trim($new_group_name_array[1]);
-        $current_group = $new_group_name;
+        $current_group = $this->_parseConstants($new_group_name);
 
         if(!isset($this->group_values[$current_group]))
           $this->group_values[$current_group] = array();

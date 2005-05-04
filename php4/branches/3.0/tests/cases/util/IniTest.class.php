@@ -364,14 +364,14 @@ class IniTest extends LimbTestCase
     registerTestingIni(
       'testing.ini',
       '
-        [test]
+        [{INI_TEST_UNIQUE_CONSTANT}]
         test = {INI_TEST_UNIQUE_CONSTANT}1
       '
     );
 
     $ini = getIni('testing.ini');
 
-    $this->assertEqual($ini->getOption('test', 'test'), '*constant*1');
+    $this->assertEqual($ini->getOption('test', '*constant*'), '*constant*1');
   }
 
   function testGetGroup()

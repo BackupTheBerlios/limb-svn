@@ -18,7 +18,7 @@ class PutValuesToDataspaceCommand
     $this->values = $values;
   }
 
-  function perform(&$context)
+  function perform()
   {
     $toolkit =& Limb :: toolkit();
     $dataspace =& $toolkit->getDataspace();

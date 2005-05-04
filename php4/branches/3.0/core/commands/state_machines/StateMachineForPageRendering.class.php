@@ -5,29 +5,21 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: FormProcessingCommand.class.php 1215 2005-04-12 14:35:01Z seregalimb $
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/commands/StateMachineCommand.class.php');
 
-class RedirectCommand// implements Command
+class StateMachineForFormProcessing extends StateMachineCommand
 {
-  var $path;
-
-  function RedirectCommand($path = '/')
+  function StateMachineForFormProcessing(&$factory)
   {
-    $this->path = $path;
-  }
+    parent :: StateMachineCommand($factory);
 
-  function perform()
-  {
-    $toolkit =& Limb :: toolkit();
-    $response =& $toolkit->getResponse();
+    $this->registerState('Init',
+                          array(LIMB_STATUS_OK => 'Render'));
 
-    $response->redirect($this->path);
-
-    return LIMB_STATUS_OK;
+    $this->registerState('Render');
   }
 }
-
-
 ?>
