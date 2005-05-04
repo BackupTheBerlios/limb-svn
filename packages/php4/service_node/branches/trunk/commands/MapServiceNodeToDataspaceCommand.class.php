@@ -39,13 +39,12 @@ class MapServiceNodeToDataspaceCommand
                          'name' => 'service_name');
 
     $map_node_command = new MapObjectToDataspaceCommand($node_map, $node);
+    $map_node_command->perform();
+
     $map_service_command = new MapObjectToDataspaceCommand($service_map, $service);
+    $map_service_command->perform();
 
-    $map_command = new StateMachineCommand();
-    $map_command->registerState('first', $map_node_command, array(LIMB_STATUS_OK => 'second'));
-    $map_command->registerState('second', $map_service_command);
-
-    return $map_command->perform();
+    return LIMB_STATUS_OK;
   }
 }
 

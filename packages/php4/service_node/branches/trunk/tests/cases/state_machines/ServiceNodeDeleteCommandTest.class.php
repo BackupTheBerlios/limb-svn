@@ -8,19 +8,19 @@
 * $Id: ImageObjectsDAOTest.class.php 1093 2005-02-07 15:17:20Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_SERVICE_NODE_DIR . '/state_machines/CommonServiceNodeDeleteCommand.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/state_machines/ServiceNodeDeleteCommand.class.php');
 require_once(LIMB_DIR . '/tests/cases/orm/data_mappers/OneTableObjectMapperTestDbTable.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentServiceNode.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentServiceNodeMapper.class.php');
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(LIMB_DIR . '/core/request_resolvers/TreeBasedEntityRequestResolver.class.php');
 
-class CommonServiceNodeDeleteCommandTest extends LimbTestCase
+class ServiceNodeDeleteCommandTest extends LimbTestCase
 {
   var $db;
   var $command;
 
-  function CommonServiceNodeDeleteCommandTest()
+  function ServiceNodeDeleteCommandTest()
   {
     parent :: LimbTestCase(__FILE__);
   }
@@ -32,8 +32,6 @@ class CommonServiceNodeDeleteCommandTest extends LimbTestCase
     $this->db =& new SimpleDB($conn);
 
     $this->_cleanUp();
-
-    $this->command = new CommonServiceNodeDeleteCommand();
 
     Limb :: saveToolkit();
 
@@ -95,7 +93,8 @@ class CommonServiceNodeDeleteCommandTest extends LimbTestCase
     $uri =& $request->getUri();
     $uri->setPath('/services');
 
-    $this->assertEqual($this->command->perform(), LIMB_STATUS_OK);
+    $command = new ServiceNodeDeleteCommand();
+    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
     $response =& $toolkit->getResponse();
     $this->assertTrue($response->isRedirected());

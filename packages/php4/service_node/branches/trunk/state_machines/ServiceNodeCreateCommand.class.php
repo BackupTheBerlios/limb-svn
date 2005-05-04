@@ -10,9 +10,19 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/state_machines/StateMachineForCreateEntityDialog.class.php');
 
-class CreateServiceNodeAtStructurePageCommand
+class ServiceNodeCreateCommand
 {
   var $service_node;
+  var $form_id;
+  var $template_name;
+  var $extra_dataspace_values;
+
+  function ServiceNodeCreateCommand($template_name, $form_id, $extra_dataspace_values)
+  {
+    $this->template_name = $template_name;
+    $this->form_id = $form_id;
+    $this->extra_dataspace_values = $extra_dataspace_values;
+  }
 
   function perform()
   {
@@ -23,7 +33,7 @@ class CreateServiceNodeAtStructurePageCommand
   function performInitial()
   {
     include_once(LIMB_DIR . '/core/commands/UseViewCommand.class.php');
-    $view_command = new UseViewCommand('/service_node/create.html');
+    $view_command = new UseViewCommand($this->template_name);
     return $view_command->perform();
   }
 
@@ -37,7 +47,7 @@ class CreateServiceNodeAtStructurePageCommand
   function performInitDataspace()
   {
     $toolkit =& Limb :: toolkit();
-    $resolver =& $toolkit->getRequestResolver('service_node');
+    $resolver =& $toolkit->getRequestResolver('tree_based_entity');
     $parent_entity =& $resolver->resolve($toolkit->getRequest());
 
     if(!is_object($parent_entity))
@@ -52,24 +62,25 @@ class CreateServiceNodeAtStructurePageCommand
 
   function performFormProcessing()
   {
-    $form_id = 'service_node_form';
-    $validator =  new LimbHandle(LIMB_SERVICE_NODE_DIR . '/validators/ServiceNodeRegisterValidator');
+    $validator =  new LimbHandle(LIMB_SERVICE_NODE_DIR . '/validators/CommonCreateServiceNodeValidator');
 
     include_once(LIMB_DIR . '/core/commands/FormProcessingCommand.class.php');
-    $form_command = new FormProcessingCommand($form_id, false, $validator);
+    $form_command = new FormProcessingCommand($this->form_id, false, $validator);
     return $form_command->perform();
   }
 
   function performInitEntity()
   {
-    $toolkit =& Limb :: toolkit();
-    $dataspace =& $toolkit->getDataspace();
-    $this->service_node = $toolkit->createObject($dataspace->get('class_name'));
+    $this->service_node = new ServiceNode();
     return LIMB_STATUS_OK;
   }
 
   function performMapDataspaceToEntity()
   {
+    include_once(LIMB_DIR . '/core/commands/PutValuesToDataspaceCommand.class.php');
+    $extra_command = new PutValuesToDataspaceCommand($this->extra_dataspace_values);
+    $extra_command->perform();
+
     include_once(LIMB_SERVICE_NODE_DIR .'/commands/MapDataspaceToServiceNodeCommand.class.php');
     $command = new MapDataspaceToServiceNodeCommand($this->service_node);
     return $command->perform();
@@ -84,8 +95,8 @@ class CreateServiceNodeAtStructurePageCommand
 
   function performRedirect()
   {
-    include_once(LIMB_SERVICE_NODE_DIR .'/commands/RedirectToServiceNodeAtSiteStructurePageCommand.class.php');
-    $command = new RedirectToServiceNodeAtSiteStructurePageCommand($this->service_node);
+    include_once(LIMB_DIR .'/core/commands/RedirectCommand.class.php');
+    $command = new RedirectCommand();
     return $command->perform();
   }
 

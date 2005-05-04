@@ -8,17 +8,15 @@
 * $Id: ImageObjectsDAOTest.class.php 1093 2005-02-07 15:17:20Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_SERVICE_NODE_DIR . '/state_machines/CreateServiceNodeAtStructurePageCommand.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/state_machines/EditServiceNodeAtStructurePageCommand.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
-require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentServiceNode.class.php');
-require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/state_machines/TestContentServiceNodeMapper.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/request_resolvers/ServiceNodeRequestResolver.class.php');
 
-class CreateServiceNodeAtStructurePageCommandTest extends LimbTestCase
+class EditServiceNodeAtStructurePageCommandTest extends LimbTestCase
 {
   var $db;
 
-  function CreateServiceNodeAtStructurePageCommandTest()
+  function EditServiceNodeAtStructurePageCommandTest()
   {
     parent :: LimbTestCase(__FILE__);
   }
@@ -35,24 +33,6 @@ class CreateServiceNodeAtStructurePageCommandTest extends LimbTestCase
 
     $toolkit =& Limb :: toolkit();
     $toolkit->setRequestResolver('service_node', new ServiceNodeRequestResolver());
-  }
-
-  function tearDown()
-  {
-    Limb :: restoreToolkit();
-
-    $this->_cleanUp();
-  }
-
-  function _cleanUp()
-  {
-    $this->db->delete('sys_uid');
-    $this->db->delete('sys_object');
-    $this->db->delete('sys_object_to_service');
-    $this->db->delete('sys_class');
-    $this->db->delete('sys_service');
-    $this->db->delete('sys_tree');
-    $this->db->delete('sys_object_to_node');
   }
 
   function & _registerServiceNode()
@@ -77,6 +57,24 @@ class CreateServiceNodeAtStructurePageCommandTest extends LimbTestCase
     return $entity;
   }
 
+  function tearDown()
+  {
+    Limb :: restoreToolkit();
+
+    $this->_cleanUp();
+  }
+
+  function _cleanUp()
+  {
+    $this->db->delete('sys_uid');
+    $this->db->delete('sys_object');
+    $this->db->delete('sys_object_to_service');
+    $this->db->delete('sys_class');
+    $this->db->delete('sys_service');
+    $this->db->delete('sys_tree');
+    $this->db->delete('sys_object_to_node');
+  }
+
   function testPerformFormDisplayed()
   {
     $entity =& $this->_registerServiceNode();
@@ -85,13 +83,13 @@ class CreateServiceNodeAtStructurePageCommandTest extends LimbTestCase
     $request =& $toolkit->getRequest();
     $request->set('id', $entity->get('oid'));
 
-    $command = new CreateServiceNodeAtStructurePageCommand();
+    $command = new EditServiceNodeAtStructurePageCommand();
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
-    $dataspace =& $toolkit->getDataspace();
-    $node =& $entity->getPart('node');
-    $this->assertEqual($dataspace->get('parent_node_id'), $node->get('id'));
+    $service_node =& $command->getServiceNode();
+    $this->assertIsA($service_node, 'ServiceNode');
+    $this->assertEqual($service_node->get('oid'), $entity->get('oid'));
   }
 
   function testPerformFormNotValid()
@@ -103,14 +101,14 @@ class CreateServiceNodeAtStructurePageCommandTest extends LimbTestCase
     $request->set('id', $entity->get('oid'));
     $request->set('submitted', 1);
 
-    $command = new CreateServiceNodeAtStructurePageCommand();
+    $command = new EditServiceNodeAtStructurePageCommand();
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
     $this->assertTrue($this->_isFormHasErrors('service_node_form'));
   }
 
-  function testPerformObjectCreated()
+  function testPerformServiceNodeEdited()
   {
     $entity =& $this->_registerServiceNode();
 
@@ -118,17 +116,22 @@ class CreateServiceNodeAtStructurePageCommandTest extends LimbTestCase
     $request =& $toolkit->getRequest();
     $request->set('id', $entity->get('oid'));
     $request->set('submitted', 1);
-    $request->set('identifier', $identifier = 'child_service');
-    $request->set('title', $title = 'Some title');
-    $request->set('class_name', $class_name = 'TestContentServiceNode');
-    $request->set('service_name', $service_name = 'ServiceNode');
+    $request->set('title', $title = 'Other title');
+    $request->set('identifier', $identifier = 'other_identifier');
+    $request->set('service_name', 'ServiceNode');
 
-    $command = new CreateServiceNodeAtStructurePageCommand();
+    $context = new DataSpace();
+
+    $command = new EditServiceNodeAtStructurePageCommand();
+
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
     $service_node =& $command->getServiceNode();
-    $uow =& $toolkit->getUOW();
-    $this->assertTrue($uow->isRegistered($service_node));
+    $node =& $service_node->getPart('node');
+    $service =& $service_node->getPart('service');
+
+    $this->assertEqual($service->get('title'), $title);
+    $this->assertEqual($node->get('identifier'), $identifier);
 
     $response =& $toolkit->getResponse();
     $this->assertTrue($response->isRedirected());

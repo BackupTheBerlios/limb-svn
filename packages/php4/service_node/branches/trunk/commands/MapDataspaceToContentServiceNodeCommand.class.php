@@ -29,14 +29,12 @@ class MapDataspaceToContentServiceNodeCommand
     $content =& $entity->getPart('content');
 
     $map_content_command = new MapDataspaceToObjectCommand($this->content_map, $content);
+    $map_content_command->perform();
 
     $map_service_node_command = new MapDataspaceToServiceNodeCommand($this->service_node);
+    $map_service_node_command->perform();
 
-    $map_command = new StateMachineCommand();
-    $map_command->registerState('first', $map_content_command, array(LIMB_STATUS_OK => 'second'));
-    $map_command->registerState('second', $map_service_node_command);
-
-    return $map_command->perform();
+    return LIMB_STATUS_OK;
   }
 }
 
