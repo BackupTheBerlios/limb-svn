@@ -11,6 +11,7 @@
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 
 @define('CACHE_DIR', VAR_DIR . '/cache');
+@define('CACHE_FILE_PREFIX', 'cache_');
 
 class cache_registry
 {
@@ -130,7 +131,7 @@ class cache_registry
 
   function _get_cache_file_prefix($group = false)
   {
-    return 'cache_registry' . ($group ? '_' . $group : '');
+    return CACHE_FILE_PREFIX . ($group ? '_' . $group : '');
   }
 
   function _get_cache_file_name($group, $key)
