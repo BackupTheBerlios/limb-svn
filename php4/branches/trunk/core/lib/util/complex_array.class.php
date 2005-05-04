@@ -11,10 +11,6 @@
 
 class complex_array
 {
-  function complex_array()
-  {
-  }
-
   function map($map_array, $src_array, &$dest_array)
   {
     foreach($map_array as $src => $dest)

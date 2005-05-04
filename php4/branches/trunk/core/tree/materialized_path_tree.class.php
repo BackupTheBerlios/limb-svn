@@ -450,10 +450,11 @@ class materialized_path_tree//implements tree
     $access_policy =& access_policy :: instance();
     $accessor_ids = implode(',', $access_policy->get_accessor_ids());
 
-    if ($class_id)
+    if($class_id)
       $add_sql['append'][] = " AND sso.class_id = {$class_id}";
 
-    $add_sql['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
+    if($accessor_ids)
+      $add_sql['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
 
     $result =& $this->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
 

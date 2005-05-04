@@ -18,6 +18,12 @@ class tree_decorator
     $this->tree_imp =& $imp;
   }
 
+  function _call_imp($method, $args = null)
+  {
+    return call_user_func_array(array(&$this->tree_imp, $method),
+                                   isset($args) ? $args : null);
+  }
+
   function initialize_expanded_parents()
   {
     $this->tree_imp->initialize_expanded_parents();

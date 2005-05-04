@@ -11,7 +11,6 @@
 require_once(LIMB_DIR . '/core/tree/tree_decorator.class.php');
 
 define('CACHE_REGISTRY_TREE_COMMON_GROUP', 'tree_common');
-define('CACHE_REGISTRY_TREE_BRANCH_GROUP', 'tree_branch');
 
 class caching_tree extends tree_decorator
 {
@@ -45,9 +44,7 @@ class caching_tree extends tree_decorator
     if($this->cache->assign($variable, $key, $group))
       return $variable;
 
-    //place this to cache registry?
-    $result = call_user_func_array(array(&$this->tree_imp, $method),
-                                   isset($args) ? $args : null);
+    $result = $this->_call_imp($method, $args);
 
     $this->cache->put($key, $result, $group);
 
@@ -124,6 +121,9 @@ class caching_tree extends tree_decorator
 
   function get_sub_branch($node, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
   {
+    if($check_expanded_parents)
+      return $this->tree_imp->get_sub_branch($node, $depth, $include_parent, $check_expanded_parents, $only_parents);
+
     $id = $this->_get_id_lazy($node);
 
     $key = array('sub_branch',
@@ -133,7 +133,7 @@ class caching_tree extends tree_decorator
                  'check_expanded_parents' => $check_expanded_parents,
                  'only_parents' => $only_parents);
 
-    $this->_use_cache_key($key, CACHE_REGISTRY_TREE_BRANCH_GROUP);
+    $this->_use_cache_key($key, CACHE_REGISTRY_TREE_COMMON_GROUP);
 
     return $this->_cache_callback('get_sub_branch',
                                   array($node, $depth, $include_parent, $check_expanded_parents, $only_parents));
@@ -141,6 +141,9 @@ class caching_tree extends tree_decorator
 
   function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
   {
+    if($check_expanded_parents)
+      return $this->tree_imp->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents);
+
     $key = array('sub_branch_by_path',
                  'path' => rtrim($path, '/'),
                  'depth' => $depth,
@@ -148,7 +151,7 @@ class caching_tree extends tree_decorator
                  'check_expanded_parents' => $check_expanded_parents,
                  'only_parents' => $only_parents);
 
-    $this->_use_cache_key($key, CACHE_REGISTRY_TREE_BRANCH_GROUP);
+    $this->_use_cache_key($key, CACHE_REGISTRY_TREE_COMMON_GROUP);
 
     return $this->_cache_callback('get_sub_branch_by_path',
                                   array($path, $depth, $include_parent, $check_expanded_parents, $only_parents));
@@ -156,15 +159,22 @@ class caching_tree extends tree_decorator
 
   function get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
   {
+    if($check_expanded_parents)
+      return $this->tree_imp->get_accessible_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $class_id, $only_parents);
+
+    $user =& user :: instance();
+
     $key = array('accessible_sub_branch',
                  'path' => rtrim($path, '/'),
                  'depth' => $depth,
                  'include_parent' => $include_parent,
                  'check_expanded_parents' => $check_expanded_parents,
                  'class_id' => $class_id,
-                 'only_parents' => $only_parents);
+                 'only_parents' => $only_parents,
+                 'user_id' => $user->get_id(),
+                 'user_groups' => $user->get_groups());
 
-    $this->_use_cache_key($key, CACHE_REGISTRY_TREE_BRANCH_GROUP);
+    $this->_use_cache_key($key, CACHE_REGISTRY_TREE_COMMON_GROUP);
 
     return $this->_cache_callback('get_accessible_sub_branch_by_path',
                                   array($path, $depth, $include_parent, $check_expanded_parents, $class_id, $only_parents));
@@ -174,7 +184,12 @@ class caching_tree extends tree_decorator
   {
     $id = $this->_get_id_lazy($node);
 
-    $this->_use_cache_key(array('count_accessible_children', $id));
+    $user =& user :: instance();
+
+    $this->_use_cache_key(array('count_accessible_children',
+                                $id,
+                                $user->get_id(),
+                                $user->get_groups()));
 
     return $this->_cache_callback('count_accessible_children', array($node));
   }
@@ -218,19 +233,19 @@ class caching_tree extends tree_decorator
 
   function collapse_node($node)
   {
-    $this->flush_cache(CACHE_REGISTRY_TREE_BRANCH_GROUP);
+    $this->flush_cache(CACHE_REGISTRY_TREE_COMMON_GROUP);
     return $this->tree_imp->collapse_node($node);
   }
 
   function expand_node($node)
   {
-    $this->flush_cache(CACHE_REGISTRY_TREE_BRANCH_GROUP);
+    $this->flush_cache(CACHE_REGISTRY_TREE_COMMON_GROUP);
     return $this->tree_imp->expand_node($node);
   }
 
   function toggle_node($node)
   {
-    $this->flush_cache(CACHE_REGISTRY_TREE_BRANCH_GROUP);
+    $this->flush_cache(CACHE_REGISTRY_TREE_COMMON_GROUP);
     return $this->tree_imp->toggle_node($node);
   }
 
@@ -239,7 +254,7 @@ class caching_tree extends tree_decorator
     if(is_null($group))
     {
       $this->cache->flush(CACHE_REGISTRY_TREE_COMMON_GROUP);
-      $this->cache->flush(CACHE_REGISTRY_TREE_BRANCH_GROUP);
+      $this->cache->flush(CACHE_REGISTRY_TREE_COMMON_GROUP);
     }
     else
       $this->cache->flush($group);

@@ -118,17 +118,27 @@ class caching_tree_test extends LimbTestCase
 
   function test_count_accessible_children_cache_hit()
   {
+    $user =& user :: instance();
+
     $this->_test_cache_hit(array('count_accessible_children', array($node_id = 100)),
                            $result = 'whatever',
-                           $key = array('count_accessible_children', $node_id),
+                           $key = array('count_accessible_children',
+                                        $node_id,
+                                        $user->get_id(),
+                                        $user->get_groups()),
                            CACHE_REGISTRY_TREE_COMMON_GROUP);
   }
 
   function test_count_accessible_children_cache_miss()
   {
+    $user =& user :: instance();
+
     $this->_test_cache_miss(array('count_accessible_children', array($node_id = 100)),
                            $result = 'whatever',
-                           $key = array('count_accessible_children', $node_id),
+                           $key = array('count_accessible_children',
+                                        $node_id,
+                                        $user->get_id(),
+                                        $user->get_groups()),
                            CACHE_REGISTRY_TREE_COMMON_GROUP);
   }
 
@@ -212,7 +222,7 @@ class caching_tree_test extends LimbTestCase
     $this->_test_cache_hit(array('get_sub_branch', array($node_id, $depth, false, false, false)),
                            $result = 'whatever',
                            $key,
-                           CACHE_REGISTRY_TREE_BRANCH_GROUP);
+                           CACHE_REGISTRY_TREE_COMMON_GROUP);
   }
 
   function test_get_sub_branch_cache_miss()
@@ -227,7 +237,21 @@ class caching_tree_test extends LimbTestCase
     $this->_test_cache_miss(array('get_sub_branch', array($node_id, $depth, false, false, false)),
                            $result = 'whatever',
                            $key,
-                           CACHE_REGISTRY_TREE_BRANCH_GROUP);
+                           CACHE_REGISTRY_TREE_COMMON_GROUP);
+  }
+
+  function test_get_sub_branch_dont_cache_expanded_parents()
+  {
+    $this->_assert_cache_not_called();
+
+    $this->tree->expectOnce('get_sub_branch');
+    $this->tree->setReturnValue('get_sub_branch',
+                                $expected = 'result',
+                                array($node_id = 100, $depth = -1, false, $check_expanded_parents = true, false));
+
+    $result = $this->decorator->get_sub_branch($node_id, $depth, false, $check_expanded_parents, false);
+
+    $this->assertEqual($result, $expected);
   }
 
   function test_get_sub_branch_by_path_cache_hit()
@@ -243,7 +267,7 @@ class caching_tree_test extends LimbTestCase
     $this->_test_cache_hit(array('get_sub_branch_by_path', array('path/', $depth, false, false, false)),
                            $result = 'whatever',
                            $key,
-                           CACHE_REGISTRY_TREE_BRANCH_GROUP);
+                           CACHE_REGISTRY_TREE_COMMON_GROUP);
   }
 
   function test_get_sub_branch_by_path_cache_miss()
@@ -259,11 +283,27 @@ class caching_tree_test extends LimbTestCase
     $this->_test_cache_miss(array('get_sub_branch_by_path', array('path/', $depth, false, false, false)),
                            $result = 'whatever',
                            $key,
-                           CACHE_REGISTRY_TREE_BRANCH_GROUP);
+                           CACHE_REGISTRY_TREE_COMMON_GROUP);
+  }
+
+  function test_get_sub_branch_by_path_dont_cache_expanded_parents()
+  {
+    $this->_assert_cache_not_called();
+
+    $this->tree->expectOnce('get_sub_branch_by_path');
+    $this->tree->setReturnValue('get_sub_branch_by_path',
+                                $expected = 'result',
+                                array($path = '/', $depth = -1, false, $check_expanded_parents = true, false));
+
+    $result = $this->decorator->get_sub_branch_by_path($path, $depth, false, $check_expanded_parents, false);
+
+    $this->assertEqual($result, $expected);
   }
 
   function test_get_accessible_sub_branch_by_path_cache_hit()
   {
+    $user =& user :: instance();
+
     //trimming trailing slash
     $key = array('accessible_sub_branch',
                  'path' => 'path',
@@ -271,16 +311,20 @@ class caching_tree_test extends LimbTestCase
                  'include_parent' => false,
                  'check_expanded_parents' => false,
                  'class_id' => $class_id = 10,
-                 'only_parents' => false);
+                 'only_parents' => false,
+                 'user_id' => $user->get_id(),
+                 'user_groups' => $user->get_groups());
 
     $this->_test_cache_hit(array('get_accessible_sub_branch_by_path', array('path/', $depth, false, false, $class_id, false)),
                            $result = 'whatever',
                            $key,
-                           CACHE_REGISTRY_TREE_BRANCH_GROUP);
+                           CACHE_REGISTRY_TREE_COMMON_GROUP);
   }
 
   function test_get_accessible_sub_branch_by_path_cache_miss()
   {
+    $user =& user :: instance();
+
     //trimming trailing slash
     $key = array('accessible_sub_branch',
                  'path' => 'path',
@@ -288,12 +332,28 @@ class caching_tree_test extends LimbTestCase
                  'include_parent' => false,
                  'check_expanded_parents' => false,
                  'class_id' => $class_id = 10,
-                 'only_parents' => false);
+                 'only_parents' => false,
+                 'user_id' => $user->get_id(),
+                 'user_groups' => $user->get_groups());
 
     $this->_test_cache_miss(array('get_accessible_sub_branch_by_path', array('path/', $depth, false, false, $class_id, false)),
                            $result = 'whatever',
                            $key,
-                           CACHE_REGISTRY_TREE_BRANCH_GROUP);
+                           CACHE_REGISTRY_TREE_COMMON_GROUP);
+  }
+
+  function test_get_accessible_sub_branch_by_path_dont_cache_expanded_parents()
+  {
+    $this->_assert_cache_not_called();
+
+    $this->tree->expectOnce('get_accessible_sub_branch_by_path');
+    $this->tree->setReturnValue('get_accessible_sub_branch_by_path',
+                                $expected = 'result',
+                                array($path = '/', $depth = -1, false, $check_expanded_parents = true, $class_id = 1, false));
+
+    $result = $this->decorator->get_accessible_sub_branch_by_path($path, $depth, false, $check_expanded_parents, $class_id, false);
+
+    $this->assertEqual($result, $expected);
   }
 
   function test_get_root_nodes_cache_hit()
@@ -317,7 +377,7 @@ class caching_tree_test extends LimbTestCase
     $this->tree->setReturnValue('create_root_node', $result = 'some_result', array($values = 'whatever'));
 
     $this->cache->expectArgumentsAt(0, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
-    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_BRANCH_GROUP));
+    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
 
     $this->assertEqual($this->decorator->create_root_node($values), $result);
   }
@@ -329,7 +389,7 @@ class caching_tree_test extends LimbTestCase
                                 array($id = 'id',$values = 'whatever'));
 
     $this->cache->expectArgumentsAt(0, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
-    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_BRANCH_GROUP));
+    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
 
     $this->assertEqual($this->decorator->create_sub_node($id, $values), $result);
   }
@@ -339,7 +399,7 @@ class caching_tree_test extends LimbTestCase
     $this->tree->setReturnValue('delete_node', $result = 'some_result', array($id = 'id'));
 
     $this->cache->expectArgumentsAt(0, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
-    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_BRANCH_GROUP));
+    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
 
     $this->assertEqual($this->decorator->delete_node($id), $result);
   }
@@ -351,7 +411,7 @@ class caching_tree_test extends LimbTestCase
                                 array($id = 'id', $values = 'whatever', false));
 
     $this->cache->expectArgumentsAt(0, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
-    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_BRANCH_GROUP));
+    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
 
     $this->assertEqual($this->decorator->update_node($id, $values), $result);
   }
@@ -363,14 +423,14 @@ class caching_tree_test extends LimbTestCase
                                 array($id = 'id', $target_id = 'target'));
 
     $this->cache->expectArgumentsAt(0, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
-    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_BRANCH_GROUP));
+    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
 
     $this->assertEqual($this->decorator->move_tree($id, $target_id), $result);
   }
 
   function test_expand_node()
   {
-    $this->cache->expectOnce('flush', array(CACHE_REGISTRY_TREE_BRANCH_GROUP));
+    $this->cache->expectOnce('flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
     $this->tree->expectOnce('expand_node', array($node = 1));
 
     $this->decorator->expand_node($node);
@@ -378,7 +438,7 @@ class caching_tree_test extends LimbTestCase
 
   function test_collapse_node()
   {
-    $this->cache->expectOnce('flush', array(CACHE_REGISTRY_TREE_BRANCH_GROUP));
+    $this->cache->expectOnce('flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
     $this->tree->expectOnce('collapse_node', array($node = 1));
 
     $this->decorator->collapse_node($node);
@@ -386,7 +446,7 @@ class caching_tree_test extends LimbTestCase
 
   function test_toggle_node()
   {
-    $this->cache->expectOnce('flush', array(CACHE_REGISTRY_TREE_BRANCH_GROUP));
+    $this->cache->expectOnce('flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
     $this->tree->expectOnce('toggle_node', array($node = 1));
 
     $this->decorator->toggle_node($node);
@@ -403,6 +463,13 @@ class caching_tree_test extends LimbTestCase
     $this->tree->expectNever($callback[0]);
     $result = $this->_call_decorator($callback);
     $this->assertEqual($result, $expected);
+  }
+
+  function _assert_cache_not_called()
+  {
+    $this->cache->expectNever('assign');
+    $this->cache->expectNever('put');
+    $this->cache->expectNever('get');
   }
 
   function _test_cache_miss($callback, $expected, $key, $group)

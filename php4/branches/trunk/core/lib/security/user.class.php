@@ -116,7 +116,6 @@ class user extends object
 
     if ($locale_id && locale::is_valid_locale_id($locale_id))
       $this->set_locale_id($locale_id);
-
   }
 
   function login($login, $password, $locale_id = '')
@@ -129,6 +128,21 @@ class user extends object
     $this->_set_logged_user_data($record, $locale_id);
 
     return true;
+  }
+
+  //we can't do anything better for testing 2.x, i guess :(
+  function test_login($id, $login, $password, $groups, $locale_id = 'en', $node_id = null)
+  {
+    $this->_set_is_logged_in();
+
+    $this->_set_id($id);
+    $this->_set_login($login);
+    $this->_set_password($password);
+    $this->_set_node_id($node_id);
+
+    $this->_set_groups($groups);
+
+    $this->set_locale_id($locale_id);
   }
 
   function try_autologin()
@@ -214,7 +228,6 @@ class user extends object
 
     setcookie('user_id', 0, time() - 1, '/');
     setcookie('password', 0, time() - 1, '/');
-
   }
 
   function get_crypted_password($login, $none_crypt_password)
