@@ -33,7 +33,7 @@ define('PNMMAKE', 'ppmmake');
 define('PNMCOMP', 'pnmpaste');
 
 //default settings - should  be overriden in steup.php or setup_custom.php
-if(sys :: os_type() == 'win32')
+if(sys :: is_win32())
   define('NETPBM_LIB_DIR', 'c:/netpbm/');
 else
   define('NETPBM_LIB_DIR', '/usr/local/netpbm/bin/');
@@ -63,7 +63,7 @@ class image_netpbm extends image_library
 
   function _determine_options()
   {
-    if (sys :: os_type() == "win32")
+    if (sys :: is_win32())
       $this->ext = '.exe';
 
     $this->_determine_read_types();

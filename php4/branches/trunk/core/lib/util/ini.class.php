@@ -11,8 +11,6 @@
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 require_once(LIMB_DIR . '/core/lib/debug/debug.class.php');
 
-@define('INI_CACHE_DIR', VAR_DIR . '/ini/');
-
 function get_ini_option($file_path, $var_name, $group_name = 'default', $use_cache = null)
 {
   $ini =& get_ini($file_path, $use_cache);
@@ -76,7 +74,7 @@ class ini
 
     $this->file_path = $file_path;
     $this->use_cache = $use_cache;
-    $this->cache_dir = INI_CACHE_DIR;
+    $this->cache_dir = VAR_DIR . '/ini/';
 
     $this->load();
   }
@@ -169,27 +167,16 @@ class ini
   }
 
   /*
-   Stores the content of the INI object to the cache file
+  * Stores the content of the INI object to the cache file
   */
   function _save_cache()
   {
-    if (is_array($this->group_values))
-    {
-      $fp = @fopen($this->cache_file, 'w+');
-      if ($fp === false)
-      {
-        debug::write_error("Couldn't create cache file '{$this->cache_file}', perhaps wrong permissions", __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
-        return;
-      }
+    $php = "<?php\n";
+    $php .= '$charset = "' . $this->charset . '";' . "\n";
+    $php .= '$group_values = ' . var_export($this->group_values, true) . ";\n";
+    $php .= "\n?>";
 
-      fwrite($fp, "<?php\n");
-      fwrite($fp, '$charset = "' . $this->charset . '";' . "\n");
-
-      fwrite($fp, '$group_values = ' . var_export($this->group_values, true) . ";\n");
-
-      fwrite($fp, "\n?>");
-      fclose($fp);
-    }
+    fs :: safe_write($this->cache_file, $php);
   }
 
   /*

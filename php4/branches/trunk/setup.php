@@ -26,7 +26,6 @@ if(isset($_SERVER['REQUEST_URI']))
 @define('SHARED_DIR', LIMB_DIR . '/shared/');
 @define('SHARED_IMG_URL', '/shared/images/');
 @define('VAR_DIR', PROJECT_DIR . '/var/');
-@define('INI_CACHE_DIR', VAR_DIR . '/ini/');
 @define('VAR_WEB_DIR', '/var/');
 @define('MEDIA_DIR', PROJECT_DIR . '/media/');
 @define('TEMPLATE_EDITOR_PATH', 'uedit32.exe %s');

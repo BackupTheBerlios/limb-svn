@@ -471,7 +471,7 @@ class partial_page_cache_manager_test extends LimbTestCase
     $this->assertEqual(sizeof($files), 1);
 
     $file = reset($files);
-    $this->assertEqual(fs :: clean_path($file), fs :: clean_path(PAGE_CACHE_DIR . fs :: separator() . 'not_page_file'));
+    $this->assertEqual(fs :: normalize_path($file), fs :: normalize_path(PAGE_CACHE_DIR . fs :: separator() . 'not_page_file'));
 
     $this->_clean_simple_cache('not_page_file');
   }

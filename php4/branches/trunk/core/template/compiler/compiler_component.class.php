@@ -484,7 +484,7 @@ class compiler_component
       define('WS_SCRIPT_WRITTEN', true);
     }
 
-    $file_path = addslashes(fs :: clean_path($file_path));
+    $file_path = addslashes(fs :: normalize_path($file_path));
     $code->write_html("<a href='#'><img onclick='run_template_editor(this.title)' class='debug-info-img' src='/shared/images/i.gif' alt='i' title='{$file_path}' border='0'></a>");
   }
 

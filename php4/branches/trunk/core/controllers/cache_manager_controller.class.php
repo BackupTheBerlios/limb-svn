@@ -48,6 +48,11 @@ class cache_manager_controller extends site_object_controller
             'action_name' => strings :: get('flush_image_cache', 'cache_manager'),
             'popup' => true
         ),
+        'flush_general_cache' => array(
+            'action_name' => strings :: get('flush_general_cache', 'cache_manager'),
+            'action_path' => '/cache_manager/flush_general_cache_action',
+            'popup' => true
+        ),
         'flush_ini_cache' => array(
             'action_name' => strings :: get('flush_ini_cache', 'cache_manager'),
             'action_path' => '/cache_manager/flush_ini_cache_action',

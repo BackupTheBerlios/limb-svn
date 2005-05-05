@@ -10,6 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/tree/caching_tree.class.php');
 require_once(dirname(__FILE__) . '/materialized_path_tree_test.class.php');
+//require_once(LIMB_DIR . '/core/cache/cache_registry.class.php');
 
 class cached_materialized_path_tree_test extends materialized_path_tree_test
 {

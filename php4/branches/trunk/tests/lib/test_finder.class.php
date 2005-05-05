@@ -76,7 +76,7 @@ class TestFinder
 
       if ($file_test_function[0]->$file_test_function[1]($file))
       {
-        $file_list[] = fs :: clean_path($file_path);
+        $file_list[] = fs :: normalize_path($file_path);
       }
     }
     closedir($dh);
@@ -108,7 +108,7 @@ class TestFinder
       }
       if ($file_test_function[0]->$file_test_function[1]($file))
       {
-        $file_list[] = fs :: clean_path($file_path);
+        $file_list[] = fs :: normalize_path($file_path);
       }
     }
     closedir($dh);

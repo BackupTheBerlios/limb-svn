@@ -5,17 +5,17 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: flush_ini_cache_action.class.php 1274 2005-05-03 10:11:45Z pachanga $
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/actions/action.class.php');
 require_once(LIMB_DIR . '/core/lib/system/fs.class.php');
 
-class flush_ini_cache_action extends action
+class flush_general_cache_action extends action
 {
   function perform(&$request, &$response)
   {
-    $files = fs :: find(VAR_DIR . '/ini/', 'f');
+    $files = fs :: find(VAR_DIR . '/cache', 'f');
     foreach($files as $file)
       unlink($file);
 

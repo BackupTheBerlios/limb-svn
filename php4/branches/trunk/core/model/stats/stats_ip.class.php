@@ -8,6 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/lib/http/ip.class.php');
 
 class stats_ip
 {

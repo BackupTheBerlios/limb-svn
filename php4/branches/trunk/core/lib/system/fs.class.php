@@ -8,23 +8,44 @@
 * $Id$
 *
 ***********************************************************************************/
-define( 'DIR_SEPARATOR_LOCAL', 1 );
-define( 'DIR_SEPARATOR_UNIX', 2 );
-define( 'DIR_SEPARATOR_DOS', 3 );
-define( 'WIN32_NET_PREFIX', '\\\\' );
+define('DIR_SEPARATOR_LOCAL', 1);
+define('DIR_SEPARATOR_UNIX', 2);
+define('DIR_SEPARATOR_DOS', 3);
+define('WIN32_NET_PREFIX', '\\\\');
 
 require_once(LIMB_DIR . '/core/lib/system/sys.class.php');
 
 class fs
 {
+  function safe_write($file, $content, $perm=0664)
+  {
+    $tmp = tempnam(VAR_DIR, '_');
+    $fh = fopen($tmp, 'w');
+    fwrite($fh, $content);
+    fclose($fh);
+
+    //just for safety
+    @flock($file, LOCK_EX);
+
+    if(@rename($tmp, $file) === false)
+    {
+      //this actually a win32 check
+      @unlink($file);
+      @rename($tmp, $file);
+    }
+
+    @flock($file, LOCK_UN);
+    @chmod($file, $perm);
+  }
+
   function is_absolute($path)
   {
-    $path = fs :: clean_path($path);
+    $path = fs :: normalize_path($path);
     $separator = fs :: separator();
 
     if($path{0} == $separator)
       return true;
-    elseif(sys :: os_type() == 'win32' && preg_match('~^[a-zA-Z]+:~', $path))
+    elseif(sys :: is_win32() && preg_match('~^[a-zA-Z]+:~', $path))
       return true;
     else
       return false;
@@ -32,7 +53,7 @@ class fs
 
   function dirpath($path)
   {
-    $path = fs :: clean_path($path);
+    $path = fs :: normalize_path($path);
 
     if (($dir_pos = strrpos($path, fs :: separator())) !== false )
       return substr($path, 0, $dir_pos);
@@ -40,17 +61,12 @@ class fs
     return $path;
   }
 
-  /*
-   Creates the directory $dir with permissions $perm.
-   If $parents is true it will create any missing parent directories,
-   just like 'mkdir -p'.
-  */
   function mkdir($dir, $perm=0777, $parents=true)
   {
     if(is_dir($dir))
       return true;
 
-    $dir = fs :: clean_path($dir);
+    $dir = fs :: normalize_path($dir);
 
     if(!$parents)
       return fs :: _do_mkdir($dir, $perm);
@@ -140,7 +156,7 @@ class fs
 
   function explode_path($path)
   {
-    $path = fs :: clean_path($path);
+    $path = fs :: normalize_path($path);
 
     $separator = fs :: separator();
 
@@ -161,7 +177,7 @@ class fs
 
   function chop($path)
   {
-    $path = fs :: clean_path($path);
+    $path = fs :: normalize_path($path);
     if(substr($path, -1) == fs :: separator())
       $path = substr($path, 0, -1);
 
@@ -211,8 +227,8 @@ class fs
     if(!fs :: mkdir($dest))
       return false;
 
-    $src = fs :: clean_path($src);
-    $dest = fs :: clean_path($dest);
+    $src = fs :: normalize_path($src);
+    $dest = fs :: normalize_path($dest);
     $separator = fs :: separator();
 
     if ($as_child)
@@ -266,7 +282,7 @@ class fs
       return array();
 
     $files = array();
-    $path = fs :: clean_path($path);
+    $path = fs :: normalize_path($path);
     if($handle = opendir($path))
     {
       while(($file = readdir($handle)) !== false)
@@ -283,12 +299,7 @@ class fs
   }
 
   /*
-   return the separator used between directories and files according to $type.
-
-   Type can be one of the following:
-   - DIR_SEPARATOR_LOCAL - Returns whatever is applicable for the current machine.
-   - DIR_SEPARATOR_UNIX  - Returns a /
-   - DIR_SEPARATOR_DOS   - Returns a \
+  * return the separator used between directories and files according to $type.
   */
   function separator($type=DIR_SEPARATOR_LOCAL)
   {
@@ -305,10 +316,10 @@ class fs
   }
 
   /*
-   Converts any directory separators found in $path, in both unix and dos style, into
-   the separator type specified by $to_type and returns it.
+  * converts any directory separators found in $path, in both unix and dos style, into
+  * the separator type specified by $to_type and returns it.
   */
-  function convert_separators($path, $to_type = DIR_SEPARATOR_UNIX)
+  function convert_separators($path, $to_type=DIR_SEPARATOR_UNIX)
   {
     $separator = fs :: separator($to_type);
     return preg_replace("#[/\\\\]#", $separator, $path);
@@ -320,7 +331,7 @@ class fs
    For instance: "var/../lib/db" becomes "lib/db", while "../site/var" will not be changed.
    Will also convert separators
   */
-  function clean_path($path, $to_type=DIR_SEPARATOR_LOCAL)
+  function normalize_path($path, $to_type=DIR_SEPARATOR_LOCAL)
   {
     $path = fs :: convert_separators($path, $to_type);
     $separator = fs :: separator($to_type);
@@ -347,19 +358,25 @@ class fs
     return $path;
   }
 
+  //obsolete
+  function clean_path($path, $to_type=DIR_SEPARATOR_LOCAL)
+  {
+    return fs :: normalize_path($path, $to_type);
+  }
+
   function _normalize_separators($path, $separator)
   {
-    $clean_path = preg_replace( "#$separator$separator+#", $separator, $path);
+    $normalize_path = preg_replace( "#$separator$separator+#", $separator, $path);
 
     if(fs :: _has_win32_net_prefix($path))
-      $clean_path = '\\' . $clean_path;
+      $normalize_path = '\\' . $normalize_path;
 
-    return $clean_path;
+    return $normalize_path;
   }
 
   function _has_win32_net_prefix($path)
   {
-    if(sys :: os_type() == 'win32' && strlen($path) > 2)
+    if(sys :: is_win32() && strlen($path) > 2)
     {
       return (substr($path, 0, 2) == WIN32_NET_PREFIX);
     }
@@ -367,18 +384,14 @@ class fs
   }
 
   /*
-   Creates a path out of all the dir and file items in the array $names
-   with correct separators in between them.
-   It will also remove unneeded separators.
-   $type is used to determine the separator type, see fs::separator.
-   If $include_end_separator is true then it will make sure that the path ends with a
-   separator if false it make sure there are no end separator.
+  * Creates a path out of all the dir and file items in the array $names
+  * with correct separators in between them.
   */
   function path($names, $include_end_separator=false, $type=DIR_SEPARATOR_LOCAL)
   {
     $separator = fs :: separator($type);
     $path = implode($separator, $names);
-    $path = fs :: clean_path($path, $type);
+    $path = fs :: normalize_path($path, $type);
 
     $has_end_separator = (strlen($path) > 0 && $path[strlen($path) - 1] == $separator);
 
@@ -390,62 +403,12 @@ class fs
     return $path;
   }
 
-  function &recursive_find($path, $regex)
-  {
-    $dir =& new fs();
-
-    return $dir->walk_dir($path, array(&$dir, '_do_recursive_find'), array('regex' => $regex));
-  }
-
-  function _do_recursive_find($dir, $file, $params, &$return_params)
-  {
-    if(preg_match('/' . $params['regex'] . '$/', $file))
-    {
-      $return_params[] = $dir . $params['separator'] . $file;
-    }
-  }
-
-  function walk_dir($dir, $function_def, $params=array())
-  {
-    $return_params = array();
-
-    $separator = fs :: separator();
-    $dir = fs :: clean_path($dir);
-    $dir = fs :: chop($dir);
-
-    $params['separator'] = $separator;
-
-    fs :: _do_walk_dir($dir, $separator, $function_def, $return_params, $params);
-
-    return $return_params;
-  }
-
-  function _do_walk_dir($dir, $separator, $function_def, &$return_params, $params)
-  {
-    if(is_dir($dir))
-    {
-      $handle = opendir($dir);
-
-      while(($file = readdir($handle)) !== false)
-      {
-        if (($file != '.') && ($file != '..'))
-        {
-          call_user_func_array($function_def, array('dir' => $dir, 'file' => $file, 'params' => $params, 'return_params' => &$return_params));
-
-          if (is_dir($dir . $separator . $file))
-            fs :: _do_walk_dir($dir . $separator . $file, $separator, $function_def, $return_params, $params);
-        }
-      }
-      closedir($handle);
-    }
-  }
-
   /*
   * Searchs items in the specific folder
   */
   function find($dir, $types = 'dfl', $include_regex = '', $exclude_regex = '', $add_path = true, $include_hidden = false)
   {
-    $dir = fs :: clean_path($dir);
+    $dir = fs :: normalize_path($dir);
     $dir = fs :: chop($dir);
 
     $items = array();
@@ -485,6 +448,78 @@ class fs
     }
     sort($items);
     return $items;
+  }
+
+  function &recursive_find($path, $types = 'dfl', $include_regex = '', $exclude_regex = '', $add_path = true, $include_hidden = false)
+  {
+    return fs :: walk_dir($path,
+                          array('fs', '_do_recursive_find'),
+                          array('types' => $types,
+                               'include_regex' => $include_regex,
+                               'exclude_regex' => $exclude_regex,
+                               'add_path' => $add_path,
+                               'include_hidden' => $include_hidden),
+                          true);
+  }
+
+  function _do_recursive_find($dir, $file, $path, $params, &$return_params)
+  {
+    if(!is_dir($path))
+      return;
+
+    $items = fs :: find($path, $params['types'], $params['include_regex'], $params['exclude_regex'], $params['add_path'], $params['include_hidden']);
+    foreach($items as $item)
+    {
+      $return_params[] = $item;
+    }
+  }
+
+  function walk_dir($dir, $function_def, $params=array(), $include_first=false)
+  {
+    $return_params = array();
+
+    $separator = fs :: separator();
+    $dir = fs :: normalize_path($dir);
+    $dir = fs :: chop($dir);
+
+    $params['separator'] = $separator;
+
+    fs :: _do_walk_dir($dir,
+                       $separator,
+                       $function_def,
+                       $return_params,
+                       $params,
+                       $include_first);
+
+    return $return_params;
+  }
+
+  function _do_walk_dir($item, $separator, $function_def, &$return_params, $params, $include_first, $level=0)
+  {
+    if($level > 0 || ($level == 0 && $include_first))
+      call_user_func_array($function_def, array('dir' => dirname($item),
+                                                'file' => basename($item),
+                                                'path' => $item,
+                                                'params' => $params,
+                                                'return_params' => &$return_params));
+    if(!is_dir($item))
+      return;
+
+    $handle = opendir($item);
+
+    while(($file = readdir($handle)) !== false)
+    {
+      if (($file == '.') || ($file == '..'))
+        continue;
+
+      fs :: _do_walk_dir($item . $separator . $file,
+                         $separator,
+                         $function_def,
+                         $return_params,
+                         $params,
+                         $level + 1);
+    }
+    closedir($handle);
   }
 }
 ?>

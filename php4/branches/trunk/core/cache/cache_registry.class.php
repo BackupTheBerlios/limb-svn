@@ -40,16 +40,12 @@ class cache_registry
 
     $file = $this->_get_cache_file_path($group, $key);
 
-    $tmp = tempnam(CACHE_DIR, '_');
-    $fh = fopen($tmp, 'w');
-    fwrite($fh, "<?php\n\$value = " . var_export($value, true) . ";\n?>");
-    fclose($fh);
+    fs :: safe_write($file, $this->_make_php_content($value));
+  }
 
-    if(@rename($tmp, $file) === false)
-    {
-      unlink($file);
-      rename($tmp, $file);
-    }
+  function _make_php_content($value)
+  {
+    return "<?php\n\$value = " . var_export($value, true) . ";\n?>";
   }
 
   function assign(&$variable, $raw_key, $group = 'default')

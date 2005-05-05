@@ -23,40 +23,53 @@ class display_cache_manager_action extends action
     $partial_page_cache_manager = new partial_page_cache_manager();
     $image_cache_manager = new image_cache_manager();
 
-    $full_page_cache_size = number_format($full_page_cache_manager->get_cache_size()/1024)." KB";
+    $full_page_cache_size = $this->_format_size($full_page_cache_manager->get_cache_size());
     $this->view->set('full_page_cache_size', $full_page_cache_size);
 
-    $partial_page_cache_size = number_format($partial_page_cache_manager->get_cache_size()/1024)." KB";
+    $partial_page_cache_size = $this->_format_size($partial_page_cache_manager->get_cache_size());
     $this->view->set('partial_page_cache_size', $partial_page_cache_size);
 
-    $image_cache_size = number_format($image_cache_manager->get_cache_size()/1024)." KB";
+    $image_cache_size = $this->_format_size($image_cache_manager->get_cache_size());
     $this->view->set('image_cache_size', $image_cache_size);
 
-    $template_cache_size = number_format($this->_get_template_cache_size()/1024)." KB";
+    $template_cache_size = $this->_format_size($this->_get_template_cache_size());
     $this->view->set('template_cache_size', $template_cache_size);
 
-    $ini_cache_size = number_format($this->_get_ini_cache_size()/1024)." KB";
+    $general_cache_size = $this->_format_size($this->_get_general_cache_size());
+    $this->view->set('general_cache_size', $general_cache_size);
+
+    $ini_cache_size = $this->_format_size($this->_get_ini_cache_size());
     $this->view->set('ini_cache_size', $ini_cache_size);
+  }
+
+  function _get_general_cache_size()
+  {
+    return $this->_get_directory_file_size(VAR_DIR . '/cache');
   }
 
   function _get_template_cache_size()
   {
+    return $this->_get_directory_file_size(VAR_DIR . '/compiled');
+  }
+
+  function _get_ini_cache_size()
+  {
+    return $this->_get_directory_file_size(VAR_DIR . '/ini');
+  }
+
+  function _get_directory_file_size($dir)
+  {
     $size = 0;
-    $files = fs :: find(VAR_DIR . '/compiled', 'f');
+    $files = fs :: find($dir, 'f');
     foreach($files as $file)
       $size += filesize($file);
 
     return $size;
   }
 
-  function _get_ini_cache_size()
+  function _format_size($size)
   {
-    $size = 0;
-    $files = fs :: find(VAR_DIR . '/ini', 'f');
-    foreach($files as $file)
-      $size += filesize($file);
-
-    return $size;
+    return number_format($size / 1024) . " KB";
   }
 }
 
