@@ -279,28 +279,19 @@ class image_cache_manager
 
   function flush()
   {
-    fs :: mkdir(IMAGE_CACHE_DIR);
-
     $files = fs :: find(IMAGE_CACHE_DIR, 'f');
 
     foreach($files as $file)
-    {
       unlink($file);
-    }
   }
 
   function get_cache_size()
   {
-    fs :: mkdir(IMAGE_CACHE_DIR);
-
-    $files = fs :: find(IMAGE_CACHE_DIR, 'f');
+    $files = fs :: find(IMAGE_CACHE_DIR, '~^f~');
 
     $size = 0;
-
     foreach($files as $file)
-    {
       $size += (filesize($file));
-    }
 
     return $size;
   }

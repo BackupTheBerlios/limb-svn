@@ -415,7 +415,7 @@ class fs
 
     $separator = fs :: separator();
 
-    if ($handle = opendir($dir))
+    if ($handle = @opendir($dir))
     {
       while(($element = readdir($handle)) !== false)
       {

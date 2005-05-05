@@ -167,28 +167,19 @@ class full_page_cache_manager
 
   function flush()
   {
-    fs :: mkdir(PAGE_CACHE_DIR);
-
     $files = fs :: find(PAGE_CACHE_DIR, 'f', '~^f~');
 
     foreach($files as $file)
-    {
       unlink($file);
-    }
   }
 
   function get_cache_size()
   {
-    fs :: mkdir(PAGE_CACHE_DIR);
-
-    $files = fs :: find(PAGE_CACHE_DIR, 'f', '~^f');
+    $files = fs :: find(PAGE_CACHE_DIR, 'f', '~^f~');
 
     $size = 0;
-
     foreach($files as $file)
-    {
       $size += (filesize($file));
-    }
 
     return $size;
   }
