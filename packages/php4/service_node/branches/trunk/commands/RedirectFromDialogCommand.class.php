@@ -10,11 +10,9 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/RedirectCommand.class.php');
 
-class RedirectToServiceNodeCommand
+class RedirectFromDialogCommand
 {
-  var $service_node;
-
-  function RedirectToServiceNodeCommand(&$service_node)
+  function RedirectFromDialogCommand(&$service_node)
   {
     $this->service_node =& $service_node;
   }

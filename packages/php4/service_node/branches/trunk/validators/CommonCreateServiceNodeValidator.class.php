@@ -17,7 +17,7 @@ class CommonCreateServiceNodeValidator extends Validator
     $toolkit =& Limb :: toolkit();
     $resolver =& $toolkit->getRequestResolver('tree_based_entity');
     if(!is_object($resolver))
-      return die('tree_based_entity not set');
+      return die('tree_based_entity resolver is not set');
 
     if($entity =& $resolver->resolve($toolkit->getRequest()))
     {

@@ -8,16 +8,16 @@
 * $Id: CommonSiteObjectsGroup.class.php 1075 2005-01-29 15:50:12Z pachanga $
 *
 ***********************************************************************************/
-class ServiceNodeStateMachinesGroup extends LimbGroupTest
+class ServiceNodeActionCommandsGroup extends LimbGroupTest
 {
-  function ServiceNodeStateMachinesGroup()
+  function ServiceNodeActionCommandsGroup()
   {
     parent :: LimbGroupTest(__FILE__);
   }
 
   function getTestCasesHandles()
   {
-    return TestFinder::getTestCasesHandlesFromDirectory(dirname(__FILE__) . '/state_machines/');
+    return TestFinder::getTestCasesHandlesFromDirectory(dirname(__FILE__) . '/action_commands/');
   }
 }
 
