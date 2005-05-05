@@ -80,6 +80,7 @@ class TestFinder
       }
     }
     closedir($dh);
+    sort($file_list);
     return $file_list;
   }
 
@@ -112,6 +113,7 @@ class TestFinder
       }
     }
     closedir($dh);
+    sort($file_list);
     return $file_list;
   }
 
