@@ -43,13 +43,14 @@
   <core:INCLUDE file="/admin/pager_contents.html">
 </pager:navigator>
 
-<grid:LIST id='referers_except_groups'>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <th width="10%">hits</th>
 <th width="10%">%</th>
 <th>URL</th>
 </tr>
+
+<grid:LIST id='referers_except_groups'>
 
 <grid:ITERATOR>
 <grid:STRIPE odd>
@@ -67,5 +68,5 @@
 </td>
 </tr>
 </grid:ITERATOR>
-</table>
 </grid:LIST>
+</table>
