@@ -8,7 +8,6 @@
 * $Id: CrudMainBehaviour.class.php 23 2005-02-26 18:11:24Z server $
 *
 ***********************************************************************************/
-require_once(LIMB_SERVICE_NODE_DIR . '/commands/state_machines/StateMachineForEditEntityDialog.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/action_commands/EditServiceNodeCommand.class.php');
 
 class EditServiceNodeAtStructurePageCommand extends EditServiceNodeCommand

@@ -8,7 +8,7 @@
 * $Id: CrudMainBehaviour.class.php 23 2005-02-26 18:11:24Z server $
 *
 ***********************************************************************************/
-require_once(LIMB_SERVICE_NODE_DIR . '/commands/CreateServiceNodeAtStructurePageCommand.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/action_commands/CreateServiceNodeAtStructurePageCommand.class.php');
 
 class CreateRootServiceNodeAtStructurePageCommand extends CreateServiceNodeAtStructurePageCommand
 {

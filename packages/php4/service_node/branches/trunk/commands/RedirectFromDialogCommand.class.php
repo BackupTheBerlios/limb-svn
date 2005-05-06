@@ -23,10 +23,21 @@ class RedirectFromDialogCommand
       return LIMB_STATUS_ERROR;
 
     $toolkit =& Limb :: toolkit();
+    $uow =& $toolkit->getUOW();
 
     $node =& $this->service_node->getNodePart();
     $path2id_translator =& $toolkit->getPath2IdTranslator();
-    $path = $path2id_translator->getPathToNode($node->get('id'));
+
+    if($uow->isDeleted($this->service_node))
+    {
+      $path = $path2id_translator->getPathToNode($node->get('parent_id'));
+    }
+    elseif($id = $node->get('id'))
+    {
+      $path = $path2id_translator->getPathToNode($node->get('id'));
+    }
+    else
+      $path = $path2id_translator->getPathToNode($node->get('parent_id'));
 
     $redirect_command = new RedirectCommand($path);
     return $redirect_command->perform();
