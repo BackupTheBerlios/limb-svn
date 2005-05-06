@@ -31,54 +31,41 @@ class message_box
     $this->strings = array();
   }
 
-  function &instance( )
+  function &instance()
   {
     $impl =& $GLOBALS['global_message_box_instance'];
 
     $class =& get_class( $impl );
-    if ( $class != 'message_box' )
+    if ($class != 'message_box')
       $impl = new message_box();
 
     return $impl;
   }
 
-  /*
-    Writes a message_box notice.
-  */
-  function write_notice( $string, $label='' )
+  function write_notice($string, $label='')
   {
     $message_box =& message_box::instance();
-    $message_box->write( $string, MESSAGE_LEVEL_NOTICE, $label );
+    $message_box->write($string, MESSAGE_LEVEL_NOTICE, $label);
   }
 
-  /*
-    writes a message_box warning.
-  */
-  function write_warning( $string, $label='' )
+  function write_warning($string, $label='')
   {
     $message_box =& message_box::instance();
-    $message_box->write( $string, MESSAGE_LEVEL_WARNING, $label );
+    $message_box->write($string, MESSAGE_LEVEL_WARNING, $label);
   }
 
-  /*
-    Writes a message_box error.
-  */
-  function write_error( $string, $label='' )
+  function write_error($string, $label='')
   {
     $message_box =& message_box::instance();
-    $message_box->write( $string, MESSAGE_LEVEL_ERROR, $label );
+    $message_box->write($string, MESSAGE_LEVEL_ERROR, $label);
   }
 
-  /*
-    Writes a message_box log message.
-  */
-  function write( $string, $verbosity_level = MESSAGE_LEVEL_NOTICE, $label='' )
+  function write($string, $verbosity_level = MESSAGE_LEVEL_NOTICE, $label='')
   {
-    $this->strings[] = array(
-                                        'string' => str_replace("'", "\'", $string),
-                                        'level' => $verbosity_level,
-                                        'label' => str_replace("'", "\'", $label)
-    );
+    $this->strings[] = array('string' => str_replace("'", "\'", $string),
+                             'level' => $verbosity_level,
+                             'label' => str_replace("'", "\'", $label)
+                             );
   }
 
   function get_message_strings()
@@ -86,9 +73,6 @@ class message_box
     return $this->strings;
   }
 
-  /*
-    fetches the message_box report
-  */
   function parse()
   {
     $message_box =& message_box::instance();

@@ -26,6 +26,7 @@ class limb_application
     $f = array();
 
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/session_startup_filter');
+    $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/response_processing_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/locale_definition_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/authentication_filter');
     $filter_chain->register_filter($f[] = LIMB_DIR . '/core/filters/logging_filter');
@@ -55,18 +56,8 @@ class limb_application
 
     $filter_chain->process();
 
-    if( $response->get_content_type() == 'text/html' &&
-        $response->get_status() == 200)//only 200?
-    {
-      if (debug :: is_console_enabled())
-        $response->write(debug :: parse_html_console());
-
-      $response->write(message_box :: parse());//It definetly should be somewhere else!
-    }
-
     $response->commit();
   }
-
 }
 
 ?>
