@@ -79,11 +79,6 @@ class ini
     $this->load();
   }
 
-  function get_cache_file()
-  {
-    return $this->cache_file;
-  }
-
   // Returns the current instance of the given .ini file
   function &instance($file_path, $use_cache = null)
   {
@@ -109,6 +104,22 @@ class ini
   function get_original_file()
   {
     return $this->file_path;
+  }
+
+  function get_cache_file()
+  {
+    return $this->cache_file;
+  }
+
+  function get_override_file()
+  {
+    $file_name = substr($this->file_path, 0, strpos($this->file_path, '.ini'));
+    $override_file_name = $file_name . '.override' . '.ini';
+
+    if(file_exists($override_file_name))
+      return $override_file_name;
+    else
+      return false;
   }
 
   // returns true if INI cache is enabled globally, the default value is true.
@@ -145,10 +156,12 @@ class ini
         debug::write_error("Couldn't create cache directory $cache_dir, perhaps wrong permissions", __FILE__ . ' : ' . __LINE__ . ' : ' . __FUNCTION__);
     }
 
-    $this->cache_file = $this->cache_dir . md5($this->file_path) . '.php';
+    if($override_file = $this->get_override_file())
+      $this->cache_file = $this->cache_dir . md5($override_file) . '.php';
+    else
+      $this->cache_file = $this->cache_dir . md5($this->file_path) . '.php';
 
-    if (file_exists($this->cache_file) &&
-        filemtime($this->cache_file) > filemtime($this->file_path))
+    if ($this->_is_cache_valid())
     {
       $charset = null;
       $group_values = array();
@@ -165,6 +178,25 @@ class ini
       $this->_save_cache();
     }
   }
+
+  function _is_cache_valid()
+  {
+    if(!file_exists($this->cache_file))
+      return false;
+
+    $override_file = $this->get_override_file();
+
+    if (filemtime($this->cache_file) > filemtime($this->file_path))
+    {
+      if($override_file &&  filemtime($this->cache_file) < filemtime($override_file))
+        return false;
+      else
+        return true;
+    }
+
+    return false;
+  }
+
 
   /*
   * Stores the content of the INI object to the cache file
@@ -187,11 +219,19 @@ class ini
   {
     $this->reset();
 
-    $fp = @fopen($this->file_path, 'r');
+    $this->_parse_file_contents($this->file_path);
+
+    if($override_file = $this->get_override_file())
+      $this->_parse_file_contents($override_file);
+  }
+
+  function _parse_file_contents($file_path)
+  {
+    $fp = @fopen($file_path, 'r');
     if (!$fp)
       return false;
 
-    $size = filesize($this->file_path);
+    $size = filesize($file_path);
 
     if($size == 0)
         return;
@@ -236,7 +276,10 @@ class ini
       {
         $new_group_name = trim($new_group_name_array[1]);
         $current_group = $new_group_name;
-        $this->group_values[$current_group] = array();
+
+        if(!isset($this->group_values[$current_group]))
+          $this->group_values[$current_group] = array();
+
         continue;
       }
       // check for variable
