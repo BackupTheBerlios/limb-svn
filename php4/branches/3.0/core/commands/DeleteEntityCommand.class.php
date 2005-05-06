@@ -5,31 +5,24 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: EditSimpleObjectCommand.class.php 1186 2005-03-23 09:47:34Z seregalimb $
+* $Id: DeleteObjectCommand.class.php 1209 2005-04-08 14:29:41Z pachanga $
 *
 ***********************************************************************************/
 
-class MapDataspaceToObjectCommand
+class DeleteEntityCommand
 {
-  var $map;
-  var $object;
+  var $entity;
 
-  function MapDataspaceToObjectCommand($map, &$object)
+  function DeleteEntityCommand(&$entity)
   {
-    $this->map = $map;
-    $this->object =& $object;
+    $this->entity =& $entity;
   }
 
   function perform()
   {
     $toolkit =& Limb :: toolkit();
-    $dataspace =& $toolkit->getDataspace();
-
-    foreach($this->map as $key => $setter)
-    {
-      if ((($value = $dataspace->get($key)) !== false) && (($value = $dataspace->get($key)) !== null))
-        $this->object->set($setter, $value);
-    }
+    $uow =& $toolkit->getUOW();
+    $uow->delete($this->entity);
 
     return LIMB_STATUS_OK;
   }
