@@ -47,6 +47,14 @@ class edit_variations_action extends form_edit_site_object_action
     //??
   }
 
+  function _valid_perform(&$request, &$response)
+  {
+    parent :: _valid_perform($request, $response);
+
+    if($request->is_success())
+       $this->_set_updated_flag();
+  }
+
   function _init_dataspace(&$request)
   {
     parent :: _init_dataspace($request);
@@ -69,7 +77,15 @@ class edit_variations_action extends form_edit_site_object_action
 
     $this->object->update_variations();
 
+    $this->object->update_site_object_record();
+
     return true;
+  }
+
+  function _set_updated_flag()
+  {
+    $form =& $this->view->get_child($this->name);
+    $form->set('is_updated', true);
   }
 
   function _get_uploaded_files_data()
