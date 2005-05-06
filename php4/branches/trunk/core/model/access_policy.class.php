@@ -22,6 +22,8 @@ class access_policy
 
   var $_cached_controller_accessible_actions = array();
 
+  var $_cache;
+
   function access_policy()
   {
   }
@@ -328,7 +330,7 @@ class access_policy
 
     $db_table->delete($conditions);
 
-    $this->save_object_access(array($object_id => $group_template),ACCESSOR_TYPE_GROUP);
+    $this->save_object_access(array($object_id => $group_template), ACCESSOR_TYPE_GROUP);
     $this->save_object_access(array($object_id => $user_template), ACCESSOR_TYPE_USER);
 
     return true;
@@ -361,6 +363,8 @@ class access_policy
       }
     }
 
+    $this->_flush_tree_cache();
+
     return true;
   }
 
@@ -385,6 +389,8 @@ class access_policy
       $data['object_id'] = $object_id;
       $db_table->insert($data);
     }
+
+    $this->_flush_tree_cache();
 
     return true;
   }
@@ -422,5 +428,21 @@ class access_policy
     return true;
   }
 
+  function & _get_cache_registry()
+  {
+    if(is_object($this->_cache))
+      return $this->_cache;
+
+    include_once(LIMB_DIR . '/core/cache/cache_registry.class.php');
+    $this->_cache = new cache_registry();
+    return $this->_cache;
+  }
+
+  //!!!this is absolutely ugly and MUST be refactored in 2.3.x something
+  function _flush_tree_cache()
+  {
+    $cache =& $this->_get_cache_registry();
+    $cache->flush(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP);
+  }
 }
 ?>

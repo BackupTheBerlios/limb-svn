@@ -19,12 +19,6 @@ class set_group_objects_access extends form_action
     return 'set_group_access';
   }
 
-  function & _get_cache_registry()
-  {
-    include_once(LIMB_DIR . '/core/cache/cache_registry.class.php');
-    return new cache_registry();
-  }
-
   function perform(&$request, &$response)
   {
     $tree =& tree :: instance();
@@ -66,9 +60,6 @@ class set_group_objects_access extends form_action
     {
       $access_policy =& access_policy :: instance();
       $access_policy->save_object_access($data['policy'], ACCESSOR_TYPE_GROUP, $groups);
-
-      $cache =& $this->_get_cache_registry();
-      $cache->flush(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP);
     }
 
     $this->_set_template_tree();
