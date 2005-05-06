@@ -8,17 +8,17 @@
 * $Id: ImageObjectsDAOTest.class.php 1093 2005-02-07 15:17:20Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_SERVICE_NODE_DIR . '/action_commands/CreateServiceNodeAtStructurePageCommand.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/action_commands/CreateServiceNodeCommand.class.php');
+require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
-require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/action_commands/TestContentServiceNode.class.php');
-require_once(LIMB_SERVICE_NODE_DIR . '/tests/cases/action_commands/TestContentServiceNodeMapper.class.php');
-require_once(LIMB_SERVICE_NODE_DIR . '/request_resolvers/ServiceNodeRequestResolver.class.php');
+require_once(LIMB_DIR . '/core/request_resolvers/TreeBasedEntityRequestResolver.class.php');
 
-class CreateServiceNodeAtStructurePageCommandTest extends LimbTestCase
+class CreateServiceNodeCommandTest extends LimbTestCase
 {
   var $db;
+  var $command;
 
-  function CreateServiceNodeAtStructurePageCommandTest()
+  function CreateServiceNodeCommandTest()
   {
     parent :: LimbTestCase(__FILE__);
   }
@@ -31,15 +31,35 @@ class CreateServiceNodeAtStructurePageCommandTest extends LimbTestCase
 
     $this->_cleanUp();
 
+    $form_template_path = '/test_content_service_node_form.html';
+    $form_name = 'test_form';
+
+    RegisterTestingTemplate($form_template_path, '<form id="' . $form_name . '" runat="server"></form>');
+
+    // dataspace field => value
+    $extra_dataspace_data = array('service_name' => 'SomeService');
+
+    $validator =  new LimbHandle(LIMB_SERVICE_NODE_DIR . '/validators/CommonCreateServiceNodeValidator');
+
+    $this->command = new CreateServiceNodeCommand($form_template_path,
+                                                  $form_name,
+                                                  $validator,
+                                                  array(),
+                                                  $extra_dataspace_data,
+                                                  new ServiceNode());
+
     Limb :: saveToolkit();
 
     $toolkit =& Limb :: toolkit();
-    $toolkit->setRequestResolver('service_node', new ServiceNodeRequestResolver());
+    $toolkit->setRequestResolver('tree_based_entity', new TreeBasedEntityRequestResolver());
+
   }
 
   function tearDown()
   {
     Limb :: restoreToolkit();
+
+    ClearTestingTemplates();
 
     $this->_cleanUp();
   }
@@ -55,7 +75,7 @@ class CreateServiceNodeAtStructurePageCommandTest extends LimbTestCase
     $this->db->delete('sys_object_to_node');
   }
 
-  function & _registerServiceNode()
+  function & _registerRootObject()
   {
     $toolkit =& Limb :: toolkit();
     $uow =& $toolkit->getUOW();
@@ -79,67 +99,56 @@ class CreateServiceNodeAtStructurePageCommandTest extends LimbTestCase
 
   function testPerformFormDisplayed()
   {
-    $entity =& $this->_registerServiceNode();
+    $entity =& $this->_registerRootObject();
 
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
-    $request->set('id', $entity->get('oid'));
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
 
-    $command = new CreateServiceNodeAtStructurePageCommand();
-
-    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
-
-    $dataspace =& $toolkit->getDataspace();
-    $node =& $entity->getNodePart();
-    $this->assertEqual($dataspace->get('parent_node_id'), $node->get('id'));
+    $this->assertEqual($this->command->perform(), LIMB_STATUS_OK);
   }
 
   function testPerformFormNotValid()
   {
-    $entity =& $this->_registerServiceNode();
+    $entity =& $this->_registerRootObject();
 
     $toolkit =& Limb :: toolkit();
+
     $request =& $toolkit->getRequest();
-    $request->set('id', $entity->get('oid'));
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
     $request->set('submitted', 1);
 
-    $command = new CreateServiceNodeAtStructurePageCommand();
-
-    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
-
-    $this->assertTrue($this->_isFormHasErrors('service_node_form'));
+    $this->assertEqual($this->command->perform(), LIMB_STATUS_OK);
   }
 
   function testPerformObjectCreated()
   {
-    $entity =& $this->_registerServiceNode();
+    $entity =& $this->_registerRootObject();
 
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
-    $request->set('id', $entity->get('oid'));
+    $uri =& $request->getUri();
+    $uri->setPath('/services');
+
+    $node =& $entity->getNodePart();
+    $request->set('parent_node_id', $node->get('id'));
     $request->set('submitted', 1);
     $request->set('identifier', $identifier = 'child_service');
     $request->set('title', $title = 'Some title');
-    $request->set('class_name', $class_name = 'TestContentServiceNode');
-    $request->set('service_name', $service_name = 'ServiceNode');
 
-    $command = new CreateServiceNodeAtStructurePageCommand();
-    $this->assertEqual($command->perform(), LIMB_STATUS_OK);
+    $this->assertEqual($this->command->perform(), LIMB_STATUS_OK);
 
-    $service_node =& $command->getEntity();
-    $uow =& $toolkit->getUOW();
-    $this->assertTrue($uow->isRegistered($service_node));
+    $service_node =& $this->command->getEntity();
+    $this->assertIsA($service_node, 'ServiceNode');
 
     $response =& $toolkit->getResponse();
     $this->assertTrue($response->isRedirected());
-  }
 
-  function _isFormHasErrors($form_id)
-  {
-    $toolkit =& Limb :: toolkit();
-    $view =& $toolkit->getView();
-    $form =& $view->getChild($form_id);
-    return $form->hasErrors();
+    $uow =& $toolkit->getUOW();
+    $this->assertTrue($uow->isRegistered($service_node));
+
   }
 }
 

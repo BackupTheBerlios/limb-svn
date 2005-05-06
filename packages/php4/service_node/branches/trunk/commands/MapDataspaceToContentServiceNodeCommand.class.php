@@ -26,7 +26,7 @@ class MapDataspaceToContentServiceNodeCommand
     if(!is_a($this->service_node, 'ContentServiceNode'))
       return LIMB_STATUS_ERROR;
 
-    $content =& $entity->getPart('content');
+    $content =& $this->service_node->getContentPart();
 
     $map_content_command = new MapDataspaceToObjectCommand($this->content_map, $content);
     $map_content_command->perform();

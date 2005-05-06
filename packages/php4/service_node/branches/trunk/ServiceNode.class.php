@@ -23,5 +23,16 @@ class ServiceNode extends Entity
     $this->registerPart('node', new NodeConnection());
     $this->registerPart('service', new ServiceLocation());
   }
+
+  function & getNodePart()
+  {
+    return $this->getPart('node');
+  }
+
+  function & getServicePart()
+  {
+    return $this->getPart('service');
+  }
+
 }
 ?>

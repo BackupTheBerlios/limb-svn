@@ -9,11 +9,20 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/StateMachineCommand.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/action_commands/BaseDialogActionCommand.class.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/commands/state_machines/StateMachineForEditEntityDialog.class.php');
-require_once(LIMB_SERVICE_NODE_DIR . '/action_commands/BaseServiceNodeDialogCommand.class.php');
 
-class ServiceNodeEditCommand extends BaseServiceNodeDialogCommand
+class BaseEditDialogActionCommand extends BaseDialogActionCommand
 {
+  var $resolver_name;
+
+  function BaseEditDialogActionCommand($template_name, $form_id, &$validator, $content_map, $resolver_name)
+  {
+    parent :: BaseDialogActionCommand($template_name, $form_id, $validator, $content_map);
+
+    $this->resolver_name = $resolver_name;
+  }
+
   function perform()
   {
     $state_machine = new StateMachineForEditEntityDialog($this);
@@ -23,21 +32,16 @@ class ServiceNodeEditCommand extends BaseServiceNodeDialogCommand
   function performInitEntity()
   {
     $toolkit =& Limb :: toolkit();
-    $resolver =& $toolkit->getRequestResolver('tree_based_entity');
+    $resolver =& $toolkit->getRequestResolver($this->resolver_name);
 
     if(!is_object($resolver))
       return LIMB_STATUS_ERROR;
 
-    $this->service_node =& $resolver->resolve($toolkit->getRequest());
+    $this->entity =& $resolver->resolve($toolkit->getRequest());
     return LIMB_STATUS_OK;
   }
 
-  function performInitDataspace()
-  {
-    include_once(LIMB_SERVICE_NODE_DIR . '/commands/MapServiceNodeToDataspaceCommand.class.php');
-    $command = new MapServiceNodeToDataspaceCommand($this->service_node);
-    return $command->perform();
-  }
+
 }
 
 ?>

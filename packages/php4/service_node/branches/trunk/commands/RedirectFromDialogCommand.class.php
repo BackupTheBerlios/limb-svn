@@ -24,7 +24,7 @@ class RedirectFromDialogCommand
 
     $toolkit =& Limb :: toolkit();
 
-    $node =& $this->service_node->getPart('node');
+    $node =& $this->service_node->getNodePart();
     $path2id_translator =& $toolkit->getPath2IdTranslator();
     $path = $path2id_translator->getPathToNode($node->get('id'));
 

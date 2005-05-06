@@ -113,11 +113,11 @@ class SimpleACLAccessFilterTest extends LimbTestCase
     $fc->expectOnce('next');
 
     $context = new DataSpace();
-    $context->setObject('service', $service);
+    $context->setObject('Service', $service);
 
     $filter->run($fc, $request, $response, $context);
 
-    $new_service =& $context->getObject('service');
+    $new_service =& $context->getObject('Service');
     $this->assertEqual($new_service->getName(), '403');
     $this->assertEqual($new_service->getCurrentAction(), 'display');
 

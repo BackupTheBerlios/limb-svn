@@ -31,8 +31,8 @@ class MapServiceNodeToDataspaceCommandTest extends LimbTestCase
   function testPerformOk()
   {
     $service_node = new ServiceNode();
-    $node =& $service_node->getPart('node');
-    $service =& $service_node->getPart('service');
+    $node =& $service_node->getNodePart();
+    $service =& $service_node->getServicePart();
 
     $node->set('id', $node_id = 50);
     $node->set('parent_id', $parent_id = 100);

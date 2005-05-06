@@ -44,10 +44,10 @@ class EditServiceNodeAtStructurePageCommandTest extends LimbTestCase
 
     $entity = new ServiceNode();
 
-    $node =& $entity->getPart('node');
+    $node =& $entity->getNodePart();
     $node->set('identifier', 'services');
 
-    $service =& $entity->getPart('service');
+    $service =& $entity->getServicePart();
     $service->set('title', 'Services page');
     $service->set('name', 'ServiceNode');
 
@@ -87,7 +87,7 @@ class EditServiceNodeAtStructurePageCommandTest extends LimbTestCase
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
-    $service_node =& $command->getServiceNode();
+    $service_node =& $command->getEntity();
     $this->assertIsA($service_node, 'ServiceNode');
     $this->assertEqual($service_node->get('oid'), $entity->get('oid'));
   }
@@ -126,9 +126,9 @@ class EditServiceNodeAtStructurePageCommandTest extends LimbTestCase
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
-    $service_node =& $command->getServiceNode();
-    $node =& $service_node->getPart('node');
-    $service =& $service_node->getPart('service');
+    $service_node =& $command->getEntity();
+    $node =& $service_node->getNodePart();
+    $service =& $service_node->getServicePart();
 
     $this->assertEqual($service->get('title'), $title);
     $this->assertEqual($node->get('identifier'), $identifier);

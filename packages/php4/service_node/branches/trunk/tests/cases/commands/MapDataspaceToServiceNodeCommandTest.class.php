@@ -67,11 +67,11 @@ class MapDataspaceToServiceNodeCommandTest extends LimbTestCase
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
-    $node =& $service_node->getPart('node');
+    $node =& $service_node->getNodePart();
     $this->assertEqual($node->get('parent_id'), $new_parent_node_id);
     $this->assertEqual($node->get('identifier'), $identifier);
 
-    $service =& $service_node->getPart('service');
+    $service =& $service_node->getServicePart();
     $this->assertEqual($service->get('name'), $service_name);
     $this->assertEqual($service->get('title'), $title);
   }

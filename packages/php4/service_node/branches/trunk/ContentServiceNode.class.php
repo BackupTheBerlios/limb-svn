@@ -18,11 +18,14 @@ class ContentServiceNode extends ServiceNode
 {
   function ContentServiceNode()
   {
-    parent :: Entity();
+    parent :: ServiceNode();
 
-    $this->registerPart('node', new NodeConnection());
-    $this->registerPart('service', new ServiceLocation());
     $this->registerPart('content', new Object());
+  }
+
+  function & getContentPart()
+  {
+    return $this->getPart('content');
   }
 }
 ?>

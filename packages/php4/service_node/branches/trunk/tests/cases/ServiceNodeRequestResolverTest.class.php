@@ -9,11 +9,9 @@
 *
 ***********************************************************************************/
 require_once(LIMB_SERVICE_NODE_DIR . '/request_resolvers/ServiceNodeRequestResolver.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
 require_once(LIMB_DIR . '/core/UnitOfWork.class.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
-require_once(LIMB_DIR . '/core/entity/Entity.class.php');
-require_once(LIMB_DIR . '/core/ServiceLocation.class.php');
-require_once(LIMB_DIR . '/core/NodeConnection.class.php');
 
 Mock :: generate('UnitOfWork');
 
@@ -60,7 +58,7 @@ class ServiceNodeRequestResolverTest extends LimbTestCase
     $this->db->delete('sys_object');
   }
 
-  function testGetCurrentServiceNodeFailedCantGetOID()
+  function testResolveFailedCantGetOID()
   {
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
@@ -69,38 +67,17 @@ class ServiceNodeRequestResolverTest extends LimbTestCase
     $this->assertNull($resolver->resolve($request));
   }
 
-  function testGetCurrentServiceCantFindClassName()
-  {
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-    $request->set('id', $id = 10);
-
-    $resolver = new ServiceNodeRequestResolver();
-    $this->assertNull($resolver->resolve($request));
-  }
-
-  function testGetCurrentServiceFailedEntityDoesntHasServicePart()
+  function testResolverFailedCantFindClassName()
   {
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
     $request->set('id', $id = 10);
 
-    $this->db->insert('sys_object', array('oid' => $id = 10,
-                                          'class_id' => $class_id = 100));
-
-    $this->db->insert('sys_class', array('id' => $class_id,
-                                         'name' => $class_name = 'Test Class name'));
-
-    $entity = new Entity();
-
-    $this->uow->expectOnce('load', array($class_name, $id));
-    $this->uow->setReturnReference('load', $entity, array($class_name, $id));
-
     $resolver = new ServiceNodeRequestResolver();
     $this->assertNull($resolver->resolve($request));
   }
 
-  function testGetCurrentServiceFailedEntityDoesntHasNodePart()
+  function testResolveOk()
   {
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
@@ -112,31 +89,7 @@ class ServiceNodeRequestResolverTest extends LimbTestCase
     $this->db->insert('sys_class', array('id' => $class_id,
                                          'name' => $class_name = 'Test Class name'));
 
-    $entity = new Entity();
-    $entity->registerPart('service', new ServiceLocation());
-
-    $this->uow->expectOnce('load', array($class_name, $id));
-    $this->uow->setReturnReference('load', $entity, array($class_name, $id));
-
-    $resolver = new ServiceNodeRequestResolver();
-    $this->assertNull($resolver->resolve($request));
-  }
-
-  function testGetCurrentServiceOk()
-  {
-    $toolkit =& Limb :: toolkit();
-    $request =& $toolkit->getRequest();
-    $request->set('id', $id = 10);
-
-    $this->db->insert('sys_object', array('oid' => $id = 10,
-                                          'class_id' => $class_id = 100));
-
-    $this->db->insert('sys_class', array('id' => $class_id,
-                                         'name' => $class_name = 'Test Class name'));
-
-    $entity = new Entity();
-    $entity->registerPart('service', new ServiceLocation());
-    $entity->registerPart('node', new NodeConnection());
+    $entity = new ServiceNode();
 
     $this->uow->expectOnce('load', array($class_name, $id));
     $this->uow->setReturnReference('load', $entity, array($class_name, $id));
@@ -145,7 +98,7 @@ class ServiceNodeRequestResolverTest extends LimbTestCase
     $this->assertEqual($resolver->resolve($request), $entity);
   }
 
-  function testGetCurrentServiceCached()
+  function testResolveCached()
   {
     $toolkit =& Limb :: toolkit();
     $request =& $toolkit->getRequest();
@@ -157,9 +110,7 @@ class ServiceNodeRequestResolverTest extends LimbTestCase
     $this->db->insert('sys_class', array('id' => $class_id,
                                          'name' => $class_name = 'Test Class name'));
 
-    $entity = new Entity();
-    $entity->registerPart('service', new ServiceLocation());
-    $entity->registerPart('node', new NodeConnection());
+    $entity = new ServiceNode();
 
     $this->uow->expectOnce('load', array($class_name, $id));
     $this->uow->setReturnReference('load', $entity, array($class_name, $id));

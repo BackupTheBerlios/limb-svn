@@ -9,11 +9,11 @@
 *
 ***********************************************************************************/
 
-class DeleteServiceNodeCommand
+class ServiceNodeDeleteCommand
 {
   var $service_node;
 
-  function DeleteServiceNodeCommand(&$service_node)
+  function ServiceNodeDeleteCommand(&$service_node)
   {
     $this->service_node =& $service_node;
   }
@@ -25,7 +25,7 @@ class DeleteServiceNodeCommand
     if(!is_a($this->service_node, 'ServiceNode'))
       return LIMB_STATUS_ERROR;
 
-    $node =& $this->service_node->getPart('node');
+    $node =& $this->service_node->getNodePart();
     $tree =& $toolkit->getTree();
 
     if($children =& $tree->countChildren($node->get('id')))

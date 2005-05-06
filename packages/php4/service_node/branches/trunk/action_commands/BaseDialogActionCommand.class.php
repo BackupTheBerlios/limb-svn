@@ -10,22 +10,25 @@
 ***********************************************************************************/
 require_once(LIMB_SERVICE_NODE_DIR . '/action_commands/BaseActionCommand.class.php');
 
-class BaseServiceNodeDialogCommand extends BaseActionCommand
+class BaseDialogActionCommand extends BaseActionCommand
 {
+  var $entity;
   var $form_id;
   var $validator;
   var $template_name;
+  var $content_map;
 
-  function BaseServiceNodeDialogCommand($template_name, $form_id, &$validator)
+  function BaseDialogActionCommand($template_name, $form_id, &$validator, $content_map = array())
   {
     parent :: BaseActionCommand();
 
     $this->template_name = $template_name;
     $this->form_id = $form_id;
     $this->validator =& $validator;
+    $this->content_map = $content_map;
   }
 
-  function performInitial()
+  function performInitDialog()
   {
     include_once(LIMB_DIR . '/core/commands/UseViewCommand.class.php');
     $view_command = new UseViewCommand($this->template_name);
@@ -39,11 +42,21 @@ class BaseServiceNodeDialogCommand extends BaseActionCommand
     return $form_command->perform();
   }
 
+  function performInitDataspace()
+  {
+    return LIMB_STATUS_OK;
+  }
+
   function performMapDataspaceToEntity()
   {
-    include_once(LIMB_SERVICE_NODE_DIR .'/commands/MapDataspaceToServiceNodeCommand.class.php');
-    $command = new MapDataspaceToServiceNodeCommand($this->entity);
+    include_once(LIMB_DIR .'/core/commands/MapDataspaceToObjectCommand.class.php');
+    $command = new MapDataspaceToObjectCommand($this->content_map, $this->entity);
     return $command->perform();
+  }
+
+  function & getEntity()
+  {
+    return $this->entity;
   }
 }
 

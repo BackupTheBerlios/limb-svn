@@ -21,7 +21,7 @@ class CommonEditServiceNodeValidator extends Validator
 
     if($entity =& $resolver->resolve($toolkit->getRequest()))
     {
-      $node =& $entity->getPart('node');
+      $node =& $entity->getNodePart();
       $parent_node_id = $node->get('id');
       $node_id = $node->get('id');
     }

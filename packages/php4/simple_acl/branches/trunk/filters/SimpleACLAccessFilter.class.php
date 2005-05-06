@@ -36,7 +36,7 @@ class SimpleACLAccessFilter //implements InterceptingFilter
 
     $new_service = new Service('403');
     $new_service->setCurrentAction($new_service->getDefaultAction());
-    $context->setObject('service', $new_service);
+    $context->setObject('Service', $new_service);
     $filter_chain->next();
   }
 }

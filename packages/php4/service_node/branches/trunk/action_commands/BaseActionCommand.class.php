@@ -12,17 +12,12 @@ require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
 
 class BaseActionCommand
 {
-  var $service_node;
-
-  function BaseActionCommand()
-  {
-    $this->service_node = new ServiceNode();
-  }
+  function BaseActionCommand(){}
 
   function performRedirect()
   {
     include_once(LIMB_SERVICE_NODE_DIR .'/commands/RedirectFromDialogCommand.class.php');
-    $command = new RedirectFromDialogCommand($this->service_node);
+    $command = new RedirectFromDialogCommand($this->entity);
     return $command->perform();
   }
 
@@ -33,16 +28,18 @@ class BaseActionCommand
     return $command->perform();
   }
 
+  function performNotFound()
+  {
+    include_once(LIMB_DIR .'/core/commands/UseViewCommand.class.php');
+    $command = new UseViewCommand('/not_found.html');
+    return $command->perform();
+  }
+
   function performRender()
   {
     include_once(LIMB_DIR . '/core/commands/DisplayViewCommand.class.php');
     $command = new DisplayViewCommand();
     return $command->perform();
-  }
-
-  function & getServiceNode()
-  {
-    return $this->service_node;
   }
 }
 

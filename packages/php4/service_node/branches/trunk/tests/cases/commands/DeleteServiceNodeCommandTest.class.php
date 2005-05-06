@@ -51,7 +51,7 @@ class DeleteServiceNodeCommandTest extends LimbTestCase
     $entity = new ServiceNode();
     $entity->set('oid', $id = 1001);
 
-    $node =& $entity->getPart('node');
+    $node =& $entity->getNodePart();
     $node->set('id', $node_id = 10);
 
     $this->tree->expectOnce('countChildren', array($node_id));
@@ -70,7 +70,7 @@ class DeleteServiceNodeCommandTest extends LimbTestCase
     $entity = new ServiceNode();
     $entity->set('oid', $id = 1001);
 
-    $node =& $entity->getPart('node');
+    $node =& $entity->getNodePart();
     $node->set('id', $node_id = 10);
 
     $this->tree->expectOnce('countChildren', array($node_id));

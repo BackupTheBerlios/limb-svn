@@ -48,7 +48,7 @@ class OneBranchServiceNodesDAO extends SQLBasedDAODecorator
   {
     $toolkit =& Limb :: toolkit();
 
-    $node =& $entity->getPart('node');
+    $node =& $entity->getNodePart();
 
     include_once(LIMB_DIR . '/core/dao/criteria/TreeNodeSiblingsCriteria.class.php');
     $criteria = new TreeNodeSiblingsCriteria();

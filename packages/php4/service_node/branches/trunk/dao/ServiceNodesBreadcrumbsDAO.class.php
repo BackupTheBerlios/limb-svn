@@ -18,14 +18,15 @@ class ServiceNodesBreadcrumbsDAO
   function & fetch()
   {
     $toolkit =& Limb :: toolkit();
-    $service_node_toolkit =& Limb :: toolkit('service_node_toolkit');
-    $locator =& $service_node_toolkit->getServiceNodeLocator();
+    $resolver =& $toolkit->getRequestResolver('service_node');
+    if(!is_object($resolver))
+      die('service_node resolver is not set!');
 
-    if(!$entity =& $locator->getCurrentServiceNode())
+    if(!$entity =& $resolver->resolve($toolkit->getRequest()))
       return new PagedArrayDataset(array());
 
     $tree =& $toolkit->getTree();
-    $node =& $entity->getPart('node');
+    $node =& $entity->getNodePart();
     if(!$parents =& $tree->getParents($node->get('id')))
       return new PagedArrayDataset(array());
 

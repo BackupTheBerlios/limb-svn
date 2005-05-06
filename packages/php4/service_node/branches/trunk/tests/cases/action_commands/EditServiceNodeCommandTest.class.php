@@ -8,17 +8,17 @@
 * $Id: ImageObjectsDAOTest.class.php 1093 2005-02-07 15:17:20Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_SERVICE_NODE_DIR . '/action_commands/ServiceNodeEditCommand.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/action_commands/EditServiceNodeCommand.class.php');
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
 require_once(LIMB_DIR . '/core/request_resolvers/TreeBasedEntityRequestResolver.class.php');
 
-class ServiceNodeEditCommandTest extends LimbTestCase
+class EditServiceNodeCommandTest extends LimbTestCase
 {
   var $db;
   var $command;
 
-  function ServiceNodeEditCommandTest()
+  function EditServiceNodeCommandTest()
   {
     parent :: LimbTestCase(__FILE__);
   }
@@ -38,7 +38,7 @@ class ServiceNodeEditCommandTest extends LimbTestCase
 
     $validator =  new LimbHandle(LIMB_SERVICE_NODE_DIR . '/validators/CommonEditServiceNodeValidator');
 
-    $this->command = new ServiceNodeEditCommand($form_template_path,
+    $this->command = new EditServiceNodeCommand($form_template_path,
                                                 $form_name,
                                                 $validator);
 
@@ -57,10 +57,10 @@ class ServiceNodeEditCommandTest extends LimbTestCase
 
     $entity = new ServiceNode();
 
-    $node =& $entity->getPart('node');
+    $node =& $entity->getNodePart();
     $node->set('identifier', 'services');
 
-    $service =& $entity->getPart('service');
+    $service =& $entity->getServicePart();
     $service->set('title', 'Services page');
     $service->set('name', 'ServiceNode');
 
@@ -101,7 +101,7 @@ class ServiceNodeEditCommandTest extends LimbTestCase
 
     $this->assertEqual($this->command->perform(), LIMB_STATUS_OK);
 
-    $service_node =& $this->command->getServiceNode();
+    $service_node =& $this->command->getEntity();
     $this->assertIsA($service_node, 'ServiceNode');
     $this->assertEqual($service_node, $entity);
   }
@@ -130,7 +130,7 @@ class ServiceNodeEditCommandTest extends LimbTestCase
     $uri =& $request->getUri();
     $uri->setPath('/services');
 
-    $node =& $entity->getPart('node');
+    $node =& $entity->getNodePart();
     $request->set('parent_node_id', $node->get('id'));
     $request->set('submitted', 1);
     $request->set('title', $title = 'Other title');
@@ -138,12 +138,12 @@ class ServiceNodeEditCommandTest extends LimbTestCase
 
     $this->assertEqual($this->command->perform(), LIMB_STATUS_OK);
 
-    $entity =& $this->command->getServiceNode();
+    $entity =& $this->command->getEntity();
 
-    $node =& $entity->getPart('node');
+    $node =& $entity->getNodePart();
     $this->assertEqual($node->get('identifier'), $identifier);
 
-    $service =& $entity->getPart('service');
+    $service =& $entity->getServicePart();
     $this->assertEqual($service->get('title'), $title);
   }
 

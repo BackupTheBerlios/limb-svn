@@ -16,7 +16,7 @@ class StateMachineForCreateEntityDialog extends StateMachineCommand
   {
     parent :: StateMachineCommand($factory);
 
-    $this->registerState('Initial',
+    $this->registerState('InitDialog',
                           array(LIMB_STATUS_OK => 'FormProcessing'));
 
     $this->registerState('FormProcessing',
@@ -26,7 +26,8 @@ class StateMachineForCreateEntityDialog extends StateMachineCommand
                                 ));
 
     $this->registerState('InitDataspace',
-                          array(LIMB_STATUS_OK => 'Render'));
+                          array(LIMB_STATUS_OK => 'Render',
+                                LIMB_STATUS_ERROR => 'NotFound'));
 
     $this->registerState('InitEntity',
                           array(LIMB_STATUS_OK => 'MapDataspaceToEntity',
@@ -41,6 +42,9 @@ class StateMachineForCreateEntityDialog extends StateMachineCommand
     $this->registerState('Redirect');
 
     $this->registerState('Error',
+                          array(LIMB_STATUS_OK => 'Render'));
+
+    $this->registerState('NotFound',
                           array(LIMB_STATUS_OK => 'Render'));
 
     $this->registerState('Render');

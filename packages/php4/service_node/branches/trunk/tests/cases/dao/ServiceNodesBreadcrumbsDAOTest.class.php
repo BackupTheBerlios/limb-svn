@@ -9,13 +9,11 @@
 *
 ***********************************************************************************/
 require_once(LIMB_SERVICE_NODE_DIR . '/dao/ServiceNodesBreadcrumbsDAO.class.php');
-require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNodeLocator.class.php');
-require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNodePackageToolkit.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/entity/Entity.class.php');
-require_once(LIMB_DIR . '/core/NodeConnection.class.php');
+require_once(LIMB_DIR . '/core/request_resolvers/RequestResolver.interface.php');
 
 Mock :: generatePartial('LimbBaseToolkit',
                         'LimbBaseToolkitServiceNodesBreadcrumbsDAOTestVersion',
@@ -24,8 +22,7 @@ Mock :: generatePartial('LimbBaseToolkit',
 
 Mock :: generate('SQLBasedDAO');
 Mock :: generate('Tree');
-Mock :: generate('ServiceNodeLocator');
-Mock :: generate('ServiceNodePackageToolkit');
+Mock :: generate('RequestResolver');
 
 class ServiceNodesBreadcrumbsDAOTest extends LimbTestCase
 {
@@ -49,33 +46,27 @@ class ServiceNodesBreadcrumbsDAOTest extends LimbTestCase
 
     Limb :: registerToolkit($this->toolkit);
 
-    $this->locator = new MockServiceNodeLocator($this);
-    $this->service_node_toolkit = new MockServiceNodePackageToolkit($this);
-    $this->service_node_toolkit->setReturnReference('getServiceNodeLocator', $this->locator);
-
-    Limb :: registerToolkit($this->service_node_toolkit, 'service_node_toolkit');
+    $this->resolver = new MockRequestResolver($this);
+    $this->toolkit->setRequestResolver('service_node', $this->resolver);
   }
 
   function tearDown()
   {
     $this->toolkit->tally();
     $this->tree->tally();
-    $this->locator->tally();
-    $this->service_node_toolkit->tally();
+    $this->resolver->tally();
 
     Limb :: restoreToolkit();
-    Limb :: restoreToolkit('service_node_toolkit');
   }
 
   function testFetch()
   {
-    $entity = new Entity();
-    $node = new NodeConnection();
+    $entity = new ServiceNode();
+    $node =& $entity->getNodePart();
     $node->set('id', $node_id = 10);
-    $entity->registerPart('node', $node);
 
-    $this->locator->expectOnce('getCurrentServiceNode');
-    $this->locator->setReturnReference('getCurrentServiceNode', $entity);
+    $this->resolver->expectOnce('resolve', array($this->toolkit->getRequest()));
+    $this->resolver->setReturnReference('resolve', $entity);
 
     $this->tree->expectOnce('getParents', array($node_id));
 

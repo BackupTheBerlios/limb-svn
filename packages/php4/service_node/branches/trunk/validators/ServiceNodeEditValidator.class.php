@@ -21,7 +21,7 @@ class ServiceNodeEditValidator extends Validator
 
     if($entity =& $resolver->resolve($toolkit->getRequest()))
     {
-      $node =& $entity->getPart('node');
+      $node =& $entity->getNodePart();
       $parent_node_id = $node->get('parent_id');
       $node_id = $node->get('id');
     }

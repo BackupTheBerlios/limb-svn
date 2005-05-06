@@ -26,16 +26,15 @@ class MapContentServiceNodeToDataspaceCommand
     if(!is_a($this->service_node, 'ContentServiceNode'))
       return LIMB_STATUS_ERROR;
 
-    $content =& $this->service_node->getPart('content');
+    $content =& $this->service_node->getContentPart();
 
     $map_content_command = new MapObjectToDataspaceCommand($this->content_map, $content);
+    $map_content_command->perform();
+
     $map_service_node_command = new MapServiceNodeToDataspaceCommand($this->service_node);
+    $map_service_node_command->perform();
 
-    $map_command = new StateMachineCommand();
-    $map_command->registerState('first', $map_content_command, array(LIMB_STATUS_OK => 'second'));
-    $map_command->registerState('second', $map_service_node_command);
-
-    return $map_command->perform();
+    return LIMB_STATUS_OK;
   }
 }
 

@@ -28,8 +28,8 @@ class MapServiceNodeToDataspaceCommand
     if(!is_a($this->service_node, 'ServiceNode'))
       return LIMB_STATUS_ERROR;
 
-    $node =& $this->service_node->getPart('node');
-    $service =& $this->service_node->getPart('service');
+    $node =& $this->service_node->getNodePart();
+    $service =& $this->service_node->getServicePart();
 
     $node_map = array('id' => 'node_id',
                       'parent_id' => 'parent_node_id',

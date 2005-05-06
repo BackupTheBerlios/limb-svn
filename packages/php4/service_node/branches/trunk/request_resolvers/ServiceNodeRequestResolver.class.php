@@ -35,10 +35,8 @@ class ServiceNodeRequestResolver
 
     $uow =& $toolkit->getUOW();
     $entity =& $uow->load($class_name, $id);
-    if(!$service =& $entity->getPart('service'))
-      return null;
 
-    if(!$node =& $entity->getPart('node'))
+    if(!is_a($entity, 'ServiceNode'))
       return null;
 
     $cache->put($id, $entity, 'service_node_locator');

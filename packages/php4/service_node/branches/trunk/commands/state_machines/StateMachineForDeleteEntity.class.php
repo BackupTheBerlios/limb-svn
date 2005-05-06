@@ -18,7 +18,7 @@ class StateMachineForDeleteEntity extends StateMachineCommand
 
     $this->registerState('InitEntity',
                           array(LIMB_STATUS_OK => 'DeleteEntity',
-                                LIMB_STATUS_ERROR => 'Error',
+                                LIMB_STATUS_ERROR => 'NotFound',
                                 ));
 
     $this->registerState('DeleteEntity',
@@ -29,6 +29,9 @@ class StateMachineForDeleteEntity extends StateMachineCommand
                           array(LIMB_STATUS_OK => 'Render'));
 
     $this->registerState('Redirect');
+
+    $this->registerState('NotFound',
+                          array(LIMB_STATUS_OK => 'Render'));
 
     $this->registerState('Render');
   }
