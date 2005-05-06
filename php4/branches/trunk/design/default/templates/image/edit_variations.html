@@ -8,8 +8,14 @@
   <tr>
   <td>
     <fetch:MAPPED>
-    <a href="{$path}?original" target="_blank"><img src="{$path}?thumbnail"></a>
+    <a href="{$path}?original" target="_blank"><img id="img_thumbnail" src="{$path}?thumbnail"></a>
     </fetch:MAPPED>
+    <core:OPTIONAL for='is_updated'>
+    <script>
+      d = new Date();
+      document.getElementById('img_thumbnail').src = document.getElementById('img_thumbnail').src + '&' + d.getTime();
+    </script>
+    </core:OPTIONAL>
   </td>
   <td>
     <table>
