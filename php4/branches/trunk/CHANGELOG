@@ -1,537 +1,583 @@
+Version 2.3.1
+(7 May 2005, from /php4/branches/trunk r1303)
+svn://svn.berlios.de/limb/php4/tags/2.3.1
+
+-- fixed: JS htmlarea_extension would improperly strip </ br> tags
+-- fixed: added utf-8 charset to redirect_template.html
+-- fixed: richedit tag wouldn't display JS errors
+-- fixed: JS trim function wouldn't properly trim strings
+-- fixed: fetch_tree_datasource used wrong tree node
+-- quite a dirty fix into access_policy which makes tree cache flush, this MUST be refactored in the future version of 2.x
+
+-- debug and message_box stuff moved from limb_application to response_processing_filter(not the best name probably)
+-- get_logs.php added which retrieves svn logs and tries to expand all "svn merge" calls
+-- ini class now 'understands' ini file overriding. You should call file like name.override.ini do override original name.ini file.
+-- after updating image variation the source image is refreshed
+-- string "image" added in common strings file
+-- all tables in CP are now have 100% width
+-- initial release build scripts added
+-- test finder result sorting added
+-- fs :: safe_write($file, $content) added, which uses flock && rename trick to simulate flock behaviour
+-- fs :: walk_dir() signature changed to: walk_dir($dir, $function_def, $params=array(), $include_first=false), if $include_first == true the starting directory is also passed to the walker
+-- fs walker signature changed to: func($dir, $file, $full_path, $params, &$return), $full_path contains full absolute path to the current traversed item
+-- fs :: clean_path() renamed to fs :: normalize_path
+-- flush_general_cache_action added which flushes contents of VAR_DIR . '/cache'
+-- sys class mess cleanup(many never used methods removed)
+-- initial db driver tests refactoring
+-- user :: test_login() method added for simplifying testing routines
+-- caching_tree won't cache tree branch requests when $check_expanded_parents = true
+-- caching_tree takes user id, user groups into consideration for all branch accessible calls
+-- improved version of tree: now it accepts nodes as well as node_ids
+-- caching_tree: better tests and improved functionality
+-- got rid of fs :: find_subitems(), use fs :: find() unstead
+-- fs :: cp() also accepts $include_regex argument
+-- fetch_tree_datasource uses new interface of tree
+-- fs :: find() added, fs :: find_subitems() is obsolete now
+-- total refactoring of tree(based on 3.0):
+  * class hierarchy shortened
+  * better internal implementation, all get_ methods accept node_id, as well as node arguments
+-- tree_decorator introduced
+-- initial implementation of caching_tree added
+-- initial implementation of session_tree added
+-- caching_registry ported from 3.0
+-- global commit_user_session() added, it makes PHP write user session, it's called on session_startup_filter being finished
+-- JS String.prototype.trim added
+-- filters registration changes: output filter is registered after full page cache filter
+
 Version 2.3
 (15 April 2005, from /php4/branches/trunk r1230)
 svn://svn.berlios.de/limb/php4/tags/2.3RC
 
-  --  fixed: image_cache_manager couldn't process images paths like '/root?node_id=1123&amporiginal'
-  --  fixed: common.js optimize_window function produced infinite loop during window size setup
-  --  fixed: misspelled file name for htmlspecialchars.tag.php
-  --  fixed: js dropdown minor bugs
-  --  fixed: options_form_element would make all options with 0 value selected
+-- fixed: image_cache_manager couldn't process images paths like '/root?node_id=1123&amporiginal'
+-- fixed: common.js optimize_window function produced infinite loop during window size setup
+-- fixed: misspelled file name for htmlspecialchars.tag.php
+-- fixed: js dropdown minor bugs
+-- fixed: options_form_element would make all options with 0 value selected
 
-  --  first attempt to modularize common.js into specific modules with js include function
-  --  include(src) function added into common.js - you can add scripts within js files using it, however you can't use those modules immediately since they may be not loaded yet
-  --  initial form error js summary functionality added, it uses <label> tags in order to get input field description
-  --  initial referers by group report functionality added
-  --  js default_form_field_error_label_printer will use input id if there's no label for input control
-  --  obsolete label attribute removed from all form inputs
-  --  this.blur() stuff removed from all date controls which made those controls pretty inaccessible at times
-  --  image_cache_manager, full_page_cache_manager, partial_page_cache_manager won't throw a fatal error if the required .ini with caching rules not found
-  --  image_cache_filter removed from limb_application default filters registration
-  --  date class calls date :: set_by_stamp instead of date :: set_by_days during construction
-  --  ini_exists(ini_path) global function added
-  --  htmlarea_extension.js removes dummy <br /> tag
-  --  form_errors.js: set_error => set_form_field_error
-  --  debug logging added in mail functions
-  --  added factory function create_mailer (mail.inc.php), which creates mailer and customize it
-  --  HTMLTestRunner::setEncoding($encoding) method added
-  --  http_response :: is_empty() returns false if there's redirect
-  --  'addslashes' attribute added to <core:HTMLSPECIALCHARS> tag which makes it apart from htmlspecialcharsing add slashes to the value as well(e.g. <core:HTMLSPECIALCHARS hash_id="foo" addslashes="yes">), by default is "no"
-  --  richedit tag modified, now it tries to include specific richedit component. Supported richedits:
+-- first attempt to modularize common.js into specific modules with js include function
+-- include(src) function added into common.js - you can add scripts within js files using it, however you can't use those modules immediately since they may be not loaded yet
+-- initial form error js summary functionality added, it uses <label> tags in order to get input field description
+-- initial referers by group report functionality added
+-- js default_form_field_error_label_printer will use input id if there's no label for input control
+-- obsolete label attribute removed from all form inputs
+-- this.blur() stuff removed from all date controls which made those controls pretty inaccessible at times
+-- image_cache_manager, full_page_cache_manager, partial_page_cache_manager won't throw a fatal error if the required .ini with caching rules not found
+-- image_cache_filter removed from limb_application default filters registration
+-- date class calls date :: set_by_stamp instead of date :: set_by_days during construction
+-- ini_exists(ini_path) global function added
+-- htmlarea_extension.js removes dummy <br /> tag
+-- form_errors.js: set_error => set_form_field_error
+-- debug logging added in mail functions
+-- added factory function create_mailer (mail.inc.php), which creates mailer and customize it
+-- HTMLTestRunner::setEncoding($encoding) method added
+-- http_response :: is_empty() returns false if there's redirect
+-- 'addslashes' attribute added to <core:HTMLSPECIALCHARS> tag which makes it apart from htmlspecialcharsing add slashes to the value as well(e.g. <core:HTMLSPECIALCHARS hash_id="foo" addslashes="yes">), by default is "no"
+-- richedit tag modified, now it tries to include specific richedit component. Supported richedits:
      * htmlArea
      * FckEditor
      * wysisygPro
   by default htmlArea is used. Richedit type can be set via constant 'DEAULT_RICHEDIT'
-  --  authentication_filter redirects using request :: to_string() instead of $_SERVER['REQUEST_URI']
-  --  request :: to_string() method + tests added, it returns get and post data excluding files data in a single string. It can be useful for redirects when we need to pass request information using GET.
-  --  added new control double select it's a more usable multiple select form control
+-- authentication_filter redirects using request :: to_string() instead of $_SERVER['REQUEST_URI']
+-- request :: to_string() method + tests added, it returns get and post data excluding files data in a single string. It can be useful for redirects when we need to pass request information using GET.
+-- added new control double select it's a more usable multiple select form control
 
 Version 2.3RC3
 (22 January 2005, from /php4/branches/trunk r1049)
 svn://svn.berlios.de/limb/php4/tags/2.3RC3
 
-  --  fixed: recover version action reloads parent now
-  --  fixed: articles_folder/admin_display.html uses final_level_grid_body.html for articles display
-  --  fixed: "\r\n" is used as a line separator since we're using php mail function in send_*_mail.inc.php functions
-  --  fixed: a bug with core_transfer_component - in some cases it can damage data in component dataset
-  --  fixed: a bug with redirect method of response class. It was possible to call this method several times and this lead to several redirect notices on the redirect page using metadata redirect strategy. Now response can be redirected only once. All other attempts are ignored.
-  --  fixed: bug with float values processing in db_module
+-- fixed: recover version action reloads parent now
+-- fixed: articles_folder/admin_display.html uses final_level_grid_body.html for articles display
+-- fixed: "\r\n" is used as a line separator since we're using php mail function in send_*_mail.inc.php functions
+-- fixed: a bug with core_transfer_component - in some cases it can damage data in component dataset
+-- fixed: a bug with redirect method of response class. It was possible to call this method several times and this lead to several redirect notices on the redirect page using metadata redirect strategy. Now response can be redirected only once. All other attempts are ignored.
+-- fixed: bug with float values processing in db_module
 
-  --  debug :: set_message_output() removed, use DEBUG_OUTPUT_MESSAGE_SEND and DEBUG_OUTPUT_MESSAGE_STORE constants instead for sending errors via e-mail and storing them in log files(the latter is 'on' by default)
-  --  much more flexible .htaccess for mod_rewrite(LIMB_DIR/.project-htaccess-if-rewrite):
-  --  there's no need for root-rewrite.php and mod_rewrite_fix.php now, all you have to do is to copy project root into root.php
-  --  init sqls removed(moved to empty-project)
-  --  $_SERVER['PHP_SELF'] and $_SERVER['QUERY_STRING'] are set using $_SERVER['REQUEST_URI'] in setup.php, 'cos $_SERVER['REQUEST_URI'] is always passed from the server while others sometimes not
-  --  'title' attribute became default sys_metadata_attribute
-  --  external package update: XML_HTMLSax3-3.0.0RC1.tgz included
-  --  removed priority (High, Low) of email sent by debug.class due to mailing service change to PHPMailer
-  --  now it's possible to switch off default full text indexer setting
+-- debug :: set_message_output() removed, use DEBUG_OUTPUT_MESSAGE_SEND and DEBUG_OUTPUT_MESSAGE_STORE constants instead for sending errors via e-mail and storing them in log files(the latter is 'on' by default)
+-- much more flexible .htaccess for mod_rewrite(LIMB_DIR/.project-htaccess-if-rewrite):
+-- there's no need for root-rewrite.php and mod_rewrite_fix.php now, all you have to do is to copy project root into root.php
+-- init sqls removed(moved to empty-project)
+-- $_SERVER['PHP_SELF'] and $_SERVER['QUERY_STRING'] are set using $_SERVER['REQUEST_URI'] in setup.php, 'cos $_SERVER['REQUEST_URI'] is always passed from the server while others sometimes not
+-- 'title' attribute became default sys_metadata_attribute
+-- external package update: XML_HTMLSax3-3.0.0RC1.tgz included
+-- removed priority (High, Low) of email sent by debug.class due to mailing service change to PHPMailer
+-- now it's possible to switch off default full text indexer setting
         define('FULL_TEXT_INDEXER_ENABLED', false);
       somewhere in setup, by default it's switched on. Actually it's a very quick'n'dirty solution of the fundamental problem which should be solved in 3.0 something...
-  --  simple_navigation_datasource a bit improved:
+-- simple_navigation_datasource a bit improved:
         * we're trimming trailing slashes: thus /root/about == /root/about/
-  --  access_policy::save_object_access() arguments order changed:
+-- access_policy::save_object_access() arguments order changed:
         save_object_access($policy_array, $accessor_type, $accessor_ids = array())
       instead:
         save_object_access($policy_array, $accessor_ids = array(), $accessor_type)
-  --  charset attribute added to send_plain_mail, send_html_mail functions
-  --  send_html_mail.inc.php, send_plain_mail.inc.php merged into one mail.inc.php
-  --  now you can pass array of recipients to mail functions in several formats:
+-- charset attribute added to send_plain_mail, send_html_mail functions
+-- send_html_mail.inc.php, send_plain_mail.inc.php merged into one mail.inc.php
+-- now you can pass array of recipients to mail functions in several formats:
       * array(array('adress@example.com'))
       * array(array('address' => 'adress@example.com', 'name' => 'Someone'))
       * array(array('"Someone" <adress@example.com>'))
-  --  added sorting arrays of controllers and classes in controllers_classes_options_datasource site_objects_classes_options_datasource for usability issues;
-  --  less fat: /core/lib/cache/cache_lite removed(PEAR::LiteCache will be probably used)
-  --  less fat: XML_HTMLSax removed from /core/lib/external in favour of XML_HTMLSax3
-  --  now you have to define path to XML_HTMLSax if you need one via XML_HTMLSAX3 constant somewhere, and include library via this constant also!
-  --  HTMLSax3.tgz added to /external
-  --  added external directory where all(important) external packages will be stored as archives, this way it'll be more convenient for end user to install LIMB
-  --  phpmailer-1.72.tgz added to external
-  --  php_simpletest_1.0RC1.tgz added to external
-  --  /core/lib/mail cleaning: all PEAR stuff removed from there in favor of phpMailer(http://phpmailer.sourceforge.net/) which will be used as an external package
-  --  new version of send_plain_mail.inc.php and send_html_mail.inc.php that use phpMailer, you have to define PHPMailer_DIR somewhere in the project(setup.php or setup.override.php)!!!
-  --  new <search:DATASOURCE> tag which can use arbitrary datasource for searching and later beautifying search results
-  --  uri :: reset() method added
-  --  got rid of $_GET in image and file display actions in favor of request class usage
-  --  minor bug in create_documents_folder_action. Method name typo - _define_controller_name()
-  --  uri class improvements:
+-- added sorting arrays of controllers and classes in controllers_classes_options_datasource site_objects_classes_options_datasource for usability issues;
+-- less fat: /core/lib/cache/cache_lite removed(PEAR::LiteCache will be probably used)
+-- less fat: XML_HTMLSax removed from /core/lib/external in favour of XML_HTMLSax3
+-- now you have to define path to XML_HTMLSax if you need one via XML_HTMLSAX3 constant somewhere, and include library via this constant also!
+-- HTMLSax3.tgz added to /external
+-- added external directory where all(important) external packages will be stored as archives, this way it'll be more convenient for end user to install LIMB
+-- phpmailer-1.72.tgz added to external
+-- php_simpletest_1.0RC1.tgz added to external
+-- /core/lib/mail cleaning: all PEAR stuff removed from there in favor of phpMailer(http://phpmailer.sourceforge.net/) which will be used as an external package
+-- new version of send_plain_mail.inc.php and send_html_mail.inc.php that use phpMailer, you have to define PHPMailer_DIR somewhere in the project(setup.php or setup.override.php)!!!
+-- new <search:DATASOURCE> tag which can use arbitrary datasource for searching and later beautifying search results
+-- uri :: reset() method added
+-- got rid of $_GET in image and file display actions in favor of request class usage
+-- minor bug in create_documents_folder_action. Method name typo - _define_controller_name()
+-- uri class improvements:
         * default 'guessing' and normalization removed, you can omit some parts of uri and set them later with setters
         * normalize_path is now public method not a static one
         * query items are sorted by keys when output string is built, this way it becomes easier to use it as some sort of hash
-  --  3 new functions were added to common.js: containsDOM, checkMouseEnter and checkMouseLeave. These functions provide workaround when one needs to handle onmouseenter and onmouseleave events for block elements (code was taken from http://www.faqts.com/knowledge_base/view.phtml/aid/1606);
+-- 3 new functions were added to common.js: containsDOM, checkMouseEnter and checkMouseLeave. These functions provide workaround when one needs to handle onmouseenter and onmouseleave events for block elements (code was taken from http://www.faqts.com/knowledge_base/view.phtml/aid/1606);
 
 Version 2.3RC2
 (5 December 2004, from /php4/branches/trunk r944)
 svn://svn.berlios.de/limb/php4/tags/2.3RC2
 
-  --  fixed: wrong method name in create_catalog_folder_action, create_navigation_item_action(thanx to dex_stern)
-  --  fixed: russian init_sql had missing initial values for messages db table
-  --  fixed: a bug with template and component classes when root component was set to null. Now all runtime components have root component assigned.
-  --  fixed: templates wouldn't open in editor during template debugging
+-- fixed: wrong method name in create_catalog_folder_action, create_navigation_item_action(thanx to dex_stern)
+-- fixed: russian init_sql had missing initial values for messages db table
+-- fixed: a bug with template and component classes when root component was set to null. Now all runtime components have root component assigned.
+-- fixed: templates wouldn't open in editor during template debugging
 
-  --  all tabs removed from source code, no we use 2 spaces indent
-  --  http_response improved: now you can define redirect strategy, by default it uses http_redirect_strategy
-  --  limb_application sets meta_redirect_strategy for http_response in the beginnning of its work
-  --  quick'n'dirty hack in authentication_filter: you can define 'redirect_type' for action in controller. Currently 2 types supported: 'meta' and 'http'. For 'meta' type you can also define 'redirect_template_path'...
-  --  initial revision of classes to output localized values of currencies were added. There's now special tag 'locale:CURRENCY' that formats and outputs currency value with currency symbol
-  --  fetcher :: clear_cache() now also resets cached its node_mapped_by_request property
-  --  set_publish_status_action refactored in order to provide better flexibility once for children classes
-  --  recursive_navigation_datasource was added
-  --  core_data_transer tag now server component tag and it has runtime component
-  --  better 'for' variable check in core_optional and core_default tags
-  --  ***Works only in IE!!!*** new TEMPLATE_EDITOR_PATH system constant allows to setup a favourite editor for opening templates right from the browser during templates debug session (DEBUG_TEMPLATE_ENABLED=true). Must have '%s', which will be substituted with file path to the template. By default: define('TEMPLATE_EDITOR_PATH', 'uedit32.exe %s');
-  --  minor design changes
-  --  authentication_filter will redirect to url specified by 'inaccessible_redirect' property in action properties definition in the according controller if this action is not accessible
+-- all tabs removed from source code, no we use 2 spaces indent
+-- http_response improved: now you can define redirect strategy, by default it uses http_redirect_strategy
+-- limb_application sets meta_redirect_strategy for http_response in the beginnning of its work
+-- quick'n'dirty hack in authentication_filter: you can define 'redirect_type' for action in controller. Currently 2 types supported: 'meta' and 'http'. For 'meta' type you can also define 'redirect_template_path'...
+-- initial revision of classes to output localized values of currencies were added. There's now special tag 'locale:CURRENCY' that formats and outputs currency value with currency symbol
+-- fetcher :: clear_cache() now also resets cached its node_mapped_by_request property
+-- set_publish_status_action refactored in order to provide better flexibility once for children classes
+-- recursive_navigation_datasource was added
+-- core_data_transer tag now server component tag and it has runtime component
+-- better 'for' variable check in core_optional and core_default tags
+-- ***Works only in IE!!!*** new TEMPLATE_EDITOR_PATH system constant allows to setup a favourite editor for opening templates right from the browser during templates debug session (DEBUG_TEMPLATE_ENABLED=true). Must have '%s', which will be substituted with file path to the template. By default: define('TEMPLATE_EDITOR_PATH', 'uedit32.exe %s');
+-- minor design changes
+-- authentication_filter will redirect to url specified by 'inaccessible_redirect' property in action properties definition in the according controller if this action is not accessible
 
 Version 2.3RC1
 (13 November 2004, from /php4/branches/trunk r907)
 svn://svn.berlios.de/limb/php4/tags/2.3RC1
 
-  --  ***WARNING***: BC break! API of DB schema, access_policy has changed!
+-- ***WARNING***: BC break! API of DB schema, access_policy has changed!
 
-  --  fixed: fs::mkdir() wouldn't create relative directory if upper directory is missing
-  --  fixed: full_page_cache_filter & image_cache_filter won't do anything if response is already filled
-  --  fixed: tree_toggle_action action wouldn't call tree::initialize_expanded_parents() in the case of 'recursive_search_for_node' present in request
-  --  fixed: selector_tag won't make grid_list insert a form if it's already inside form_tag
-  --  fixed: date::get_day_of_week() bug, it used to return the previous day
-  --  fixed: grid_actions bug  - javascript submit_grid_form moved from tag to /sahred/js/common.js, otherwise there was a javascript bug in case of two grid lists on one page
-  --  fixed: fs :: mkdir() should work better now when php is in safe, now it starts creating nested directories starting from the end
-  --  fixed: request can merge complex arrays $_GET && $_POST
-  --  fixed: grid action tag processes all attributes now
-  --  fixed: save_object_priority moved to site_object class form deleted site_structure
-  --  fixed: a minor bug in grid.button.tag
-  --  fixed: email rule won't valiadate addresses with trailing _, like user_@some.com
-  --  fixed: locale class bug fix - get_month, month numeration begins at 0
-  --  LOTS of minor bug fixes!
+-- fixed: fs::mkdir() wouldn't create relative directory if upper directory is missing
+-- fixed: full_page_cache_filter & image_cache_filter won't do anything if response is already filled
+-- fixed: tree_toggle_action action wouldn't call tree::initialize_expanded_parents() in the case of 'recursive_search_for_node' present in request
+-- fixed: selector_tag won't make grid_list insert a form if it's already inside form_tag
+-- fixed: date::get_day_of_week() bug, it used to return the previous day
+-- fixed: grid_actions bug  - javascript submit_grid_form moved from tag to /sahred/js/common.js, otherwise there was a javascript bug in case of two grid lists on one page
+-- fixed: fs :: mkdir() should work better now when php is in safe, now it starts creating nested directories starting from the end
+-- fixed: request can merge complex arrays $_GET && $_POST
+-- fixed: grid action tag processes all attributes now
+-- fixed: save_object_priority moved to site_object class form deleted site_structure
+-- fixed: a minor bug in grid.button.tag
+-- fixed: email rule won't valiadate addresses with trailing _, like user_@some.com
+-- fixed: locale class bug fix - get_month, month numeration begins at 0
+-- LOTS of minor bug fixes!
 
-  --  initial revision of new controller mechanism implementation, site objects can be dynamically assigned with required controllers
-  --  initial version of the simpler and cleaner permissions: now you don't need to care about 'w' or 'r', they're merged into one simple conception whether the object is accessible or not. This led to many related changes:
+-- initial revision of new controller mechanism implementation, site objects can be dynamically assigned with required controllers
+-- initial version of the simpler and cleaner permissions: now you don't need to care about 'w' or 'r', they're merged into one simple conception whether the object is accessible or not. This led to many related changes:
        * access_policy refactoring and simplification
        * heavy db schema changes
        * 'permissions_required' attribute removed from all controllers
        * some permission related actions changes
        * some html templates changes
        * tests changes
-  --  major refactoring of tests: new tree-alike flexible schema adopted from 3.0 branch
-  --  stats html templates refactoring
-  --  setup_custom.php => setup.override.php, this way it sounds more natural
-  --  new setup constant AVAILABLE_LOCALES, where you should place locales ids separated with commas, no spaces!
-  --  error message in case of recursive error is more detailed now(blank screen problem when db params are invalid)
-  --  db_module now doesn't connect and select database in constructor, instead db_factory is a more appropriate place for this
-  --  debug :: write() tries to detect debug recursions and fires die() if any
-  --  cart stuff removed
-  --  critical session class bug fix: db update could fail under some conditions
-  --  session_history_manager little refactoring
-  --  remove publish/unpublish actions from faq_folder_container_controller
-  --  http_response :: is_redirected() method added
-  --  '@' prepended to all setup defines
-  --  initial version of <limb:VERSION> tag which renders contents of LIMB_DIR/version.php
-  --  html templates comments cleanup
-  --  TestManager class removed
-  --  SimpleTest removed from svn, you have to download it and set up manually
-  --  initial implementation of multi move functionality
-  --  tree :: can_move_tree($id, $target_id) method added
-  --  change_controller_action added which allows to change controller attached to the site object node
-  --  object :: merge_attributes() method added
-  --  object :: import_attributes() method refactored, there's no $merge flag anymore
-  --  phpbb, chat stuff removed for now
-  --  strings file format changed: you can't specify [extends] section since it's useless yet requires additional resources at run time
-  --  image variations create/update a bit cleaner implementation(yet ugly, however this is fixed in 3.0)
-  --  refactored create_file_action.class.php and edit_file_action.class.php
-  --  added file_upload_max_size_rule, file_upload_partial_rule, file_upload_required_rule
-  --  request refactored, now it also includes $_FILES information
-  --  added uploaded_files_parser.class.php which parsers confusing $_FILES structure into more convenient one
-  --  register_new_object_action sets 'root' parent node by default
-  --  new site object registering procedure is more usable now:
+-- major refactoring of tests: new tree-alike flexible schema adopted from 3.0 branch
+-- stats html templates refactoring
+-- setup_custom.php => setup.override.php, this way it sounds more natural
+-- new setup constant AVAILABLE_LOCALES, where you should place locales ids separated with commas, no spaces!
+-- error message in case of recursive error is more detailed now(blank screen problem when db params are invalid)
+-- db_module now doesn't connect and select database in constructor, instead db_factory is a more appropriate place for this
+-- debug :: write() tries to detect debug recursions and fires die() if any
+-- cart stuff removed
+-- critical session class bug fix: db update could fail under some conditions
+-- session_history_manager little refactoring
+-- remove publish/unpublish actions from faq_folder_container_controller
+-- http_response :: is_redirected() method added
+-- '@' prepended to all setup defines
+-- initial version of <limb:VERSION> tag which renders contents of LIMB_DIR/version.php
+-- html templates comments cleanup
+-- TestManager class removed
+-- SimpleTest removed from svn, you have to download it and set up manually
+-- initial implementation of multi move functionality
+-- tree :: can_move_tree($id, $target_id) method added
+-- change_controller_action added which allows to change controller attached to the site object node
+-- object :: merge_attributes() method added
+-- object :: import_attributes() method refactored, there's no $merge flag anymore
+-- phpbb, chat stuff removed for now
+-- strings file format changed: you can't specify [extends] section since it's useless yet requires additional resources at run time
+-- image variations create/update a bit cleaner implementation(yet ugly, however this is fixed in 3.0)
+-- refactored create_file_action.class.php and edit_file_action.class.php
+-- added file_upload_max_size_rule, file_upload_partial_rule, file_upload_required_rule
+-- request refactored, now it also includes $_FILES information
+-- added uploaded_files_parser.class.php which parsers confusing $_FILES structure into more convenient one
+-- register_new_object_action sets 'root' parent node by default
+-- new site object registering procedure is more usable now:
         * controllers and site objects classes can be selected from drop down boxes
         * parent node can be selected via nice GUI
-  --  tree_navigation_datasource highlites the nav item only when pathes are equal and if there's an action it compares actions also
-  --  events audit fixes and refactoring:
+-- tree_navigation_datasource highlites the nav item only when pathes are equal and if there's an action it compares actions also
+-- events audit fixes and refactoring:
         * ip filter fixed
         * user filter fixed
         * status filter and highlight fixed
-  --  initial version of debug.js which renders useful information for a webmaster
-  --  empty template interface improved
-  --  the user shouldn't care about trailing slashes when defining LIMB_DIR and PROJECT_DIR, since php doesn't care about type and number of separators during file operations, the following measures were taken:
+-- initial version of debug.js which renders useful information for a webmaster
+-- empty template interface improved
+-- the user shouldn't care about trailing slashes when defining LIMB_DIR and PROJECT_DIR, since php doesn't care about type and number of separators during file operations, the following measures were taken:
         * trailing slash added to all defininitions of constants based on LIMB_DIR and PROJECT_DIR
         * all LIMB_DIR . 'something' replaced with LIMB_DIR . '/something'
-  --  JS functions scramble, get_msn_status_image and get_icq_status_image added
-  --  pictured navigation datasource added (used for administration side)
-  --  session history filter added by default to limb application
-  --  got rid of redundant site object classes (they can be simply replaced with site_object.class.php)
-  --  media objects (files_folder, file_select, images_folder, image select) moved to /root/media
-  --  version && node_select moved to /root/tools
-  --  js toggle admin menu added
-  --  admin navigation moved to /root/admin/navigation (usability changes)
-  --  site_object_factory :: instance() removed, only site_object_factory :: create() available
-  --  debug error handling constants removed, scalar values used instead, thus we don't need to include debug.class.php in setup
-  --  minor templates change due to the new admin GUI
-  --  setup_developer.php removed - use project setup_custom.php instead!!!
+-- JS functions scramble, get_msn_status_image and get_icq_status_image added
+-- pictured navigation datasource added (used for administration side)
+-- session history filter added by default to limb application
+-- got rid of redundant site object classes (they can be simply replaced with site_object.class.php)
+-- media objects (files_folder, file_select, images_folder, image select) moved to /root/media
+-- version && node_select moved to /root/tools
+-- js toggle admin menu added
+-- admin navigation moved to /root/admin/navigation (usability changes)
+-- site_object_factory :: instance() removed, only site_object_factory :: create() available
+-- debug error handling constants removed, scalar values used instead, thus we don't need to include debug.class.php in setup
+-- minor templates change due to the new admin GUI
+-- setup_developer.php removed - use project setup_custom.php instead!!!
 
 Version 2.2.3
 (29 September 2004, from /php4/branches/2.2.2 r737)
 svn://svn.berlios.de/limb/php4/tags/2.2.3
 
-  --  fixed: canada zip rule test
-  --  fixed: site_object::_generate_auto_identifier() regular expression bug(issue #991978)
-  --  2 new validation rules: cc_number_rule and unique_object_attribute_rule
-  --  fixed: datasource component bug - now only one db fetch operation for multiple targets
-  --  fixed: fetcher cache flushing bug (was fixed earlier in 2.2 but wasn't merged)
-  --  fixed: Opera update form bug
-  --  LOTS of minor bug fixes!
+-- fixed: canada zip rule test
+-- fixed: site_object::_generate_auto_identifier() regular expression bug(issue #991978)
+-- 2 new validation rules: cc_number_rule and unique_object_attribute_rule
+-- fixed: datasource component bug - now only one db fetch operation for multiple targets
+-- fixed: fetcher cache flushing bug (was fixed earlier in 2.2 but wasn't merged)
+-- fixed: Opera update form bug
+-- LOTS of minor bug fixes!
 
-  --  locale_definition filter now checks for already predefined CONTENT_LOCALE_ID, MANAGEMENT_LOCALE_ID
-  --  initial revision of german locale
-  --  http response can use template for redirect page
-  --  JS: changed tab registration interface
-  --  datasource tag refactored: all pager navigator stuff moved to datasource component
-  --  datasource now interacts with pager (navigator) through runtime component code instead of generated code
-  --  added warning near toggle richedit/textarea button
-  --  JS: tabs now store active_tab_id in cookie, if use_cookie attribute of tabs tag is set to true
-  --  fedex_shipping_locator adds an attribute 'ground' to ground shipping options
-  --  JS: small adjustments of popup window dimensions calculation
-  --  JS: popup width/height calculation fixed
-  --  added fetch_one_datasource, that is useful when one need to fetch single object for certain locale
-  --  form tag now can access 'https' attribute
-  --  user autologin functionality added (ability to set cookie and autologin user at next session using cookie data)
-  --  added attribute 'uri' to ad_block_object
+-- locale_definition filter now checks for already predefined CONTENT_LOCALE_ID, MANAGEMENT_LOCALE_ID
+-- initial revision of german locale
+-- http response can use template for redirect page
+-- JS: changed tab registration interface
+-- datasource tag refactored: all pager navigator stuff moved to datasource component
+-- datasource now interacts with pager (navigator) through runtime component code instead of generated code
+-- added warning near toggle richedit/textarea button
+-- JS: tabs now store active_tab_id in cookie, if use_cookie attribute of tabs tag is set to true
+-- fedex_shipping_locator adds an attribute 'ground' to ground shipping options
+-- JS: small adjustments of popup window dimensions calculation
+-- JS: popup width/height calculation fixed
+-- added fetch_one_datasource, that is useful when one need to fetch single object for certain locale
+-- form tag now can access 'https' attribute
+-- user autologin functionality added (ability to set cookie and autologin user at next session using cookie data)
+-- added attribute 'uri' to ad_block_object
 
 Version 2.2.2 Vacation Edition
 (10 August 2004, from /php4/branches/2.2.2)
 svn://svn.berlios.de/limb/php4/tags/2.2.2
 
-  --  fixed: nested sets driver returns wrong max child identifier
-  --  fixed: max identifier problem(issue #982675)
-  --  fixed: template source display action crashed with force_compile flag set to 0
-  --  fixed: a bug in access_policy class: access template don't delete all the previous access records.
-  --  fixed: a bug in bitwise operation (get unpublished status value) that makes it impossible to work more than with 1 status value.
-  --  fixed: 304 cached images were displayed invalid
-  --  fixed: more strict canada zip rule
-  --  fixed: now cart items with 0 amount are not added to cart
-  --  fixed: mime_type, added method get_type_extension()
-  --  fixed: redirect with node_id attribute would invoke infinite loop
-  --  fixed: better popup window autoresizing
-  --  fixed: files can be selected from repository in Mozilla too
-  --  fixed: images from media repositiry are selected in Mozilla too
-  --  fixed: htmlTextarea glitch in Mozilla(issue #986571)
-  --  fixed: HTMLArea would improperly strip base urls, this is fixed in extensions rather than in HTMLArea itself
-  --  lots fixes of small but annoying js bugs
+-- fixed: nested sets driver returns wrong max child identifier
+-- fixed: max identifier problem(issue #982675)
+-- fixed: template source display action crashed with force_compile flag set to 0
+-- fixed: a bug in access_policy class: access template don't delete all the previous access records.
+-- fixed: a bug in bitwise operation (get unpublished status value) that makes it impossible to work more than with 1 status value.
+-- fixed: 304 cached images were displayed invalid
+-- fixed: more strict canada zip rule
+-- fixed: now cart items with 0 amount are not added to cart
+-- fixed: mime_type, added method get_type_extension()
+-- fixed: redirect with node_id attribute would invoke infinite loop
+-- fixed: better popup window autoresizing
+-- fixed: files can be selected from repository in Mozilla too
+-- fixed: images from media repositiry are selected in Mozilla too
+-- fixed: htmlTextarea glitch in Mozilla(issue #986571)
+-- fixed: HTMLArea would improperly strip base urls, this is fixed in extensions rather than in HTMLArea itself
+-- lots fixes of small but annoying js bugs
 
-  --  only group tests are available at the moment, confusing test cases link is removed for now
-  --  compiler group removed, since it's empty and we're going to use new version of WACT
-  --  project tests temporarily removed from the suite for now, they'll be somewhere else
-  --  phpBB stuff removed, it'll be as an external package too
-  --  chat stuff removed for now
-  --  strings.tag improved, i18n code helper will be executed only when force_compile=1
-  --  "edtition" changed to "editing" in *.ini, *.php, *.html files, excuse our bad english :)
-  --  improved pager tag with new {$pages_count} variable
-  --  new DEBUG_TEMPLATE_I18N_ENABLED mode which renders i18n values with information on from what file this value is taken
-  --  initial revision of http_cache class
-  --  improved & refactored http_response class, additional methods: get_content_type(),get_status() and get_directive()
-  --  new session_startup_filter where session ibitialization takes place, moved from limb_application
-  --  js richedit insert limb repositiry file improvement: the link has title with file title and size
-  --  minor changes in cart_summ_component: now it outputs formated cart sum.
-  --  now it is possible to have several grid:LIST tags with the same ID and grid:BUTTON tag in every grid:LIST and submit every grid separately.
-  --  string class md5 hashing added for path storage
-  --  new number_format tag(argch, i'm dreaming of new WACT output filters :) ), common usage is <locale:NUMBER_FORMAT hash_id='price'>, the component pulls the required locale info via locale class.
-  --  new us_zip_rule and canada_zip_rule
-  --  added localized message to http_request :: redirect()
-  --  trim function added to common.js
-  --  some common templates changed for browsers compatibility
-  --  new toggle richedit/textarea functionality which sets cookie in order to remember user preferences
-  --  js optimize window can accept global WINDOW_WIDTH, WINDOW_HEIGHT to adjust popup window size when auto resizing shouldn't be applied
-  --  richedit sets default cols, rows and iframe width, height if not specified
-  --  groups object access page now has groups filter. User now can set groups which permissions he wants to modify
-  --  all depricated html tabs replaced with <tabs> rag
-  --  RFE: initial revision of tabs tag(issue #986604)
-  --  richedit is replaced with original HTMLArea-3.0-rc1 and will be stored INTACT, hope to use it completely separated in future
-  --  phpBB stuff temporarily deleted from /shared
-  --  debug supports 3 masks of message outputting: DEBUG_OUTPUT_MESSAGE_SEND, DEBUG_OUTPUT_MESSAGE_STORE and DEBUG_OUTPUT_MESSAGE_NULL
+-- only group tests are available at the moment, confusing test cases link is removed for now
+-- compiler group removed, since it's empty and we're going to use new version of WACT
+-- project tests temporarily removed from the suite for now, they'll be somewhere else
+-- phpBB stuff removed, it'll be as an external package too
+-- chat stuff removed for now
+-- strings.tag improved, i18n code helper will be executed only when force_compile=1
+-- "edtition" changed to "editing" in *.ini, *.php, *.html files, excuse our bad english :)
+-- improved pager tag with new {$pages_count} variable
+-- new DEBUG_TEMPLATE_I18N_ENABLED mode which renders i18n values with information on from what file this value is taken
+-- initial revision of http_cache class
+-- improved & refactored http_response class, additional methods: get_content_type(),get_status() and get_directive()
+-- new session_startup_filter where session ibitialization takes place, moved from limb_application
+-- js richedit insert limb repositiry file improvement: the link has title with file title and size
+-- minor changes in cart_summ_component: now it outputs formated cart sum.
+-- now it is possible to have several grid:LIST tags with the same ID and grid:BUTTON tag in every grid:LIST and submit every grid separately.
+-- string class md5 hashing added for path storage
+-- new number_format tag(argch, i'm dreaming of new WACT output filters :) ), common usage is <locale:NUMBER_FORMAT hash_id='price'>, the component pulls the required locale info via locale class.
+-- new us_zip_rule and canada_zip_rule
+-- added localized message to http_request :: redirect()
+-- trim function added to common.js
+-- some common templates changed for browsers compatibility
+-- new toggle richedit/textarea functionality which sets cookie in order to remember user preferences
+-- js optimize window can accept global WINDOW_WIDTH, WINDOW_HEIGHT to adjust popup window size when auto resizing shouldn't be applied
+-- richedit sets default cols, rows and iframe width, height if not specified
+-- groups object access page now has groups filter. User now can set groups which permissions he wants to modify
+-- all depricated html tabs replaced with <tabs> rag
+-- RFE: initial revision of tabs tag(issue #986604)
+-- richedit is replaced with original HTMLArea-3.0-rc1 and will be stored INTACT, hope to use it completely separated in future
+-- phpBB stuff temporarily deleted from /shared
+-- debug supports 3 masks of message outputting: DEBUG_OUTPUT_MESSAGE_SEND, DEBUG_OUTPUT_MESSAGE_STORE and DEBUG_OUTPUT_MESSAGE_NULL
 
 Version 2.2.1
 (27 July 2004, from /php4/branches/trunk)
 svn://svn.berlios.de/limb/php4/tags/2.2.1
 
-  --  fixed: small bug in debug class (typo 'verbosity_level' instead of 'level');
-  --  fixed: resolve_template_compiled_file_name doesn't take into account current CONTENT_LOCALE_ID
-  --  fixed: user object doesn't call parent constructor
-  --  fixed: generated password mail template resolving bug
-  --  fixed: setup_developer includes debug class and debug includes error.inc.php, that tries to setup error handler via debug, however at this point none of the constants are defined. debug doesn't include error.inc.php now.
-  --  fixed: cache_lite a lot of bug fixes
-  --  fixed: WACT codewriter::get_temp_variable() returns invalid variable name, when there are many temp variables (more than 26?)
-  --  fixed: tree :: initialize_tree_driver($driver) - omits $driver argument, uses default materialized_path_driver always
-  --  fixed: Extra input (issue #991978)
-  --  fixed: Error in Fetcher.class (issue #991938)
-  --  fixed: <core:htmlspecialchars> uses ENT_QUOTES option now
-  --  fixed: invalid_value_rule would throw an error comparing int 0 with any string(wrong type juggling)
-  --  fixed: project db tests wouldn't execute at all
-  --  fixed: select multiple functionality finally got repaired and re-implemented
-  --  fixed: fs::mkdir(), if such a directory already exists it just returns true now. Especially useful for safe_mode!
-  --  fixed: small typo in locale string
-  --  fixed: simple navigation datasource wouldn't properly highlight uris from different hosts if they have similar pathes
-  --  fixed: display_image_action and display_file_action classes, they use http_response class properly (hopefully there will be tests for them soon)
-  --  fixed: stats_event_filter - it used non-existent merge method of the request object
+-- fixed: small bug in debug class (typo 'verbosity_level' instead of 'level');
+-- fixed: resolve_template_compiled_file_name doesn't take into account current CONTENT_LOCALE_ID
+-- fixed: user object doesn't call parent constructor
+-- fixed: generated password mail template resolving bug
+-- fixed: setup_developer includes debug class and debug includes error.inc.php, that tries to setup error handler via debug, however at this point none of the constants are defined. debug doesn't include error.inc.php now.
+-- fixed: cache_lite a lot of bug fixes
+-- fixed: WACT codewriter::get_temp_variable() returns invalid variable name, when there are many temp variables (more than 26?)
+-- fixed: tree :: initialize_tree_driver($driver) - omits $driver argument, uses default materialized_path_driver always
+-- fixed: Extra input (issue #991978)
+-- fixed: Error in Fetcher.class (issue #991938)
+-- fixed: <core:htmlspecialchars> uses ENT_QUOTES option now
+-- fixed: invalid_value_rule would throw an error comparing int 0 with any string(wrong type juggling)
+-- fixed: project db tests wouldn't execute at all
+-- fixed: select multiple functionality finally got repaired and re-implemented
+-- fixed: fs::mkdir(), if such a directory already exists it just returns true now. Especially useful for safe_mode!
+-- fixed: small typo in locale string
+-- fixed: simple navigation datasource wouldn't properly highlight uris from different hosts if they have similar pathes
+-- fixed: display_image_action and display_file_action classes, they use http_response class properly (hopefully there will be tests for them soon)
+-- fixed: stats_event_filter - it used non-existent merge method of the request object
 
-  --  SimpleTest 6 beta, throws warning if mock is declared more than once, some tests were fixed to conform to this nice behaviour
-  --  initial revision of fr.ini locale(just for compatibility)
-  --  initial revision of limb_application class, which turns root.php into an object, which also allows to define filters for custom project in a more flexible manner
-  --  if visitor enters 0(zero) quantity for the specified cart item, the item is removed from the cart
-  --  RFE SimpleTest 1.0 beta 6 upgrade(issue #982734)
-  --  RFE debug memory consumption statistics(issue #978780)
-  --  debug html output is written to sys::client_ip() . '-debug.html'
-  --  pictured_news added to limb
-  --  image_select can remember working path during user session(RFE #994493, partially)
-  --  datasource tag will look for target in the root of the template if it's not found in the immediate parent
-  --  new shipping_locator super type class, which supports caching of shipping options
-  --  new shiping_configuration class, it's used to configure shipping_locator, removing long arguments list
-  --  new fake_shipping_locator which is for testing only since it doesn't make any real connect job
-  --  node_select now remembers its working path during user session (RFE #994493, partially)
-  --  initial arabic locale ini file added;
-  --  title tag now can accept offset_path attribute;
-  --  parent selection is added to several objects forms;
-  --  a bit improved fedex shipping locator functionality
-  --  core:STATUS tag does not require constant to be defined at compile time.
-  --  form_edit_site_object_action :: _valid_perform_prepare_data(&$data) added for flexible inheritance purpose
-  --  initial version of fedex_shipping_locator fetching FedEx shipping services and prices on-line. Html fetching is done via curl and html parsing is done via XML_HTMLSax.
-  --  complex_array :: sort_array($array, $sort_params, $preserve_keys) new $preserve_keys flag, default is true
-  --  small javascript checkbox fix
-  --  tree class improvements: now tree wouldn't init expanded parents by default, call $tree->initialize_expanded_parents() instead where it's required. And this is required in 2 places now(AFAIK): site structure and objects access. That's it. This method should be explicitly called if you want to see a neat toggable tree. This allows to decrease visitor session size greatly and makes a little speed up!
-  --  if user has no rights for the object or action, he is redirected to the login page every time, it seems to be more usable
-  --  project site objects tests are separated from the project db tests, no __project_check_group.class.php, project_db_check_group.class.php and project_site_objects_check_group.class.php instead
-  --  objects access actions and templates refactored (memory leak fixed): fetching tree moved from template to action, access policy loads policy arrays only for displayed objects, not for all tree
-  --  new invalid_value_rule, which makes sure that the specified value is not valid and validator will trigger an error. This is especially useful for droplists with default meaningless value, like '----', '...choose one' etc
-  --  new complex_array::array_map_recursive() static method, which works just like array_map, yet allows to process nested arrays
-  --  uri class modified: it makes use of complex_array::array_map_recursive() to urlencode nested query items and complex_array::to_flat_array() to properly render nested query items
-  --  added order type 'rand()' because of MySQL and other databases can perform ORDER BY RAND() operation. (Needs some another refactoring to abstract method RAND() at database layer)
-  --  implementation of db_cart_handler which allows to 'remember' cart items for registered users, furthermore it transparantly merges visitor cart items with registered user items, if visitor placed some items to cart and logged in later
-  --  setlocale(LC_ALL, 'ru') removed from root.php, now it's locale_definition_filter's responsibility. This explicit call was moved to locale::setlocale() method and the decision which locale identifier should be used is decided upon LC_ALL property value defined in locale ini file.
-  --  VERY important modification: all session objects are not required to have __get_class_path() method anymore, instead you have to define in constructor '__session_class_path' attribute with the same value. This is more flexible, since sometimes we can have objects which are not instantiated via instantiate_session_object (i.e cart_items). Now session handler finds in the session BLOB all __session_class_path serialized values and includes the appropriate files.
-  --  cart item and user objects changed according to new session objects policy
-  --  new initial cart_handlers functionality
-  --  added tag POLL_ACTIVE. it can be useful in projects with full_page_cache. renders it's contents whether user can vote or not (in contrast to POLL tag);
-  --  poll_container_controller and vote_action corrected
-  --  RFE: better formatting of the long debug strings, improved SQL execution control, small debug class refactoring(issue #987460)
-  --  materialized_path_driver::get_root_nodes() small cache improvement, root nodes are actually retrieved only once within one transaction, however this is experimental and subject to change!
-  --  'created date' and 'modified date' attributes now can be custom defined while creating object
-  --  form_edit_site_object_action::_init_dataspace() uses its _load_object_data() instead of fetch_requested_object() thus providing better flexibility for decendants
-  --  navigation item changed:
+-- SimpleTest 6 beta, throws warning if mock is declared more than once, some tests were fixed to conform to this nice behaviour
+-- initial revision of fr.ini locale(just for compatibility)
+-- initial revision of limb_application class, which turns root.php into an object, which also allows to define filters for custom project in a more flexible manner
+-- if visitor enters 0(zero) quantity for the specified cart item, the item is removed from the cart
+-- RFE SimpleTest 1.0 beta 6 upgrade(issue #982734)
+-- RFE debug memory consumption statistics(issue #978780)
+-- debug html output is written to sys::client_ip() . '-debug.html'
+-- pictured_news added to limb
+-- image_select can remember working path during user session(RFE #994493, partially)
+-- datasource tag will look for target in the root of the template if it's not found in the immediate parent
+-- new shipping_locator super type class, which supports caching of shipping options
+-- new shiping_configuration class, it's used to configure shipping_locator, removing long arguments list
+-- new fake_shipping_locator which is for testing only since it doesn't make any real connect job
+-- node_select now remembers its working path during user session (RFE #994493, partially)
+-- initial arabic locale ini file added;
+-- title tag now can accept offset_path attribute;
+-- parent selection is added to several objects forms;
+-- a bit improved fedex shipping locator functionality
+-- core:STATUS tag does not require constant to be defined at compile time.
+-- form_edit_site_object_action :: _valid_perform_prepare_data(&$data) added for flexible inheritance purpose
+-- initial version of fedex_shipping_locator fetching FedEx shipping services and prices on-line. Html fetching is done via curl and html parsing is done via XML_HTMLSax.
+-- complex_array :: sort_array($array, $sort_params, $preserve_keys) new $preserve_keys flag, default is true
+-- small javascript checkbox fix
+-- tree class improvements: now tree wouldn't init expanded parents by default, call $tree->initialize_expanded_parents() instead where it's required. And this is required in 2 places now(AFAIK): site structure and objects access. That's it. This method should be explicitly called if you want to see a neat toggable tree. This allows to decrease visitor session size greatly and makes a little speed up!
+-- if user has no rights for the object or action, he is redirected to the login page every time, it seems to be more usable
+-- project site objects tests are separated from the project db tests, no __project_check_group.class.php, project_db_check_group.class.php and project_site_objects_check_group.class.php instead
+-- objects access actions and templates refactored (memory leak fixed): fetching tree moved from template to action, access policy loads policy arrays only for displayed objects, not for all tree
+-- new invalid_value_rule, which makes sure that the specified value is not valid and validator will trigger an error. This is especially useful for droplists with default meaningless value, like '----', '...choose one' etc
+-- new complex_array::array_map_recursive() static method, which works just like array_map, yet allows to process nested arrays
+-- uri class modified: it makes use of complex_array::array_map_recursive() to urlencode nested query items and complex_array::to_flat_array() to properly render nested query items
+-- added order type 'rand()' because of MySQL and other databases can perform ORDER BY RAND() operation. (Needs some another refactoring to abstract method RAND() at database layer)
+-- implementation of db_cart_handler which allows to 'remember' cart items for registered users, furthermore it transparantly merges visitor cart items with registered user items, if visitor placed some items to cart and logged in later
+-- setlocale(LC_ALL, 'ru') removed from root.php, now it's locale_definition_filter's responsibility. This explicit call was moved to locale::setlocale() method and the decision which locale identifier should be used is decided upon LC_ALL property value defined in locale ini file.
+-- VERY important modification: all session objects are not required to have __get_class_path() method anymore, instead you have to define in constructor '__session_class_path' attribute with the same value. This is more flexible, since sometimes we can have objects which are not instantiated via instantiate_session_object (i.e cart_items). Now session handler finds in the session BLOB all __session_class_path serialized values and includes the appropriate files.
+-- cart item and user objects changed according to new session objects policy
+-- new initial cart_handlers functionality
+-- added tag POLL_ACTIVE. it can be useful in projects with full_page_cache. renders it's contents whether user can vote or not (in contrast to POLL tag);
+-- poll_container_controller and vote_action corrected
+-- RFE: better formatting of the long debug strings, improved SQL execution control, small debug class refactoring(issue #987460)
+-- materialized_path_driver::get_root_nodes() small cache improvement, root nodes are actually retrieved only once within one transaction, however this is experimental and subject to change!
+-- 'created date' and 'modified date' attributes now can be custom defined while creating object
+-- form_edit_site_object_action::_init_dataspace() uses its _load_object_data() instead of fetch_requested_object() thus providing better flexibility for decendants
+-- navigation item changed:
       * added publish, unpublish ations to controller;
       * added new attribute 'new_window' which can be used to determine whether open link in new window or not.
       ATTENTION: this leads to adding new field 'new_window' in 'navigation_item' table in database;
       * templates corrected
-  --  if there's no 'popup' attribute in the request, the change user locale action will redirect to $_SERVER['HTTP_RESPONSE'] if it exists and to '/' if not
-  --  VAR_URL => VAR_WEB_DIR, from now it'll be a common practice to insert WEB before DIR to indicate a web accessible path to directory(e.g IMAGE_CACHE_WEB_DIR)
-  --  RFE: Mozilla tooltips(issue #984895)
-  --  image caching has been greatly improved: now it's way more optimized since it analyzes which images were already cached so overhead fectching never happens. It can be effectively used even without full page caching and later it'll be(seems like) pretty easy to delete cache for the specific changed images
-  --  send_plain_mail.inc.php now included where it's used
-  --  image rotate tests are commented, since this functionality is not available all the the time. For example, imagerotate is available only when php is compiled with bundled gd. In the future the image library should check if this function is available and throw an exception...
-  --  swf stuff removed for now...
-  --  http_response class new methods readfile(), file_sent(), use_client_cache() and minor fixes, ALL http response stuff MUST be made using this class
+-- if there's no 'popup' attribute in the request, the change user locale action will redirect to $_SERVER['HTTP_RESPONSE'] if it exists and to '/' if not
+-- VAR_URL => VAR_WEB_DIR, from now it'll be a common practice to insert WEB before DIR to indicate a web accessible path to directory(e.g IMAGE_CACHE_WEB_DIR)
+-- RFE: Mozilla tooltips(issue #984895)
+-- image caching has been greatly improved: now it's way more optimized since it analyzes which images were already cached so overhead fectching never happens. It can be effectively used even without full page caching and later it'll be(seems like) pretty easy to delete cache for the specific changed images
+-- send_plain_mail.inc.php now included where it's used
+-- image rotate tests are commented, since this functionality is not available all the the time. For example, imagerotate is available only when php is compiled with bundled gd. In the future the image library should check if this function is available and throw an exception...
+-- swf stuff removed for now...
+-- http_response class new methods readfile(), file_sent(), use_client_cache() and minor fixes, ALL http response stuff MUST be made using this class
 
 Version 2.2
 (29 June 2004, from /php4/branches/trunk)
 svn://svn.berlios.de/limb/php4/tags/2.2
 
-  --  ***WARNING***: BC break! API of controllers, actions has changed!
+-- ***WARNING***: BC break! API of controllers, actions has changed!
 
-  --  fixed: db_module - now column_types array passed into sql_update method
-  --  fixed: node_links_datasource bug - it caused to undefined array index error if the linked object was not fetched.
+-- fixed: db_module - now column_types array passed into sql_update method
+-- fixed: node_links_datasource bug - it caused to undefined array index error if the linked object was not fetched.
 
-  --  initial revision of the interception filters implementation, this led to the vast refactoring of ALL actions. Have a look at root.php :)
-  --  new request class resposible for incapsulating of all request specific operations, this one should also help in future testing. You can't just use $_REQUEST['parameter'] variable any longer, use request->get_attribute('parameter') instead
-  --  new http_response class responsible for 'deferred' client responses, redirects, headers etc
-  --  optimizations of fetcher
-  --  got FINALLY rid of old confusing responses classes! The execution status is stored in request instead
-  --  new jip_filter implemented. By default the fetcher now assigns actions for the requested object only. jip_filter enables JIP if the user is logged in and he is a member of at least one of groups listed in jip_groups.ini file (stored in settings dir).
-  --  minor optimizations based on XDebug output: locale, template tags, etc
-  --  all validation rules are instantiated via resolve_handle, it touched all form actions in some way
-  --  create_object function in objects_support.inc.php was refactored, it uses resolve_handle too, no eval no more!
-  --  new refactored version of the uri class
-  --  RFE: minor changes flag implemented(issue #958901)
-  --  RFE: flexible page caching(issue #970358)
-  --  RFE: IMG caching functionality(issue #977471)
-  --  new register_testing_ini function for testing purposes allowing to override ini file access inside test case
-  --  WACT output cache renamed, <core:OUTPUTCACHE> => <core:LITECACHE>, <core:OUTPUTCACHE> is used for the page partial caching
-  --  ini class is heavily tested and refactored
-  --  fetch_one_by_id() global function added to 'shortcut' fetcher :: fetch_one_by_id()
-  --  added new datatype 'float' to db_module. It includes some dirty hacking - international float format transformations, e.g. using comma instead of dot separator
-  --  /core/lib/locale renamed to /core/lib/i18n
-  --  new <control_button> tag
-  --  refactored common.js: from now it will be a common practice to pass DOM element itself not its id since there maybe several DOM elements with the same id on the page (which is likely not valid, yet it's not that easy to avoid :( )
-  --  dir class was renamed to fs(file system) class since it's a more appropriate name
-  --  new dataspace_registry: instance method was removed from dataspace, it makes dataspace much cleaner and will help us to use WACT implementation transparently
-  --  cron manager and cron jobs new implementation
-  --  fetcher :: flush_cache() is called in form_edit_site_object action and set_publish_status action.
-  --  response => http_response, response is just an abstract class now,
-  --  new nonbuffered_response class added
-  --  <form> tag MUST have 'name' attribute now
-  --  search_fetcher :: fetch() now can analyze $params['restricted_classes'] && $params['allowed_classes'] and transfer their ids to full_text_search :: find() method, which returns object ids only with needed class_ids. This is useful when you want to execute full text search on site excluding several object types from result or including in result only several needed object types. search_fetcher :: search_fetch_sub_branch() can't perform such restriction in easy way for now because it works directly with tree.
+-- initial revision of the interception filters implementation, this led to the vast refactoring of ALL actions. Have a look at root.php :)
+-- new request class resposible for incapsulating of all request specific operations, this one should also help in future testing. You can't just use $_REQUEST['parameter'] variable any longer, use request->get_attribute('parameter') instead
+-- new http_response class responsible for 'deferred' client responses, redirects, headers etc
+-- optimizations of fetcher
+-- got FINALLY rid of old confusing responses classes! The execution status is stored in request instead
+-- new jip_filter implemented. By default the fetcher now assigns actions for the requested object only. jip_filter enables JIP if the user is logged in and he is a member of at least one of groups listed in jip_groups.ini file (stored in settings dir).
+-- minor optimizations based on XDebug output: locale, template tags, etc
+-- all validation rules are instantiated via resolve_handle, it touched all form actions in some way
+-- create_object function in objects_support.inc.php was refactored, it uses resolve_handle too, no eval no more!
+-- new refactored version of the uri class
+-- RFE: minor changes flag implemented(issue #958901)
+-- RFE: flexible page caching(issue #970358)
+-- RFE: IMG caching functionality(issue #977471)
+-- new register_testing_ini function for testing purposes allowing to override ini file access inside test case
+-- WACT output cache renamed, <core:OUTPUTCACHE> => <core:LITECACHE>, <core:OUTPUTCACHE> is used for the page partial caching
+-- ini class is heavily tested and refactored
+-- fetch_one_by_id() global function added to 'shortcut' fetcher :: fetch_one_by_id()
+-- added new datatype 'float' to db_module. It includes some dirty hacking - international float format transformations, e.g. using comma instead of dot separator
+-- /core/lib/locale renamed to /core/lib/i18n
+-- new <control_button> tag
+-- refactored common.js: from now it will be a common practice to pass DOM element itself not its id since there maybe several DOM elements with the same id on the page (which is likely not valid, yet it's not that easy to avoid :( )
+-- dir class was renamed to fs(file system) class since it's a more appropriate name
+-- new dataspace_registry: instance method was removed from dataspace, it makes dataspace much cleaner and will help us to use WACT implementation transparently
+-- cron manager and cron jobs new implementation
+-- fetcher :: flush_cache() is called in form_edit_site_object action and set_publish_status action.
+-- response => http_response, response is just an abstract class now,
+-- new nonbuffered_response class added
+-- <form> tag MUST have 'name' attribute now
+-- search_fetcher :: fetch() now can analyze $params['restricted_classes'] && $params['allowed_classes'] and transfer their ids to full_text_search :: find() method, which returns object ids only with needed class_ids. This is useful when you want to execute full text search on site excluding several object types from result or including in result only several needed object types. search_fetcher :: search_fetch_sub_branch() can't perform such restriction in easy way for now because it works directly with tree.
 
 Version 2.1.1
 (16 Jun 2004, from /php4/branches/trunk)
 svn://svn.berlios.de/limb/php4/tags/2.1.1
 
-  --  ***WARNING***: BC break! API of controllers, actions has changed!
-  --  controllers, actions are greatly refactored in order to simplify inheritance(packages preparation)
-  --  RFE: unified delete site object action (issue #959366)
-  --  new SiteObjectsTestManager allowing to run specific site object testers
-  --  russian language pack added to phpbb forum
-  --  node select component doesn't try to get mapped node id if value is not set, it's a form_create_site_object's resposibility to set it ptoperly, thus we decrease coupling, i guess...
-  --  create_link_action doesn't set non-existent node id now, there's simply no need for that(see above)
-  --  RFE: initial revision of site objects linking functionality(#970235 issue)
-  --  RFE: it's possible to select parent node with node select component (part of the #971013 issue)
-  --  new tree_node_id_rule
-  --  added tree_node_id_rule into form_create_site_object_action and form_edit_site_object_action
-  --  request_state component now takes its value from the $_REQUEST on the first display only
+-- ***WARNING***: BC break! API of controllers, actions has changed!
+-- controllers, actions are greatly refactored in order to simplify inheritance(packages preparation)
+-- RFE: unified delete site object action (issue #959366)
+-- new SiteObjectsTestManager allowing to run specific site object testers
+-- russian language pack added to phpbb forum
+-- node select component doesn't try to get mapped node id if value is not set, it's a form_create_site_object's resposibility to set it ptoperly, thus we decrease coupling, i guess...
+-- create_link_action doesn't set non-existent node id now, there's simply no need for that(see above)
+-- RFE: initial revision of site objects linking functionality(#970235 issue)
+-- RFE: it's possible to select parent node with node select component (part of the #971013 issue)
+-- new tree_node_id_rule
+-- added tree_node_id_rule into form_create_site_object_action and form_edit_site_object_action
+-- request_state component now takes its value from the $_REQUEST on the first display only
 
 Version 2.2
 (04 May 2004, from /php4/branches/trunk)
 svn://svn.berlios.de/limb/php4/tags/2.2
 
-  --  ***WARNING***: BC break! API of controllers, actions has changed!
+-- ***WARNING***: BC break! API of controllers, actions has changed!
 
-  --  fixed: db_module - now column_types array passed into sql_update method
-  --  fixed: template source display action crashed with force_compile flag set to 0(issue #981986)
-  --  fixed: materialized_path::get_max_child_identifier() error value(issue #982675)
-  --  fixed: node_links_datasource bug - it caused to undefined array index error if the linked object was not fetched.
+-- fixed: db_module - now column_types array passed into sql_update method
+-- fixed: template source display action crashed with force_compile flag set to 0(issue #981986)
+-- fixed: materialized_path::get_max_child_identifier() error value(issue #982675)
+-- fixed: node_links_datasource bug - it caused to undefined array index error if the linked object was not fetched.
 
-  --  initial revision of the interception filters implementation, this led to the vast refactoring of ALL actions. Have a look at root.php :)
-  --  new request class resposible for incapsulating of all request specific operations, this one should also help in future testing. You can't just use $_REQUEST['parameter'] variable any longer, use request->get_attribute('parameter') instead
-  --  new http_response class responsible for 'deferred' client responses, redirects, headers etc
-  --  optimizations of fetcher
-  --  got FINALLY rid of old confusing responses classes! The execution status is stored in request instead
-  --  new jip_filter implemented. By default the fetcher now assigns actions for the requested object only. jip_filter enables JIP if the user is logged in and he is a member of at least one of groups listed in jip_groups.ini file (stored in settings dir).
-  --  minor optimizations based on XDebug output: locale, template tags, etc
-  --  all validation rules are instantiated via resolve_handle, it touched all form actions in some way
-  --  create_object function in objects_support.inc.php was refactored, it uses resolve_handle too, no eval no more!
-  --  new refactored version of the uri class
-  --  RFE: minor changes flag implemented(issue #958901)
-  --  RFE: flexible page caching(issue #970358)
-  --  RFE: IMG caching functionality(issue #977471)
-  --  new register_testing_ini function for testing purposes allowing to override ini file access inside test case
-  --  WACT output cache renamed, <core:OUTPUTCACHE> => <core:LITECACHE>, <core:OUTPUTCACHE> is used for the page partial caching
-  --  ini class is heavily tested and refactored
-  --  fetch_one_by_id() global function added to 'shortcut' fetcher :: fetch_one_by_id()
-  --  added new datatype 'float' to db_module. It includes some dirty hacking - international float format transformations, e.g. using comma instead of dot separator
-  --  /core/lib/locale renamed to /core/lib/i18n
-  --  new <control_button> tag
-  --  refactored common.js: from now it will be a common practice to pass DOM element itself not its id since there maybe several DOM elements with the same id on the page (which is likely not valid, yet it's not that easy to avoid :( )
-  --  dir class was renamed to fs(file system) class since it's a more appropriate name
-  --  new dataspace_registry: instance method was removed from dataspace, it makes dataspace much cleaner and will help us to use WACT implementation transparently
-  --  cron manager and cron jobs new implementation
-  --  fetcher :: flush_cache() is called in form_edit_site_object action and set_publish_status action.
-  --  response => http_response, response is just an abstract class now,
-  --  new nonbuffered_response class added
-  --  <form> tag MUST have 'name' attribute now
-  --  search_fetcher :: fetch() now can analyze $params['restricted_classes'] && $params['allowed_classes'] and transfer their ids to full_text_search :: find() method, which returns object ids only with needed class_ids. This is useful when you want to execute full text search on site excluding several object types from result or including in result only several needed object types. search_fetcher :: search_fetch_sub_branch() can't perform such restriction in easy way for now because it works directly with tree.
+-- initial revision of the interception filters implementation, this led to the vast refactoring of ALL actions. Have a look at root.php :)
+-- new request class resposible for incapsulating of all request specific operations, this one should also help in future testing. You can't just use $_REQUEST['parameter'] variable any longer, use request->get_attribute('parameter') instead
+-- new http_response class responsible for 'deferred' client responses, redirects, headers etc
+-- optimizations of fetcher
+-- got FINALLY rid of old confusing responses classes! The execution status is stored in request instead
+-- new jip_filter implemented. By default the fetcher now assigns actions for the requested object only. jip_filter enables JIP if the user is logged in and he is a member of at least one of groups listed in jip_groups.ini file (stored in settings dir).
+-- minor optimizations based on XDebug output: locale, template tags, etc
+-- all validation rules are instantiated via resolve_handle, it touched all form actions in some way
+-- create_object function in objects_support.inc.php was refactored, it uses resolve_handle too, no eval no more!
+-- new refactored version of the uri class
+-- RFE: minor changes flag implemented(issue #958901)
+-- RFE: flexible page caching(issue #970358)
+-- RFE: IMG caching functionality(issue #977471)
+-- new register_testing_ini function for testing purposes allowing to override ini file access inside test case
+-- WACT output cache renamed, <core:OUTPUTCACHE> => <core:LITECACHE>, <core:OUTPUTCACHE> is used for the page partial caching
+-- ini class is heavily tested and refactored
+-- fetch_one_by_id() global function added to 'shortcut' fetcher :: fetch_one_by_id()
+-- added new datatype 'float' to db_module. It includes some dirty hacking - international float format transformations, e.g. using comma instead of dot separator
+-- /core/lib/locale renamed to /core/lib/i18n
+-- new <control_button> tag
+-- refactored common.js: from now it will be a common practice to pass DOM element itself not its id since there maybe several DOM elements with the same id on the page (which is likely not valid, yet it's not that easy to avoid :( )
+-- dir class was renamed to fs(file system) class since it's a more appropriate name
+-- new dataspace_registry: instance method was removed from dataspace, it makes dataspace much cleaner and will help us to use WACT implementation transparently
+-- cron manager and cron jobs new implementation
+-- fetcher :: flush_cache() is called in form_edit_site_object action and set_publish_status action.
+-- response => http_response, response is just an abstract class now,
+-- new nonbuffered_response class added
+-- <form> tag MUST have 'name' attribute now
+-- search_fetcher :: fetch() now can analyze $params['restricted_classes'] && $params['allowed_classes'] and transfer their ids to full_text_search :: find() method, which returns object ids only with needed class_ids. This is useful when you want to execute full text search on site excluding several object types from result or including in result only several needed object types. search_fetcher :: search_fetch_sub_branch() can't perform such restriction in easy way for now because it works directly with tree.
 
 Version 2.1.1
 (16 Jun 2004, from /php4/branches/trunk)
 svn://svn.berlios.de/limb/php4/tags/2.1.1
 
-  --  ***WARNING***: BC break! API of controllers, actions has changed!
-  --  controllers, actions are greatly refactored in order to simplify inheritance(packages preparation)
-  --  RFE: unified delete site object action (issue #959366)
-  --  new SiteObjectsTestManager allowing to run specific site object testers
-  --  russian language pack added to phpbb forum
-  --  node select component doesn't try to get mapped node id if value is not set, it's a form_create_site_object's resposibility to set it ptoperly, thus we decrease coupling, i guess...
-  --  create_link_action doesn't set non-existent node id now, there's simply no need for that(see above)
-  --  RFE: initial revision of site objects linking functionality(#970235 issue)
-  --  RFE: it's possible to select parent node with node select component (part of the #971013 issue)
-  --  new tree_node_id_rule
-  --  added tree_node_id_rule into form_create_site_object_action and form_edit_site_object_action
-  --  request_state component now takes its value from the $_REQUEST on the first display only
+-- ***WARNING***: BC break! API of controllers, actions has changed!
+-- controllers, actions are greatly refactored in order to simplify inheritance(packages preparation)
+-- RFE: unified delete site object action (issue #959366)
+-- new SiteObjectsTestManager allowing to run specific site object testers
+-- russian language pack added to phpbb forum
+-- node select component doesn't try to get mapped node id if value is not set, it's a form_create_site_object's resposibility to set it ptoperly, thus we decrease coupling, i guess...
+-- create_link_action doesn't set non-existent node id now, there's simply no need for that(see above)
+-- RFE: initial revision of site objects linking functionality(#970235 issue)
+-- RFE: it's possible to select parent node with node select component (part of the #971013 issue)
+-- new tree_node_id_rule
+-- added tree_node_id_rule into form_create_site_object_action and form_edit_site_object_action
+-- request_state component now takes its value from the $_REQUEST on the first display only
 
 Version 2.1
 (04 May 2004, from /php4/branches/2.0.8)
 svn://svn.berlios.de/limb/tags/php4/tags/2.1
 
-  --  fixed: node select component would set its value wrong
-  --  fixed: control_flow.php bug (issue #969501)
-  --  fixed: value localization in form components moved at runtime(issue #968107)
-  --  fixed: JS window.onunload function for richedit
-  --  fixed: pager sporadically wouldn't show paginated links (issue #964194)
-  --  fixed: <hint> tag is Mozilla, Opera compatible (issue #964192)
-  --  fixed: full_text_search can perform fulltext search with mysqlversion >= 3.23 and it returns empty result instead of raising error.
-  --  fixed: all JS document.all[...] calls replaced with document.getElementById
-  --  fixed: materialized_path_driver for tree bug fixed. Now, if there are 2 or more sub_trees in objects tree, get_sub_branch() method with 'check_expanded_parents' option works properly (result set included nodes from another sub_tree before)
-  --  fixed: 'has_more_than_one_page' typo in pager tags, components
-  --  fixed: mod_rewrite compatibility
-  --  fixed: error uses debug :: parse_console();
-  --  fixed: small typo in /image/edit_variations.html (issue #955789)
-  --  fixed: fetch_tree_datasource now do hierarchical sort items correctly
-  --  fixed: critical JS error: add_form_hidden_parameter function behaved bad... it added hidden input with id 'action' and this input overrided form.action
-  --  fixed: if there was a try to log in directly from /root/login page, login action would redirect you to /root/login again, now this situation is checked and the user is redirected to /
-  --  fixed: render_attributes() function in input_form_element, earlier it would set value attribute empty if there's no value in dataspace. This behaviour(adopted from WACT) would delete 'value' value from template
-  --  fixed: probable error recursion bug
+-- fixed: node select component would set its value wrong
+-- fixed: control_flow.php bug (issue #969501)
+-- fixed: value localization in form components moved at runtime(issue #968107)
+-- fixed: JS window.onunload function for richedit
+-- fixed: pager sporadically wouldn't show paginated links (issue #964194)
+-- fixed: <hint> tag is Mozilla, Opera compatible (issue #964192)
+-- fixed: full_text_search can perform fulltext search with mysqlversion >= 3.23 and it returns empty result instead of raising error.
+-- fixed: all JS document.all[...] calls replaced with document.getElementById
+-- fixed: materialized_path_driver for tree bug fixed. Now, if there are 2 or more sub_trees in objects tree, get_sub_branch() method with 'check_expanded_parents' option works properly (result set included nodes from another sub_tree before)
+-- fixed: 'has_more_than_one_page' typo in pager tags, components
+-- fixed: mod_rewrite compatibility
+-- fixed: error uses debug :: parse_console();
+-- fixed: small typo in /image/edit_variations.html (issue #955789)
+-- fixed: fetch_tree_datasource now do hierarchical sort items correctly
+-- fixed: critical JS error: add_form_hidden_parameter function behaved bad... it added hidden input with id 'action' and this input overrided form.action
+-- fixed: if there was a try to log in directly from /root/login page, login action would redirect you to /root/login again, now this situation is checked and the user is redirected to /
+-- fixed: render_attributes() function in input_form_element, earlier it would set value attribute empty if there's no value in dataspace. This behaviour(adopted from WACT) would delete 'value' value from template
+-- fixed: probable error recursion bug
 
-  --  function load_project_tages added to template_compiler.inc.php to allow working of project specific files
-  --  metadata component refactored to implement inheritance for project specific metadata
-  --  attribute 'url' added to each object at site map to allow proper displaying of not only navigation_item objects
-  --  for speed issues with images and files all dont track responses replaced with mere exit()
-  --  RFE: new <grid:COUNTER> tag (issue #964271)
-  --  RFE: got rid of create_object.php now it's a regular action of the admin_page object(issue #958092)
-  --  new tree_path_rule rule
-  --  got rid of PHP_SELF, REQUEST_URI constants, taken directly from $_SERVER!
-  --  project specific setup_custom.php is included in project setup.php in a smart way via dirname(__FILE__), this provides much better flexibility
-  --  all tests except image tests run on Linux
-  --  got rid of netpbm binary files, these should be stored as external ones --  new <status:PUBLISHED> tag
-  --  new dont_track_response allows not to register object access in stats system, this is especially effective for image and file objects
-  --  changed display_image_action so that it returns dont_track_response if variation is not 'original'
-  --  changed display_file_action so that it returns dont_track_response if it displays a file icon
-  --  new version.php describing current version of LIMB in detail (will hopefully help in package building automating tasks)
-  --  fetch_sub_branch_datasource_component verifies datasource to be a subclass of fetch_sub_branch_datasource
-  --  CLI indexer.php script added for rebuilding full text index
-  --  new <metadata:CHARSET> tag, it displays charset according to current MANAGEMENT_LOCALE_ID
-  --  'status' field in sys_site_object db table is considered to be a bit mask now
-  --  new multi items functionality: delete, publish, unpublish, set_priority
-  --  SimpleTest moved to /tests/lib
-  --  test files renamed: *.group.php => *_group.class.php, * .test.php => *_test.class.php
-  --  added 'children' field in sys_site_object_tree table, it breaks normalization a bit, however it allows us to know for sure how many immidiate children certain parent has
-  --  new 'change children priority' functionality, priority field added to sys_site_object_tree db table
-  --  new <grid:BUTTON>, <grid:INPUT> tags, they make <grid:LIST> to display itself inside <form> if they exist
+-- function load_project_tages added to template_compiler.inc.php to allow working of project specific files
+-- metadata component refactored to implement inheritance for project specific metadata
+-- attribute 'url' added to each object at site map to allow proper displaying of not only navigation_item objects
+-- for speed issues with images and files all dont track responses replaced with mere exit()
+-- RFE: new <grid:COUNTER> tag (issue #964271)
+-- RFE: got rid of create_object.php now it's a regular action of the admin_page object(issue #958092)
+-- new tree_path_rule rule
+-- got rid of PHP_SELF, REQUEST_URI constants, taken directly from $_SERVER!
+-- project specific setup_custom.php is included in project setup.php in a smart way via dirname(__FILE__), this provides much better flexibility
+-- all tests except image tests run on Linux
+-- got rid of netpbm binary files, these should be stored as external ones --  new <status:PUBLISHED> tag
+-- new dont_track_response allows not to register object access in stats system, this is especially effective for image and file objects
+-- changed display_image_action so that it returns dont_track_response if variation is not 'original'
+-- changed display_file_action so that it returns dont_track_response if it displays a file icon
+-- new version.php describing current version of LIMB in detail (will hopefully help in package building automating tasks)
+-- fetch_sub_branch_datasource_component verifies datasource to be a subclass of fetch_sub_branch_datasource
+-- CLI indexer.php script added for rebuilding full text index
+-- new <metadata:CHARSET> tag, it displays charset according to current MANAGEMENT_LOCALE_ID
+-- 'status' field in sys_site_object db table is considered to be a bit mask now
+-- new multi items functionality: delete, publish, unpublish, set_priority
+-- SimpleTest moved to /tests/lib
+-- test files renamed: *.group.php => *_group.class.php, * .test.php => *_test.class.php
+-- added 'children' field in sys_site_object_tree table, it breaks normalization a bit, however it allows us to know for sure how many immidiate children certain parent has
+-- new 'change children priority' functionality, priority field added to sys_site_object_tree db table
+-- new <grid:BUTTON>, <grid:INPUT> tags, they make <grid:LIST> to display itself inside <form> if they exist
 
 Version 2.0.8
 (12 Apr 2004, from /php4/branches/trunk)
 svn://svn.berlios.de/limb/php4/tags/2.0.8
 
-  --  fixed: image_object::_create_variations() method was called twice
-  --  fixed: richedit, now can properly save values of multiple richedits on one page
-  --  fixed: tree bug, now include_parent while get_sub_dbranch() works properly
-  --  fixed: major bug in dir class - mkdir, rmdir, cp methods were buggy
-  --  fixed: major bug in cron.php - it just crashed totally
+-- fixed: image_object::_create_variations() method was called twice
+-- fixed: richedit, now can properly save values of multiple richedits on one page
+-- fixed: tree bug, now include_parent while get_sub_dbranch() works properly
+-- fixed: major bug in dir class - mkdir, rmdir, cp methods were buggy
+-- fixed: major bug in cron.php - it just crashed totally
 
-  --  new tree: uses tree drivers, materialized path and nested sets currently implemented
-  --  basic multilanguage support:
+-- new tree: uses tree drivers, materialized path and nested sets currently implemented
+-- basic multilanguage support:
       * available locales are declared in global $AVAILABLE_LOCALES
         (e.g, $AVAILABLE_LOCALES = array('ru', 'en');
       * MAGEMENT_LOCALE_ID definition depends on user::_locale_id property,
@@ -540,14 +586,14 @@ svn://svn.berlios.de/limb/php4/tags/2.0.8
         allows to change current management locale
       * user::get_locale_id, user::set_locale_id
 
-  --  pager_navigator tag now supports "mirror_of" attribute. If "mirror_of" attribute is set, mirrored pager runtime component is used instead of creating a new runtime component
-  --  new <core:REQUEST_TRANSFER attribute='name'> tag which allows to append values from $_REQUEST to specific html tags attributes: a, form, frame, input, area. Atrribute 'attribute' defines what values exactly should be appended, multiple values are comma separated
-  --  better JS file_select, image_select, node_select implementation
-  --  new <print:LINK> tag that renders it's content only if 'print_version' action is available, you can get a link to printed object via $link inside this tag
-  --  new <hint>,  <hint:LINK>, <hint:TITLE>, <hint:CONTENT> tags
-  --  new <core:REPEAT> tag
-  --  new much improved events log report: multiple values, wildcards, negation in fields etc are supported
-  --  beta revision of the most popular routes report
-  --  404, 403 error pages support, you are required to declare ERROR_DOCUMENT_404, ERROR_DOCUMENT_403 in setup.php, also added not_found object to display 404 error message
-  --  I18N of input tags
-  --  as also, lots of minor refactoring & bugfixes :)
+-- pager_navigator tag now supports "mirror_of" attribute. If "mirror_of" attribute is set, mirrored pager runtime component is used instead of creating a new runtime component
+-- new <core:REQUEST_TRANSFER attribute='name'> tag which allows to append values from $_REQUEST to specific html tags attributes: a, form, frame, input, area. Atrribute 'attribute' defines what values exactly should be appended, multiple values are comma separated
+-- better JS file_select, image_select, node_select implementation
+-- new <print:LINK> tag that renders it's content only if 'print_version' action is available, you can get a link to printed object via $link inside this tag
+-- new <hint>,  <hint:LINK>, <hint:TITLE>, <hint:CONTENT> tags
+-- new <core:REPEAT> tag
+-- new much improved events log report: multiple values, wildcards, negation in fields etc are supported
+-- beta revision of the most popular routes report
+-- 404, 403 error pages support, you are required to declare ERROR_DOCUMENT_404, ERROR_DOCUMENT_403 in setup.php, also added not_found object to display 404 error message
+-- I18N of input tags
+-- as also, lots of minor refactoring & bugfixes :)
