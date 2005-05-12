@@ -1,0 +1,34 @@
+<grid:LIST id='users'>
+<table width='100%'>
+  <tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='users_list' file='user'></td></tr>
+  <tr>
+    <th><grid:SELECTORS_TOGGLER></th>
+    <th width='100%'><locale:STRING name='login' file='user'></th>
+    <th><locale:STRING name='email'></th>
+    <th><locale:STRING name='name' file='user'></th>
+    <th><locale:STRING name='lastname' file='user'></th>
+    <th><locale:STRING name='actions'></th>
+  </tr>
+  <grid:ITERATOR>
+  <tr>
+    <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+    <td>
+    <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
+    {$identifier}
+    </td>
+    <td><a href='mailto:{$email}'>{$email}</a></td>
+    <td>{$name}</td>
+    <td>{$lastname}</td>
+    <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+  </tr>
+  </grid:ITERATOR>
+  <tr><td colspan='100' class='btitle1' height='3'></td></tr>
+  <tr>
+    <td colspan='100'>
+    <grid:actions select_class='select' button_class='button' locale_value='do'>
+      <grid:action shortcut='delete' locale_value='delete' form_submitted='0'>
+    </grid:actions>
+    </td>
+  </tr>
+</table>
+</grid:LIST>

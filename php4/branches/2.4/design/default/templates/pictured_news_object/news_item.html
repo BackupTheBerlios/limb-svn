@@ -1,0 +1,25 @@
+    <table width=100% border='0' cellspacing='0' cellpadding='0'>
+    <tr>
+      <td><locale:DATE_FORMAT hash_id='news_date' locale_format='short_date'></td>
+      <td width='100%' align='left'><b>{$title}</b></td>
+    </tr>
+    <tr>
+      <td valign='top' height='100%'>
+        <core:OPTIONAL for='image_id'>
+          <a href='/root?node_id={$image_id}&original'><img align='left' src='/root?node_id={$image_id}&thumbnail'></a>
+        </core:OPTIONAL>
+        <core:DEFAULT for='image_id'>
+        </core:DEFAULT>
+      </td>
+      <td valign='top' height='100%'>
+        {$annotation}
+        <br>
+        <core:INCLUDE file="published_status.html">
+        <core:INCLUDE file="jip_actions/dropdown.html">
+
+    <core:OPTIONAL for='content'>
+    <br>[ <a href='{$path}'>more...</a> ]
+    </core:OPTIONAL>
+      </td>
+    </tr>
+    </table>

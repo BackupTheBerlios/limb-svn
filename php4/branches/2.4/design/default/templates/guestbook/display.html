@@ -1,0 +1,40 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<core:INCLUDE file="/guestbook_message/create_form.html">
+
+<fetch:SUB_BRANCH target='messages' navigator="pager" >
+  <core:PARAMETER name='loader_class_name' value='guestbook_message' >
+  <core:PARAMETER name='order' value='created_date=DESC' >
+</fetch:SUB_BRANCH>
+
+
+<core:INCLUDE file="/admin/pager.html">
+
+<table width="100%" border="1" cellspacing="0" cellpadding="8" bordercolor="#cccccc">
+<grid:LIST id='messages'>
+    <grid:ITERATOR>
+      <thead class=jip>
+        <tr>
+          <td>
+            <core:INCLUDE file="published_status.html"><locale:DATE_FORMAT hash_id="created_date" type='stamp' locale_format="short_date_time">
+            <u>{$title}</u>
+            <br>{$message}
+            <br><b>{$sender}</b>
+            <core:OPTIONAL for="sender_email"><a href='mailto:{$sender_email}'>@</a><br></core:OPTIONAL>
+            <core:OPTIONAL for="comment">
+            <span style='background-color: #eeeeee'>
+            {$comment}(<locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format="short_date_time">)
+            <br><b>{$comment_author}</b>
+            <br>
+              <core:OPTIONAL for="comment_author_email">
+                <a href={$comment_author_email}>{$comment_author_email}</a>
+              </core:OPTIONAL>
+            </span>
+            </core:OPTIONAL>
+          </td>
+        </tr>
+        <tr><td><core:INCLUDE file="jip_actions/dropdown.html"></td></tr>
+      </thead>
+    </grid:ITERATOR>
+</grid:LIST>
+</table>

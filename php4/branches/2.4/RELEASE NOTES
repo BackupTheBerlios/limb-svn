@@ -1,0 +1,73 @@
+Version 2.3(final)
+
+We've decided to release 2.3 final version without new admin GUI since we'd like to stabilize 2.3
+branch development. The new admin GUI stuff will go into 2.4(surprize).
+
+This is mostly a bugfix version with some quite important user usability improvements:
+
+1)One of the most frustrating usability issues we had prior this release was quite awkward output of
+the form error summary. We had ugly non-localizibale 'title' attribute for every form input which
+was used in form error summary report. Now we're using <label> tag for this purpose which is way
+cleaner and more flexible. However this techique will work only with js switched on in browser, well
+anyway most of the LIMB GUI stuff will work if js is enabled.
+
+2)We splitted a quite bloated common.js into small and highly specialized modules which are plugged in
+with include(src) function. This is the first attempt to handle js chaos.
+
+3)richedit tag has beta support for multiple richedit components. Currently is supports htmlArea,
+FckEditor, wysisygPro js editors. By default htmlArea is used. Richedit type can be set via 'DEAULT_RICHEDIT'
+constant.
+
+4)New "group by referers" functionality added to stat reports. You can setup how to group certain types
+of referers using masks. These masks are stored in /core/settings/referers_groups.ini. Here's a short
+example of what can be inside this file:
+
+  groups[] = *google.*
+  groups[] = *yandex.ru*
+  groups[] = *rambler.ru*
+
+Thus all http://www.google.com/..., http://google.ru/... referers will match *google.* group and will
+be summarized by this group.
+
+5)Many little yet very annoying bugs were spotted and fixed.
+
+You should exeperience no problem using previous releases of demo and empty projects.
+
+See CHANGELOG for more details
+
+Version 2.3RC3
+
+This is mostly a bugfix version with some improved functionality:
+
+1)First of all we're trying to make LIMB core as small as possible and remove all external
+dependencies from it and use them separately. For user convenience we'll be storing all external
+packages on which LIMB may depend on as archieves in LIMB_DIR/external directory. The following
+packages were put to LIMB_DIR/external:
+
+  * phpMailer(http://phpmailer.sourceforge.net/) - the previous mail system was based on PEAR
+  classes and we found it unsatisfactory, so we completely removed it in favor of this nice package.
+  LIMB uses this package via PHPMailer_DIR constant. This package is optional.
+
+  * XML_HTMLSax(http://pear.php.net/package/XML_HTMLSax) - currently we use it for viewing and
+  beautifying template source on-line. LIMB uses this package via XML_HTMLSAX3 constant. This
+  package is optional.
+
+  * SimpleTest(http://www.lastcraft.com/simple_test.php) - excellent package for unit testing. LIMB
+  uses this package via SIMPLE_TEST constant. This package is required for LIMB tests.
+
+2)Init sql dumps were moved to empty-project since it's more logical to have them there.
+
+3)Improved support for Apache mod_rewrite(this can help run LIMB with PHP installed as a CGI
+executable) - check out the INSTALL file in LIMB project root directory.
+
+4)`title` varchar(255) default NULL field was added to sys_metadata db table. Make sure you update
+your database if you're upgrading from the previous version of LIMB!!!
+
+5)access_policy class interface was a bit changed, specifically signature of the save_object_access
+method: save_object_access($policy_array, $accessor_type, $accessor_ids = array()) instead:
+save_object_access($policy_array, $accessor_ids = array(), $accessor_type)
+
+See CHANGELOG for more details
+
+You can also use improved versions of demo and empty projects from 2.3RC3 release (
+http://sourceforge.net/project/showfiles.php?group_id=109345&package_id=118079&release_id=299005 )

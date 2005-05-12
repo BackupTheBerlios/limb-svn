@@ -1,0 +1,180 @@
+<core:WRAP file="/admin/popup.html" placeholder="content">
+
+<script language="javascript" src="/shared/js/image_actions.js"></script>
+
+<form name="edit_variations" id="edit_variations" enctype="multipart/form-data" method="post">
+  <core:INCLUDE file="form_errors.html">
+  <table>
+  <tr>
+  <td>
+    <fetch:MAPPED>
+    <a href="{$path}?original" target="_blank"><img id="img_thumbnail" src="{$path}?thumbnail"></a>
+    </fetch:MAPPED>
+    <core:OPTIONAL for='is_updated'>
+    <script>
+      d = new Date();
+      document.getElementById('img_thumbnail').src = document.getElementById('img_thumbnail').src + '&' + d.getTime();
+    </script>
+    </core:OPTIONAL>
+  </td>
+  <td>
+    <table>
+    <tr>
+      <td></td>
+      <td class='text'>
+      GIF,JPEG,PNG
+      <hint>
+        <hint:CONTENT>
+          <locale:STRING name='image_format_description' file='image'>
+        </hint:CONTENT>
+      </hint>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      </td>
+      <td>
+        <fieldset>
+          <legend style='color:#000000'>
+              <select name='original_action' class='input' onchange="change_action(this, 'original')">
+                <option value='nothing'>---------</option>
+                <option value='upload'><locale:STRING name='upload' file='image'></option>
+                <option value='generate'><locale:STRING name='generate' file='image'></option>
+              </select>
+              <locale:STRING name='original' file='image'>
+           </legend>
+          <table>
+          <tr>
+            <td class='text'>
+
+            <fetch:MAPPED>
+            <a href="{$path}?original" target="_blank"><locale:STRING name='click_original' file='image'></a><br>
+            Height:{$variations['original']['height']} Width:{$variations['original']['width']} Size:{$variations['original']['size']}
+            </fetch:MAPPED>
+
+              <div id='original_nothing_div' class='text' >
+              </div>
+
+              <div id='original_upload_div' class='text' style='display:none'>
+                <input type="file" name='original' class="input" size="25" ><br>
+                <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type="text" name="upload_original_max_size" class="input" size="3"/> <locale:STRING name='pixels' file='image'></nobr>
+              </div>
+
+              <div id='original_generate_div' class='text' style='display:none'>
+                <locale:STRING name='generate_from' file='image'> <select name='original_base_variation' class='input'>
+                    <option value='original'><locale:STRING name='original' file='image'></option>
+                    <option value='thumbnail'><locale:STRING name='thumbnail' file='image'></option>
+                    <option value='icon' ><locale:STRING name='icon' file='image'></option>
+                   </select>
+                <br>
+                <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type=text name='generate_original_max_size' class=input size=3 value='100'> <locale:STRING name='pixels' file='image'></nobr>
+              </div>
+            </td>
+          </tr>
+          </table>
+        </fieldset>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <fieldset>
+          <legend style='color:#000000'>
+              <select name='thumbnail_action' onchange="change_action(this, 'thumbnail')" class='input'>
+                <option value='nothing'>---------</option>
+                <option value='upload' ><locale:STRING name='upload' file='image'></option>
+                <option value='generate'><locale:STRING name='generate' file='image'></option>
+              </select>
+            <locale:STRING name='thumbnail' file='image'>
+           </legend>
+          <table>
+          <tr>
+            <td class='text'>
+
+            <fetch:MAPPED>
+            <a href="{$path}?thumbnail" target="_blank"><locale:STRING name='click_thumbnail' file='image'></a><br>
+            Height:{$variations['thumbnail']['height']} Width:{$variations['thumbnail']['width']} Size:{$variations['thumbnail']['size']}
+            </fetch:MAPPED>
+
+              <div id='original_nothing_div' class='text' >
+              </div>
+
+              <div id='thumbnail_upload_div' class='text' style='display:none'>
+                <input type=file name='thumbnail' class=input size=25 ><br>
+                <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type=text name='upload_thumbnail_max_size' class=input size=3 value='100'> <locale:STRING name='pixels' file='image'></nobr>
+              </div>
+
+              <div id='thumbnail_generate_div' class='text' style='display:none'>
+                <locale:STRING name='generate_from' file='image'> <select name='thumbnail_base_variation' class='input'>
+                    <option value='original'><locale:STRING name='original' file='image'></option>
+                    <option value='thumbnail'><locale:STRING name='thumbnail' file='image'></option>
+                    <option value='icon' ><locale:STRING name='icon' file='image'></option>
+                   </select>
+                <br>
+                <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type=text name='generate_thumbnail_max_size' class=input size=3 value='100'> <locale:STRING name='pixels' file='image'></nobr>
+              </div>
+            </td>
+          </tr>
+          </table>
+        </fieldset>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <fieldset>
+          <legend style='color:#000000'>
+              <select name='icon_action' onchange="change_action(this, 'icon')" class='input'>
+                <option value='nothing'>---------</option>
+                <option value='upload' ><locale:STRING name='upload' file='image'></option>
+                <option value='generate'><locale:STRING name='generate' file='image'></option>
+              </select>
+            <locale:STRING name='icon' file='image'>
+           </legend>
+          <table>
+          <tr>
+            <td class='text'>
+
+              <fetch:MAPPED>
+              <a href="{$path}?icon" target="_blank"><locale:STRING name='click_icon' file='image'></a><br>
+              Height:{$variations['icon']['height']} Width:{$variations['icon']['width']} Size:{$variations['icon']['size']}
+              </fetch:MAPPED>
+
+              <div id='original_nothing_div' class='text' >
+              </div>
+
+              <div id='icon_upload_div' class='text' style='display:none'>
+                <input type=file name='icon' class=input size=25 /><br>
+                <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type=text name='upload_icon_max_size' class=input size=3 value='100'> <locale:STRING name='pixels' file='image'></nobr>
+              </div>
+
+              <div id='icon_generate_div' class='text' style='display:none'>
+                <locale:STRING name='generate_from' file='image'> <select name='icon_base_variation' class='input'>
+                    <option value='original'><locale:STRING name='original' file='image'></option>
+                    <option value='thumbnail' ><locale:STRING name='thumbnail' file='image'></option>
+                    <option value='icon' ><locale:STRING name='icon' file='image'></option>
+                   </select>
+                <br>
+                <nobr><locale:STRING name='resize_max_dimension_to' file='image'> <input type=text name='generate_icon_max_size' class=input size=3 value='100'> <locale:STRING name='pixels' file='image'></nobr>
+              </div>
+            </td>
+          </tr>
+          </table>
+        </fieldset>
+    </td>
+    </tr>
+
+    <tr>
+    <td colspan='2'>
+      <action_button name="edit_variations_button" class="button"  action="edit_variations" locale_value="update"/>&nbsp;
+      <input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+
+    </td>
+    </tr>
+
+  </table>
+</td>
+</tr>
+</table>
+
+</form>

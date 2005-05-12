@@ -1,0 +1,82 @@
+<PUBLIC:COMPONENT lightweight = true>
+<PUBLIC:ATTACH EVENT="onmouseover" ONEVENT="fnOnMouseOver()" />
+<PUBLIC:ATTACH EVENT="onmouseout" ONEVENT="fnOnMouseOut()" />
+<script language="javascript">
+//
+// [ data]
+//
+element.isHover = false
+//
+// [ events ]
+//
+function fnOnMouseOver()
+{	
+	if(element.isHover)return
+	set_active()
+	element.isHover = true
+}
+function fnOnMouseOut()
+{
+	if(HT()) return
+	set_normal()
+	element.isHover = false
+}
+//
+// [ interface]
+//
+function set_active()
+{
+	try{
+	var acts = get_jip_element('actions')
+	if(acts == null) return
+	acts.className = 'jip-actions-active'
+	var obj = get_jip_element('object')
+	obj.className = 'jip-object-active'
+	
+	get_jip_element('l').src = '/shared/images/actl.gif'
+	get_jip_element('r').src = '/shared/images/actr.gif'
+	}
+	catch(ex)
+	{
+//		alert('JIP ACTION: initialization fail')
+	}
+}
+function set_normal()
+{
+	try{
+	var acts = get_jip_element('actions')
+	if(acts == null) return
+	acts.className = 'jip-actions'
+
+	get_jip_element('object').className = 'jip-object'
+
+	get_jip_element('l').src = '/shared/images/act1.gif'
+	get_jip_element('r').src = '/shared/images/act3.gif'
+	}
+	catch(ex)
+	{
+//		alert('JIP ACTION: initialization fail')
+	}
+}
+//
+// [ service]
+//
+function get_jip_element(jip_name)
+{
+	var arr = element.all
+	for(var i=0;i<arr.length; i++)
+		if(arr[i].jip == jip_name) return arr[i]
+	return null
+}
+function HT()
+{
+	var obj = element.document.elementFromPoint(event.x, event.y)
+	while(obj != null)
+	{
+		if(obj == element)return true
+		obj = obj.parentElement
+	}
+	return false
+}
+</script>
+</PUBLIC:COMPONENT>

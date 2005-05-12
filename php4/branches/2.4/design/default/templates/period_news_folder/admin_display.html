@@ -1,0 +1,41 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/normal.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='list' navigator="pager">
+  <core:PARAMETER name='loader_class_name' value='period_news_object'>
+  <core:PARAMETER name='order' value='news_date=DESC'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="/admin/pager.html">
+
+<grid:LIST id='list'>
+<table width=100%>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='news_list' file='newsline'></td></tr>
+<tr>
+  <th><grid:SELECTORS_TOGGLER></th>
+  <th><locale:STRING name='published_status'></th>
+  <th><locale:STRING name='date'></th>
+  <th><locale:STRING name='title'></th>
+  <th><locale:STRING name='publish_period'></th>
+  <th><locale:STRING name='actions'></th>
+</tr>
+<grid:ITERATOR>
+<tr>
+  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <td><core:INCLUDE file="published_status.html"></td>
+  <td><locale:DATE_FORMAT hash_id='news_date' locale_format='short_date'></td>
+  <td>
+    <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
+    <a href="{$path}" target="_blank">{$title}</a>
+  </td>
+  <td><locale:DATE_FORMAT hash_id='start_date' locale_format='short_date'> - <locale:DATE_FORMAT hash_id='finish_date' locale_format='short_date'></td>
+  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+</tr>
+</grid:ITERATOR>
+<core:INCLUDE file='/admin/grid_items/no_move_grid_footer.html'>
+</table>
+</grid:LIST>
+

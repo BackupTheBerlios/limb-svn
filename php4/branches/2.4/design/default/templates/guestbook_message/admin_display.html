@@ -1,0 +1,27 @@
+<core:WRAP file="admin/content_management_page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/normal.html">
+<br>
+<table width="100%" border="0" cellspacing="0" cellpadding="8">
+<tr>
+  <td>
+    <u>{$subject}</u>
+    <br>{$message}
+    <br><b>{$sender}</b>
+    <core:OPTIONAL for="sender_email"><a href='mailto:{$sender_email}'>@</a><br></core:OPTIONAL>
+    <core:OPTIONAL for="comment">
+    <span style='background-color: #eeeeee'>
+    {$comment}
+    <br><b>{$comment_author}</b>
+    <br>
+      <core:OPTIONAL for="comment_author_email">
+        <a href={$comment_author_email}>{$comment_author_email}</a>
+      </core:OPTIONAL>
+    </span>
+    </core:OPTIONAL>
+  </td>
+</tr>
+</table>
+
+</fetch:MAPPED>

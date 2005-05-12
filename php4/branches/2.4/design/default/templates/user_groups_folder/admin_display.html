@@ -1,0 +1,18 @@
+<core:WRAP file="admin/site_management_page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/normal.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='user_groups' >
+  <core:PARAMETER name='loader_class_name' value='user_group'>
+  <core:PARAMETER name='order' value='priority=ASC'>
+</fetch:SUB_BRANCH>
+
+<grid:LIST id='user_groups'>
+<table>
+<tr><td colspan='100' class='btitle1' height='3'><locale:STRING name='user_groups_list' file='user_group'></td></tr>
+<core:INCLUDE file='/admin/grid_items/final_level_no_publish_grid_body.html'>
+<core:INCLUDE file='/admin/grid_items/no_move_grid_footer.html'>
+</table>
+</grid:LIST>
