@@ -26,7 +26,7 @@ class news_folder_controller extends site_object_controller
             'action_path' => '/news/create_news_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_newsline', 'newsline'),
             'can_have_access_template' => true,
         ),
@@ -36,7 +36,7 @@ class news_folder_controller extends site_object_controller
             'action_name' => strings :: get('edit_news_folder', 'newsline'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/full_edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
     );
   }

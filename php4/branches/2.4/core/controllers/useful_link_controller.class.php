@@ -23,7 +23,7 @@ class useful_link_controller extends site_object_controller
             'template_path' => '/admin/object_detail_info.html',
             'popup' => true,
             'JIP' => true,
-            'img_src' => '/shared/images/details.gif',
+            'icon' => 'details',
             'action_name' => strings :: get('detail_info'),
         ),
         'edit' => array(
@@ -32,14 +32,14 @@ class useful_link_controller extends site_object_controller
             'action_name' => strings :: get('edit_link', 'useful_link'),
             'action_path' => '/useful_link/edit_useful_link_action',
             'template_path' => '/useful_link/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
         'publish' => array(
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/publish.gif',
+            'icon' => 'publish',
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
@@ -47,7 +47,7 @@ class useful_link_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/unpublish.gif',
+            'icon' => 'unpublish',
             'can_have_access_template' => true,
         ),
         'delete' => array(
@@ -56,7 +56,7 @@ class useful_link_controller extends site_object_controller
             'action_name' => strings :: get('delete_link', 'useful_link'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'icon' => 'delete'
         ),
     );
   }

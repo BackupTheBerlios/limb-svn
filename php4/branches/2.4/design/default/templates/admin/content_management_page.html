@@ -1,33 +1,78 @@
+<html>
 <core:INCLUDE file="/admin/include/admin_top.html">
-<!--BEGIN: layout-->
+<body>
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+  <tr>
+    <td height="100%">
+      <div id="lo-place-left">
+      <!--BEGIN:[ LEFT COLUMN ]-->
+      <core:INCLUDE file="/admin/navigation/content_management.html">
 
-<!--BEGIN: body-->
-<table width=100% border=0 cellspacing=0 cellpadding=0>
-<tr>
-  <td valign='top' style='padding:10px'>
-  <div id="left_menu" style='display: block;'>
-    <img src='/shared/images/1x1.gif' width='160px' height='1px'>
-    <core:INCLUDE file="/navigation/content_management_admin.html">
-  </div>
-  </td>
-  <td align='right' valign='top'><img id='img_left_menu' src='/shared/images/minus.gif' onclick='this.style.cursor = "default"; toggle_submenu("left_menu");' alt='Show/Hide' title='Show/Hide'></td>
-  <td width=1 class=com2><img src='/shared/images/1x1.gif'></td>
-  <td width=100% valign=top style='padding:10px 20px 30px 20px'>
-    <core:INCLUDE file="/admin/include/page_data.html">
-    <core:PLACEHOLDER id="content">
-  </td>
-  <td width=1 class=com2><img src='/shared/images/1x1.gif'></td>
-  <td align='right' valign='top'><img id='img_right_menu' src='/shared/images/minus.gif' onclick='this.style.cursor = "default"; toggle_submenu("right_menu");' alt='Show/Hide' title='Show/Hide'></td>
-  <td valign='top' style='padding:10px'>
-  <div id="right_menu" style='display: block;'>
-    <img src='/shared/images/1x1.gif' width='160px' height='1px'>
-    <core:INCLUDE file="/admin/include/session_history.html">
-  </div>
-  </td>
-</tr>
-</table>
-<!--END: body-->
+      <!--END:[ LEFT COLUMN ]-->
+      </div>
+      <img src="/shared/images/1x1.gif" width="180">
+    </td>
+    <td height="100%" width="100%">
+    <div id="lo-place-center" valign="top">
+    <!--BEGIN:[ CENTER ]-->
+      <core:PLACEHOLDER id="content">
+    <!--END:[ CENTER ]-->
+    </div>
+    </td>
+    <td height="100%">
+      <div id="lo-place-right">
+      <!--BEGIN:[ RIGHT COLUMN ]-->
+      <table border="0" cellpadding="0" cellspacing="10" width="100%">
+      <tr>
+        <td>
+          <!--BEGIN:[ security ]-->
+          <span behavior="CShowHide" id="security">
+          <table border="0" cellpadding="0" cellspacing="0" class="panel" width="100%" height="1">
+          <tr>
+            <td>
+              <span id="security_minus">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <td background='/shared/images/page/tab2/1.gif' class="icon"><img alt="Security" src="/shared/images/icon/context/24/security.gif"></td>
+                <td background='/shared/images/page/tab2/2.gif' class="label"><nobr>Security</nobr></td>
+                <td><img alt="-" src="/shared/images/page/tab2/minus.gif"></td>
+              </tr>
+              </table>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td><span id="security_body">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <td class="content">
+                <!--BEGIN:[ content ]-->
+                <ul>
+                <li><a href=''>User group</a>
+                <li><a href=''>Users</a>
+                <li><a href=''>Controllers</a>
+                <li><a href=''>Objects access</a>
+                </ul>
+                <!--END:[ content ]-->
+                </td>
+                <td class="shadow"><img src='/shared/images/1x1.gif' width=3 height=100%></td>
+              </tr>
+              </table></span>
+            </td>
+          </tr>
+          <tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><img src="/shared/images/1x1.gif" width="3"></td><td width="100%"><img src="/shared/images/1x1.gif" class="shadow" height="3" width="100%"></td></tr></table></td></tr>
+          </table>
+          </span>
+          <!--END:[ security ]-->
+        </td>
+      </tr>
+      </table>
+      <!--END:[ RIGHT COLUMN ]-->
+      </div>
+      <img src="/shared/images/1x1.gif" width="180">
+    </td>
+  </tr>
+  </table>
 
-<!--END: layout-->
 </body>
 </html>

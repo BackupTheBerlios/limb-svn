@@ -1,0 +1,29 @@
+/*popup*/
+.left-line{background-color:7A7AF5; background-repeat:repeat-x; background-image:url(../../shared/images/page/bgr/9.gif); }
+.left-line fieldSet{border-color:#E6E6E6; float:none; padding:0px; margin:0px}
+.left-line fieldSet legend{color:#E6E6E6; font:9pt Tahoma; margin:0}
+.left-line .action .icon{text-align:center; padding:1px 5px 5px 5px}
+.left-line .action a{color:ffffff; font:8pt Tahoma}
+.left-line .i{background-color:B7B7B7;border-top:solid 1px #5B5BB7;}
+
+#lo-center{position:absolute; z-index:3; overflow:-moz-scrollbars-vertical; overflow-y:visible; border:solid 0px; top:0; left:101px; border-right:solid 1px #5B5BB7; border-left:solid 1px #5B5BB7;}
+
+
+fieldSet.popup{float:none;padding:0 8px 8px 8px; margin:0;}
+fieldSet.popup div.div{padding:8px 0 0px 0; float:none; display:block}
+fieldSet.popup legend a:hover{text-decoration:none}
+fieldSet.popup legend{padding:0px 2px 0 2px;}
+
+/*fieldset tabs*/
+.tab-fieldset{color:#808080; padding:1px 4px 1px 4px;}
+.tab-fieldset-active{font:bold 9pt Tahoma; color:#808080; border:solid 0px #808080; border-bottom:0px; padding:1px 4px 1px 4px;}
+
+/*imageformat*/
+.tab-imageformat img{ -moz-opacity:0.2; opacity: 0.2; filter:alpha(opacity: 50) Gray; border:0}
+.tab-imageformat-active img{color:#808080; font:bold 9pt Tahoma;}
+
+/*fieldset tabs 2*/
+.tab-fieldset-2{color:#808080; padding:1px 4px 1px 4px;}
+.tab-fieldset-2-active{font:bold 9pt Tahoma; color:#808080; padding:1px 4px 1px 4px;}
+
+.image-position .fields td{padding:1px 4px 1px 0px}

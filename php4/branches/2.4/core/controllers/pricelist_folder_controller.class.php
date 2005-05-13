@@ -27,14 +27,14 @@ class pricelist_folder_controller extends site_object_controller
             'action_name' => strings :: get('set_metadata'),
             'action_path' => '/site_object/set_metadata_action',
             'template_path' => '/site_object/set_metadata.html',
-            'img_src' => '/shared/images/configure.gif'
+            'icon' => 'configure'
         ),
         'create_pricelist_object' => array(
             'template_path' => '/pricelist_object/create.html',
             'action_path' => '/pricelist_object/create_pricelist_object_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_pricelist_object', 'pricelist'),
             'can_have_access_template' => true,
         ),
@@ -43,7 +43,7 @@ class pricelist_folder_controller extends site_object_controller
             'action_path' => '/site_object/edit_action',
             'popup' => true,
             'JIP' => true,
-            'img_src' => '/shared/images/edit.gif',
+            'icon' => 'edit',
             'action_name' => strings :: get('edit_pricelist_folder', 'pricelist'),
         ),
         'publish' => array(
@@ -51,7 +51,7 @@ class pricelist_folder_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/publish.gif',
+            'icon' => 'publish',
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
@@ -59,7 +59,7 @@ class pricelist_folder_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/unpublish.gif',
+            'icon' => 'unpublish',
             'can_have_access_template' => true,
         ),
         'delete' => array(
@@ -68,7 +68,7 @@ class pricelist_folder_controller extends site_object_controller
             'action_name' => strings :: get('delete_pricelist_folder', 'pricelist'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'icon' => 'delete'
         ),
     );
   }

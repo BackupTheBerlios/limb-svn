@@ -26,7 +26,7 @@ class not_found_page_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
         'delete' => array(
             'JIP' => true,
@@ -34,7 +34,7 @@ class not_found_page_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'icon' => 'delete'
         ),
     );
   }

@@ -28,7 +28,7 @@ class message_controller extends site_object_controller
             'action_path' => '/message/create_message_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_message','message'),
             'can_have_access_template' => true,
         ),
@@ -38,7 +38,7 @@ class message_controller extends site_object_controller
             'action_name' => strings :: get('edit_message','message'),
             'action_path' => '/message/edit_message_action',
             'template_path' => '/message/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
         'delete' => array(
             'JIP' => true,
@@ -46,7 +46,7 @@ class message_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'icon' => 'delete'
         ),
     );
   }

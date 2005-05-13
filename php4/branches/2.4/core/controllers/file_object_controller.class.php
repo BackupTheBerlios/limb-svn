@@ -25,7 +25,7 @@ class file_object_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/files/edit_file_action',
             'template_path' => '/file/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
         'delete' => array(
             'JIP' => true,
@@ -33,7 +33,7 @@ class file_object_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'icon' => 'delete'
         ),
     );
   }

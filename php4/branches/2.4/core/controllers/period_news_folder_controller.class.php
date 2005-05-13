@@ -26,7 +26,7 @@ class period_news_folder_controller extends site_object_controller
             'action_path' => '/period_news/create_period_news_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_newsline', 'newsline'),
             'can_have_access_template' => true,
         ),
@@ -36,7 +36,7 @@ class period_news_folder_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
         'delete' => array(
             'JIP' => true,
@@ -44,7 +44,7 @@ class period_news_folder_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'icon' => 'delete'
         ),
     );
   }

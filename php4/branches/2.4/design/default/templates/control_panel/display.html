@@ -1,76 +1,26 @@
 <html>
 <head>
-  <title><metadata:TITLE separator=' :: ' offset_path='/root'/> :: <core:SYS_PARAM name='site_title' type='char'></title>
-  <meta http-equiv='Content-Type' content='text/html; charset=windows-1251'>
-  <link rel='stylesheet' type="text/css" href="/shared/styles/admin.css">
-  <script language="javascript" src="/shared/js/common.js"></script>
-  <script language="javascript" src="/shared/js/tabs.js"></script>
-  <script language="javascript" src="/shared/js/hint.js"></script>
+<title>Site title</title>
+<meta http-equiv='Content-Type' content='text/html; charset=windows-1251'>
+<link rel='stylesheet' type="text/css" href="/shared/styles/main.css">
+<link rel='stylesheet' type="text/css" href="/shared/styles/common.css">
+<link rel='stylesheet' type="text/css" href="/shared/styles/page.css">
+<link rel='stylesheet' type="text/css" href="/shared/styles/dd.css">
+
+<script language="javascript" src="/shared/js/common.js"></script>
+<script language="javascript" src="/shared/js/cookie.js"></script>
+<script language="javascript" src="/shared/js/tabs.js"></script>
+
+<script language="javascript" src="/shared/js/htc.js"></script>
+<script language="javascript" src="/shared/js/htc.limb_cp.js"></script>
+<script language="javascript" src="/shared/styles/class.actions.js"></script>
+
+<script language="javascript" src="/shared/js/tabs-iframes.js"></script>
+<script language="javascript" src="/shared/js/iframe.js"></script>
+
 </head>
-<script>
-  var tabs = new tabs_container();
-
-  function get_frame(tab_id)
-  {
-    var iframe_name = tabs.tab_items[tab_id].data.iframe_name;
-    for(i=0; i<window.frames.length; i++)
-      if (window.frames[i].name == iframe_name)
-        return window.frames[i]
-  }
-
-  function activate_tab(tab)
-  {
-    var frm = get_frame(tab.id)
-    if (frm.location.href == 'about:blank' || frm.location.href == '')
-      if (last_tab_url = get_cookie(tab.id + '_last_url'))
-        frm.location.href = last_tab_url;
-      else
-        frm.location.href = tab.data.src;
-    refresh_url();
-  }
-
-  function go_home(tab_id)
-  {
-    var home_src = tabs.tab_items[tab_id].data.src;
-    var frm = get_frame(tab_id)
-    if (frm.location.href != home_src)
-      frm.location.href = home_src;
-  }
-
-  function reload(tab_id)
-  {
-    get_frame(tab_id).location.reload();
-  }
-
-  function refresh_url()
-  {
-    var frm = get_frame(tabs.active_tab.id)
-    if(location_bar = document.getElementById('active_iframe_url'))
-     location_bar.value = frm.location;
-  }
-
-  function goto_address()
-  {
-    href = '';
-    if(location_bar = document.getElementById('active_iframe_url'))
-     href = location_bar.value;
-
-    var frm = get_frame(tabs.active_tab.id)
-    frm.location.href = href;
-  }
-</script>
 <body>
-<table width=100% border=0 cellspacing=0 cellpadding=0 class=cp-header>
-<tr>
-  <td class=com1>
- <table width=100% border=0 cellspacing=0 cellpadding=0>
-    <tr>
-      <td align=left style='padding:4px 10px 0 12px'><img src='/shared/images/logo.limb.gif'>
-      <br><img src='/shared/images/1x1.gif' width=168 height=1></td>
-      <td width=100% ><core:INCLUDE file="admin/include/user_services.html"></td>
-      <td valign=middle width='1%' nowrap></td>
-    </tr>
-  </table>
+<!--BEGIN: body-->
   <fetch:SUB_BRANCH target="tabs_header, tabs_body" >
     <core:PARAMETER name='loader_class_name' value='navigation_item' >
     <core:PARAMETER name='path' value='/root/admin/navigation' >
@@ -78,86 +28,147 @@
     <core:PARAMETER name='depth' value='1'>
   </fetch:SUB_BRANCH>
 
-
-  <grid:LIST id='tabs_header'>
-  <table width='100%' border='0' cellspacing='0' cellpadding='0' class="tabulator">
+<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
   <tr>
-    <td class="tab" style='padding:0 0 0 10px' nowrap align=left>
-    <b><locale:STRING name='limb_cp'></b>
-    <br><img src='/shared/images/1x1.gif' width=168 height=1>
-    </td>
-    <grid:ITERATOR>
-      <td id='tab_{$identifier}'>
-        <table border='0' cellspacing='0' cellpadding='0' style='height:100%'>
+    <td valign="bottom" id="lo-place-top" width="100%"><div>
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
-          <td nowrap class="tab">
-          <a href='JavaScript:void(0);'>{$title}</a>
-          <a href="JavaScript:go_home('tab_{$identifier}')"><img src='/shared/images/icons/home.gif' alt='Home page of this tab' title='Home page of this tab'></a>
-          <a href="JavaScript:reload('tab_{$identifier}');"><img src='/shared/images/icons/reload.gif' alt='Reload this tab' title='Reload this tab'></a>
+          <td valign="bottom" width="100%">
+            <!--BEGIN:[ tabulator ]-->
+            <table class="tabulator" border="0" cellpadding="0" cellspacing="0" width="100%" background="/shared/images/main/bgr/1.gif">
+              <tr>
+                <td class="tab-empty" style="padding: 6px 0 4px 0">
+                  <div style="width:180px" align="center"><img alt="LIMB CMS" title="LIMB CMS" src="/shared/images/logo.limb-cp.gif"><div>
+                </td>
+                <grid:LIST id='tabs_header'>
+                  <grid:ITERATOR>
+                    <grid:SEPARATOR><td class="tab-space"><img src="/shared/images/1x1.gif"></td></grid:SEPARATOR>
+                    <td class="tab" id="tab_{$identifier}">
+                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td class="label" id='tab-label'><nobr><a href="javascript:void(0);">{$title}</a></nobr></td>
+                        <td class="arr">
+                          <span behavior="CDDTab" ddalign="vbl">
+                            <img src="/shared/images/1x1.gif">
+                            <span id="content" style="display: none;">
+                              <div class="dd-tab-container">
+                              <table border="0" cellpadding="0" cellspacing="0">
+                              <tr><td class="top-line"></td></tr>
+                              <tr>
+                                <td><span behavior="CRow" target="-2"></span><img src="/shared/images/icon/common/12/home.gif"></td>
+                                <td nowrap="nowrap"><a href="javascript:go_home('tab_{$identifier}')">Home page of this tab</a></td>
+                              </tr>
+                              <tr>
+                                <td><span behavior="CRow" target="-2"></span><img src="/shared/images/icon/common/12/reload.gif"></td>
+                                <td nowrap="nowrap"><a href="javascript:reload('tab_{$identifier}')">Reload this tab</a></td>
+                              </tr>
+                              </table>
+                              </div>
+                            </span>
+                          </span>
+                        </td>
+                        <td class="corner"><img src="/shared/images/1x1.gif"></td>
+                      </tr>
+                      </table>
+                    </td>
+                  </grid:ITERATOR>
+                </grid:LIST>
+
+                <td width="100%"></td>
+              </tr>
+            </table>
+            <!--END:[ tabulator ]-->
+            <!--BEGIN:[ breadcrumbs ]-->
+            <table border="0" class="path" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td style='padding:0 0 0 10px' >
+                <nobr>
+                  <a href=''>Main</a> » <a href=''>Administration</a>
+                </nobr>
+              </td>
+              <td width="100%">
+              </td>
+              <td>
+                <core:INCLUDE file="/admin/include/user_services.html">
+              </td>
+            </tr>
+            </table>
+            <!--END:[ breadcrumbs ]-->
           </td>
         </tr>
-        </table>
-      </td>
-    </grid:ITERATOR>
-    <td class=tab width=100%>&nbsp;</td>
-  </tr>
-  </table>
-  </grid:LIST>
-  </td>
-</tr>
-</table>
-
-
-
-<grid:LIST id='tabs_body'>
-  <grid:ITERATOR>
-
-    <div id='tab_{$identifier}_content'>
-      <iframe src='about:blank' id='iframe_{$identifier}' name='iframe_{$identifier}' width='100%' height='83%' frameborder=0></iframe>
-    </div>
-    <script type='text/javascript'>
-      tab_data = {'id': 'tab_{$identifier}', 'activate_handler': activate_tab, 'src': '{$url}', 'iframe_name': 'iframe_{$identifier}'}
-      tabs.register_tab_item(tab_data);
-    </script>
-
-  </grid:ITERATOR>
-
-<script type='text/javascript'>
-  if (active_tab = get_cookie('active_tab'))
-    tabs.activate(active_tab);
-  else
-    tabs.activate('');
-
-//  var debug_body_onkeypress = document.body.onkeydown
-//  document.body.onkeydown = function()
-//  {
-//    if(window.event.shiftKey)
-//    if(window.event.keyCode == 192)
-//    {
-//      if(typeof(is_debug_info_enabled)=='undefined') is_debug_info_enabled = 1
-//      show_hide_debug_info_all_frames(is_debug_info_enabled)
-//      is_debug_info_enabled = !is_debug_info_enabled
-//    }
-//
-//    debug_body_onkeypress()
-//  }
-
-</script>
-</grid:LIST>
-<table border='0' cellspacing='4' cellpadding='0' align=center width=100%>
-  <tr><td bgcolor='#6484D3' height='3' colspan='2'></td></tr>
-  <tr'>
-    <td width='100%' valign='middle'>
-      <core:LITERAL>
-        <div id='location_bar'>
-        <form onsubmit='goto_address();return false;'>
-        <input type='text' id='active_iframe_url' name='active_iframe_url' class='input' size='60'>
-        <input type='submit' class='button' value='GO!'>
-        </form>
-        </div>
-      </core:LITERAL>
+      </table>
+      </div>
     </td>
-    <td align="center"><nobr>Copyright &copy; 2004 <a href='http://bit-creative.com'>BIT</a></nobr></td>
+  </tr>
+  <tr>
+    <td class="tabulator-body" height="100%" valign="top">
+      <!--BEGIN:[ middle ]-->
+    <grid:LIST id='tabs_body'>
+      <grid:ITERATOR>
+      <div id="tab_{$identifier}_content" style="width: 100%; height: 100%; display: none;">
+        <iframe id="iframe_{$identifier}" name="iframe_{$identifier}" src="about:blank" frameborder="0" height="100%" width="100%"></iframe>
+      </div>
+      <script>
+          tab_data = {'id': 'tab_{$identifier}', 'activate_handler': activate_tab, 'src': '{$url}', 'iframe_name': 'iframe_{$identifier}'}
+          tabs.register_tab_item(tab_data)
+      </script>
+      </grid:ITERATOR>
+    </grid:LIST>
+      <script>tabs.activate_default()</script>
+
+      <!--END:[ middle ]-->
+    </td>
+  </tr>
+  <tr>
+    <td class="col1" height="5"></td>
+  </tr>
+  <tr>
+    <td background="/shared/images/main/bgr/3.gif">
+      <!--BEGIN:[ footer ]-->
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" height="35">
+      <tr>
+        <td style='padding:0 20px 5px 20px'>
+        <span behavior='CDDLayout' ddalign="vtr" class="CDDLayout">
+          <img alt="layout" title="Change layout" src="/shared/images/icon/common/16/layout.gif">
+          <span id="content" style="display: none;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="layout">
+            <tr>
+              <td height="12" class="lo-top">&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td class="lo-left"><img src="/shared/images/1x1.gif" height="55" width="14"></td>
+                  <td class="lo-center" width="100%"><img src="/shared/images/icon/common/24/panel.gif"></td>
+                  <td class="lo-right"><img src="/shared/images/1x1.gif" height="55" width="14"></td>
+                </tr>
+                </table>
+              </td>
+            </tr>
+            </table>
+          </span>
+        </span>
+        </td>
+        <td width="100%">
+          <!--BEGIN:[ url ]-->
+          <table border="0" cellpadding="0" cellspacing="0">
+          <core:LITERAL>
+          <form onsubmit="goto_address();return false;">
+          <tr>
+            <td><input id="active_iframe_url" name="active_iframe_url" class="input" size="60" type="text"></td>
+            <td><input class="button" value="  GO!  " type="submit"></td>
+          </tr>
+          </form>
+          </core:LITERAL>
+          </table>
+          <!--END:[ url ]-->
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+      </table>
+      <!--END:[ footer ]-->
+    </td>
   </tr>
 </table>
 </body>

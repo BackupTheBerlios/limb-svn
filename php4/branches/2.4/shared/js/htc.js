@@ -1,167 +1,65 @@
-tmp_window_onload = window.onload
-window.onload = function()
+htc_onload = function()
 {
-  if(window != top)
-    if(top.onload_iframe)
-      top.onload_iframe()
-  if(tmp_window_onload) tmp_window_onload()
-
-  apply_behavior()
+  try{window.CSSMAP = build_cssClasses_map(document)}catch(ex){/*alert(ex)*/}
+  apply_behavior(document, document, 'span', 'behavior')
+  apply_behavior(document, document, 'input', 'behavior')
+  apply_behavior(document, document, 'select', 'behavior')
 }
-function apply_behavior()
+add_event(window, 'load', htc_onload, true)
+
+function apply_behavior(obj, parent, tag, attr_name)
 {
-  CLASS_MAP = build_class_map(document)
-  var arr = document.getElementsByTagName('*')
-  for(var v in arr)
+  var arrTags = obj.getElementsByTagName(tag)
+  for(var i=0; i<arrTags.length; i++)
+    if(arrTags[i].getAttribute(attr_name))
+      behavior(arrTags[i].getAttribute('behavior'), arrTags[i], parent)
+}
+function behavior(class_name, obj, parent)
+{
+  var cl = window[class_name]
+	if(!cl)return
+  var target = obj.getAttribute('target')*1
+  var o = obj
+  if(target < 0) while(++target<=0) o = is_gecko ? o.parentNode : o.parentElement
+  else if(target > 1) while(--target>=0) o = o.firstChild
+
+  for(var i in cl.prototype) o[i] = cl.prototype[i]
+  o.constructor = cl
+  o.init_obj = obj
+  o.constructor(parent)
+
+  return o
+}
+//===========================
+// [ common super method ]
+//===========================
+_extends = function(subclass, superclass)
+{
+	var target = subclass.prototype
+	if(!target) target = subclass
+	
+	target._super = superclass
+	for(var v in superclass.prototype)
   {
-
-    if(typeof(arr[v]) != 'undefined' && CLASS_MAP[arr[v].className])
-    {
-      try
-      {
-        var clss = window[CLASS_MAP[arr[v].className]].prototype
-
-      }
-      catch(ex)
-      {
-        confirm('apply_behavior() - NO CLASS DEFINED: ' + CLASS_MAP[arr[v].className])
-        break
-      }
-      for(var j in clss)
-      {
-        arr[v][j] = clss[j]
-      }
-    }
+//		if(!target[v])
+		target[v] = superclass.prototype[v]
   }
+  if(typeof(subclass) == 'object')
+  		superclass.call(subclass)
+	return subclass
 }
-function build_class_map(doc)
+
+
+function build_cssClasses_map(doc)
 {
   var arr = []
   for(var i = 0; i<doc.styleSheets.length; i++)
   {
     var rules = doc.styleSheets[i].rules
     if(is_gecko) rules = doc.styleSheets[i].cssRules
-
+		
     for(var j = 0; j<rules.length; j++)
-    {
-      var rule = rules[j];
-      if(rule.style.page)
-      {
-        arr[rule.selectorText.substr(1)] = rule.style.page
-      }
-    }
+      arr[rules[j].selectorText.substr(1)] = rules[j].style
   }
-
   return arr
 }
-
-//=======================
-//  ACTIONS
-//=======================
-
-function debug_info(){}
-debug_info.prototype.onclick = function()
-{
-//  alert(this.alt)
-	WS = new ActiveXObject("WScript.shell");
-	WS.exec("uedit32.exe " + this.alt);
-}
-
-
-function action(){}
-action.prototype.onmouseover = function()
-{
-  this.style.backgroundImage = "url(/shared/images/rect.gif)"
-
-}
-action.prototype.onmouseout = function()
-{
-  this.style.backgroundImage = ""
-}
-
-function row(){}
-row.prototype.onmouseover = function()
-{
-  this.style.backgroundColor='#F7F7F7'
-}
-row.prototype.onmouseout = function()
-{
-    this.style.backgroundColor=''
-}
-
-//
-//
-//
-function actions(){}
-actions.prototype.onmouseover = function()
-{
-  this.style.backgroundColor='#F7F7F7'
-
-//  if(this.isHover)return
-//  this.set_active()
-//  this.isHover = true
-}
-actions.prototype.onmouseout = function()
-{
-  this.style.backgroundColor=''
-
-//  if(this.HT()) return
-//  this.set_normal()
-//  this.isHover = false
-
-}
-actions.prototype.set_active = function()
-{
-  try{
-  var acts = this.get_jip_element('actions')
-  if(acts == null) return
-  acts.className = 'jip-actions-active'
-  var obj = this.get_jip_element('object')
-  obj.className = 'jip-object-active'
-
-  this.get_jip_element('l').src = '/shared/images/actl.gif'
-  this.get_jip_element('r').src = '/shared/images/actr.gif'
-  }
-  catch(ex)
-  {
-//    alert('JIP ACTION: initialization fail')
-  }
-}
-actions.prototype.set_normal = function()
-{
-  try{
-  var acts = this.get_jip_element('actions')
-  if(acts == null) return
-  acts.className = 'jip-actions'
-
-  this.get_jip_element('object').className = 'jip-object'
-
-  this.get_jip_element('l').src = '/shared/images/act1.gif'
-  this.get_jip_element('r').src = '/shared/images/act3.gif'
-  }
-  catch(ex)
-  {
-//    alert('JIP ACTION: initialization fail')
-  }
-}
-//
-// [ service]
-//
-actions.prototype.get_jip_element = function(jip_name)
-{
-  var arr = this.all
-  for(var i=0;i<arr.length; i++)
-    if(arr[i].jip == jip_name) return arr[i]
-  return null
-}
-actions.prototype.HT = function()
-{
-  var obj = this.document.elementFromPoint(event.x, event.y)
-  while(obj != null)
-  {
-    if(obj == this)return true
-    obj = obj.parentElement
-  }
-  return false
-}
-

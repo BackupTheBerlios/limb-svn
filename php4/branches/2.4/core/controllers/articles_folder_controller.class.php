@@ -27,14 +27,14 @@ class articles_folder_controller extends site_object_controller
             'action_name' => strings :: get('set_metadata'),
             'action_path' => '/site_object/set_metadata_action',
             'template_path' => '/site_object/set_metadata.html',
-            'img_src' => '/shared/images/configure.gif'
+            'icon' => 'configure'
         ),
         'create_article' => array(
             'template_path' => '/article/create.html',
             'action_path' => '/article/create_article_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_article', 'article'),
             'can_have_access_template' => true,
         ),
@@ -44,7 +44,7 @@ class articles_folder_controller extends site_object_controller
             'JIP' => true,
             'popup' => true,
             'action_name' => strings :: get('create_articles_folder', 'article'),
-            'img_src' => '/shared/images/new.folder.gif',
+            'icon' => 'new.folder',
             'can_have_access_template' => true,
         ),
         'edit' => array(
@@ -53,14 +53,14 @@ class articles_folder_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
         'publish' => array(
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/publish.gif',
+            'icon' => 'publish',
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
@@ -68,7 +68,7 @@ class articles_folder_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/unpublish.gif',
+            'icon' => 'unpublish',
             'can_have_access_template' => true,
         ),
         'delete' => array(
@@ -77,7 +77,7 @@ class articles_folder_controller extends site_object_controller
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'icon' => 'delete'
         ),
     );
   }

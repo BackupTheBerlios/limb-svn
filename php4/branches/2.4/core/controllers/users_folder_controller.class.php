@@ -28,7 +28,7 @@ class users_folder_controller extends site_object_controller
             'action_path' => '/user/create_user_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_user', 'user'),
             'can_have_access_template' => true,
         ),
@@ -38,7 +38,7 @@ class users_folder_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
     );
   }

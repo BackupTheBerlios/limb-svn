@@ -27,7 +27,7 @@ class files_folder_controller extends site_object_controller
             'template_path' => '/file/create.html',
             'action_name' => strings :: get('create_new_file', 'file'),
             'action_path' => '/files/create_file_action',
-            'img_src' => '/shared/images/new.generic.gif',
+            'icon' => 'new.generic',
             'JIP' => true,
             'popup' => true,
             'can_have_access_template' => true,
@@ -37,7 +37,7 @@ class files_folder_controller extends site_object_controller
             'action_path' => '/files_folder/create_files_folder_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.folder.gif',
+            'icon' => 'new.folder',
             'action_name' => strings :: get('create_files_folder', 'file'),
             'can_have_access_template' => true,
         ),
@@ -47,14 +47,14 @@ class files_folder_controller extends site_object_controller
             'action_name' => strings :: get('edit_files_folder', 'file'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/full_edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
         'delete' => array(
             'template_path' => '/site_object/delete.html',
             'action_path' => 'form_delete_site_object_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/rem.gif',
+            'icon' => 'delete',
             'action_name' => strings :: get('delete'),
         ),
         'file_select' => array(

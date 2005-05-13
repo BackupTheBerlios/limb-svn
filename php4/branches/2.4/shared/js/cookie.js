@@ -1,3 +1,69 @@
+/*
+* May be some duplication functions added by Antonio
+*/
+function setCookieWithId(cookiename,id,val)
+{
+  var cookie = "";
+  cookie = get_cookie(cookiename);
+
+  found=0;
+  newcookie=Array();
+
+  if(cookie!=null)
+  {
+    cookies = cookie.split("_DIV_");
+    for(i=0;i<cookies.length;i++)
+    {
+      c = cookies[i];
+      cc = c.split("_EQ_");
+      //alert(cc[0]+'='+id+'  ')
+      if(cc[0]==id)
+      {
+        c = id+'_EQ_'+val;
+        found=1;
+      }
+      newcookie[i]=c;
+    }
+  }
+  if(!found)
+    if(newcookie.length==0)
+      newcookie[0] = id+'_EQ_'+val;
+    else
+      newcookie[i] = id+'_EQ_'+val;
+
+  newcookie = newcookie.join("_DIV_");
+  set_cookie(cookiename,newcookie)//,expires,COOKIE_PATH, COOKIE_DOMAIN);
+
+}
+
+function getCookieWithId(cookiename,id)
+{
+  var cookie = "";
+  cookie = get_cookie(cookiename);
+  if(cookie==''||cookie==null)
+    return;
+
+  var found=0;
+
+   cookies = cookie.split("_DIV_");
+
+    for(i=0;i<cookies.length;i++)
+    {
+       cc = cookies[i].split("_EQ_");
+
+      if(cc[0]==id)
+      {
+        found=1;
+        break;
+      }
+
+    }
+  if(!found)
+    return;
+  return cc[1];
+}
+///////////////////////////////////////
+
 function get_cookie(name)
 {
   var a_cookie = document.cookie.split("; ");

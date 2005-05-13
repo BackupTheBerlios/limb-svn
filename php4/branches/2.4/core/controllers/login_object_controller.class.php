@@ -33,7 +33,7 @@ class login_object_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
         'change_user_locale' => array(
             'popup' => true,

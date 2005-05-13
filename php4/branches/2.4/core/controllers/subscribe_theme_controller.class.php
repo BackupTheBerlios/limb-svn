@@ -27,7 +27,7 @@ class subscribe_theme_controller extends site_object_controller
             'template_path' => '/admin/object_detail_info.html',
             'popup' => true,
             'JIP' => true,
-            'img_src' => '/shared/images/details.gif',
+            'icon' => 'details',
             'action_name' => strings :: get('detail_info'),
         ),
         'create_subscribe_mail' => array(
@@ -35,7 +35,7 @@ class subscribe_theme_controller extends site_object_controller
             'action_path' => '/subscribe_mail/create_subscribe_mail_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_subscribe_mail', 'subscribe'),
             'can_have_access_template' => true,
         ),
@@ -44,7 +44,7 @@ class subscribe_theme_controller extends site_object_controller
             'JIP' => true,
             'action_path' => '/subscribe_theme/edit_subscribe_theme_action',
             'template_path' => '/subscribe_theme/edit.html',
-            'img_src' => '/shared/images/edit.gif',
+            'icon' => 'edit',
             'action_name' => strings :: get('edit_subscribe_theme', 'subscribe'),
         ),
         'publish' => array(
@@ -52,7 +52,7 @@ class subscribe_theme_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/publish.gif',
+            'icon' => 'publish',
             'template_path' => '/news_object/display.html',
             'can_have_access_template' => true,
         ),
@@ -61,7 +61,7 @@ class subscribe_theme_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/unpublish.gif',
+            'icon' => 'unpublish',
             'template_path' => '/news_object/display.html',
             'can_have_access_template' => true,
         ),
@@ -71,7 +71,7 @@ class subscribe_theme_controller extends site_object_controller
             'action_name' => strings :: get('delete_subscribe_theme', 'subscribe'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'icon' => 'delete'
         ),
     );
   }

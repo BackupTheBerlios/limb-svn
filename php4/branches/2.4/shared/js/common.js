@@ -42,3 +42,8 @@ window.onload = function()
   post_load_handler();
 }
 
+function isset(obj)
+{
+  return typeof(obj) != 'undefined' && obj != null
+}
+

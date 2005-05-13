@@ -1,0 +1,57 @@
+<grid:LIST id='admin_menu'>
+<table border="0" cellpadding="0" cellspacing="10" width="100%">
+  <grid:ITERATOR>
+  <tr>
+    <td>
+          <!--BEGIN:[ {$identifier} ]-->
+          <span behavior="CShowHide" id="{$identifier}">
+          <table border="0" cellpadding="0" cellspacing="0" class="panel" width="100%" height="1">
+          <tr>
+            <td>
+              <span id="{$identifier}_minus">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" class="admin-menu">
+              <tr>
+                <td class="icon">
+                <limb:CONTEXT_ICON variation='24'>
+                </td>
+                <td class="label"><nobr>{$title}</nobr></td>
+                <td><img alt="-" src="/shared/images/page/tab2/minus.gif"></td>
+              </tr>
+              </table>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td><span id="{$identifier}_body">
+            <core:DATA_TRANSFER hash_id='child_items' target='navi_children'>
+            <grid:LIST id='navi_children'>
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <td class="content">
+                <!--BEGIN:[ {^identifier} content ]-->
+                <ul>
+                <grid:ITERATOR>
+                  <li>
+                    <core:OPTIONAL for="new_window"><a href='{$url}' target="_blank">{$title}</a></core:OPTIONAL>
+                    <core:DEFAULT for="new_window"><a href='{$url}'>{$title}</a></core:DEFAULT>
+                  </li>
+                </grid:ITERATOR>
+                </ul>
+                <!--END:[ {^identifier} content ]-->
+                </td>
+                <td class="shadow"><img src='/shared/images/1x1.gif' width=3 height=100%></td>
+              </tr>
+              </table>
+            </grid:LIST>
+            </span>
+            </td>
+          </tr>
+          <tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><img src="/shared/images/1x1.gif" width="3"></td><td width="100%"><img src="/shared/images/1x1.gif" class="shadow" height="3" width="100%"></td></tr></table></td></tr>
+          </table>
+          </span>
+          <!--END:[ {$identifier} ]-->
+    </td>
+  </tr>
+  </grid:ITERATOR>
+</table>
+</grid:LIST>

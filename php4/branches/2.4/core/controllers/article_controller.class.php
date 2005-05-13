@@ -25,13 +25,13 @@ class article_controller extends site_object_controller
             'action_name' => strings :: get('set_metadata'),
             'action_path' => '/site_object/set_metadata_action',
             'template_path' => '/site_object/set_metadata.html',
-            'img_src' => '/shared/images/configure.gif'
+            'icon' => 'configure'
         ),
         'admin_detail' => array(
             'template_path' => '/admin/object_detail_info.html',
             'popup' => true,
             'JIP' => true,
-            'img_src' => '/shared/images/admin_detail.gif',
+            'icon' => 'admin_detail',
             'action_name' => strings :: get('detail_info'),
         ),
         'print_version' => array(
@@ -45,14 +45,14 @@ class article_controller extends site_object_controller
             'action_name' => strings :: get('edit_article', 'article'),
             'action_path' => '/article/edit_article_action',
             'template_path' => '/article/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
         'publish' => array(
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/publish.gif',
+            'icon' => 'publish',
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
@@ -60,7 +60,7 @@ class article_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/unpublish.gif',
+            'icon' => 'unpublish',
             'can_have_access_template' => true,
         ),
         'delete' => array(
@@ -69,7 +69,7 @@ class article_controller extends site_object_controller
             'action_name' => strings :: get('delete_article', 'article'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'icon' => 'delete'
         ),
     );
   }

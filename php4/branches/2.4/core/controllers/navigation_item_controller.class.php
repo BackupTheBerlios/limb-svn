@@ -29,7 +29,7 @@ class navigation_item_controller extends site_object_controller
             'action_path' => '/navigation_item/create_navigation_item_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_menu_item','navigation'),
             'can_have_access_template' => true,
         ),
@@ -39,14 +39,14 @@ class navigation_item_controller extends site_object_controller
             'action_name' => strings :: get('edit_menu_item', 'navigation'),
             'action_path' => '/navigation_item/edit_navigation_item_action',
             'template_path' => '/navigation_item/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
         'publish' => array(
             'popup' => true,
             'JIP' => true,
             'action_name' => strings :: get('publish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/publish.gif',
+            'icon' => 'publish',
             'can_have_access_template' => true,
         ),
         'unpublish' => array(
@@ -54,7 +54,7 @@ class navigation_item_controller extends site_object_controller
             'JIP' => true,
             'action_name' => strings :: get('unpublish'),
             'action_path' => '/doc_flow_object/set_publish_status_action',
-            'img_src' => '/shared/images/unpublish.gif',
+            'icon' => 'unpublish',
             'can_have_access_template' => true,
         ),
         'delete' => array(
@@ -63,7 +63,7 @@ class navigation_item_controller extends site_object_controller
             'action_name' => strings :: get('delete_menu_item', 'navigation'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'img_src' => '/shared/images/rem.gif'
+            'icon' => 'delete'
         ),
     );
   }

@@ -28,7 +28,7 @@ class user_groups_folder_controller extends site_object_controller
             'action_path' => '/user_group/create_user_group_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.folder.gif',
+            'icon' => 'new.folder',
             'action_name' => strings :: get('create_user_group', 'user_group'),
         ),
         'edit' => array(
@@ -37,7 +37,7 @@ class user_groups_folder_controller extends site_object_controller
             'action_name' => strings :: get('edit'),
             'action_path' => '/site_object/edit_action',
             'template_path' => '/site_object/edit.html',
-            'img_src' => '/shared/images/edit.gif'
+            'icon' => 'edit'
         ),
     );
   }

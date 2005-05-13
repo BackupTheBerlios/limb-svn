@@ -27,14 +27,14 @@ class useful_links_folder_controller extends site_object_controller
             'action_name' => strings :: get('set_metadata'),
             'action_path' => '/site_object/set_metadata_action',
             'template_path' => '/site_object/set_metadata.html',
-            'img_src' => '/shared/images/configure.gif'
+            'icon' => 'configure'
         ),
         'create_link' => array(
             'template_path' => '/useful_link/create.html',
             'action_path' => '/useful_link/create_useful_link_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/new.generic.gif',
+            'icon' => 'new.generic',
             'action_name' => strings :: get('create_link', 'useful_link'),
             'can_have_access_template' => true,
         ),
@@ -43,7 +43,7 @@ class useful_links_folder_controller extends site_object_controller
             'action_path' => 'form_delete_site_object_action',
             'JIP' => true,
             'popup' => true,
-            'img_src' => '/shared/images/rem.gif',
+            'icon' => 'delete',
             'action_name' => strings :: get('delete'),
         ),
     );

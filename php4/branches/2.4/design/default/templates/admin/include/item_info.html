@@ -1,0 +1,72 @@
+    <span behavior="CDDMenu" ddalign="vbr" class="CDDMenu-page-actions">
+    <img src='/shared/images/icon/common/32/i.gif'><span id="content" style="display: none;">
+      <div class="dd-i-container">
+        <table border="0" cellpadding="4" cellspacing="1" class="line">
+        <tr>
+          <td class="title"><img src='/shared/images/icon/common/12/i.gif'></td>
+          <td nowrap class="info"><a href=''>Детальная информация</a></td>
+        </tr>
+        <tr>
+          <td nowrap class="title"><locale:STRING name='identifier'></td>
+          <td nowrap class="info">{$identifier}</td>
+        </tr>
+        <tr>
+          <td nowrap class="title"><locale:STRING name='title'></td>
+          <td nowrap class="info">{$title}</td>
+        </tr>
+        <tr>
+          <td nowrap class="title"><locale:STRING name='created_date'></td>
+          <td nowrap class="info"><locale:DATE_FORMAT hash_id='created_date' type='stamp' locale_format='short_date_time'></td>
+        </tr>
+        <tr>
+          <td nowrap class="title"><locale:STRING name='modified_date'></td>
+          <td nowrap class="info"><locale:DATE_FORMAT hash_id='modified_date' type='stamp' locale_format='short_date_time'></td>
+        </tr>
+        <tr>
+          <td nowrap class="title"><locale:STRING name='version'>:</td>
+          <td nowrap class="info">{$version}</td>
+        </tr>
+        <tr>
+          <td nowrap class="title"><locale:STRING name='language'></td>
+          <td nowrap class="info">{$locale_id}</td>
+        </tr>
+        <tr>
+          <td nowrap class="title"><locale:STRING name='controller_class_name'>:</td>
+          <td nowrap><span behavior="CDDMenu" ddalign="hbr" target="-1" class="CDDMenu-info">
+            <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+              <td><b class="action">{$controller_name}</b></td>
+              <td><img src='/shared/images/marker/arr1.gif'></td>
+            </tr>
+            </table>
+
+            <span id="content" style="display: none;">
+            <div class="dd-menu-container">
+            <div class="line">
+            <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+              <td><span behavior="CRow" target="-2"></span><img src="/shared/images/icon/common/12/change_controller.gif"></td>
+              <td nowrap="nowrap"><a href="">Сменить контроллер</a></td>
+            </tr>
+            <tr>
+              <td><span behavior="CRow" target="-2"></span></td>
+              <td nowrap="nowrap"><a href="">Set group access</a></td>
+            </tr>
+            <tr>
+              <td><span behavior="CRow" target="-2"></span></td>
+              <td nowrap="nowrap"><a href="">Set group access template</a></td>
+            </tr>
+            </table></div></div>
+            </span></span></td>
+        </tr>
+
+        <tr>
+          <td nowrap class="title"><locale:STRING name='object_type'></td>
+          <td nowrap class="info">{$class_name}</td>
+        </tr>
+        <tr>
+        </table>
+      </div>
+    </span></span>
+
+
