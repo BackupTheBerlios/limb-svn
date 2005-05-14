@@ -77,7 +77,7 @@ class edit_variations_action extends form_edit_site_object_action
 
     $this->object->update_variations();
 
-    $this->object->update_site_object_record();
+    $this->object->update(false);
 
     return true;
   }
