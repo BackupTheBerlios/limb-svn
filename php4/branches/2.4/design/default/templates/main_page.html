@@ -1,40 +1,25 @@
 <html>
 <head>
-	<title><metadata:TITLE separator=' :: ' /></title>
-	<metadata:CHARSET>
+  <title><metadata:TITLE separator=' :: ' /></title>
+  <metadata:CHARSET>
   <link href="/shared/styles/main.css" rel="stylesheet" type="text/css">
 
   <script language="javascript" src="/shared/js/rollover.js"></script>
   <script language="javascript" src="/shared/js/common.js"></script>
-	<script language="javascript" src="/design/main/js/form_errors.js"></script>
+  <script language="javascript" src="/design/main/js/form_errors.js"></script>
 
   <user:LOGGED_IN>
     <script language="javascript" src="/shared/js/htc.js"></script>
-    <script language="javascript" src="/shared/js/hint.js"></script>
     <script language="javascript" src="/shared/js/store_tab_url.js"></script>
   </user:LOGGED_IN>
 
-	<metadata:METADATA>
-	<meta name="description" content="{$description}">
-	<meta name="keywords" content="{$keywords}">
-	</metadata:METADATA>
+  <metadata:METADATA>
+  <meta name="description" content="{$description}">
+  <meta name="keywords" content="{$keywords}">
+  </metadata:METADATA>
 </head>
 
 <body>
-	<metadata:BREADCRUMBS>
-	<grid:LIST>
-		<grid:ITERATOR>
-			<core:DEFAULT for='is_last'>
-			{$title} >>
-			</core:DEFAULT>
-			<core:OPTIONAL for='is_last'>
-				{$title}
-			</core:OPTIONAL>
-		</grid:ITERATOR>
-	</grid:LIST>
-	</metadata:BREADCRUMBS>
-
-<br>
 <fetch:MAPPED>{$title}</fetch:MAPPED>
 <br>
 

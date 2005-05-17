@@ -54,12 +54,11 @@ function submit_form(form, form_action)
   form.submit();
 }
 
-function submit_grid_form(button, selector_id)
+function get_grid_form_action(selector_id)
 {
   menu = document.getElementById(selector_id);
   action = menu.options[menu.selectedIndex].value;
-  if(action != '')
-    submit_form(button.form, action);
+  return action;
 }
 
 function process_action_control(droplist)

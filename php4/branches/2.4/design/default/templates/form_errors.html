@@ -1,30 +1,23 @@
 <form:STATUS>
   <form:SUCCESS_STATUS>
-
-    <table width='100%'>
-      <tr class=com4><td>
-        <img src='/shared/images/success.gif'>
-        <font color='green'><b><locale:STRING name='operation_succeeded'></b></font><br><br>
-
+  <table width='100%'>
+    <tr class="com4"><td>
+      <img src='/shared/images/success.gif'>
+      <span color="green"><b><locale:STRING name='operation_succeeded'></b></span>
   </form:SUCCESS_STATUS>
 
   <form:ERROR_STATUS>
-
-    <table width='100%'>
-      <tr class=com4><td>
-
-        <img src='/shared/images/error.gif'>
-        <font color='red'><b><locale:STRING name='operation_failed'></b></font><br><br>
-
+  <table width='100%'>
+    <tr class="com4"><td>
+      <img src='/shared/images/error.gif'>
+      <span color='red'><b><locale:STRING name='operation_failed'></b></span>
   </form:ERROR_STATUS>
 </form:STATUS>
 
 <form:ERRORS target='errors' />
 
 <grid:LIST id='errors'>
-<grid:DEFAULT>
-</grid:DEFAULT>
-  <table width=100% border=0 cellspacing=0 cellpadding=0 class=error-block>
+  <table border="0" cellpadding="0" cellspacing="0" class="error-block" width="100%">
   <tr>
     <td>
       <locale:STRING name='form_had_errors'>

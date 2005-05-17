@@ -20,14 +20,14 @@ CDDAction.prototype.get_content = function()
   var str = '<table border=0 cellspacing=0 cellpadding=0 class=dd-menu-container style="border-left:solid 1px #0000B5">'
   for(var v in arr)
   {
-    if(typeof(arr[v])!='string')continue
+    //if(typeof(arr[v])!='string')continue
+    if(v == '_') continue;
     str += '<tr>'
-    str += '<td><span behavior="CRow" target="-2"></span><img src="' + arr_action_types[v]['icon'] + '"></td>'
-    str += '<td><nobr><a href="' + arr[v] + '">' + arr_action_types[v]['title'] + '</a></nobr></td>'
+    str += '<td><span behavior="CRow" target="-2"></span><img src="' + arr[v]['icon'] + '"></td>'
+    str += '<td><nobr><a href="' + arr[v]['href'] + '" onclick="click_href(this.href); return false;">' + arr[v]['title'] + '</a></nobr></td>'
     str += '</tr>'
   }
   str += '</table>'
-  return str
   return str
 }
 CDDAction.prototype.onShow = function()

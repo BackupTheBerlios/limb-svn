@@ -14,76 +14,36 @@
 <core:INCLUDE file="/admin/pager.html">
 
 <grid:LIST id='messages'>
-  <!--BEGIN:[ DATA TABLE ]-->
-  <table border="0" cellpadding="0" cellspacing="0" class="data-table" width="100%">
-  <tr>
-    <td class="head">
-      <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr>
-        <td><img src='/shared/images/icon/common/24/table.gif'></td>
-        <td class="title" nowrap>[<locale:STRING name='messages_list' file='message'>]</td>
-        <td align="right" width="100%">
-        </td>
-      </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td class="body">
-    <!--BEGIN:[ body ]-->
-      <table border="0" cellpadding="0" cellspacing="0" class="data" width="100%">
-      <thead>
-        <tr>
-          <td width="1%"><img src='/shared/images/icon/common/16/check_all.gif'></th>
-          <th class="sep"><img src='/shared/images/1x1.gif'></th>
-          <th width="1%">Order</th>
-          <th class="sep"><img src='/shared/images/1x1.gif'></th>
-          <th width="100%">Title</th>
-          <th class="sep"><img src='/shared/images/1x1.gif'></th>
-          <th class="action" width="1%">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-      <grid:ITERATOR>
-      <grid:STRIPE odd>
-        <tr class="row1">
-      </grid:STRIPE>
-      <grid:STRIPE even>
-        <tr class="row1">
-      </grid:STRIPE>
-        <core:LITERAL>
-        <td><span behavior="CRow" target="-2"></span><input type="checkbox"></td>
-        </core:LITERAL>
-        <td class="sep"></td>
-        <td></td>
+<admin:list>
+  <admin:list:title><locale:STRING name='messages_list' file='message'></admin:list:title>
 
-        <td class="sep"></td>
-        <td>{$title}</td>
-        <td class="sep"></td>
-        <td class="action"><span behavior="CDDAction" id="id1" class="CDDMenu-data-action"><img src='/shared/images/icon/common/24/action.gif'></span></td>
-      </tr>
-      </grid:ITERATOR>
-      </tbody>
-      </table>
-    <!--END:[ body ]-->
-    </td>
-  </tr>
-  <tr>
-    <td class="footer">
-      <!--BEGIN:[ footer ]-->
-      <core:LITERAL>
-      <table border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td style="padding:0 6px 0 14px"><img src='/shared/images/icon/common/12/action.gif'></td>
-        <td><input class="button" type="button" value="Удалить"></td>
-        <td><input class="button" type="button" value="Публиковать"></td>
-        <td><select><option value=1>more actions ...</select></td>
-      </tr>
-      </table>
-      </core:LITERAL>
-      <!--END:[ footer ]-->
-    </td>
-  </tr>
-  </table>
+  <admin:list:header>
+    <admin:list:head><grid:SELECTORS_TOGGLER></admin:list:head>
+    <admin:list:head><locale:STRING name='items_order'></admin:list:head>
+    <admin:list:head width='100%'><locale:STRING name='title'></admin:list:head>
+    <admin:list:head><locale:STRING name='actions'></admin:list:head>
+  </admin:list:header>
+
+  <grid:ITERATOR>
+  <admin:list:item>
+    <admin:list:cell><core:INCLUDE file="/admin/grid_items/selector.html"></admin:list:cell>
+    <admin:list:cell><core:INCLUDE file='/admin/grid_items/priority_input.html'></admin:list:cell>
+    <admin:list:cell>{$title}</admin:list:cell>
+    <admin:list:cell>
+      <core:INCLUDE file="/jip_actions/dropdown.html">
+    </admin:list:cell>
+  </admin:list:item>
+  </grid:ITERATOR>
+
+  <admin:list:footer>
+    <admin:list:actions buttons='2'>
+      <admin:list:action shortcut='delete' locale_value='delete' form_submitted='0'>
+      <admin:list:action shortcut='move' locale_value='move' form_submitted='0'>
+      <admin:list:action shortcut='save_priority'  locale_value='change_order' form_submitted='1'>
+      <admin:list:action shortcut='toggle_published_status' locale_value='toggle_published_status' form_submitted='1'>
+    </admin:list:actions>
+  </admin:list:footer>
+</admin:list>
+
   <!--END:[ DATA TABLE ]-->
 </grid:LIST>
