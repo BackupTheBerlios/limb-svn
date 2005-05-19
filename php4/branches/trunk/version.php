@@ -72,7 +72,7 @@ define('LIMB_VERSION', LIMB_VERSION_MAJOR . '.' .
                        LIMB_VERSION_MINOR . '.' .
                        LIMB_VERSION_MICRO .
                        LIMB_VERSION_PATCH .
-                       LIMB_RELEASE_NAME);
+                       (LIMB_RELEASE_NAME ? '(' . LIMB_RELEASE_NAME . ')' : ''));
 
 /**
  * Complete software name string
