@@ -31,7 +31,7 @@ function query_svn_logs($svn_path, $to_rev, $from_rev)
 
     if(preg_match('~svn\s+merge\s+-r\s*(\d+):(\d+)\s+(\S+)\s+(\S*)~', $string, $matches))
     {
-      echo "Merge detected\n";
+      echo "Merge detected($matches[3] $matches[2]:$matches[1])\n";
 
       $merge_out = query_svn_logs($svn_path . $matches[3], $matches[2], $matches[1]);
 

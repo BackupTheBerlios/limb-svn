@@ -1,3 +1,16 @@
+Version 2.3.1(candle)
+
+This is primarily a bugfix, mess cleanup and speed optimization release.
+
+As for optimization, we tried to cache tree calls maximally, thus reducing total SQL overhead
+(in some cases it may result in about 30% overall perfomance speedup). This lead to total refactoring
+of tree subsystem and we hope there are enough tests to make sure everything works fine.
+
+However some more thorough testing is still required since we had to add some dirty hacks into access
+policy subsystem due to tree changes(we hope to refactor access policy stuff in 2.4).
+
+See CHANGELOG for more details
+
 Version 2.3(final)
 
 We've decided to release 2.3 final version without new admin GUI since we'd like to stabilize 2.3

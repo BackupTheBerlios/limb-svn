@@ -1,12 +1,10 @@
 Version 2.3.1
-(7 May 2005, from /php4/branches/trunk r1303)
+(7 May 2005, from /php4/branches/trunk r13011)
 svn://svn.berlios.de/limb/php4/tags/2.3.1
 
 -- fixed: JS htmlarea_extension would improperly strip </ br> tags
--- fixed: added utf-8 charset to redirect_template.html
 -- fixed: richedit tag wouldn't display JS errors
 -- fixed: JS trim function wouldn't properly trim strings
--- fixed: fetch_tree_datasource used wrong tree node
 -- quite a dirty fix into access_policy which makes tree cache flush, this MUST be refactored in the future version of 2.x
 
 -- debug and message_box stuff moved from limb_application to response_processing_filter(not the best name probably)

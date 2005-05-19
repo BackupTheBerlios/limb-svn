@@ -46,12 +46,12 @@ define('LIMB_VERSION_PATCH', '');
 /**
  * Software release version
  */
-define('LIMB_RELEASE_NAME', '');
+define('LIMB_RELEASE_NAME', 'candle');
 
 /**
  * Software build (full) date
  */
-define('LIMB_VERSION_DATE', 'April 15, 2005');
+define('LIMB_VERSION_DATE', 'May 19, 2005');
 
 /**
  * Software logo
