@@ -1,5 +1,5 @@
 Version 2.3.1
-(7 May 2005, from /php4/branches/trunk r13011)
+(7 May 2005, from /php4/branches/trunk r1312)
 svn://svn.berlios.de/limb/php4/tags/2.3.1
 
 -- fixed: JS htmlarea_extension would improperly strip </ br> tags
