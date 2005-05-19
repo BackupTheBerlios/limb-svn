@@ -1,0 +1,81 @@
+<core:WRAP file="/admin/page.html" placeholder="page_placeholder">
+
+<limb:DAO class='ServiceNodesBreadcrumbsDAO' target='service_breadcrumbds' />
+
+<list:LIST id="service_breadcrumbds">
+  <a href="?action=admin_display">roots</a> ->
+<list:ITEM>
+<list:SEPARATOR> -> </list:SEPARATOR>
+  <a id="display_{$oid}" href="?action=admin_display&id={$oid}">{$_service_title}</a>
+</list:ITEM>
+</list:LIST>
+
+<limb:DATASOURCE_DAO class='ServiceNodeRRResultDAO' target='service_node' />
+
+<core:DATASOURCE id='service_node'>
+
+<core:OPTIONAL for='oid'>
+
+<table border='1'>
+<tr>
+<th colspan='2'>Current service node data</th>
+</tr>
+<tr>
+<td>Identifier </td><td>{$_node_identifier}</td>
+</tr>
+<tr>
+<td>Title </td><td>{$_service_title}</td>
+</tr>
+<tr>
+<td>Service name </td><td>{$_service_name}</td>
+</tr>
+<tr>
+<td>Class name </td><td>{$class_name}</td>
+</tr>
+</table>
+</core:OPTIONAL>
+
+<core:OPTIONAL for='oid'>
+<a id='create_service_node' href='?action=create&id={$oid}'>Create new service node</a><br>
+</core:OPTIONAL>
+
+<core:DEFAULT for='oid'>
+<a id='create_service_node' href='?action=create_root_entity'>Create new root service node</a><br>
+</core:DEFAULT>
+
+<limb:DAO class="/OneBranchServiceNodesDAO" target="table" navigator="pager"/>
+
+<core:INCLUDE file='pager.html'>
+
+<list:LIST id="table">
+  <table>
+  <tr>
+   <th>ID</th>
+   <th>Title</th>
+   <th>Class name</th>
+   <th>Service</th>
+   <th>Actions</th>
+  </tr>
+  <list:ITEM>
+  <tr>
+      <td>
+      <b>#{$oid}</b>
+      </td>
+      <td>
+      <a id="display_{$oid}" href="?id={$oid}">{$_service_title}</a>
+      </td>
+      <td>
+      {$class_name}
+      </td>
+      <td>
+      {$_service_name}
+      </td>
+      <td>
+      <a id="edit_{$oid}" href="?action=edit&id={$oid}">Edit as service</a>
+      </td>
+  </tr>
+  </list:ITEM>
+  </table>
+</list:LIST>
+
+</core:DATASOURCE>
