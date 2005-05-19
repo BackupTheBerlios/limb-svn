@@ -1,0 +1,12 @@
+<core:INCLUDE file='/admin/grid_items/no_publish_grid_header.html'>
+<grid:ITERATOR>
+<tr>
+  <td><core:INCLUDE file="/admin/grid_items/selector.html"></td>
+  <td><core:INCLUDE file='/admin/grid_items/priority_input.html'></td>
+  <td width='100%'>
+  <core:INCLUDE file="/admin/grid_items/list_item_hint.html">
+  <img src='/shared/images/folder.gif' align='center'>&nbsp;<a href='{$path}?action=admin_display'>{$title}({$children})</a>
+  </td>
+  <td><core:INCLUDE file="jip_actions/dropdown.html"></td>
+</tr>
+</grid:ITERATOR>

@@ -1,0 +1,28 @@
+<tabs active_tab="tab1" class="tabulator">
+
+  <tabs:labels>
+    <tab_item:label tab_id="tab1"><locale:STRING name='properties'></tab_item:label>
+    <tab_item:label tab_id="tab2"><locale:STRING name='content'></tab_item:label>
+  </tabs:labels>
+  <table>
+  <core:INCLUDE file='/admin/admin_form_items/errors.html'>
+  </table>
+
+  <tabs:contents>
+    <tab_item:content tab_id="tab1">
+          <table width="100%" border="0" cellspacing="2" cellpadding="2">
+            <core:INCLUDE file='/admin/admin_form_items/identifier.html'>
+            <core:INCLUDE file='/admin/admin_form_items/title.html'>
+            <core:INCLUDE file='/admin/admin_form_items/annotation.html'>
+          </table>
+    </tab_item:content>
+
+    <tab_item:content tab_id="tab2">
+          <table width="100%" border="0" cellspacing="3" cellpadding="0" height='100%'>
+          <tr>
+            <td align='left' valign='top'><richedit name="document_content" id="document_content"></richedit></td>
+          </tr>
+          </table>
+    </tab_item:content>
+  </tabs:contents>
+</tabs>

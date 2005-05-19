@@ -1,0 +1,20 @@
+<core:WRAP file="page.html" placeholder="content">
+
+<fetch:MAPPED>
+<core:INCLUDE file="jip_actions/dropdown.html">
+</fetch:MAPPED>
+
+<fetch:SUB_BRANCH target='news' navigator='pager' >
+	<core:PARAMETER name='loader_class_name' value='news_object'>
+	<core:PARAMETER name='order' value='news_date=DESC'>
+</fetch:SUB_BRANCH>
+
+<core:INCLUDE file="front_pager.html">
+
+<grid:LIST id='news'>
+<table border=0 cellspacing=0 cellpadding=4 width=100%>
+    <grid:ITERATOR>
+		<core:INCLUDE file="/news_object/news_item.html">
+    </grid:ITERATOR>
+</table>
+</grid:LIST>

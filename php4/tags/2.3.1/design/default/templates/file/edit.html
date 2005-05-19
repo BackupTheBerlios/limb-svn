@@ -1,0 +1,27 @@
+<core:WRAP file="/admin/popup.html" placeholder="content">
+
+<br>
+<fetch:MAPPED>
+<a href="{$path}"><locale:STRING name='download_link' file='file'></a><br>
+<locale:STRING name='file_name' file='file'>: {$file_name}<br>
+Mime-type: {$mime_type}<br>
+<locale:STRING name='size' file='file'>: {$size} bytes
+</fetch:MAPPED>
+
+<form name="edit_file" id="edit_file" enctype="multipart/form-data" method="post">
+<table>
+    <core:INCLUDE file='/file/form_fields.html'>
+  <tr>
+    <td><locale:STRING name='file' file='file'></td>
+    <td align='left' nowrap><input id="file" name="file" class="input" type="file"/></td>
+  </tr>
+  <core:INCLUDE file='/admin/admin_form_items/req_info.html'>
+  <tr>
+    <td colspan=2 align=center>
+      <action_button name="edit_button" class="button"  action="edit" reload_parent="true" locale_value="update"/>&nbsp;<input name="cancel" type="button" id="cancel" locale_value="close" onclick='window.close();' class="button">
+    </td>
+  </tr>
+
+</table>
+
+</form>

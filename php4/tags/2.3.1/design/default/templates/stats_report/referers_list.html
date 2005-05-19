@@ -1,0 +1,72 @@
+<core:WRAP file="admin/site_management_page.html" placeholder="content">
+
+<core:INCLUDE file="/stats_report/referers_form.html"><br>
+<br>
+
+<DATASOURCE target='referers_by_groups'>
+  <core:PARAMETER name='datasource_path' value='stats_referers_by_groups_list_datasource'>
+</DATASOURCE>
+
+<grid:LIST id='referers_by_groups'>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<th width="10%">hits</th>
+<th width="10%">%</th>
+<th width="80%">Group</th>
+</tr>
+
+<grid:ITERATOR>
+<grid:STRIPE odd>
+<tr bgcolor='#f0f0f0'>
+</grid:STRIPE>
+
+<grid:STRIPE even>
+<tr>
+</grid:STRIPE>
+<td>{$hits}</td>
+<td>{$percentage}</td>
+<td>
+  <a href='?action=referers_group_report&group={$referers_group}'>{$referers_group}</a>
+</td>
+</tr>
+</grid:ITERATOR>
+</table>
+<br>
+<br>
+</grid:LIST>
+
+<DATASOURCE target='referers_except_groups' navigator='pager'>
+  <core:PARAMETER name='datasource_path' value='stats_referers_except_groups_list_datasource'>
+</DATASOURCE>
+
+<pager:navigator id="pager" items="30">
+  <core:INCLUDE file="/admin/pager_contents.html">
+</pager:navigator>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<th width="10%">hits</th>
+<th width="10%">%</th>
+<th>URL</th>
+</tr>
+
+<grid:LIST id='referers_except_groups'>
+
+<grid:ITERATOR>
+<grid:STRIPE odd>
+<tr bgcolor='#f0f0f0'>
+</grid:STRIPE>
+
+<grid:STRIPE even>
+<tr>
+</grid:STRIPE>
+
+<td>{$hits}</td>
+<td>{$percentage}</td>
+<td>
+  <a href='{$referer_url}'>{$referer_url}</a>
+</td>
+</tr>
+</grid:ITERATOR>
+</grid:LIST>
+</table>
