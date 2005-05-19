@@ -8,21 +8,13 @@
 * $Id: CrudMainBehaviour.class.php 23 2005-02-26 18:11:24Z server $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/StateMachineCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/PageRenderingCommand.class.php');
 
-class Display403ErrorCommand extends StateMachineCommand
+class Display403ErrorCommand extends PageRenderingCommand
 {
   function Display403ErrorCommand()
   {
-    parent :: StateMachineCommand();
-
-    $this->registerState('init',
-                          new LimbHandle(LIMB_DIR . '/core/commands/UseViewCommand',
-                                         array('/restricted.html')),
-                          array(LIMB_STATUS_OK => 'render'));
-
-    $this->registerState('render',
-                          new LimbHandle(LIMB_DIR . '/core/commands/DisplayViewCommand'));
+    parent :: PageRenderingCommand('/restricted.html');
   }
 }
 
