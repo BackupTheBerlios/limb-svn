@@ -8,7 +8,7 @@
 * $Id: DeleteObjectCommandTest.class.php 1209 2005-04-08 14:29:41Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_SERVICE_NODE_DIR . '/commands/DeleteServiceNodeCommand.class.php');
+require_once(LIMB_SERVICE_NODE_DIR . '/commands/ServiceNodeDeleteCommand.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
 require_once(LIMB_SERVICE_NODE_DIR . '/ServiceNode.class.php');
 
@@ -57,7 +57,7 @@ class DeleteServiceNodeCommandTest extends LimbTestCase
     $this->tree->expectOnce('countChildren', array($node_id));
     $this->tree->setReturnValue('countChildren', 0);
 
-    $command = new DeleteServiceNodeCommand($entity);
+    $command = new ServiceNodeDeleteCommand($entity);
 
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
@@ -76,7 +76,7 @@ class DeleteServiceNodeCommandTest extends LimbTestCase
     $this->tree->expectOnce('countChildren', array($node_id));
     $this->tree->setReturnValue('countChildren', 1);
 
-    $command = new DeleteServiceNodeCommand($entity);
+    $command = new ServiceNodeDeleteCommand($entity);
 
     $this->assertEqual($command->perform(), LIMB_STATUS_ERROR);
 
