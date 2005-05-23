@@ -21,7 +21,7 @@ class JIPProcessorTest extends LimbTestCase
   function testProcess()
   {
     $actions = array('display' => array(),
-                     'edit' => array('jip' => true),
+                     'edit' => array('jip' => true, 'popup' => 1),
                      'create' => array('jip' => true));
 
     $object = new Object();
@@ -34,7 +34,8 @@ class JIPProcessorTest extends LimbTestCase
 
     $jip_actions = array('edit' => array('jip' => true,
                                          'name' => 'edit',
-                                         'jip_href' => $path . '?action=edit'),
+                                         'jip_href' => $path . '?action=edit&popup=1',
+                                         'popup' => 1),
                          'create' => array('jip' => true,
                                            'name' => 'create',
                                            'jip_href' => $path . '?action=create'));

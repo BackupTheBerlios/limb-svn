@@ -8,21 +8,13 @@
 * $Id: CrudMainBehaviour.class.php 23 2005-02-26 18:11:24Z server $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/commands/StateMachineCommand.class.php');
+require_once(LIMB_DIR . '/core/commands/PageRenderingCommand.class.php');
 
-class Display404ErrorCommand extends StateMachineCommand
+class Display404ErrorCommand extends PageRenderingCommand
 {
   function Display404ErrorCommand()
   {
-    parent :: StateMachineCommand();
-
-    $this->registerState('init',
-                          new LimbHandle(LIMB_DIR . '/core/commands/UseViewCommand',
-                                         array('/not_found.html')),
-                          array(LIMB_STATUS_OK => 'render'));
-
-    $this->registerState('render',
-                          new LimbHandle(LIMB_DIR . '/core/commands/DisplayViewCommand'));
+    parent :: PageRenderingCommand('/not_found.html');
   }
 }
 

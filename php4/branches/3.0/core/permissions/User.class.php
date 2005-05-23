@@ -73,7 +73,10 @@ class User extends Object
 
   function getGroups()
   {
-    return $this->get('groups');
+    if(!$this->hasAttribute('groups'))
+      return array();
+    else
+      return $this->get('groups');
   }
 
   function setGroups($groups)

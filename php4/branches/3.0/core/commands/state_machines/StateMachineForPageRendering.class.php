@@ -10,13 +10,13 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/StateMachineCommand.class.php');
 
-class StateMachineForFormProcessing extends StateMachineCommand
+class StateMachineForPageRendering extends StateMachineCommand
 {
-  function StateMachineForFormProcessing(&$factory)
+  function StateMachineForPageRendering(&$factory)
   {
     parent :: StateMachineCommand($factory);
 
-    $this->registerState('Init',
+    $this->registerState('Initial',
                           array(LIMB_STATUS_OK => 'Render'));
 
     $this->registerState('Render');

@@ -25,6 +25,9 @@ class JIPProcessor
         continue;
 
       $items = array('action' => $key);
+      if(isset($action['popup']) && $action['popup'])
+        $items['popup'] = 1;
+
       $jip_href = addUrlQueryItems($path, $items);
       $jip_actions[$key] = $action;
       $jip_actions[$key]['jip_href'] = $jip_href;
