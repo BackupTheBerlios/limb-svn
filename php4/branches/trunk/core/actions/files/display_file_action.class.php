@@ -57,7 +57,7 @@ class display_file_action extends action
 
     $response->header("Date: " . gmdate("D, d M Y H:i:s") . " GMT");
     $response->header("Content-type: {$object_data['mime_type']}");
-    $response->header('Content-Disposition: attachment; filename="' . $object_data['file_name'] . '"');
+    $response->header('Content-Disposition: filename="' . $object_data['file_name'] . '"');
     $response->readfile(MEDIA_DIR . $object_data['media_id'] . '.media');
   }
 }

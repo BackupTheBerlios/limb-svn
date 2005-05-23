@@ -88,6 +88,14 @@ class site_object_fetch_accessible_test extends LimbTestCase
     $this->assertEqual($result, 8);
   }
 
+  function test_accesssible_count_no_params_only_groups()
+  {
+    $this->_login_user(300, array(100 => 'admins', 110 => 'users'));
+
+    $result = $this->object->fetch_accessible_count();
+    $this->assertEqual($result, 5);
+  }
+
   function test_accessible_by_ids_no_ids()
   {
     $this->_login_user(200, array(100 => 'admins', 110 => 'users'));
