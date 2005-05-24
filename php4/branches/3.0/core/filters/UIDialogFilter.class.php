@@ -9,15 +9,26 @@
 *
 ***********************************************************************************/
 
-class CommandProcessingFilter//implements InterceptingFilter
+class UIDialogFilter//implements InterceptingFilter
 {
   function run(&$filter_chain, &$request, &$response, &$context)
   {
-    if(!$service =& $context->getObject('Service'))
-      die('Service is not mapped!');//FIX
+    $toolkit =& Limb :: toolkit();
 
-    $command =& $service->getActionCommand($service->getCurrentAction());
-    $command->perform($context);
+    if(!$request->get('from_dialog'))
+    {
+      $filter_chain->next();
+      return;
+    }
+
+    if(!$service = $context->getObject('Service'))
+    {
+      $filter_chain->next();
+      return;
+    }
+
+    if($service->getName() == '404')
+      $context->setObject('Service', new Service('UIHandleDialog'));
 
     $filter_chain->next();
   }

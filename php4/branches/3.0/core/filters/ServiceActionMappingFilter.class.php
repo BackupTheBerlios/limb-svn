@@ -24,7 +24,6 @@ class ServiceActionMappingFilter//implements InterceptingFilter
     $service =& $service_resolver->resolve($request);
     if(!$action =& $action_resolver->resolve($request))
     {
-      $service->setCurrentAction($service->getDefaultAction());
       $context->setObject('Service', $service);
     }
     elseif($service->actionExists($action))
@@ -35,7 +34,6 @@ class ServiceActionMappingFilter//implements InterceptingFilter
     else
     {
       $service404 = new Service('404');
-      $service404->setCurrentAction($service404->getDefaultAction());
       $context->setObject('Service', $service404);
     }
 

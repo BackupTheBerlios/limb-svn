@@ -1,0 +1,19 @@
+<html>
+<body>
+
+<p><b>Due to some reason(editing, deleting, etc) the parent page can not be found.</b>
+<p>Here's a list of the closest parents:
+
+<limb:DAO class="RequestUriPathElementsDAO" target="closest_paths"/>
+
+<list:LIST id='closest_paths'>
+<ul>
+  <list:ITEM>
+    <li><a href='{$uri}'>{$uri}</a></li>
+  </list:ITEM>
+</ul>
+</list:LIST>
+
+
+</body>
+</html>

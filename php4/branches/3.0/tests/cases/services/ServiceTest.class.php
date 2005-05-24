@@ -56,10 +56,24 @@ class ServiceTest extends LimbTestCase
     $this->assertFalse($service->actionExists('no_such_action'));
   }
 
+  function testGetCurrentActionUseDefault()
+  {
+    registerTestingIni(
+      'test.service.ini',
+      '
+      default_action = whatever
+      [action1]
+      some_properties
+      '
+    );
+
+    $service = new Service('test');
+    $this->assertEqual($service->getCurrentAction(), 'whatever');
+  }
+
   function testSetCurrentAction()
   {
     $service = new Service('test');
-    $this->assertFalse($service->getCurrentAction());
 
     $service->setCurrentAction($action = 'test action');
 

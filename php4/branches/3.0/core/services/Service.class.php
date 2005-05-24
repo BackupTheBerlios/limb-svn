@@ -44,6 +44,10 @@ class Service
 
     $toolkit =& Limb :: toolkit();
     $this->ini =& $toolkit->getIni($this->name . '.service.ini', 'service');
+
+    if(!is_object($this->ini))
+      return throw_error(new LimbException($this->name . '.service.ini not found'));//FIX
+
     return $this->ini;
   }
 
@@ -86,6 +90,10 @@ class Service
 
   function getCurrentAction()
   {
+    if($this->current_action)
+      return $this->current_action;
+
+    $this->current_action = $this->getDefaultAction();
     return $this->current_action;
   }
 

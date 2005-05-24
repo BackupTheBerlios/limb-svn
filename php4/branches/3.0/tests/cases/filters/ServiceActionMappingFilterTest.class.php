@@ -98,11 +98,6 @@ class ServiceActionMappingFilterTest extends LimbTestCase
     $this->action_resolver->expectOnce('resolve', array($request));
     $this->action_resolver->setReturnValue('resolve', '');
 
-    $this->service->expectOnce('getDefaultAction');
-    $this->service->setReturnValue('getDefaultAction', $action = 'whatever');
-
-    $this->service->expectOnce('setCurrentAction', array($action));
-
     $filter = new ServiceActionMappingFilter();
 
     $context = new DataSpace();

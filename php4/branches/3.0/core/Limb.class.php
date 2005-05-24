@@ -59,12 +59,13 @@ class Limb
     return $limb->toolkits[$name][sizeof($limb->toolkits[$name]) - 1];
   }
 
-  function saveToolkit($name = 'default')
+  function & saveToolkit($name = 'default')
   {
     //no &, we simply make a copy
     $toolkit = clone(Limb :: toolkit($name));
     $toolkit->reset();
     Limb :: registerToolkit($toolkit, $name);
+    return $toolkit;
   }
 }
 

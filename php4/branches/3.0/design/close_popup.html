@@ -1,0 +1,24 @@
+<html>
+<head>
+<script language="javascript" src="/shared/js/http.js"></script>
+</head>
+<body>
+<script>
+if(window.opener)
+{
+  href = window.opener.location.href;
+
+  href = add_random_to_url(href);
+  <list:LIST id='params'>
+  <list:ITEM>
+  href = set_http_get_parameter(href, '{$name}', '{$value}');
+  </list:ITEM>
+  </list:LIST>
+
+  window.opener.location.href = href;
+  window.opener.focus();
+}
+window.close();
+</script>
+</body>
+</html>

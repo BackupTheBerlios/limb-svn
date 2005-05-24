@@ -60,7 +60,7 @@ class LimbApplication
     registerFileResolver('ini',                 new CachingFileResolver(new IniFileResolver(new PackageFileResolver())));
     registerFileResolver('strings',             new CachingFileResolver(new StringsFileResolver(new PackageFileResolver())));
     registerFileResolver('template',            new CachingFileResolver(new TemplateFileResolver(new PackageFileResolver())));
-    registerFileResolver('service',           new CachingFileResolver(new ServiceFileResolver(new PackageFileResolver())));
+    registerFileResolver('service',             new CachingFileResolver(new ServiceFileResolver(new PackageFileResolver())));
     registerFileResolver('db_table',            new CachingFileResolver(new DbTableFileResolver(new PackageFileResolver())));
     registerFileResolver('dao',                 new CachingFileResolver(new DAOFileResolver(new PackageFileResolver())));
     registerFileResolver('object',              new CachingFileResolver(new ObjectFileResolver(new PackageFileResolver())));

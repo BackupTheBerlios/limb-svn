@@ -25,6 +25,7 @@ class JIPProcessor
         continue;
 
       $items = array('action' => $key);
+
       if(isset($action['popup']) && $action['popup'])
         $items['popup'] = 1;
 

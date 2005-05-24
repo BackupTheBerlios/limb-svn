@@ -5,21 +5,16 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: InterceptingFilter.interface.php 981 2004-12-21 15:51:00Z pachanga $
+* $Id: CrudMainBehaviour.class.php 23 2005-02-26 18:11:24Z server $
 *
 ***********************************************************************************/
+require_once(LIMB_DIR . '/core/commands/PageRenderingCommand.class.php');
 
-class CommandProcessingFilter//implements InterceptingFilter
+class UIHandleDialogCommand extends PageRenderingCommand
 {
-  function run(&$filter_chain, &$request, &$response, &$context)
+  function UIHandleDialogCommand()
   {
-    if(!$service =& $context->getObject('Service'))
-      die('Service is not mapped!');//FIX
-
-    $command =& $service->getActionCommand($service->getCurrentAction());
-    $command->perform($context);
-
-    $filter_chain->next();
+    parent :: PageRenderingCommand('/dialog_handle.html');
   }
 }
 

@@ -47,7 +47,7 @@ class Request extends Object
     return $result;
   }
 
-  function getUri()
+  function & getUri()
   {
     if($this->uri === null)
       $this->_initUri();
