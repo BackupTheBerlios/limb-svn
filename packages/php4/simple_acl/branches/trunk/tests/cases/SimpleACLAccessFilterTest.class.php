@@ -32,7 +32,6 @@ class SimpleACLAccessFilterTest extends LimbTestCase
     $this->acl_toolkit->setReturnReference('getAuthorizer', $this->authorizer);
 
     Limb :: registerToolkit($this->acl_toolkit, 'SimpleACL');
-
     Limb :: saveToolkit();
   }
 

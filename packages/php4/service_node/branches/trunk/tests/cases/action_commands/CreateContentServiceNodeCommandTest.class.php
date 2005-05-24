@@ -55,9 +55,7 @@ class CreateContentServiceNodeCommandTest extends LimbTestCase
                                                          $extra_dataspace_data,
                                                          $entity_handle);
 
-    Limb :: saveToolkit();
-
-    $toolkit =& Limb :: toolkit();
+    $toolkit =& Limb :: saveToolkit();
     $toolkit->setRequestResolver('tree_based_entity', new TreeBasedEntityRequestResolver());
   }
 

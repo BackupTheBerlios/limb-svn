@@ -49,9 +49,7 @@ class EditContentServiceNodeCommandTest extends LimbTestCase
                                                        $validator,
                                                        $content_map);
 
-    Limb :: saveToolkit();
-
-    $toolkit =& Limb :: toolkit();
+    $toolkit =& Limb :: saveToolkit();
     $toolkit->setRequestResolver('tree_based_entity', new TreeBasedEntityRequestResolver());
   }
 

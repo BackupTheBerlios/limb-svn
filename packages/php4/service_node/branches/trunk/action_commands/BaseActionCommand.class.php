@@ -16,8 +16,8 @@ class BaseActionCommand
 
   function performRedirect()
   {
-    include_once(LIMB_SERVICE_NODE_DIR .'/commands/CloseDialogCommand.class.php');
-    $command = new CloseDialogCommand($this->entity);
+    include_once(LIMB_DIR .'/core/commands/CloseDialogCommand.class.php');
+    $command = new CloseDialogCommand();
     return $command->perform();
   }
 
