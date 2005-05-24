@@ -31,9 +31,7 @@ class ServiceActionMappingFilterTest extends LimbTestCase
 
   function setUp()
   {
-    Limb :: saveToolkit();
-
-    $toolkit =& Limb :: toolkit();
+    $toolkit =& Limb :: saveToolkit();
 
     $this->action_resolver = new MockRequestResolver($this);
     $this->service_resolver = new MockRequestResolver($this);

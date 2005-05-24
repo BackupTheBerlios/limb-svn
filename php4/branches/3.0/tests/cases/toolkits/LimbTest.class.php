@@ -82,9 +82,7 @@ class LimbTest extends LimbTestCase
 
     Limb :: registerToolkit($toolkit, 'test');
 
-    Limb :: saveToolkit('test');
-
-    $toolkit2 =& Limb :: toolkit('test');
+    $toolkit2 =& Limb :: saveToolkit('test');
     $this->assertTrue($toolkit2->reseted);
 
     $toolkit2->foo();

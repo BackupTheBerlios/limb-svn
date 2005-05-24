@@ -33,9 +33,7 @@ class FormInitCommandTest extends LimbTestCase
     $this->form_component = new MockFormComponent($this);
     $view->addChild($this->form_component, $this->form_id);
 
-    Limb :: saveToolkit();
-
-    $toolkit =& Limb :: toolkit();
+    $toolkit =& Limb :: saveToolkit();
     $toolkit->setView($view);
   }
 

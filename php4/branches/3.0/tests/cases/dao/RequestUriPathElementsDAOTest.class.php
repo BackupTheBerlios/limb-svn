@@ -19,8 +19,7 @@ class RequestUriPathElementsDAOTest extends LimbTestCase
 
   function setUp()
   {
-    Limb :: saveToolkit();
-    $this->toolkit =& Limb :: toolkit();
+    $this->toolkit =& Limb :: saveToolkit();
   }
 
   function tearDown()

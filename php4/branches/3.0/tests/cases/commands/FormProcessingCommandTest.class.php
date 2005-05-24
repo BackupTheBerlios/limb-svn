@@ -21,12 +21,10 @@ class FormProcessingCommandTest extends LimbTestCase
 
   function setUp()
   {
-    Limb :: saveToolkit();
-
     $template = "<form id='test_form' runat='server'></form>";
     registerTestingTemplate('FormProcessingCommandTest.html', $template);
 
-    $toolkit =& Limb :: toolkit();
+    $toolkit =& Limb :: saveToolkit();
 
     $template = new Template('FormProcessingCommandTest.html');
     $toolkit->setView($template);

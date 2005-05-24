@@ -26,7 +26,7 @@ class UIDialogFilterTest extends LimbTestCase
 
   function setUp()
   {
-    $this->toolkit = Limb :: saveToolkit();
+    $this->toolkit =& Limb :: saveToolkit();
     $this->fc = new MockFilterChain($this);
   }
 
