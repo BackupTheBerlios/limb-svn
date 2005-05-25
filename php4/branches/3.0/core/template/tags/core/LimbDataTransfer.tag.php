@@ -44,7 +44,7 @@ class LimbDataTransferTag extends CompilerDirectiveTag
     {
       if($target =& $this->parent->findChild($target_name))
       {
-        $code->writePhp($target->getComponentRefCode() . '->registerDataSet(new ArrayDataset(' . $dataspace . '->get("' . $from . '")));');
+        $code->writePhp($target->getComponentRefCode() . '->registerDataSet(new PagedArrayDataset(' . $dataspace . '->get("' . $from . '")));');
       }
     }
 

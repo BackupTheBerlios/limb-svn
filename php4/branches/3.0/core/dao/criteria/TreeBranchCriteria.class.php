@@ -56,6 +56,8 @@ class TreeBranchCriteria
       $sql->addCondition('tree.id IN (' . implode(',', $node_ids). ')');
     else
       $sql->addCondition('0 = 1');
+
+    $sql->addOrder('tree.path');
   }
 
   function _getNodeIds()

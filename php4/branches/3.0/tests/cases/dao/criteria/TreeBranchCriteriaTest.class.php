@@ -52,7 +52,7 @@ class TreeBranchCriteriaTest extends LimbTestCase
            'tree.id as node_id, tree.parent_id as parent_node_id, tree.identifier %fields% '.
            ' FROM sys_object, sys_tree as tree, sys_object_to_node %tables% '.
            ' WHERE sys_object_to_node.oid = sys_object.oid AND sys_object_to_node.node_id = tree.id'.
-           ' %where%';
+           ' %where% %order%';
 
     $this->sql = new ComplexSelectSQL($sql);
     $this->dao->setReturnReference('_initSQL', $this->sql);
@@ -86,11 +86,34 @@ class TreeBranchCriteriaTest extends LimbTestCase
 
     $rs =& new SimpleDbDataset($this->dao->fetch());
 
-    $this->assertEqual($rs->getTotalRowCount(), 5);
+    $this->assertEqual($rs->getTotalRowCount(), 3);
 
     $record = $rs->getRow();
 
     $this->assertEqual($record['identifier'], 'object_1');
+  }
+
+  function testOrderByPath()
+  {
+    $criteria = new TreeBranchCriteria();
+    $criteria->setPath('/root');
+    $criteria->setDepth(2);
+
+    $this->dao->addCriteria($criteria);
+
+    $rs =& new SimpleDbDataset($this->dao->fetch());
+
+    $this->assertEqual($rs->getTotalRowCount(), 5);
+
+    $result = $rs->getArray();
+
+    $i = 0;
+    $this->assertEqual($result[$i++]['identifier'], 'object_1');
+    $this->assertEqual($result[$i++]['identifier'], 'object_2');
+    $this->assertEqual($result[$i++]['identifier'], 'object_4');
+    $this->assertEqual($result[$i++]['identifier'], 'object_5');
+    $this->assertEqual($result[$i++]['identifier'], 'object_3');
+
   }
 
   function testNoObjectsIfNoNodesAreFound()
@@ -103,7 +126,7 @@ class TreeBranchCriteriaTest extends LimbTestCase
     $this->assertEqual($rs->getTotalRowCount(), 0);
   }
 
-  function testParamsPassedOk()
+  function testParamsPassedOkToTree()
   {
     $toolkit = new TreeBranchCriteriaTestToolkit($this);
     $tree = new MockTree($this);
@@ -139,10 +162,16 @@ class TreeBranchCriteriaTest extends LimbTestCase
     $this->root_node_id = $tree->createRootNode($values, false, true);
 
     $data = array();
-    for($i = 1; $i <= 5; $i++)
+    for($i = 1; $i <= 3; $i++)
     {
       $values['identifier'] = 'object_' . $i;
       $this->object2node[$i] = $tree->createSubNode($this->root_node_id, $values);
+    }
+
+    for(; $i <= 5; $i++)
+    {
+      $values['identifier'] = 'object_' . $i;
+      $this->object2node[$i] = $tree->createSubNode($this->object2node[2], $values);
     }
   }
 
