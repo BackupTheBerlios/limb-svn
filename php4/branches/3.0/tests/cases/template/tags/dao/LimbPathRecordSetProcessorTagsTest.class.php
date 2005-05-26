@@ -56,7 +56,7 @@ class LimbPathRecordSetProcessorTagTestCase extends LimbTestCase
     $this->path2id_translator->setReturnValueAt(0, 'getPathToNode', $path1 = 'path1', array($id1));
     $this->path2id_translator->setReturnValueAt(1, 'getPathToNode', $path2 = 'path2', array($id2));
 
-    $template = '<limb:recordset_processor:PATH source="list1">'.
+    $template = '<limb:RSProcessor:PATH source="list1">'.
                  '<list:LIST id="list1">'.
                    '<list:ITEM>{$_node_path}_{$_node_id}|</list:ITEM>'.
                  '</list:LIST>';

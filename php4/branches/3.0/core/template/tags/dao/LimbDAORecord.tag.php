@@ -8,15 +8,15 @@
 * $Id: LimbDAO.tag.php 1095 2005-02-08 13:13:22Z pachanga $
 *
 ***********************************************************************************/
-$taginfo =& new TagInfo('limb:DATASOURCE_DAO', 'LimbDatasourceDAOTag');
+$taginfo =& new TagInfo('limb:DAO:Record', 'LimbDAORecordTag');
 $taginfo->setDefaultLocation(LOCATION_SERVER);
 $taginfo->setCompilerAttributes(array('target', 'class'));
 TagDictionary::registerTag($taginfo, __FILE__);
 
-class LimbDatasourceDAOTag extends ServerComponentTag
+class LimbDAORecordTag extends ServerComponentTag
 {
-  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/dao/LimbDatasourceDAOComponent.class.php';
-  var $runtimeComponentName = 'LimbDatasourceDAOComponent';
+  var $runtimeIncludeFile = '%LIMB_DIR%/core/template/components/dao/LimbDAORecordComponent.class.php';
+  var $runtimeComponentName = 'LimbDAORecordComponent';
 
   function preParse()
   {

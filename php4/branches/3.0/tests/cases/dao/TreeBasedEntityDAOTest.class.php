@@ -45,7 +45,7 @@ class TreeBasedEntityDAOTest extends LimbTestCase
     $resolver->setReturnReference('resolve', $entity, array($request));
 
     $dao = new TreeBasedEntityDAO();
-    $result =& $dao->fetch();
+    $result =& $dao->fetchRecord();
     $expected_result = new Dataspace();
     $expected_result->set('class_name', $class_name);
 

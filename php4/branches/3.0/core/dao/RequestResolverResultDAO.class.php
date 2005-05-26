@@ -19,7 +19,7 @@ class RequestResolverResultDAO
     $this->resolver_name = $resolver_name;
   }
 
-  function & fetch()
+  function & fetchRecord()
   {
     $toolkit =& Limb :: toolkit();
     $resolver =& $toolkit->getRequestResolver($this->resolver_name);

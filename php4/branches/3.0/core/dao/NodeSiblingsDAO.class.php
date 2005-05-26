@@ -24,7 +24,7 @@ class NodeSiblingsDAO extends SQLBasedDAODecorator
   function fetch()
   {
     $toolkit =& Limb :: toolkit();
-    $record =& $this->node_dao->fetch();
+    $record =& $this->node_dao->fetchRecord();
 
     $criteria =& $this->getTreeNodeSiblingsCriteria();
     $criteria->setParentNodeId($record->get('_node_id'));

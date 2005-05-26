@@ -11,24 +11,24 @@
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
+require_once(LIMB_DIR . '/core/dao/DAO.class.php');
 
 Mock :: generate('LimbBaseToolkit');
-Mock :: generate('SQLBasedDAO');
+Mock :: generate('DAO');
 
-class LimbDatasourceDAOTagTestCase extends LimbTestCase
+class LimbDAORecordTagTestCase extends LimbTestCase
 {
   var $ds;
   var $toolkit;
 
-  function LimbDatasourceDAOTagTestCase()
+  function LimbDAORecordTagTestCase()
   {
     parent :: LimbTestCase(__FILE__);
   }
 
   function setUp()
   {
-    $this->ds =& new MockSQLBasedDAO($this);
+    $this->ds =& new MockDAO($this);
     $this->toolkit =& new MockLimbBaseToolkit($this);
 
     Limb :: registerToolkit($this->toolkit);
@@ -46,7 +46,7 @@ class LimbDatasourceDAOTagTestCase extends LimbTestCase
 
   function testSingleTarget()
   {
-    $template = '<limb:DATASOURCE_DAO target="testTarget" class="TestDAO" />' .
+    $template = '<limb:DAO:Record target="testTarget" class="TestDAO" />' .
                 '<core:DATASOURCE id="testTarget">{$username}</core:DATASOURCE>';
 
     RegisterTestingTemplate('/limb/datasource_dao.html', $template);
@@ -59,15 +59,15 @@ class LimbDatasourceDAOTagTestCase extends LimbTestCase
     $datasource =& new Dataspace();
     $datasource->import($data);
 
-    $this->ds->expectOnce('fetch');
-    $this->ds->setReturnReference('fetch', $datasource);
+    $this->ds->expectOnce('fetchRecord');
+    $this->ds->setReturnReference('fetchRecord', $datasource);
 
     $this->assertEqual($page->capture(), 'joe');
   }
 
   function testMultipleTargets()
   {
-    $template = '<limb:DATASOURCE_DAO target="testTarget1,testTarget2" class="TestDAO" />' .
+    $template = '<limb:DAO:Record target="testTarget1,testTarget2" class="TestDAO" />' .
                 '<core:DATASOURCE id="testTarget1">{$username}</core:DATASOURCE>' .
                 '<core:DATASOURCE id="testTarget2">{$secondname}</core:DATASOURCE>';
 
@@ -81,8 +81,8 @@ class LimbDatasourceDAOTagTestCase extends LimbTestCase
     $datasource =& new Dataspace();
     $datasource->import($data);
 
-    $this->ds->expectOnce('fetch');
-    $this->ds->setReturnReference('fetch', $datasource);
+    $this->ds->expectOnce('fetchRecord');
+    $this->ds->setReturnReference('fetchRecord', $datasource);
 
     $this->assertEqual($page->capture(), 'joefisher');
   }

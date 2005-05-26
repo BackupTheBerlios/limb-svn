@@ -8,7 +8,7 @@
 * $Id: LimbPreserveState.tag.php 1159 2005-03-14 10:10:35Z pachanga $
 *
 ***********************************************************************************/
-$taginfo =& new TagInfo('limb:datasource_processor:Path', 'LimbPathDatasourceProcessorTag');
+$taginfo =& new TagInfo('limb:DSProcessor:Path', 'LimbPathDatasourceProcessorTag');
 $taginfo->setEndTag(ENDTAG_FORBIDDEN);
 $taginfo->setDefaultLocation(LOCATION_SERVER);
 TagDictionary::registerTag($taginfo, __FILE__);

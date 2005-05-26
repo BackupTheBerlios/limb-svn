@@ -53,13 +53,13 @@ class LimbPathDatasourceProcessorTagsTestCase extends LimbTestCase
     $this->translator->expectOnce('getPathToNode', array($node_id));
     $this->translator->setReturnValue('getPathToNode', $path);
 
-    $template = '<core:DATASOURCE id="realm"><limb:datasource_processor:Path>'.
+    $template = '<core:DATASOURCE id="realm"><limb:DSProcessor:Path>'.
                 '{$_node_path}'.
                 '</core:DATASOURCE>';
 
-    RegisterTestingTemplate('/limb/path_datasource_processor.html', $template);
+    RegisterTestingTemplate('/limb/path_DSProcessor.html', $template);
 
-    $page =& new Template('/limb/path_datasource_processor.html');
+    $page =& new Template('/limb/path_DSProcessor.html');
     $component =& $page->findChild('realm');
 
     $dataspace = new Dataspace();

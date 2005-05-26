@@ -60,8 +60,8 @@ class NodeSiblingsDAOTest extends LimbTestCase
     $criteria->expectOnce('setParentNodeId', array($id));
 
     $node_dao = new MockRequestResolverResultDAO($this);
-    $node_dao->expectOnce('fetch');
-    $node_dao->setReturnReference('fetch', $entity);
+    $node_dao->expectOnce('fetchRecord');
+    $node_dao->setReturnReference('fetchRecord', $entity);
 
     $dao = new NodeSiblingsDAOTestVersion($this);
     $dao->NodeSiblingsDAO($decorated_dao, $node_dao);

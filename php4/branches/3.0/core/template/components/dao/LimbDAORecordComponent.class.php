@@ -11,7 +11,7 @@
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
 
-class LimbDatasourceDAOComponent extends Component
+class LimbDAORecordComponent extends Component
 {
   var $class_path;
   var $dao;
@@ -50,7 +50,7 @@ class LimbDatasourceDAOComponent extends Component
   function process()
   {
     $ds =& $this->_createDAO();
-    $datasource =& $ds->fetch();
+    $datasource =& $ds->fetchRecord();
 
     foreach($this->targets as $target)
     {

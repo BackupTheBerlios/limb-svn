@@ -29,15 +29,15 @@ class LimbActionsDatasourceProcessorTagsTestCase extends LimbTestCase
                                       'display' => array(),
                                       'delete' => array('jip' => true)));
 
-    $template = '<core:DATASOURCE id="realm"><limb:DS_processor:GroupActions group_name="jip">'.
+    $template = '<core:DATASOURCE id="realm"><limb:DSProcessor:GroupActions group_name="jip">'.
                 '<list:LIST from="jip_actions"><list:ITEM>'.
                 '<core:OPTIONAL for="jip">{$name}|</core:OPTIONAL>'.
                 '</list:ITEM></list:LIST>'.
                 '</core:DATASOURCE>';
 
-    RegisterTestingTemplate('/limb/actions_datasource_processor.html', $template);
+    RegisterTestingTemplate('/limb/actions_DSProcessor.html', $template);
 
-    $page =& new Template('/limb/actions_datasource_processor.html');
+    $page =& new Template('/limb/actions_DSProcessor.html');
     $component =& $page->findChild('realm');
 
     $dataspace = new Dataspace();

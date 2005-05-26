@@ -21,7 +21,6 @@ class GroupActionsProcessor
 
   function process(&$object)
   {
-for($i=0;$i<5;$i++)restore_error_handler();trigger_error('!', E_USER_WARNING);
     if (!$actions = $object->get('actions'))
       return;
 
