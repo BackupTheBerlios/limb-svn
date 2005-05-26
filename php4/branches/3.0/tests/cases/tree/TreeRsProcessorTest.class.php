@@ -17,8 +17,20 @@ class TreeRsProcessorTest extends LimbTestCase
   {
     parent :: LimbTestCase(__FILE__);
   }
+  function testMakeNestedEmptyRs()
+  {
+    $raw_tree_array = array();
+    $expected_tree_array = array();
 
-  function testMakeNestedOneElementArray()
+    $nested = TreeRsProcessor :: makeNested(new ArrayDataSet($raw_tree_array));
+
+    $this->assertEqual(
+      $nested,
+      new ArrayDataSet($expected_tree_array)
+    );
+  }
+
+  function testMakeNestedOneElementRs()
   {
     $raw_tree_array = array(
       array('id' => 1, 'parent_id' => 0),
@@ -28,7 +40,7 @@ class TreeRsProcessorTest extends LimbTestCase
       array('id' => 1, 'parent_id' => 0),
       );
 
-    $nested = TreeRsProcessor :: makeNested($raw_tree_array);
+    $nested = TreeRsProcessor :: makeNested(new ArrayDataSet($raw_tree_array));
 
     $this->assertEqual(
       $nested,
@@ -36,14 +48,14 @@ class TreeRsProcessorTest extends LimbTestCase
     );
   }
 
-  function testMakeNestedSimpleArray()
+  function testMakeNestedSimpleRs()
   {
     $raw_tree_array = array(
       array('id' => 1, 'parent_id' => 0),
         array('id' => 2, 'parent_id' => 1),
           array('id' => 5, 'parent_id' => 2),
         array('id' => 3, 'parent_id' => 1),
-      array('id' => 4, 'parent_id' => 0),
+      array('id' => 4, 'parent_id' => 100),
       );
 
     $expected_tree_array = array(
@@ -56,10 +68,10 @@ class TreeRsProcessorTest extends LimbTestCase
                   array('id' => 3, 'parent_id' => 1),
                   ),
             ),
-      array('id' => 4, 'parent_id' => 0)
+      array('id' => 4, 'parent_id' => 100)
       );
 
-    $nested = TreeRsProcessor :: makeNested($raw_tree_array);
+    $nested = TreeRsProcessor :: makeNested(new ArrayDataSet($raw_tree_array));
 
     $this->assertEqual(
       $nested,
@@ -67,7 +79,7 @@ class TreeRsProcessorTest extends LimbTestCase
     );
   }
 
-  function testMakeNestedMoreComplex()
+  function testMakeNestedMoreComplexRs()
   {
     $raw_tree_array = array(
       array('id' => 1, 'parent_id' => 0),
@@ -75,9 +87,9 @@ class TreeRsProcessorTest extends LimbTestCase
           array('id' => 3, 'parent_id' => 2),
           array('id' => 4, 'parent_id' => 2),
         array('id' => 5, 'parent_id' => 1),
-      array('id' => 6, 'parent_id' => 0),
+      array('id' => 6, 'parent_id' => 100),
         array('id' => 7, 'parent_id' => 6),
-      array('id' => 8, 'parent_id' => 0),
+      array('id' => 8, 'parent_id' => 200),
     );
 
     $expected_tree_array = array(
@@ -92,15 +104,15 @@ class TreeRsProcessorTest extends LimbTestCase
           array('id' => 5, 'parent_id' => 1)
         )
       ),
-      array('id' => 6, 'parent_id' => 0, 'children' =>
+      array('id' => 6, 'parent_id' => 100, 'children' =>
         array(
               array('id' => 7, 'parent_id' => 6),
         )
       ),
-      array('id' => 8, 'parent_id' => 0),
+      array('id' => 8, 'parent_id' => 200),
     );
 
-    $nested = TreeRsProcessor :: makeNested($raw_tree_array);
+    $nested = TreeRsProcessor :: makeNested(new ArrayDataSet($raw_tree_array));
 
     $this->assertEqual(
       $nested,
@@ -108,7 +120,7 @@ class TreeRsProcessorTest extends LimbTestCase
     );
   }
 
-  function testSortComplex()
+  function testSortComplexRs()
   {
     $raw_tree_array = array(
       array('id' => 1, 'parent_id' => 0, 'sort1' => 'bill', 'sort2' => 0),
@@ -132,7 +144,8 @@ class TreeRsProcessorTest extends LimbTestCase
         array('id' => 7, 'parent_id' => 6, 'sort1' => 'tom', 'sort2' => 0),
     );
 
-    $sorted = TreeRsProcessor :: sort($raw_tree_array, array('sort1' => 'DESC', 'sort2' => 'ASC'));
+    $sorted = TreeRsProcessor :: sort(new ArrayDataSet($raw_tree_array),
+                                      array('sort1' => 'DESC', 'sort2' => 'ASC'));
 
     $this->assertEqual(
       $sorted,

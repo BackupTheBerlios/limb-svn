@@ -14,26 +14,45 @@ class TreeRsProcessor
 {
   function makeNested(&$rs, $id_hash = 'id', $parent_hash = 'parent_id')
   {
-    if(is_array($rs))
-      $tree_array = $rs;
-    else
-      $tree_array = TreeRsProcessor :: _convertRs2Array($rs);
-
-    $item = reset($tree_array);
     $nested_array = array();
-    $parent_id = $item[$parent_hash];
+    $rs->rewind();
 
-    TreeRsProcessor :: _doMakeNested($tree_array, $nested_array, $parent_id, $id_hash, $parent_hash);
+    TreeRsProcessor :: _doMakeNested($rs, $nested_array, $id_hash, $parent_hash);
 
     return new ArrayDataSet($nested_array);
   }
 
+  function _doMakeNested(&$rs, &$nested_array, $id_hash, $parent_hash, $parent_id=null, $level=0)
+  {
+    $prev_item_id = null;
+
+    while($rs->valid())
+    {
+      $item = $rs->current();
+
+      if($level == 0 && $item->get($parent_hash) !== $prev_item_id)
+        $parent_id = $item->get($parent_hash);
+
+      if($item->get($parent_hash) == $parent_id)
+      {
+        $nested_array[] = $item->export();
+        $rs->next();
+      }
+      elseif($item->get($parent_hash) === $prev_item_id)
+      {
+        $new_nested =& $nested_array[sizeof($nested_array) - 1]['children'];
+        TreeRsProcessor :: _doMakeNested($rs, $new_nested, $id_hash, $parent_hash, $prev_item_id, $level+1);
+      }
+      else
+        return;
+
+      $prev_item_id = $item->get($id_hash);
+    }
+  }
+
   function sort(&$rs, $sort_params, $id_hash = 'id', $parent_hash = 'parent_id')
   {
-    if(is_array($rs))
-      $tree_array = $rs;
-    else
-      $tree_array = TreeRsProcessor :: _convertRs2Array($rs);
+    $tree_array = TreeRsProcessor :: _convertRs2Array($rs);
 
     $item = reset($tree_array);
     $parent_id = $item[$parent_hash];
@@ -48,7 +67,6 @@ class TreeRsProcessor
   function _convertRs2Array(&$rs)
   {
     $tree_array = array();
-
     for($rs->rewind();$rs->valid();$rs->next())
     {
       $record =& $rs->current();
@@ -56,32 +74,6 @@ class TreeRsProcessor
     }
 
     return $tree_array;
-  }
-
-  function _doMakeNested(&$tree_array, &$nested_array, $parent_id, $id_hash, $parent_hash)
-  {
-    $prev_item_id = null;
-
-    while($item = current($tree_array))
-    {
-      if($item[$parent_hash] == $parent_id)
-      {
-        $nested_array[] = $item;
-      }
-      elseif($item[$parent_hash] === $prev_item_id)
-      {
-        $new_nested =& $nested_array[sizeof($nested_array) - 1]['children'];
-        TreeRsProcessor :: _doMakeNested($tree_array, $new_nested, $item[$parent_hash], $id_hash, $parent_hash);
-      }
-      else
-      {
-        prev($tree_array);
-        return;
-      }
-
-      $prev_item_id = $item[$id_hash];
-      $item = next($tree_array);
-    }
   }
 
   function _doSort($tree_array, &$sorted_tree_array, $sort_params, $parent_id, $id_hash, $parent_hash)
