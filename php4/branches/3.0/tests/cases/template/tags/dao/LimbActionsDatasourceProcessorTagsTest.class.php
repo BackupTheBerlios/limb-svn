@@ -10,9 +10,9 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
 
-class LimbJIPDatasourceProcessorTagsTestCase extends LimbTestCase
+class LimbActionsDatasourceProcessorTagsTestCase extends LimbTestCase
 {
-  function LimbJIPDatasourceProcessorTagsTestCase()
+  function LimbActionsDatasourceProcessorTagsTestCase()
   {
     parent :: LimbTestCase(__FILE__);
   }
@@ -24,30 +24,29 @@ class LimbJIPDatasourceProcessorTagsTestCase extends LimbTestCase
 
   function testTag()
   {
-    $data = array('_node_path' => $path1 = '/cms/limb/',
-                  'actions' => array('create' => array('jip' => true),
+    $data = array('actions' => array('create' => array('jip' => true),
                                       'edit' => array('jip' => true),
                                       'display' => array(),
                                       'delete' => array('jip' => true)));
 
-    $template = '<core:DATASOURCE id="realm"><limb:datasource_processor:JIP>'.
+    $template = '<core:DATASOURCE id="realm"><limb:DS_processor:GroupActions group_name="jip">'.
                 '<list:LIST from="jip_actions"><list:ITEM>'.
-                '<core:OPTIONAL for="jip">{$name}-{$jip_href}|</core:OPTIONAL>'.
+                '<core:OPTIONAL for="jip">{$name}|</core:OPTIONAL>'.
                 '</list:ITEM></list:LIST>'.
                 '</core:DATASOURCE>';
 
-    RegisterTestingTemplate('/limb/jip_datasource_processor.html', $template);
+    RegisterTestingTemplate('/limb/actions_datasource_processor.html', $template);
 
-    $page =& new Template('/limb/jip_datasource_processor.html');
+    $page =& new Template('/limb/actions_datasource_processor.html');
     $component =& $page->findChild('realm');
 
     $dataspace = new Dataspace();
     $dataspace->import($data);
     $component->registerDataSource($dataspace);
 
-    $this->assertEqual($page->capture(), 'create-/cms/limb/?action=create|'.
-                                         'edit-/cms/limb/?action=edit|'.
-                                         'delete-/cms/limb/?action=delete|');
+    $this->assertEqual($page->capture(), 'create|'.
+                                         'edit|'.
+                                         'delete|');
   }
 
 }

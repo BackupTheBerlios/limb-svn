@@ -9,25 +9,30 @@
 *
 ***********************************************************************************/
 require_once(WACT_ROOT . '/template/template.inc.php');
-require_once(LIMB_DIR . '/core/permissions/JIPProcessor.class.php');
 
-class JIPDatasourceProcessorComponent extends Component
+class GroupActionsDatasourceProcessorComponent extends Component
 {
   var $processor;
+  var $group_name = 'jip';
+
+  function setGroupName($group_name)
+  {
+    $this->group_name = $group_name;
+  }
 
   function process()
   {
-    $jip_processor =& $this->_getJIPProcessor();
-    $jip_processor->process($this->parent->getDataSource());
+    $actions_processor =& $this->_getActionsProcessor();
+    $actions_processor->process($this->parent->getDataSource());
   }
 
-  function & _getJIPProcessor()
+  function & _getActionsProcessor()
   {
     if(is_object($this->processor))
       return $this->processor;
 
-    include_once(LIMB_DIR . '/core/permissions/JIPProcessor.class.php');
-    $this->processor = new JIPProcessor();
+    include_once(LIMB_DIR . '/core/services/GroupActionsProcessor.class.php');
+    $this->processor = new GroupActionsProcessor($this->group_name);
 
     return $this->processor;
   }

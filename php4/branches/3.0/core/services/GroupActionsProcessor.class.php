@@ -10,32 +10,32 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/etc/limb_util.inc.php');
 
-class JIPProcessor
+class GroupActionsProcessor
 {
+  var $group_name;
+
+  function GroupActionsProcessor($group_name)
+  {
+    $this->group_name = $group_name;
+  }
+
   function process(&$object)
   {
+for($i=0;$i<5;$i++)restore_error_handler();trigger_error('!', E_USER_WARNING);
     if (!$actions = $object->get('actions'))
       return;
 
-    $path = $object->get('_node_path');
-    $jip_actions = array();
+    $grouped_actions = array();
     foreach($actions as $key => $action)
     {
-      if(!isset($action['jip']) || !$action['jip'])
+      if(!isset($action[$this->group_name]) || !$action[$this->group_name])
         continue;
 
-      $items = array('action' => $key);
-
-      if(isset($action['popup']) && $action['popup'])
-        $items['popup'] = 1;
-
-      $jip_href = addUrlQueryItems($path, $items);
-      $jip_actions[$key] = $action;
-      $jip_actions[$key]['jip_href'] = $jip_href;
-      $jip_actions[$key]['name'] = $key;
+      $grouped_actions[$key] = $action;
+      $grouped_actions[$key]['name'] = $key;
     }
 
-    $object->set('jip_actions', $jip_actions);
+    $object->set($this->group_name . '_actions', $grouped_actions);
   }
 }
 
