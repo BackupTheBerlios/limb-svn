@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 
-class SimpleACLIniBasedUsersDAO
+class SimpleACLIniBasedUsersDAO  // implements SimpleACLAbstractUsersDAO
 {
   function & findByLogin($login)
   {

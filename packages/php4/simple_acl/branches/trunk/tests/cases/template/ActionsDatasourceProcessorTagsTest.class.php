@@ -57,15 +57,15 @@ class ActionsDatasourceProcessorTagsTestCase extends LimbTestCase
 
     $this->authorizer->setReturnValue('getAccessibleActions', $actions);
 
-    $template = '<core:DATASOURCE id="realm"><limb:datasource_processor:Actions>'.
+    $template = '<core:DATASOURCE id="realm"><limb:DSProcessor:Actions>'.
                 '<list:LIST from="actions"><list:ITEM>'.
                 '{$name}|'.
                 '</list:ITEM></list:LIST>'.
                 '</core:DATASOURCE>';
 
-    RegisterTestingTemplate('/limb/actions_datasource_processor.html', $template);
+    RegisterTestingTemplate('/limb/actions_DSProcessor.html', $template);
 
-    $page =& new Template('/limb/actions_datasource_processor.html');
+    $page =& new Template('/limb/actions_DSProcessor.html');
     $component =& $page->findChild('realm');
 
     $dataspace = new Dataspace();

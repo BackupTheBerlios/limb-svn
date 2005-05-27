@@ -11,9 +11,10 @@
 
 class SimpleACLAccessFilter //implements InterceptingFilter
 {
-  function run(&$filter_chain, &$request, &$response, &$context)
+  function run(&$filter_chain, &$request, &$response)
   {
-    if(!$service =& $context->getObject('Service'))
+    $toolkit =& Limb :: toolkit();
+    if(!$service =& $toolkit->getService())
     {
       $filter_chain->next();
       return;
@@ -36,7 +37,7 @@ class SimpleACLAccessFilter //implements InterceptingFilter
 
     $new_service = new Service('403');
     $new_service->setCurrentAction($new_service->getDefaultAction());
-    $context->setObject('Service', $new_service);
+    $toolkit->setService($new_service);
     $filter_chain->next();
   }
 }

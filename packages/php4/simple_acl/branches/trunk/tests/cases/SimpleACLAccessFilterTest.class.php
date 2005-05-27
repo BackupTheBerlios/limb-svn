@@ -79,10 +79,9 @@ class SimpleACLAccessFilterTest extends LimbTestCase
     $fc = new MockFilterChain($this);
     $fc->expectOnce('next');
 
-    $context = new DataSpace();
-    $context->setObject('Service', $service);
+    $toolkit->setService($service);
 
-    $filter->run($fc, $request, $response, $context);
+    $filter->run($fc, $request, $response);
 
     $fc->tally();
   }
@@ -111,12 +110,11 @@ class SimpleACLAccessFilterTest extends LimbTestCase
     $fc = new MockFilterChain($this);
     $fc->expectOnce('next');
 
-    $context = new DataSpace();
-    $context->setObject('Service', $service);
+    $toolkit->setService($service);
 
-    $filter->run($fc, $request, $response, $context);
+    $filter->run($fc, $request, $response);
 
-    $new_service =& $context->getObject('Service');
+    $new_service =& $toolkit->getService();
     $this->assertEqual($new_service->getName(), '403');
     $this->assertEqual($new_service->getCurrentAction(), 'display');
 

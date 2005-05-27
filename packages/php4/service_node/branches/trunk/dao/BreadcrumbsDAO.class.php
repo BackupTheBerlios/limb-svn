@@ -12,7 +12,7 @@ require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 require_once(LIMB_DIR . '/core/dao/criteria/SimpleConditionCriteria.class.php');
 
-class BreadcrumbsDAO
+class BreadcrumbsDAO // implements DAO
 {
   function BreadcrumbsDAO(){}
 
