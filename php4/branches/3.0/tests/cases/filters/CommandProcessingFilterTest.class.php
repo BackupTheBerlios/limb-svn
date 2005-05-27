@@ -30,9 +30,21 @@ class CommandStub
 
 class CommandProcessingFilterTest extends LimbTestCase
 {
+  var $toolkit;
+
   function CommandProcessingFilterTest()
   {
     parent :: LimbTestCase(__FILE__);
+  }
+
+  function setUp()
+  {
+    $this->toolkit =& Limb :: saveToolkit();
+  }
+
+  function tearDown()
+  {
+    Limb :: restoreToolkit();
   }
 
   function testRunOk()
@@ -47,7 +59,7 @@ class CommandProcessingFilterTest extends LimbTestCase
     $service->expectOnce('getActionCommand', array($action));
     $service->setReturnReference('getActionCommand', $command);
 
-    $context->setObject('Service', $service);
+    $this->toolkit->setService($service);
 
     $filter = new CommandProcessingFilter();
 

@@ -10,7 +10,7 @@
 ***********************************************************************************/
 
 //Note! abstract class
-class RequestResolverResultDAO
+class RequestResolverResultDAO // implements DAORecord
 {
   var $resolver_name;
 

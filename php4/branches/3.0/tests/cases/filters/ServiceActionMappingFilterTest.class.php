@@ -78,7 +78,7 @@ class ServiceActionMappingFilterTest extends LimbTestCase
     $context = new DataSpace();
     $filter->run($this->fc, $request, $response, $context);
 
-    $this->assertIsA($context->getObject('Service'), 'MockService');
+    $this->assertIsA($toolkit->getService(), 'MockService');
   }
 
   function testRunOkEmptyAction()
@@ -101,7 +101,7 @@ class ServiceActionMappingFilterTest extends LimbTestCase
     $context = new DataSpace();
     $filter->run($this->fc, $request, $response, $context);
 
-    $this->assertIsA($context->getObject('Service'), 'MockService');
+    $this->assertIsA($toolkit->getService(), 'MockService');
   }
 
   function testRunOkActionNotFound()
@@ -130,7 +130,7 @@ class ServiceActionMappingFilterTest extends LimbTestCase
 
     $context = new DataSpace();
     $filter->run($this->fc, $request, $response, $context);
-    $service404 = $context->getObject('Service');
+    $service404 = $toolkit->getService();
     $this->assertEqual($service404->getName(), '404');
     $this->assertEqual($service404->getCurrentAction(), 'display');
 

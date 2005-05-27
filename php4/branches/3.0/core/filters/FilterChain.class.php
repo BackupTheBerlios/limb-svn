@@ -16,13 +16,11 @@ class FilterChain
 
   var $request;
   var $response;
-  var $context;
 
-  function FilterChain(&$request, &$response, &$context)
+  function FilterChain(&$request, &$response)
   {
     $this->request =& $request;
     $this->response =& $response;
-    $this->context =& $context;
   }
 
   function registerFilter(&$filter)
@@ -49,7 +47,7 @@ class FilterChain
     if(isset($this->filters[$this->counter]))
     {
       $filter =& Handle :: resolve($this->filters[$this->counter]);
-      $filter->run($this, $this->request, $this->response, $this->context);
+      $filter->run($this, $this->request, $this->response);
     }
   }
 

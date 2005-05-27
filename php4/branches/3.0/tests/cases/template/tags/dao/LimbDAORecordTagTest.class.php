@@ -11,10 +11,10 @@
 require_once(WACT_ROOT . '/template/template.inc.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/dao/DAO.class.php');
+require_once(LIMB_DIR . '/core/dao/DAORecord.class.php');
 
 Mock :: generate('LimbBaseToolkit');
-Mock :: generate('DAO');
+Mock :: generate('DAORecord');
 
 class LimbDAORecordTagTestCase extends LimbTestCase
 {
@@ -28,7 +28,7 @@ class LimbDAORecordTagTestCase extends LimbTestCase
 
   function setUp()
   {
-    $this->ds =& new MockDAO($this);
+    $this->ds =& new MockDAORecord($this);
     $this->toolkit =& new MockLimbBaseToolkit($this);
 
     Limb :: registerToolkit($this->toolkit);

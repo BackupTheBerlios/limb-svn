@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/ComplexSelectSQL.class.php');
 
-class SQLBasedDAO
+class SQLBasedDAO // implements DAO, DAOById
 {
   var $criterias = array();
 

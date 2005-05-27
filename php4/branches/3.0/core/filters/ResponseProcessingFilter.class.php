@@ -11,7 +11,7 @@
 
 class ResponseProcessingFilter//implements InterceptingFilter
 {
-  function run(&$filter_chain, &$request, &$response, &$context)
+  function run(&$filter_chain, &$request, &$response)
   {
     ob_start();
 

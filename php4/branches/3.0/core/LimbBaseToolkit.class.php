@@ -27,6 +27,7 @@ class LimbBaseToolkit// implements LimbToolkit
   var $path2id_translator;
   var $ini_cache = array();
   var $dataspace_registry;
+  var $service;
 
   function reset()
   {
@@ -46,6 +47,7 @@ class LimbBaseToolkit// implements LimbToolkit
     $this->path2id_translator = null;
     $this->ini_cache = array();
     $this->dataspace_registry = null;
+    $this->service = null;
   }
 
   //used for system calls mocking
@@ -302,6 +304,16 @@ class LimbBaseToolkit// implements LimbToolkit
     $this->path2id_translator = new Path2IdTranslator();
 
     return $this->path2id_translator;
+  }
+
+  function setService(&$service)
+  {
+    $this->service =& $service;
+  }
+
+  function & getService()
+  {
+    return $this->service;
   }
 }
 

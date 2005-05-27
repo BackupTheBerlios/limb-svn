@@ -21,7 +21,7 @@ class InterceptingFilterStub
   var $captured = array();
   var $run = false;
 
-  function run(&$fc, &$request, &$response, &$context)
+  function run(&$fc, &$request, &$response)
   {
     $this->run = true;
     $this->captured['filter_chain'] =& $fc;
@@ -35,7 +35,7 @@ class InterceptingFilterStub
 
 class OutputFilter1
 {
-  function run(&$fc, &$request, &$response, &$context)
+  function run(&$fc, &$request, &$response)
   {
     echo '<filter1>';
     $fc->next();
@@ -45,7 +45,7 @@ class OutputFilter1
 
 class OutputFilter2
 {
-  function run(&$fc, &$request, &$response, &$context)
+  function run(&$fc, &$request, &$response)
   {
     echo '<filter2>';
     $fc->next();
@@ -55,7 +55,7 @@ class OutputFilter2
 
 class OutputFilter3
 {
-  function run(&$fc, &$request, &$response, &$context)
+  function run(&$fc, &$request, &$response)
   {
     echo '<filter3>';
     $fc->next();
@@ -79,8 +79,7 @@ class FilterChainTest extends LimbTestCase
   {
     $this->request = new MockRequest($this);
     $this->response = new MockHttpResponse($this);
-    $this->dataspace = new Object();
-    $this->fc = new FilterChain($this->request, $this->response, $this->dataspace);
+    $this->fc = new FilterChain($this->request, $this->response);
   }
 
   function testRegisterFilter()
@@ -107,7 +106,6 @@ class FilterChainTest extends LimbTestCase
     $this->assertIsA($mock_filter->captured['filter_chain'], 'FilterChain');
     $this->assertIsA($mock_filter->captured['request'], 'MockRequest');
     $this->assertIsA($mock_filter->captured['response'], 'MockHttpResponse');
-    $this->assertEqual($mock_filter->captured['context'], new Object());
   }
 
   function testProcessProperNesting()

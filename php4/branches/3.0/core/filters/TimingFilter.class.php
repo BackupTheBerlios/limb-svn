@@ -11,7 +11,7 @@
 
 class TimingFilter//implements InterceptingFilter
 {
-  function run(&$filter_chain, &$request, &$response, &$context)
+  function run(&$filter_chain, &$request, &$response)
   {
     $start_time = $this->getMicroTime();
 

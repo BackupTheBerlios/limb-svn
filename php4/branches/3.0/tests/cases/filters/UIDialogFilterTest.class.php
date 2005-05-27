@@ -41,7 +41,7 @@ class UIDialogFilterTest extends LimbTestCase
     $request = $this->toolkit->getRequest();
 
     $filter = new UIDialogFilter();
-    $filter->run($this->fc, $request, $response, $context);
+    $filter->run($this->fc, $request, $response);
   }
 
   function testRunTransparentNon404Service()
@@ -49,28 +49,26 @@ class UIDialogFilterTest extends LimbTestCase
     $request = $this->toolkit->getRequest();
     $request->set('dialog', 1);
 
-    $context = new DataSpace();
     $service = new Service('Any');
-    $context->setObject('Service', $service);
+    $this->toolkit->setService($service);
 
     $filter = new UIDialogFilter();
-    $filter->run($this->fc, $request, $response, $context);
+    $filter->run($this->fc, $request, $response);
 
-    $this->assertEqual($context->getObject('Service'), $service);
+    $this->assertEqual($this->toolkit->getService(), $service);
   }
 
   function testRunNoNeedToReplaceService()
   {
     $request = $this->toolkit->getRequest();
 
-    $context = new DataSpace();
     $service404 = new Service('404');
-    $context->setObject('Service', $service404);
+    $this->toolkit->setService($service404);
 
     $filter = new UIDialogFilter();
-    $filter->run($this->fc, $request, $response, $context);
+    $filter->run($this->fc, $request, $response);
 
-    $this->assertEqual($context->getObject('Service'), $service404);
+    $this->assertEqual($this->toolkit->getService(), $service404);
   }
 
   function testRunServiceReplaced()
@@ -78,14 +76,13 @@ class UIDialogFilterTest extends LimbTestCase
     $request = $this->toolkit->getRequest();
     $request->set('from_dialog', 1);
 
-    $context = new DataSpace();
     $service404 = new Service('404');
-    $context->setObject('Service', $service404);
+    $this->toolkit->setService($service404);
 
     $filter = new UIDialogFilter();
-    $filter->run($this->fc, $request, $response, $context);
+    $filter->run($this->fc, $request, $response);
 
-    $this->assertEqual($context->getObject('Service'),
+    $this->assertEqual($this->toolkit->getService(),
                        new Service('UIHandleDialog'));
   }
 }

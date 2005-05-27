@@ -24,17 +24,17 @@ class ServiceActionMappingFilter//implements InterceptingFilter
     $service =& $service_resolver->resolve($request);
     if(!$action =& $action_resolver->resolve($request))
     {
-      $context->setObject('Service', $service);
+      $toolkit->setService($service);
     }
     elseif($service->actionExists($action))
     {
       $service->setCurrentAction($action);
-      $context->setObject('Service', $service);
+      $toolkit->setService($service);
     }
     else
     {
       $service404 = new Service('404');
-      $context->setObject('Service', $service404);
+      $toolkit->setService($service404);
     }
 
     $filter_chain->next();

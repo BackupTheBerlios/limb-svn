@@ -13,7 +13,8 @@ class CommandProcessingFilter//implements InterceptingFilter
 {
   function run(&$filter_chain, &$request, &$response, &$context)
   {
-    if(!$service =& $context->getObject('Service'))
+    $toolkit =& Limb :: toolkit();
+    if(!$service =& $toolkit->getService())
       die('Service is not mapped!');//FIX
 
     $command =& $service->getActionCommand($service->getCurrentAction());

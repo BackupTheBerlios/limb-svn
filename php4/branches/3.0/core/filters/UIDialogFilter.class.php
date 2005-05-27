@@ -11,7 +11,7 @@
 
 class UIDialogFilter//implements InterceptingFilter
 {
-  function run(&$filter_chain, &$request, &$response, &$context)
+  function run(&$filter_chain, &$request, &$response)
   {
     $toolkit =& Limb :: toolkit();
 
@@ -21,14 +21,14 @@ class UIDialogFilter//implements InterceptingFilter
       return;
     }
 
-    if(!$service = $context->getObject('Service'))
+    if(!$service = $toolkit->getService())
     {
       $filter_chain->next();
       return;
     }
 
     if($service->getName() == '404')
-      $context->setObject('Service', new Service('UIHandleDialog'));
+      $toolkit->setService( new Service('UIHandleDialog'));
 
     $filter_chain->next();
   }

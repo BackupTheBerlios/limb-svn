@@ -150,6 +150,14 @@ class LimbBaseToolkitTest extends LimbTestCase
                      'ViewTestVersion');
   }
 
+  function testSetGetService()
+  {
+    $service = new Object();
+    $this->toolkit->setService($service);
+
+    $this->assertReference($this->toolkit->getService(), $service);
+  }
+
   function testGetPath2IdTranslator()
   {
     $this->assertIsA($this->toolkit->getPath2IdTranslator(),

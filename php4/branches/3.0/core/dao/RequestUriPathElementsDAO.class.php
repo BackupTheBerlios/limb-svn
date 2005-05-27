@@ -11,7 +11,7 @@
 require_once(LIMB_DIR . '/core/dao/DAO.class.php');
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 
-class RequestUriPathElementsDAO extends DAO
+class RequestUriPathElementsDAO // implements DAO
 {
   function fetch()
   {

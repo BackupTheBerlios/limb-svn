@@ -5,16 +5,15 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: DAO.class.php 1326 2005-05-26 15:23:34Z pachanga $
 *
 ***********************************************************************************/
 
-class DAO
+class DAORecord
 {
-  function & fetch()
+  function & fetchRecord()
   {
-    include_once(WACT_ROOT . '/iterator/iterator.inc.php');
-    return new EmptyIterator();
+    return new DataSpace();
   }
 }
 
