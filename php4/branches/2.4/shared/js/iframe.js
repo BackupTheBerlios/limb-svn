@@ -27,10 +27,10 @@ function resize_content()
   obj.style.right = right_obj.offsetWidth
   }catch(ex){}
 }
-document.resize_content = resize_content
-add_event(window, 'load', 		resize_content)
-add_event(window, 'resize', 		resize_content)
-add_event(document, 'resize', 	resize_content)
+//document.resize_content = resize_content
+//add_event(window, 'load', 		resize_content)
+//add_event(window, 'resize', 		resize_content)
+//add_event(document, 'resize', 	resize_content)
 
 var arr_actions = new Array();
 

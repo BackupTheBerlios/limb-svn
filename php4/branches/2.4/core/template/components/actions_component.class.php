@@ -8,10 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/template/components/list_component.class.php');
-require_once(LIMB_DIR . '/core/lib/http/control_flow.inc.php');
-require_once(LIMB_DIR . '/core/lib/util/array_dataset.class.php');
-class actions_component extends list_component
+require_once(LIMB_DIR . '/core/template/components/datasource_component.class.php');
+class actions_component extends datasource_component 
 {
   var $all_actions = array();
 
@@ -27,24 +25,40 @@ class actions_component extends list_component
     $this->node_id = $node_id;
   }
 
-  function prepare()
+  function &get_dataset()
   {
-    $actions = $this->get_actions();
+    $limit = 0;
+    $offset = 0;
+    if(isset($this->parameters['limit']))
+      $limit = $this->parameters['limit'];
+    if(isset($this->parameters['offset']))
+      $offset = $this->parameters['offset'];
 
-    $this->register_dataset(new array_dataset($actions));
+    $actions = $this->get_actions($limit, $offset);
 
-    return parent :: prepare();
+    $ds = new array_dataset($actions);
+
+    return $ds;
   }
 
-  function get_actions()
+  function get_actions($limit, $offset)
   {
     if (!count($this->all_actions))
       return array();
 
     $actions = array();
-
+    $current_item = -1;
+    $actions_count = -1;
     foreach($this->all_actions as $action => $params)
     {
+      $current_item++;
+      $actions_count++;
+      if($offset && $current_item <= $offset)
+        continue;
+
+      if($limit && $actions_count > $limit)
+        break;
+
       if (isset($params['extra']))
         $action_params = $params['extra'];
       else

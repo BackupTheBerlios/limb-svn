@@ -14,42 +14,6 @@
 
 <!--END:[ title ]-->
 
-<!--BEGIN:[ actions ]-->
-<table border="0" cellspacing="0" cellpadding="0" class="page-actions" background="/shared/images/page/bgr/2.gif">
-<tr>
-  <td style='padding:0 5px 0 15px'>
-  <!--BEGIN:[ info ]-->
-    <core:INCLUDE file="/admin/include/item_info.html">
-  <!--END:[ info ]-->
-  </td>
-  <td class="sep"><img src='/shared/images/1x1.gif'></td>
-  <!--BEGIN:[ actions elements ]-->
-  <actions>
-    <actions:ITEM>
-    <td class="action" height="100%">
-      <span behavior="CRow" target="-1">
-      <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
-      <tr>
-        <td><a href="{$action_href}"><img alt="{$action_name}" title="{$action_name}" src="/shared/images/icon/cp/32/{$icon}.gif" align="left"></a></td>
-        <td><a href="{$action_href}">{$action_name}</a></td>
-      </tr>
-      </table>
-      </span>
-    </td>
-    </actions:ITEM>
-  </actions>
+<core:INCLUDE file="/admin/jip/common.html">
 
-  <td width="100%"></td>
-  <td class="sep"><img src='/shared/images/1x1.gif'></td>
-  <td align="right" class="action" style="padding:4px 10px 0 10px">
-  <core:LITERAL>
-    <select>
-      <option value=1>more actions ...</option>
-    </select>
-  </core:LITERAL>
-  </td>
-  <!--END:[ actions elements ]-->
-</tr>
-</table>
-<!--END:[ actions ]-->
 </fetch:MAPPED>

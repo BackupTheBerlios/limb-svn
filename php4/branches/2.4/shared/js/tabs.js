@@ -17,15 +17,15 @@ function tab(container, tab_data)
   this.activate_handler = tab_data.activate_handler;
   this.deactivate_handler = tab_data.deactivate_handler;
 
-	var hit_obj = get_obj_by_id(this.label.getElementsByTagName('*') , "tab-label");
-	if(!isset(hit_obj)) hit_obj = this.label
-	hit_obj.tab = this
+  var hit_obj = get_obj_by_id(this.label.getElementsByTagName('*') , "tab-label");
+  if(!isset(hit_obj)) hit_obj = this.label
+  hit_obj.tab = this
 //  this.label.onmouseup = function()
   hit_obj.onmouseup = function()
   {
     if(!this.tab.container.active_tab)
       return;
-	
+
     this.tab.activate();
 
     if(this.tab.onmouseup)
@@ -45,24 +45,24 @@ tab.prototype.activate = function()
 
   this.container.active_tab = this;
 
-    this.content.style.display = 'block';
-
   this.label.className = this.container.active_tab_class_name;
 
   setCookieWithId('TABs', this.container.id + 'active_tab', this.id)
 
   if(this.activate_handler)
     this.activate_handler(this);
+  else
+    this.content.style.display = 'block';
 }
 
 tab.prototype.deactivate = function()
 {
-	this.content.style.display = 'none';
-	
-	this.label.className = this.container.normal_tab_class_name;
-	
-	if(this.deactivate_handler)
-		this.deactivate_handler(this);
+  this.label.className = this.container.normal_tab_class_name;
+
+  if(this.deactivate_handler)
+    this.deactivate_handler(this);
+  else
+    this.content.style.display = 'none';
 }
 
 function tabs_container(id, tab_data)
@@ -71,21 +71,21 @@ function tabs_container(id, tab_data)
    this.active_tab = null;
    this.id = id
 
-	if(!tab_data) tab_data = []
-	if(typeof(tab_data.active_tab_class_name) == undefined || tab_data.active_tab_class_name == null)
-		tab_data.active_tab_class_name = 'tab-active';
-	
-	if(typeof(tab_data.normal_tab_class_name) == undefined || tab_data.normal_tab_class_name == null)
-		tab_data.normal_tab_class_name = 'tab';
-	
-	this.active_tab_class_name = tab_data.active_tab_class_name;
-	this.normal_tab_class_name = tab_data.normal_tab_class_name;
+  if(!tab_data) tab_data = []
+  if(typeof(tab_data.active_tab_class_name) == undefined || tab_data.active_tab_class_name == null)
+    tab_data.active_tab_class_name = 'tab-active';
+
+  if(typeof(tab_data.normal_tab_class_name) == undefined || tab_data.normal_tab_class_name == null)
+    tab_data.normal_tab_class_name = 'tab';
+
+  this.active_tab_class_name = tab_data.active_tab_class_name;
+  this.normal_tab_class_name = tab_data.normal_tab_class_name;
 }
 
 //tabs_container.prototype.register_tab_item = function(id, active_tab_class_name, normal_tab_class_name, onmousedown_handler, activate_handler, deactivate_handler)
 tabs_container.prototype.register_tab_item = function(tab_data)
 {
-	this.tab_items[tab_data.id] = new tab(this, tab_data);
+  this.tab_items[tab_data.id] = new tab(this, tab_data);
 }
 
 tabs_container.prototype.activate = function(tab_id)
@@ -114,7 +114,8 @@ tabs_container.prototype.activate = function(tab_id)
 
 tabs_container.prototype.activate_default = function()
 {
-	var id = getCookieWithId('TABs', this.id + 'active_tab')
-	if (id) this.activate(id);
-	else this.activate('');
+  var id = getCookieWithId('TABs', this.id + 'active_tab')
+  if (id) this.activate(id);
+  else
+    this.activate('');
 }

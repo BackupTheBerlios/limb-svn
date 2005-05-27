@@ -1,12 +1,13 @@
-<actions>
+<actions target='dropdown_jip'></actions>
+<grid:LIST id='dropdown_jip'>
 <script type="text/javascript" language="javascript">
 arr_actions['{^id}'] = {
-  <actions:ITEM>
-    '{$action}':{'href':'{$action_href}','icon': '', 'title': '{$action_name}'},
-  </actions:ITEM>
-    '_' : {}
+  <grid:ITERATOR>
+    <grid:SEPARATOR>,</grid:SEPARATOR>
+    '{$action}':{'href':'{$action_href}','icon': '', 'title': '{$action_name}'}
+  </grid:ITERATOR>
 }
 </script>
 <span behavior="CDDAction" id="{^id}" class="CDDMenu-data-action"><img src='/shared/images/icon/common/24/action.gif'></span>
-</actions>
+</grid:LIST>
 

@@ -1,0 +1,15 @@
+                <metadata:BREADCRUMBS>
+                <grid:LIST>
+                  <nobr>
+                  <grid:ITERATOR>
+                    <core:OPTIONAL for='is_last'>
+                      {$title}
+                    </core:OPTIONAL>
+                    <core:DEFAULT for='is_last'>
+                      <a href="{$path}?action=admin_display">{$title}</a> &raquo;
+                    </core:DEFAULT>
+                  </grid:ITERATOR>
+                  </nobr>
+                </grid:LIST>
+                </metadata:BREADCRUMBS>
+

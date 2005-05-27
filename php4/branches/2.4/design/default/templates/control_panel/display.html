@@ -21,72 +21,22 @@
 </head>
 <body>
 <!--BEGIN: body-->
-  <fetch:SUB_BRANCH target="tabs_header, tabs_body" >
-    <core:PARAMETER name='loader_class_name' value='navigation_item' >
-    <core:PARAMETER name='path' value='/root/admin/navigation' >
-    <core:PARAMETER name='order' value='priority=ASC'>
-    <core:PARAMETER name='depth' value='1'>
-  </fetch:SUB_BRANCH>
-
 <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
   <tr>
-    <td valign="bottom" id="lo-place-top" width="100%"><div>
+    <td valign="bottom" width="100%">
       <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
-          <td valign="bottom" width="100%">
-            <!--BEGIN:[ tabulator ]-->
-            <table class="tabulator" border="0" cellpadding="0" cellspacing="0" width="100%" background="/shared/images/main/bgr/1.gif">
-              <tr>
-                <td class="tab-empty" style="padding: 6px 0 4px 0">
-                  <div style="width:180px" align="center"><img alt="LIMB CMS" title="LIMB CMS" src="/shared/images/logo.limb-cp.gif"><div>
-                </td>
-                <grid:LIST id='tabs_header'>
-                  <grid:ITERATOR>
-                    <grid:SEPARATOR><td class="tab-space"><img src="/shared/images/1x1.gif"></td></grid:SEPARATOR>
-                    <td class="tab" id="tab_{$identifier}">
-                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                      <tr>
-                        <td class="label" id='tab-label'><nobr><a href="javascript:void(0);">{$title}</a></nobr></td>
-                        <td class="arr">
-                          <span behavior="CDDTab" ddalign="vbl">
-                            <img src="/shared/images/1x1.gif">
-                            <span id="content" style="display: none;">
-                              <div class="dd-tab-container">
-                              <table border="0" cellpadding="0" cellspacing="0">
-                              <tr><td class="top-line"></td></tr>
-                              <tr>
-                                <td><span behavior="CRow" target="-2"></span><img src="/shared/images/icon/common/12/home.gif"></td>
-                                <td nowrap="nowrap"><a href="javascript:go_home('tab_{$identifier}')">Home page of this tab</a></td>
-                              </tr>
-                              <tr>
-                                <td><span behavior="CRow" target="-2"></span><img src="/shared/images/icon/common/12/reload.gif"></td>
-                                <td nowrap="nowrap"><a href="javascript:reload('tab_{$identifier}')">Reload this tab</a></td>
-                              </tr>
-                              </table>
-                              </div>
-                            </span>
-                          </span>
-                        </td>
-                        <td class="corner"><img src="/shared/images/1x1.gif"></td>
-                      </tr>
-                      </table>
-                    </td>
-                  </grid:ITERATOR>
-                </grid:LIST>
-
-                <td width="100%"></td>
-              </tr>
-            </table>
-            <!--END:[ tabulator ]-->
+          <td valign="bottom" width="100%" id="lo-place-top"><div>
+            <core:INCLUDE file="/admin/include/tabulator.html">
+            </div>
             <!--BEGIN:[ breadcrumbs ]-->
             <table border="0" class="path" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td style='padding:0 0 0 10px' >
-                <nobr>
-                  <a href=''>Main</a> » <a href=''>Administration</a>
-                </nobr>
+                <core:INCLUDE file="/admin/include/breadcrumbs.html">
               </td>
-              <td width="100%">
+              <td width="100%" align='right'>
+                <core:INCLUDE file="/admin/include/layout_manager.html">
               </td>
               <td>
                 <core:INCLUDE file="/admin/include/user_services.html">
@@ -97,7 +47,6 @@
           </td>
         </tr>
       </table>
-      </div>
     </td>
   </tr>
   <tr>
@@ -117,57 +66,6 @@
       <script>tabs.activate_default()</script>
 
       <!--END:[ middle ]-->
-    </td>
-  </tr>
-  <tr>
-    <td class="col1" height="5"></td>
-  </tr>
-  <tr>
-    <td background="/shared/images/main/bgr/3.gif">
-      <!--BEGIN:[ footer ]-->
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" height="35">
-      <tr>
-        <td style='padding:0 20px 5px 20px'>
-        <span behavior='CDDLayout' ddalign="vtr" class="CDDLayout">
-          <img alt="layout" title="Change layout" src="/shared/images/icon/common/16/layout.gif">
-          <span id="content" style="display: none;">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="layout">
-            <tr>
-              <td height="12" class="lo-top">&nbsp;</td>
-            </tr>
-            <tr>
-              <td>
-                <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                  <td class="lo-left"><img src="/shared/images/1x1.gif" height="55" width="14"></td>
-                  <td class="lo-center" width="100%"><img src="/shared/images/icon/common/24/panel.gif"></td>
-                  <td class="lo-right"><img src="/shared/images/1x1.gif" height="55" width="14"></td>
-                </tr>
-                </table>
-              </td>
-            </tr>
-            </table>
-          </span>
-        </span>
-        </td>
-        <td width="100%">
-          <!--BEGIN:[ url ]-->
-          <table border="0" cellpadding="0" cellspacing="0">
-          <core:LITERAL>
-          <form onsubmit="goto_address();return false;">
-          <tr>
-            <td><input id="active_iframe_url" name="active_iframe_url" class="input" size="60" type="text"></td>
-            <td><input class="button" value="  GO!  " type="submit"></td>
-          </tr>
-          </form>
-          </core:LITERAL>
-          </table>
-          <!--END:[ url ]-->
-        </td>
-        <td>&nbsp;</td>
-      </tr>
-      </table>
-      <!--END:[ footer ]-->
     </td>
   </tr>
 </table>

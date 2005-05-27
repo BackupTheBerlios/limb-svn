@@ -36,8 +36,8 @@ function post_load_handler()
 prev_window_on_load_handler = window.onload;
 window.onload = function()
 {
-  if(typeof(prev_window_on_load_handler) == 'function')
-    prev_window_on_load_handler();
+//  if(typeof(prev_window_on_load_handler) == 'function')
+//    prev_window_on_load_handler();
 
   post_load_handler();
 }

@@ -1,34 +1,33 @@
+<core:INCLUDE file="/admin/include/admin_header.html">
+<script>var page_tab_id = 'site_management';</script>
 <core:INCLUDE file="/admin/include/admin_top.html">
-<!--BEGIN: layout-->
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+  <tr>
+    <td height="100%">
+      <div id="lo-place-left">
+      <!--BEGIN:[ LEFT COLUMN ]-->
+      <core:INCLUDE file="/admin/navigation/site_management.html">
 
-<!--BEGIN: body-->
-<table width=100% border=0 cellspacing=0 cellpadding=0>
-<tr>
-  <td valign='top' style='padding:10px'>
-  <div id="left_site_menu" style='display: block;'>
-    <img src='/shared/images/1x1.gif' width='160px' height='1px'>
-    <core:INCLUDE file="/navigation/site_management_admin.html">
-  </div>
-  </td>
-  <td align='right' valign='top'><img id='img_left_site_menu' src='/shared/images/minus.gif' onclick='this.style.cursor = "default"; toggle_submenu("left_site_menu");' alt='Show/Hide' title='Show/Hide'></td>
-  <td width=1 class=com2><img src='/shared/images/1x1.gif'></td>
-  <td width=100% valign=top style='padding:10px 20px 30px 20px'>
-    <core:INCLUDE file="/admin/include/admin_page_data.html">
-    <core:PLACEHOLDER id="content">
-  </td>
-  <td width=1 class=com2><img src='/shared/images/1x1.gif'></td>
-  <td align='right' valign='top'><img id='img_right_site_menu' src='/shared/images/minus.gif' onclick='this.style.cursor = "default"; toggle_submenu("right_site_menu");' alt='Show/Hide' title='Show/Hide'></td>
-  <td valign='top' style='padding:10px'>
-  <div id="right_site_menu" style='display: block;'>
-    <img src='/shared/images/1x1.gif' width='160px' height='1px'>
-    <core:INCLUDE file="/admin/include/session_history.html">
-  </div>
-  </td>
+      <!--END:[ LEFT COLUMN ]-->
+      </div>
+      <img src="/shared/images/1x1.gif" width="180px">
+    </td>
+    <td height="100%" width="100%">
+    <div id="lo-place-center" valign="top">
+    <!--BEGIN:[ CENTER ]-->
+      <core:PLACEHOLDER id="content">
+    <!--END:[ CENTER ]-->
+    </div>
+    </td>
+    <td height="100%">
+      <div id="lo-place-right">
+      <!--BEGIN:[ RIGHT COLUMN ]-->
 
-</tr>
-</table>
-<!--END: body-->
+      <!--END:[ RIGHT COLUMN ]-->
+      </div>
+      <img src="/shared/images/1x1.gif" width="180">
+    </td>
+  </tr>
+  </table>
 
-<!--END: layout-->
-</body>
-</html>
+<core:INCLUDE file="/admin/include/admin_bottom.html">

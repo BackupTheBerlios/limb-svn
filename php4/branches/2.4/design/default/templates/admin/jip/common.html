@@ -1,0 +1,48 @@
+<!--BEGIN:[ actions ]-->
+<table border="0" cellspacing="0" cellpadding="0" class="page-actions" background="/shared/images/page/bgr/2.gif">
+<tr>
+  <td style='padding:0 5px 0 15px'>
+  <!--BEGIN:[ info ]-->
+    <core:INCLUDE file="/admin/include/item_info.html">
+  <!--END:[ info ]-->
+  </td>
+  <td class="sep"><img src='/shared/images/1x1.gif'></td>
+  <!--BEGIN:[ actions elements ]-->
+  <actions target='jip_actions'>
+    <core:PARAMETER name='limit' value='3'>
+  </actions>
+  <actions target='jip_actions_select'>
+    <core:PARAMETER name='offset' value='3'>
+  </actions>
+
+  <grid:LIST id='jip_actions'>
+  <grid:ITERATOR>
+    <td class="action" height="100%">
+      <span behavior="CRow" target="-1">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+      <tr>
+        <td><a href="{$action_href}" onclick='return click_href(this.href)'><img alt="{$action_name}" title="{$action_name}" src="/shared/images/icon/cp/32/{$icon}.gif" align="left"></a></td>
+        <td><a href="{$action_href}" onclick='return click_href(this.href)'>{$action_name}</a></td>
+      </tr>
+      </table>
+      </span>
+    </td>
+  </grid:ITERATOR>
+  </grid:LIST>
+  <td class="sep"><img src='/shared/images/1x1.gif'></td>
+  <td align="right" class="action" style="padding:4px 10px 0 10px">
+
+  <grid:LIST id='jip_actions_select'>
+    <core:LITERAL><select><option value='1'></core:LITERAL>
+    <locale:STRING name='choose_any'>
+    <core:LITERAL></option></core:LITERAL>
+    <grid:ITERATOR>
+        <core:LITERAL><option</core:LITERAL> value='{$action_href}' onclick='return click_href(this.value)'>{$action_name}<core:LITERAL></option></core:LITERAL>
+    </grid:ITERATOR>
+    <core:LITERAL></select></core:LITERAL>
+  </grid:LIST>
+  </td>
+  <!--END:[ actions elements ]-->
+</tr>
+</table>
+<!--END:[ actions ]-->
