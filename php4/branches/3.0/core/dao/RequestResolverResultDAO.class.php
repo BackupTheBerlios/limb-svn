@@ -24,7 +24,7 @@ class RequestResolverResultDAO // implements DAORecord
     $toolkit =& Limb :: toolkit();
     $resolver =& $toolkit->getRequestResolver($this->resolver_name);
     if(!is_object($resolver))
-      die($this->resolver_name . ' request resolver not set');
+      die($this->resolver_name . ' request resolver not set:' . __FILE__ . ' at line '. __LINE__);
 
     $record = new Dataspace();
 

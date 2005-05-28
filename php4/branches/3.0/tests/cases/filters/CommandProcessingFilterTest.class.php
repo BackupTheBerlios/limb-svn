@@ -49,8 +49,6 @@ class CommandProcessingFilterTest extends LimbTestCase
 
   function testRunOk()
   {
-    $context = new DataSpace();
-
     $command = new CommandStub();
 
     $service =& new MockService($this);
@@ -66,9 +64,8 @@ class CommandProcessingFilterTest extends LimbTestCase
     $fc = new MockFilterChain($this);
     $fc->expectOnce('next');
 
-    $filter->run($fc, $request, $response, $context);
+    $filter->run($fc, $request, $response);
 
-    $this->assertReference($command->context, $context);
     $this->assertTrue($command->performed);
 
     $fc->tally();
