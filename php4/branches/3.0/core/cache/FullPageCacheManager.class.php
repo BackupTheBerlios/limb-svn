@@ -174,7 +174,7 @@ class FullPageCacheManager
   {
     Fs :: mkdir(PAGE_CACHE_DIR);
 
-    $files = Fs :: findSubitems(PAGE_CACHE_DIR, 'f', '~^[^f]~');
+    $files = Fs :: find(PAGE_CACHE_DIR, 'f', '~^f_~');
 
     foreach($files as $file)
     {
@@ -186,7 +186,7 @@ class FullPageCacheManager
   {
     Fs :: mkdir(PAGE_CACHE_DIR);
 
-    $files = Fs :: findSubitems(PAGE_CACHE_DIR, 'f', '~^[^f]~');
+    $files = Fs :: find(PAGE_CACHE_DIR, 'f', '~^f_~');
 
     $size = 0;
 

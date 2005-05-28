@@ -18,9 +18,30 @@ define('FS_WIN32_NET_PREFIX', '\\\\');
 
 class Fs
 {
+  function safeWrite($file, $content, $perm=0664)
+  {
+    $tmp = tempnam(VAR_DIR, '_');
+    $fh = fopen($tmp, 'w');
+    fwrite($fh, $content);
+    fclose($fh);
+
+    //just for safety
+    @flock($file, LOCK_EX);
+
+    if(@rename($tmp, $file) === false)
+    {
+      //this actually a win32 check
+      @unlink($file);
+      @rename($tmp, $file);
+    }
+
+    @flock($file, LOCK_UN);
+    @chmod($file, $perm);
+  }
+
   function dirpath($path)
   {
-    $path = Fs :: cleanPath($path);
+    $path = Fs :: normalizePath($path);
 
     if (($dir_pos = strrpos($path, Fs :: separator())) !== false )
       return substr($path, 0, $dir_pos);
@@ -30,12 +51,12 @@ class Fs
 
   function isAbsolute($path)
   {
-    $path = Fs :: cleanPath($path);
+    $path = Fs :: normalizePath($path);
     $separator = Fs :: separator();
 
     if($path{0} == $separator)
       return true;
-    elseif(Sys :: osType() == 'win32' &&  preg_match('~^[a-zA-Z]+:~', $path))
+    elseif(Sys :: isWin32() &&  preg_match('~^[a-zA-Z]+:~', $path))
       return true;
     else
       return false;
@@ -51,7 +72,7 @@ class Fs
     if(is_dir($dir))
       return;
 
-    $dir = Fs :: cleanPath($dir);
+    $dir = Fs :: normalizePath($dir);
 
     if(!$parents)
     {
@@ -66,7 +87,7 @@ class Fs
     if(count($path_elements) == 0)
       return;
 
-    $index = Fs :: _getFirstExistentPathIndex($path_elements, $separator);
+    $index = Fs :: _getFirstExistingPathIndex($path_elements, $separator);
 
     if($index === false)
     {
@@ -86,7 +107,7 @@ class Fs
     }
   }
 
-  function _getFirstExistentPathIndex($path_elements, $separator)
+  function _getFirstExistingPathIndex($path_elements, $separator)
   {
     for($i=count($path_elements); $i > 0; $i--)
     {
@@ -133,7 +154,7 @@ class Fs
 
   function explodePath($path)
   {
-    $path = Fs :: cleanPath($path);
+    $path = Fs :: normalizePath($path);
 
     $separator = Fs :: separator();
 
@@ -154,7 +175,7 @@ class Fs
 
   function chop($path)
   {
-    $path = Fs :: cleanPath($path);
+    $path = Fs :: normalizePath($path);
     if(substr($path, -1) == Fs :: separator())
       $path = substr($path, 0, -1);
 
@@ -190,19 +211,18 @@ class Fs
   /*
    Copies a directory (and optionally all it's subitems) to another directory.
   */
-  function cp($src, $dest, $as_child = false, $exclude_regex = '', $include_hidden = false)
+  function cp($src, $dest, $as_child = false, $include_regex = '', $exclude_regex = '', $include_hidden = false)
   {
-    $src = Fs :: cleanPath($src);
-    $dest = Fs :: cleanPath($dest);
-
     if (!is_dir($src))
       return throw_error(new IOException('no such a directory', array('dir' => $src)));
 
     Fs :: mkdir($dest);
 
+    $src = Fs :: normalizePath($src);
+    $dest = Fs :: normalizePath($dest);
     $separator = Fs :: separator();
 
-    if ($as_child)
+    if($as_child)
     {
       $separator_regex = preg_quote($separator);
       if (preg_match( "#^.+{$separator_regex}([^{$separator_regex}]+)$#", $src, $matches))
@@ -213,7 +233,7 @@ class Fs
       else
         return false;
     }
-    $items = Fs :: findSubitems($src, 'df', $exclude_regex, false, $include_hidden);
+    $items = Fs :: find($src, 'df', $include_regex, $exclude_regex, false, $include_hidden);
 
     $total_items = $items;
     while (count($items) > 0)
@@ -229,7 +249,7 @@ class Fs
         {
           Fs :: _doMkdir($dest . $separator . $item, 0777);
 
-          $new_items = Fs :: findSubitems($full_path, 'df', $exclude_regex, $item, $include_hidden);
+          $new_items = Fs :: find($full_path, 'df', $include_regex, $exclude_regex, $item, $include_hidden);
 
           $items = array_merge($items, $new_items);
           $total_items = array_merge($total_items, $new_items);
@@ -250,7 +270,7 @@ class Fs
       return array();
 
     $files = array();
-    $path = Fs :: cleanPath($path);
+    $path = Fs :: normalizePath($path);
     if($handle = opendir($path))
     {
       while(($file = readdir($handle)) !== false)
@@ -298,7 +318,7 @@ class Fs
    For instance: "var/../lib/db" becomes "lib/db", while "../site/var" will not be changed.
    Will also convert separators
   */
-  function cleanPath($path, $to_type = FS_SEPARATOR_LOCAL)
+  function normalizePath($path, $to_type = FS_SEPARATOR_LOCAL)
   {
     $path = Fs :: convertSeparators($path, $to_type);
     $separator = Fs :: separator($to_type);
@@ -310,11 +330,11 @@ class Fs
 
     foreach ($path_elements as $path_element)
     {
-      if ( $path_element == '.' )
+      if ($path_element == '.')
         continue;
-      if ( $path_element == '..' &&
-           count( $newpath_elements) > 0 )
-        array_pop( $newpath_elements);
+      if ($path_element == '..' &&
+          count($newpath_elements) > 0)
+        array_pop($newpath_elements);
       else
         $newpath_elements[] = $path_element;
     }
@@ -356,26 +376,18 @@ class Fs
 
   function _hasWin32NetPrefix($path)//ugly!!!
   {
-    if(Sys :: osType() == 'win32' &&  strlen($path) > 2)
+    if(Sys :: isWin32() &&  strlen($path) > 2)
     {
       return (substr($path, 0, 2) == FS_WIN32_NET_PREFIX);
     }
     return false;
   }
 
-  /*
-   Creates a path out of all the dir and file items in the array $names
-   with correct separators in between them.
-   It will also remove unneeded separators.
-   $type is used to determine the separator type, see fs::separator.
-   If $include_end_separator is true then it will make sure that the path ends with a
-   separator if false it make sure there are no end separator.
-  */
   function path($names, $include_end_separator=false, $type = FS_SEPARATOR_LOCAL)
   {
     $separator = Fs :: separator($type);
     $path = implode($separator, $names);
-    $path = Fs :: cleanPath($path, $type);
+    $path = Fs :: normalizePath($path, $type);
 
     $has_end_separator = (strlen($path) > 0 &&  $path[strlen($path) - 1] == $separator);
 
@@ -387,82 +399,35 @@ class Fs
     return $path;
   }
 
-  function recursiveFind($path, $regex)
-  {
-    $fs = new Fs();
-    return Fs :: walkDir($path, array($fs, '_doRecursiveFind'), array('regex' => $regex));
-  }
-
-  function _doRecursiveFind($dir, $file, $params, &$return_params)
-  {
-    if(preg_match( '/' . $params['regex'] . '$/', $file))
-    {
-      $return_params[] = $dir . $params['separator'] . $file;
-    }
-  }
-
-  function walkDir($dir, $function_def, $params=array())
-  {
-    $return_params = array();
-
-    $separator = Fs :: separator();
-    $dir = Fs :: cleanPath($dir);
-    $dir = Fs :: chop($dir);
-
-    $params['separator'] = $separator;
-
-    Fs :: _doWalkDir($dir, $separator, $function_def, $return_params, $params);
-
-    return $return_params;
-  }
-
-  function _doWalkDir($dir, $separator, $function_def, &$return_params, $params)
-  {
-    if(is_dir($dir))
-    {
-      $handle = opendir($dir);
-
-      while(($file = readdir($handle)) !== false)
-      {
-        if (($file != '.') &&  ($file != '..'))
-        {
-          call_user_func_array($function_def, array('dir' => $dir, 'file' => $file, 'params' => $params, 'return_params' => &$return_params));
-
-          if (is_dir($dir . $separator . $file))
-            Fs :: _doWalkDir($dir . $separator . $file, $separator, $function_def, $return_params, $params);
-        }
-      }
-      closedir($handle);
-    }
-  }
-
   /*
-   Returns sub-items in the specific folder
+  * Searchs items in the specific folder
   */
-  function findSubitems($dir, $types = 'dfl', $exclude_regex = '', $add_path = true, $include_hidden = false)
+  function find($dir, $types = 'dfl', $include_regex = '', $exclude_regex = '', $add_path = true, $include_hidden = false)
   {
-    $dir = Fs :: cleanPath($dir);
+    $dir = Fs :: normalizePath($dir);
     $dir = Fs :: chop($dir);
 
     $items = array();
 
     $separator = Fs :: separator();
 
-    if ($handle = opendir($dir))
+    if ($handle = @opendir($dir))
     {
       while(($element = readdir($handle)) !== false)
       {
-        if ($element == '.' ||  $element == '..')
+        if ($element == '.' || $element == '..')
           continue;
-        if (!$include_hidden &&  $element[0] == '.')
+        if (!$include_hidden && $element[0] == '.')
           continue;
-        if ($exclude_regex &&  preg_match($exclude_regex, $element))
+        if ($include_regex && !preg_match($include_regex, $element))
           continue;
-        if (is_dir($dir . $separator . $element) &&  strpos($types, 'd') === false)
+        if ($exclude_regex && preg_match($exclude_regex, $element))
           continue;
-        if (is_link($dir . $separator . $element) &&  strpos($types, 'l') === false)
+        if (is_dir($dir . $separator . $element) && strpos($types, 'd') === false)
           continue;
-        if (is_file( $dir . $separator . $element ) &&  strpos($types, 'f') === false)
+        if (is_link($dir . $separator . $element) && strpos($types, 'l') === false)
+          continue;
+        if (is_file( $dir . $separator . $element ) && strpos($types, 'f') === false)
           continue;
 
         if ($add_path)
@@ -477,12 +442,80 @@ class Fs
       }
       closedir($handle);
     }
+    sort($items);
     return $items;
   }
 
-  function findSubdirs($dir, $full_path = false, $include_hidden = false, $exclude_items = false)
+  function &recursiveFind($path, $types = 'dfl', $include_regex = '', $exclude_regex = '', $add_path = true, $include_hidden = false)
   {
-    return Fs :: findSubitems($dir, 'd', $full_path, $include_hidden, $exclude_items);
+    return fs :: walkDir($path,
+                          array('Fs', '_doRecursiveFind'),
+                          array('types' => $types,
+                               'include_regex' => $include_regex,
+                               'exclude_regex' => $exclude_regex,
+                               'add_path' => $add_path,
+                               'include_hidden' => $include_hidden),
+                          true);
+  }
+
+  function _doRecursiveFind($dir, $file, $path, $params, &$return_params)
+  {
+    if(!is_dir($path))
+      return;
+
+    $items = Fs :: find($path, $params['types'], $params['include_regex'], $params['exclude_regex'], $params['add_path'], $params['include_hidden']);
+    foreach($items as $item)
+    {
+      $return_params[] = $item;
+    }
+  }
+
+  function walkDir($dir, $function_def, $params=array(), $include_first=false)
+  {
+    $return_params = array();
+
+    $separator = Fs :: separator();
+    $dir = Fs :: normalizePath($dir);
+    $dir = Fs :: chop($dir);
+
+    $params['separator'] = $separator;
+
+    Fs :: _doWalkDir($dir,
+                     $separator,
+                     $function_def,
+                     $return_params,
+                     $params,
+                     $include_first);
+
+    return $return_params;
+  }
+
+  function _doWalkDir($item, $separator, $function_def, &$return_params, $params, $include_first, $level=0)
+  {
+    if($level > 0 || ($level == 0 && $include_first))
+      call_user_func_array($function_def, array('dir' => dirname($item),
+                                                'file' => basename($item),
+                                                'path' => $item,
+                                                'params' => $params,
+                                                'return_params' => &$return_params));
+    if(!is_dir($item))
+      return;
+
+    $handle = opendir($item);
+
+    while(($file = readdir($handle)) !== false)
+    {
+      if (($file == '.') || ($file == '..'))
+        continue;
+
+      Fs :: _doWalkDir($item . $separator . $file,
+                       $separator,
+                       $function_def,
+                       $return_params,
+                       $params,
+                       $level + 1);
+    }
+    closedir($handle);
   }
 }
 ?>

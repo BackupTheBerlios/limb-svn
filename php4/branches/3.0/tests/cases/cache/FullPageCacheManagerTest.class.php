@@ -557,12 +557,12 @@ class FullPageCacheManagerTest extends LimbTestCase
     $cache_manager = new FullPageCacheManager();
     $cache_manager->flush();
 
-    $files = Fs :: findSubitems(PAGE_CACHE_DIR);
+    $files = Fs :: find(PAGE_CACHE_DIR);
 
     $this->assertEqual(sizeof($files), 1);
 
     $file = reset($files);
-    $this->assertEqual(Fs :: cleanPath($file), Fs :: cleanPath(PAGE_CACHE_DIR . Fs :: separator() . 'not_page_file'));
+    $this->assertEqual(Fs :: normalizePath($file), Fs :: normalizePath(PAGE_CACHE_DIR . Fs :: separator() . 'not_page_file'));
 
     $this->_cleanSimpleCache('not_page_file');
   }
