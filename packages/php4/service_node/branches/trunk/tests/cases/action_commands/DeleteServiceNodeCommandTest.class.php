@@ -95,7 +95,7 @@ class DeleteServiceNodeCommandTest extends LimbTestCase
     $this->assertEqual($command->perform(), LIMB_STATUS_OK);
 
     $response =& $toolkit->getResponse();
-    $this->assertTrue($response->isRedirected());
+    $this->assertFalse($response->isEmpty());
 
     $uow =& $toolkit->getUOW();
     $this->assertTrue($uow->isDeleted($entity));

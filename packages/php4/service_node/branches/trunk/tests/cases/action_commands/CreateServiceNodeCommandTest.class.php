@@ -142,7 +142,7 @@ class CreateServiceNodeCommandTest extends LimbTestCase
     $this->assertIsA($service_node, 'ServiceNode');
 
     $response =& $toolkit->getResponse();
-    $this->assertTrue($response->isRedirected());
+    $this->assertFalse($response->isEmpty());
 
     $uow =& $toolkit->getUOW();
     $this->assertTrue($uow->isRegistered($service_node));

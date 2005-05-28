@@ -157,7 +157,7 @@ class CreateContentServiceNodeCommandTest extends LimbTestCase
     $this->assertIsA($service_node, 'ContentServiceNode');
 
     $response =& $toolkit->getResponse();
-    $this->assertTrue($response->isRedirected());
+    $this->assertFalse($response->isEmpty());
 
     $node =& $service_node->getNodePart();
     $service =& $service_node->getServicePart();
