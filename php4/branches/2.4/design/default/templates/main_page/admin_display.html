@@ -1,15 +1,54 @@
-<core:WRAP file="admin/content_management_page.html" placeholder="content">
+<core:INCLUDE file="/admin/include/admin_header.html">
+<script>var page_tab_id = 'content_management';</script>
+<core:INCLUDE file="/admin/include/admin_top.html">
 
-<fetch:MAPPED>
-<core:INCLUDE file="/admin/jip/common.html">
-</fetch:MAPPED>
 
-<fetch:SUB_BRANCH target="admin_wide_menu" >
-  <core:PARAMETER name='loader_class_name' value='navigation_item' >
-  <core:PARAMETER name='datasource_path' value='pictured_tree_navigation_datasource' >
-  <core:PARAMETER name='path' value='/root/admin/navigation/content_management' >
-  <core:PARAMETER name='order' value='priority=ASC'>
-  <core:PARAMETER name='depth' value='2'>
-</fetch:SUB_BRANCH>
+<table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+<tr>
+  <td height="100%" valign="top">
+  <div id="lo-place-left">
+  <!--BEGIN:[ LEFT ]-->
+    <table border="0" cellpadding="0" cellspacing="10" width="100%">
+    <tr>
+      <td><img src='/shared/images/icon/common/128/cm.gif'></td>
+    </tr>
+    <tr>
+      <td class="sep-big"><img></td>
+    </tr>
+    <tr>
+      <td class="description">В этом разделе Вас ожидает незабываемое удовольствие от работы с наполнением сайта. Безусловно, управление безопасностью контента также не оставит Вас равнодушным. И наконец - то, что мы приготовили для вас на десерт - статистика. Ооо - она великолепна! Надеемся, Вам понравится работать с нашей CMS!</td>
+    </tr>
+    </table>
+  <!--END:[ LEFT ]-->
+  </div>
+  <img alt="" src="/shared/images/1x1.gif" width="180">
+  </td>
+  <td height="100%" valign="top" width="100%">
+  <div id="lo-place-center">
+  <!--BEGIN:[ CENTER ]-->
+    <table border="0" cellpadding="0" cellspacing="10" class="head" width="100%">
+    <tr>
+      <td class="title">Управление контентом (главная)</td>
+    </tr>
+    <!--BEGIN:[ set ]-->
+    <tr>
+      <td width="100%">
+      <fetch:SUB_BRANCH target="admin_wide_menu" >
+        <core:PARAMETER name='loader_class_name' value='navigation_item' >
+        <core:PARAMETER name='datasource_path' value='pictured_tree_navigation_datasource' >
+        <core:PARAMETER name='path' value='/root/admin/navigation/content_management' >
+        <core:PARAMETER name='order' value='priority=ASC'>
+        <core:PARAMETER name='depth' value='2'>
+      </fetch:SUB_BRANCH>
 
-<core:INCLUDE file="/admin/navigation/admin_wide_menu.html">
+      <core:INCLUDE file="/admin/navigation/admin_wide_menu.html">
+      </td>
+    </tr>
+    <!--END:[ set ]-->
+    </table>
+  </div>
+  <!--END:[ CENTER ]-->
+  </td>
+</tr>
+</table>
+<core:INCLUDE file="/admin/include/admin_bottom.html">

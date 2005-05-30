@@ -1,27 +1,56 @@
 <grid:LIST id='admin_wide_menu'>
 <grid:ITERATOR>
-    <div class='btitle1'>
-    <table width='100%' cellpadding='0' cellspacing='0'>
-      <tr>
-        <td align='right'><img id='img_{$id}_big' src='/shared/images/minus.gif' onclick='this.style.cursor = "default"; toggle_submenu("{$id}_big");' alt='Show/Hide' title='Show/Hide'></td>
-        <td width='100%' align='left'><img src='{$image_path}{$image_name}.32.gif' alt='{$title}' title='{$title}' onclick='this.style.cursor = "default"; toggle_submenu("{$id}_big");'><b>{$title}</b></td>
-      </tr>
-    </table>
-    </div>
+<fieldset class="set">
+  <legend>{$title}</legend>
     <core:DATA_TRANSFER hash_id='child_items' target='navi_children'>
     <grid:LIST id='navi_children'>
-      <div id="{^id}_big" style='display: block;'>
-      <table width='100%' border=0 cellspacing=5 cellpadding=2>
-      <tr>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
       <grid:ITERATOR>
-        <grid:SEPARATOR count='3'></tr><tr></grid:SEPARATOR>
-        <td align='center' width='33%'>
-          <a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>><img src='{$image_path}{$image_name}.32.gif' alt='{$title}' title='{$title}' border='0'></a>
-          <br><a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>>{$title}</a></td>
+        <grid:SEPARATOR count='3'></tr><tr><td colspan='3'>&nbsp;</td></tr><tr></grid:SEPARATOR>
+        <td width="33%" valign='top'>
+          <!--BEGIN:[ item ]-->
+        <table border="0" cellpadding="0" cellspacing="0" class="brief">
+        <tr>
+          <td class="icon">
+            <a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>><limb:CONTEXT_ICON variation='64'></a>
+          </td>
+          <td>
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td class="title"><a href='{$url}' <core:OPTIONAL for="new_window">target="_blank"</core:OPTIONAL>>{$title}</a></td>
+            </tr>
+            <fetch:ONE hash_id='url'>
+              <tr><td><limb:CONTEXT_STRING></td></tr>
+              <actions target='menu_actions'>
+                <core:PARAMETER name='group' value='menu'>
+              </actions>
+              <grid:LIST id='menu_actions'>
+              <tr><td><img class="hr"></td></tr>
+              <tr>
+                <td>
+                  <table border="0" cellpadding="0" cellspacing="0">
+                  <grid:ITERATOR>
+                  <tr>
+                    <td><img src='/shared/images/marker/2.gif'></td>
+                    <td><a href="{$action_href}" onclick='return click_href(this.href)'>{$action_name}</a></td>
+                  </tr>
+                  </grid:ITERATOR>
+                  </table>
+                </td>
+              </tr>
+            </grid:LIST>
+            </table>
+          </td>
+            </fetch:ONE>
+        </tr>
+        </table>
+
+        </td>
       </grid:ITERATOR>
       </tr>
       </table>
-      </div>
       </grid:LIST>
+    </fieldset>
   </grid:ITERATOR>
 </grid:LIST>

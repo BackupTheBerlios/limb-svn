@@ -31,7 +31,23 @@ class fetch_one_tag extends server_component_tag
 
   function generate_contents(&$code)
   {
-    $code->write_php($this->get_component_ref_code() . '->fetch("' . $this->attributes['path'] . '");');
+    if(isset($this->attributes['path']))
+    {
+      $code->write_php($this->get_component_ref_code() . '->fetch("' . $this->attributes['path'] . '");');
+    }
+    else if(isset($this->attributes['hash_id']))
+    {
+      $path_tmp = '$' . $code->get_temp_variable();
+      $uri_tmp = '$' . $code->get_temp_variable();
+
+      $code->write_php(
+        "{$path_tmp} = " . $this->parent->get_dataspace_ref_code() . '->get("' . $this->attributes['hash_id'] . '");');
+
+      $code->register_include(LIMB_DIR . "/core/lib/http/uri.class.php");
+
+      $code->write_php($uri_tmp . " = new uri(" . $path_tmp . ");" .
+                       $this->get_component_ref_code() . "->fetch(" . $uri_tmp . "->get_path());");
+    }
 
     parent :: generate_contents($code);
   }

@@ -9,10 +9,10 @@
   <td class="sep"><img src='/shared/images/1x1.gif'></td>
   <!--BEGIN:[ actions elements ]-->
   <actions target='jip_actions'>
-    <core:PARAMETER name='limit' value='3'>
+    <core:PARAMETER name='group' value='admin_main'>
   </actions>
   <actions target='jip_actions_select'>
-    <core:PARAMETER name='offset' value='3'>
+    <core:PARAMETER name='group' value='admin_secondary'>
   </actions>
 
   <grid:LIST id='jip_actions'>
@@ -29,10 +29,10 @@
     </td>
   </grid:ITERATOR>
   </grid:LIST>
-  <td class="sep"><img src='/shared/images/1x1.gif'></td>
-  <td align="right" class="action" style="padding:4px 10px 0 10px">
 
   <grid:LIST id='jip_actions_select'>
+  <td class="sep"><img src='/shared/images/1x1.gif'></td>
+  <td align="right" class="action" style="padding:4px 10px 0 10px">
     <core:LITERAL><select><option value='1'></core:LITERAL>
     <locale:STRING name='choose_any'>
     <core:LITERAL></option></core:LITERAL>
@@ -40,8 +40,8 @@
         <core:LITERAL><option</core:LITERAL> value='{$action_href}' onclick='return click_href(this.value)'>{$action_name}<core:LITERAL></option></core:LITERAL>
     </grid:ITERATOR>
     <core:LITERAL></select></core:LITERAL>
-  </grid:LIST>
   </td>
+  </grid:LIST>
   <!--END:[ actions elements ]-->
 </tr>
 </table>

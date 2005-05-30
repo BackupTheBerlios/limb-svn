@@ -265,8 +265,7 @@ CDDLayout.prototype.locate_elem = function(obj)
   obj.elem = document.getElementById(name)
   if(!obj.elem)
   {
-    var frm = get_frame(tabs.active_tab.id)
-    obj.elem = frm.document.getElementById(name)
+    obj.elem = document.getElementById(name)
   }
   if(!obj.elem)return null
   return obj.elem

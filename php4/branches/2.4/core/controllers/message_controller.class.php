@@ -24,30 +24,33 @@ class message_controller extends site_object_controller
             'template_path' => '/message/admin_display.html'
         ),
         'create_message' => array(
-            'template_path' => '/message/create.html',
-            'action_path' => '/message/create_message_action',
-            'JIP' => true,
-            'popup' => true,
-            'icon' => 'new.generic',
             'action_name' => strings :: get('create_message','message'),
+            'action_path' => '/message/create_message_action',
+            'template_path' => '/message/create.html',
+            'icon' => 'new.generic',
+            'popup' => true,
             'can_have_access_template' => true,
+            'JIP' => true,
+            'admin_main' => true,
+            'menu' => true,
         ),
         'edit' => array(
-            'popup' => true,
-            'JIP' => true,
             'action_name' => strings :: get('edit_message','message'),
             'action_path' => '/message/edit_message_action',
             'template_path' => '/message/edit.html',
-            'icon' => 'edit'
+            'icon' => 'edit',
+            'popup' => true,
+            'JIP' => true,
+            'admin_main' => true,
         ),
         'delete' => array(
-            'JIP' => true,
-            'popup' => true,
             'action_name' => strings :: get('delete'),
             'action_path' => 'form_delete_site_object_action',
             'template_path' => '/site_object/delete.html',
-            'icon' => 'delete'
-        ),
+            'icon' => 'delete',
+            'JIP' => true,
+            'admin_secondary' => true,
+         ),
     );
   }
 }

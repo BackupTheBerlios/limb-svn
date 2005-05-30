@@ -26,6 +26,7 @@ body{padding:0px; margin:0px;background-color:F1F1FF; border:0;}
 .tab-space img{width:3px; height:1px;}
 .tab-space-first img{width:20px; height:1px;}
 .tab-space, .tab-space-first, .tab-empty{}
-.tabulator-body{background-color:#F2F2F2; vertical-align:top;border-bottom:solid 3px #0000B5;}
+.tabulator-header{position:fixed;}
+.tabulator-body{background-color:#F2F2F2; vertical-align:top;border-bottom:solid 3px #0000B5; padding-top: 60px;}
 .tabulator-bottom{border-top:solid 3px #0000B5;}
 
