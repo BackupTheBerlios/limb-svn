@@ -18,39 +18,45 @@ class TreeDecorator// implements Tree
     $this->_tree =& $tree;
   }
 
-  function isNode($id)
+  function _callImp($method, $args = null)
   {
-    return $this->_tree->isNode($id);
+    return call_user_func_array(array(&$this->_tree, $method),
+                                isset($args) ? $args : null);
   }
 
-  function getNode($id)
+  function isNode($node)
   {
-    return $this->_tree->getNode($id);
+    return $this->_tree->isNode($node);
   }
 
-  function getParent($id)
+  function getNode($node)
   {
-    return $this->_tree->getParent($id);
+    return $this->_tree->getNode($node);
   }
 
-  function getParents($id)
+  function getParent($node)
   {
-    return $this->_tree->getParents($id);
+    return $this->_tree->getParent($node);
   }
 
-  function getSiblings($id)
+  function getParents($node)
   {
-    return $this->_tree->getSiblings($id);
+    return $this->_tree->getParents($node);
   }
 
-  function getChildren($id)
+  function getSiblings($node)
   {
-    return $this->_tree->getChildren($id);
+    return $this->_tree->getSiblings($node);
   }
 
-  function countChildren($id)
+  function getChildren($node)
   {
-    return $this->_tree->countChildren($id);
+    return $this->_tree->getChildren($node);
+  }
+
+  function countChildren($node)
+  {
+    return $this->_tree->countChildren($node);
   }
 
   function createRootNode($values)
@@ -58,24 +64,24 @@ class TreeDecorator// implements Tree
     return $this->_tree->createRootNode($values);
   }
 
-  function createSubNode($id, $values)
+  function createSubNode($node, $values)
   {
-    return $this->_tree->createSubNode($id, $values);
+    return $this->_tree->createSubNode($node, $values);
   }
 
-  function deleteNode($id)
+  function deleteNode($node)
   {
-    return $this->_tree->deleteNode($id);
+    return $this->_tree->deleteNode($node);
   }
 
-  function updateNode($id, $values, $internal = false)
+  function updateNode($node, $values, $internal = false)
   {
-    return $this->_tree->updateNode($id, $values, $internal);
+    return $this->_tree->updateNode($node, $values, $internal);
   }
 
-  function moveTree($id, $target_id)
+  function moveTree($node, $target_node)
   {
-    return $this->_tree->moveTree($id, $target_id);
+    return $this->_tree->moveTree($node, $target_node);
   }
 
   function setDumbMode($status=true)
@@ -98,9 +104,9 @@ class TreeDecorator// implements Tree
     return $this->_tree->getPathToNode($node, $delimeter);
   }
 
-  function getMaxChildIdentifier($id)
+  function getMaxChildIdentifier($node)
   {
-    return $this->_tree->getMaxChildIdentifier($id);
+    return $this->_tree->getMaxChildIdentifier($node);
   }
 
   function getNodeByPath($path, $delimiter='/')
@@ -108,9 +114,9 @@ class TreeDecorator// implements Tree
     return $this->_tree->getNodeByPath($path, $delimiter);
   }
 
-  function getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false)
+  function getSubBranch($node, $depth = -1, $include_parent = false, $check_expanded_parents = false)
   {
-    return $this->_tree->getSubBranch($id, $depth, $include_parent, $check_expanded_parents);
+    return $this->_tree->getSubBranch($node, $depth, $include_parent, $check_expanded_parents);
   }
 
   function getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false)
@@ -123,42 +129,59 @@ class TreeDecorator// implements Tree
     return $this->_tree->getRootNodes();
   }
 
-  function isNodeExpanded($id)
+  function isNodeExpanded($node)
   {
-    return $this->_tree->isNodeExpanded($id);
+    return $this->_tree->isNodeExpanded($node);
   }
 
-  function toggleNode($id)
+  function toggleNode($node)
   {
-    return $this->_tree->toggleNode($id);
+    return $this->_tree->toggleNode($node);
   }
 
-  function expandNode($id)
+  function expandNode($node)
   {
-    return $this->_tree->expandNode($id);
+    return $this->_tree->expandNode($node);
   }
 
-  function collapseNode($id)
+  function collapseNode($node)
   {
-    return $this->_tree->collapseNode($id);
+    return $this->_tree->collapseNode($node);
   }
 
-  function canAddNode($id)
+  function canAddNode($node)
   {
-    if (!$this->isNode($id))
-      return false;
-    else
-      return true;
+    return $this->_tree->canAddNode($node);
   }
 
-  function canDeleteNode($id)
+  function canDeleteNode($node)
   {
-    $amount = $this->countChildren($id);
+    return $this->_tree->canDeleteNode($node);
+  }
 
-    if ($amount === false ||  $amount == 0)
-      return true;
-    else
-      return false;
+  function initializeExpandedParents()
+  {
+    return $this->_tree->initializeExpandedParents();
+  }
+
+  function normalizeExpandedParents()
+  {
+    return $this->_tree->normalizeExpandedParents();
+  }
+
+  function setExpandedParents(&$p)
+  {
+    return $this->_tree->setExpandedParents($p);
+  }
+
+  function syncExpandedParents()
+  {
+    return $this->_tree->syncExpandedParents();
+  }
+
+  function updateExpandedParents()
+  {
+    return $this->_tree->updateExpandedParents();
   }
 }
 

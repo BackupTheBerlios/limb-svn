@@ -24,6 +24,23 @@ class CacheRegistryTest extends LimbTestCase
   function setUp()
   {
     $this->cache = new CacheRegistry();
+    $this->cache->flushAll();
+  }
+
+  function testAssignArrayKeyFalse()
+  {
+    $key = array('empty');
+
+    $this->assertFalse($this->cache->assign($var, $key));
+  }
+
+  function testAssignArrayKeyTrue()
+  {
+    $key = array('empty');
+    $this->cache->put($key, $v = 'value');
+
+    $this->assertTrue($this->cache->assign($var, $key));
+    $this->assertEqual($v, $var);
   }
 
   function testGetNull()
@@ -103,44 +120,34 @@ class CacheRegistryTest extends LimbTestCase
     $this->assertEqual($this->cache->get($key, 'test-group'), $v);
   }
 
-  function testPurge()
+  function testFlushValueWithScalarKey()
   {
-    $key = 1;
-    $this->cache->put($key, $v = 'value');
-
-    $this->cache->purge($key);
-
-    $this->assertNull($this->cache->get($key));
+    $this->_testFlushValue(1, 2);
   }
 
-  function testPurgeArrayKey()
+  function testFlushValueWithArrayKey()
   {
-    $key = array(1);
-    $this->cache->put($key, $v = 'value');
-
-    $this->cache->purge($key);
-
-    $this->assertNull($this->cache->get($key));
+    $this->_testFlushValue(array(1), array(2));
   }
 
-  function testPurgeObjectKey()
+  function testFlushValueWithObjectKey()
   {
-    $key = new CacheableFooClass();
-    $this->cache->put($key, $v = 'value');
+    $key1 = new CacheableFooClass();
+    $key2 = new CacheableFooClass();
+    $key2->im_different = 1;
 
-    $this->cache->purge($key);
-
-    $this->assertNull($this->cache->get($key));
+    $this->_testFlushValue($key1, $key2);
   }
 
   function testFlushAll()
   {
-    $key = 1;
-    $this->cache->put($key, $v = 'value');
+    $this->cache->put(1, $v1 = 'value1');
+    $this->cache->put(2, $v2 = 'value2');
 
-    $this->cache->flush();
+    $this->cache->flushAll();
 
-    $this->assertNull($this->cache->get($key));
+    $this->assertNull($this->cache->get(1));
+    $this->assertNull($this->cache->get(2));
   }
 
   function testFlushGroup()
@@ -149,12 +156,22 @@ class CacheRegistryTest extends LimbTestCase
     $this->cache->put($key, $v1 = 'value1');
     $this->cache->put($key, $v2 = 'value2', 'test-group');
 
-    $this->cache->flush('test-group');
+    $this->cache->flushGroup('test-group');
 
     $this->assertNull($this->cache->get($key, 'test-group'));
     $this->assertEqual($this->cache->get($key), $v1);
   }
 
+  function _testFlushValue($key1, $key2)
+  {
+    $this->cache->put($key1, $v1 = 'value1');
+    $this->cache->put($key2, $v2 = 'value2');
+
+    $this->cache->flushValue($key1);
+
+    $this->assertNull($this->cache->get($key1));
+    $this->assertEqual($v2, $this->cache->get($key2));
+  }
 }
 
 ?>

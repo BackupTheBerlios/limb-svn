@@ -239,40 +239,22 @@ class TreeDecoratorTest extends LimbTestCase
     $this->assertEqual($res, $this->decorator->collapseNode($id));
   }
 
-  function testCanAddNodeTrue()
+  function testCanAddNode()
   {
     $id = 100;
-    $this->tree->expectOnce('isNode', array($id));
-    $this->tree->setReturnValue('isNode', true);
-
-    $this->assertTrue($this->decorator->canAddNode($id));
-  }
-
-  function testCanAddNodeFalse()
-  {
-    $id = 100;
-    $this->tree->expectOnce('isNode', array($id));
-    $this->tree->setReturnValue('isNode', false);
+    $this->tree->expectOnce('canAddNode', array($id));
+    $this->tree->setReturnValue('canAddNode', false);
 
     $this->assertFalse($this->decorator->canAddNode($id));
   }
 
-  function testCanDeleteNodeTrue()
+  function testCanDeleteNode()
   {
     $id = 100;
-    $this->tree->expectOnce('countChildren', array($id));
-    $this->tree->setReturnValue('countChildren', 0);
+    $this->tree->expectOnce('canDeleteNode', array($id));
+    $this->tree->setReturnValue('canDeleteNode', false);
 
-    $this->assertTrue($this->decorator->canDeleteNode($id));
-  }
-
-  function testCanDeleteNodeTrue2()
-  {
-    $id = 100;
-    $this->tree->expectOnce('countChildren', array($id));
-    $this->tree->setReturnValue('countChildren', false);
-
-    $this->assertTrue($this->decorator->canDeleteNode($id));
+    $this->assertFalse($this->decorator->canDeleteNode($id));
   }
 
   function testGetPathToNode()
@@ -282,6 +264,36 @@ class TreeDecoratorTest extends LimbTestCase
     $this->tree->expectOnce('getPathToNode', array($node, '/'));
     $this->tree->setReturnValue('getPathToNode', $path = '/1/2/3');
     $this->assertEqual($path, $this->decorator->getPathToNode($node));
+  }
+
+  function testInitializeExpandedParents()
+  {
+    $this->tree->expectOnce('initializeExpandedParents');
+    $this->decorator->initializeExpandedParents();
+  }
+
+  function testNormalizeExpandedParents()
+  {
+    $this->tree->expectOnce('normalizeExpandedParents');
+    $this->decorator->normalizeExpandedParents();
+  }
+
+  function testSetExpandedParents()
+  {
+    $this->tree->expectOnce('setExpandedParents', array($p = array(1)));
+    $this->decorator->setExpandedParents($p);
+  }
+
+  function testSyncExpandedParents()
+  {
+    $this->tree->expectOnce('syncExpandedParents');
+    $this->decorator->syncExpandedParents();
+  }
+
+  function testUpdateExpandedParents()
+  {
+    $this->tree->expectOnce('updateExpandedParents');
+    $this->decorator->updateExpandedParents();
   }
 }
 

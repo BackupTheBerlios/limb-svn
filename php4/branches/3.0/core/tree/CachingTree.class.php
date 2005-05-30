@@ -10,11 +10,13 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/tree/TreeDecorator.class.php');
 
-define('CACHING_TREE_CACHE_GROUP', 'tree');
+define('CACHING_TREE_COMMON_GROUP', 'tree');
 
 class CachingTree extends TreeDecorator
 {
   var $cache;
+  var $current_key;
+  var $current_group;
 
   function CachingTree(&$tree)
   {
@@ -24,147 +26,167 @@ class CachingTree extends TreeDecorator
     $this->cache =& $toolkit->getCache();
   }
 
-  function getNode($lazy_node)
+  function getNode($node)
   {
-    $id = $this->_getIdLazy($lazy_node);
-
-    if($node = $this->cache->get(array('node' => $id), CACHING_TREE_CACHE_GROUP))
-      return $node;
-
-    $node = $this->_tree->getNode($lazy_node);
-
-    $this->cache->put(array('node' => $id), $node, CACHING_TREE_CACHE_GROUP);
-
-    return $node;
+    $id = $this->_getIdLazy($node);
+    $this->_useCacheKey(array('node', $id));
+    return $this->_cacheCallback('getNode', array($node));
   }
 
-  function getParents($lazy_node)
+  function getParents($node)
   {
-    $id = $this->_getIdLazy($lazy_node);
-
-    if($parents = $this->cache->get(array('parents' => $id), CACHING_TREE_CACHE_GROUP))
-      return $parents;
-
-    $parents = $this->_tree->getParents($lazy_node);
-
-    $this->cache->put(array('parents' => $id), $parents, CACHING_TREE_CACHE_GROUP);
-
-    return $parents;
+    $id = $this->_getIdLazy($node);
+    $this->_useCacheKey(array('parents', $id));
+    return $this->_cacheCallback('getParents', array($node));
   }
 
-  function getChildren($lazy_node)
+  function getChildren($node)
   {
-    $id = $this->_getIdLazy($lazy_node);
-
-    if($children = $this->cache->get(array('children' => $id), CACHING_TREE_CACHE_GROUP))
-      return $children;
-
-    $children = $this->_tree->getChildren($lazy_node);
-
-    $this->cache->put(array('children' => $id), $children, CACHING_TREE_CACHE_GROUP);
-
-    return $children;
+    $id = $this->_getIdLazy($node);
+    $this->_useCacheKey(array('children', $id));
+    return $this->_cacheCallback('getChildren', array($node));
   }
 
-  function countChildren($lazy_node)
+  function countChildren($node)
   {
-    $id = $this->_getIdLazy($lazy_node);
-
-    if($count = $this->cache->get(array('count_children' => $id), CACHING_TREE_CACHE_GROUP))
-      return $count;
-
-    $count = $this->_tree->countChildren($lazy_node);
-
-    $this->cache->put(array('count_children' => $id), $count, CACHING_TREE_CACHE_GROUP);
-
-    return $count;
+    $id = $this->_getIdLazy($node);
+    $this->_useCacheKey(array('count_children', $id));
+    return $this->_cacheCallback('countChildren', array($node));
   }
 
-  function createRootNode($values)
+  function getNodesByIds($ids)
   {
-    $result = parent :: createRootNode($values);
+    $sorted_ids = $ids;
+    sort($sorted_ids);
+    $this->_useCacheKey(array('ids', $sorted_ids));
 
-    $this->cache->flush(CACHING_TREE_CACHE_GROUP);
-
-    return $result;
+    return $this->_cacheCallback('getNodesByIds', array($ids));
   }
 
-  function createSubNode($id, $values)
+  function getPathToNode($node, $delimiter = '/')
   {
-    $result = parent :: createSubNode($id, $values);
-
-    $this->cache->flush(CACHING_TREE_CACHE_GROUP);
-
-    return $result;
+    $id = $this->_getIdLazy($node);
+    $this->_useCacheKey(array('path_to_node', $id));
+    return $this->_cacheCallback('getPathToNode', array($node, $delimiter));
   }
 
-  function deleteNode($id)
+  function getNodeByPath($path)
   {
-    $result = parent :: deleteNode($id);
-
-    $this->cache->flush(CACHING_TREE_CACHE_GROUP);
-
-    return $result;
+    $this->_useCacheKey(array('path', rtrim($path, '/')));
+    return $this->_cacheCallback('getNodeByPath', array($path));
   }
 
-  function updateNode($id, $values, $internal = false)
+  function getAllNodes()
   {
-    $result = parent :: updateNode($id, $values, $internal);
-
-    $this->cache->flush(CACHING_TREE_CACHE_GROUP);
-
-    return $result;
+    $this->_useCacheKey(array('all_nodes'));
+    return $this->_cacheCallback('getAllNodes');
   }
 
-  function moveTree($id, $target_id)
+  function getRootNodes()
   {
-    $result = parent :: moveTree($id, $target_id);
-
-    $this->cache->flush(CACHING_TREE_CACHE_GROUP);
-
-    return $result;
+    $this->_useCacheKey(array('root_nodes'));
+    return $this->_cacheCallback('getRootNodes');
   }
 
-  function getNodeByPath($path, $delimiter='/')
+  function getSubBranch($node, $depth = -1, $include_parent = false, $check_expanded_parents = false)
   {
-    if($node = $this->cache->get(array('path' => $path), CACHING_TREE_CACHE_GROUP))
-      return $node;
+    if($check_expanded_parents)
+      return parent :: getSubBranch($node, $depth, $include_parent, $check_expanded_parents);
 
-    $node = $this->_tree->getNodeByPath($path, $delimiter);
+    $id = $this->_getIdLazy($node);
 
-    $this->cache->put(array('path' => $path), $node, CACHING_TREE_CACHE_GROUP);
-
-    return $node;
-  }
-
-  function getSubBranch($id, $depth = -1, $include_parent = false, $check_expanded_parents = false)
-  {
     $key = array('sub_branch',
                  'node_id' => $id,
                  'depth' => $depth,
                  'include_parent' => $include_parent,
                  'check_expanded_parents' => $check_expanded_parents);
 
-    if($node = $this->cache->get($key, CACHING_TREE_CACHE_GROUP))
-      return $node;
+    $this->_useCacheKey($key, CACHING_TREE_COMMON_GROUP);
 
-    $nodes = $this->_tree->getSubBranch($id, $depth, $include_parent, $check_expanded_parents);
-
-    $this->cache->put($key, $nodes, CACHING_TREE_CACHE_GROUP);
-
-    return $nodes;
+    return $this->_cacheCallback('getSubBranch',
+                                  array($node, $depth, $include_parent, $check_expanded_parents));
   }
 
-  function getRootNodes()
+  function getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false)
   {
-    if($nodes = $this->cache->get(array('root_nodes'), CACHING_TREE_CACHE_GROUP))
-      return $nodes;
+    if($check_expanded_parents)
+      return $this->_tree->getSubBranchByPath($path, $depth, $include_parent, $check_expanded_parents);
 
-    $nodes = $this->_tree->getRootNodes();
+    $key = array('sub_branch_by_path',
+                 'path' => rtrim($path, '/'),
+                 'depth' => $depth,
+                 'include_parent' => $include_parent,
+                 'check_expanded_parents' => $check_expanded_parents);
 
-    $this->cache->put(array('root_nodes'), $nodes, CACHING_TREE_CACHE_GROUP);
+    $this->_useCacheKey($key, CACHING_TREE_COMMON_GROUP);
 
-    return $nodes;
+    return $this->_cacheCallback('getSubBranchByPath',
+                                  array($path, $depth, $include_parent, $check_expanded_parents));
+  }
+
+  function createRootNode($values)
+  {
+    $result = parent :: createRootNode($values);
+    $this->flushCache();
+    return $result;
+  }
+
+  function createSubNode($id, $values)
+  {
+    $result = parent :: createSubNode($id, $values);
+    $this->flushCache();
+    return $result;
+  }
+
+  function deleteNode($id)
+  {
+    $result = parent :: deleteNode($id);
+    $this->flushCache();
+    return $result;
+  }
+
+  function updateNode($id, $values, $internal = false)
+  {
+    $result = parent :: updateNode($id, $values, $internal);
+    $this->flushCache();
+    return $result;
+  }
+
+  function moveTree($id, $target_id)
+  {
+    $result = parent :: moveTree($id, $target_id);
+    $this->flushCache();
+    return $result;
+  }
+
+  function _useCacheKey($key, $group = null)
+  {
+    $this->current_key = $key;
+    $this->current_group = is_null($group) ? CACHING_TREE_COMMON_GROUP : $group;
+  }
+
+  function flushCache($group = null)
+  {
+    if(is_null($group))
+      $this->cache->flushGroup(CACHING_TREE_COMMON_GROUP);
+    else
+      $this->cache->flushGroup($group);
+  }
+
+  function _cacheCallback($method, $args = null, $key = null, $group = null)
+  {
+    $group = is_null($group) ? $this->current_group : $group;
+    $key = is_null($key) ? $this->current_key : $key;
+
+    $variable = null;
+    if($this->cache->assign($variable, $key, $group))
+      return $variable;
+
+    $result = $this->_callImp($method, $args);
+
+    $this->cache->put($key, $result, $group);
+
+    return $result;
   }
 
   function _getIdLazy($node)
@@ -175,5 +197,4 @@ class CachingTree extends TreeDecorator
       return $node;
   }
 }
-
 ?>

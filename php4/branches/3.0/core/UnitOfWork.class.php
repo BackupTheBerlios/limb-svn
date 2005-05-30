@@ -153,13 +153,13 @@ class UnitOfWork
   function _purgeFromCache($id)
   {
     $cache =& $this->_getCache();
-    $cache->purge($id, UOW_CACHE_GROUP);
+    $cache->flushValue($id, UOW_CACHE_GROUP);
   }
 
   function _purgeAllFromCache()
   {
     $cache =& $this->_getCache();
-    $cache->purgeGroup(UOW_CACHE_GROUP);
+    $cache->flushGroup(UOW_CACHE_GROUP);
   }
 
   function _getId(&$obj)
@@ -205,7 +205,7 @@ class UnitOfWork
     $this->deleted = array();
 
     $cache =& $this->_getCache();
-    $cache->flush(UOW_CACHE_GROUP);
+    $cache->flushGroup(UOW_CACHE_GROUP);
   }
 
   function commit()

@@ -57,6 +57,10 @@ class Path2IdTranslatorTest extends LimbTestCase
 
   function _cleanUp()
   {
+    $toolkit =& Limb :: toolkit();
+    $cache =& $toolkit->getCache();
+    $cache->flushAll();
+
     $this->db->delete('sys_object_to_node');
     $this->db->delete('sys_tree');
   }
