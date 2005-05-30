@@ -29,6 +29,13 @@ class BaseEditDialogActionCommand extends BaseDialogActionCommand
     return $state_machine->perform();
   }
 
+  function performInitDataspace()
+  {
+    include_once(LIMB_DIR . '/core/commands/MapObjectToDataspaceCommand.class.php');
+    $command = new MapObjectToDataspaceCommand($this->content_map, $this->entity);
+    return $command->perform();
+  }
+
   function performInitEntity()
   {
     $toolkit =& Limb :: toolkit();
