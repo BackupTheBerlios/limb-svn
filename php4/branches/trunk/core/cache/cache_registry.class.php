@@ -80,7 +80,7 @@ class cache_registry
       return null;
   }
 
-  function purge($raw_key, $group = 'default')
+  function flush_value($raw_key, $group = 'default')
   {
     $key = $this->_normalize_key($raw_key);
 
@@ -90,25 +90,18 @@ class cache_registry
     $this->_remove_file_cache($group, $key);
   }
 
-  function purge_group($group = null)
+  function flush_group($group)
   {
-    $this->flush($group);
+    if(isset($this->cache[$group]))
+      $this->cache[$group] = array();
+
+    $this->_remove_file_cache($group);
   }
 
-  function flush($group = null)
+  function flush_all()
   {
-    if($group !== null)
-    {
-      if(isset($this->cache[$group]))
-        $this->cache[$group] = array();
-
-      $this->_remove_file_cache($group);
-    }
-    else
-    {
-      $this->_remove_file_cache();
-      $this->cache = array();
-    }
+    $this->cache = array();
+    $this->_remove_file_cache();
   }
 
   function _remove_file_cache($group = false, $key = false)

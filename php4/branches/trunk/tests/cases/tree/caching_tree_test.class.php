@@ -376,8 +376,8 @@ class caching_tree_test extends LimbTestCase
   {
     $this->tree->setReturnValue('create_root_node', $result = 'some_result', array($values = 'whatever'));
 
-    $this->cache->expectArgumentsAt(0, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
-    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP));
+    $this->cache->expectArgumentsAt(0, 'flush_group', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
+    $this->cache->expectArgumentsAt(1, 'flush_group', array(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP));
 
     $this->assertEqual($this->decorator->create_root_node($values), $result);
   }
@@ -388,8 +388,8 @@ class caching_tree_test extends LimbTestCase
                                 $result = 'some_result',
                                 array($id = 'id',$values = 'whatever'));
 
-    $this->cache->expectArgumentsAt(0, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
-    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP));
+    $this->cache->expectArgumentsAt(0, 'flush_group', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
+    $this->cache->expectArgumentsAt(1, 'flush_group', array(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP));
 
     $this->assertEqual($this->decorator->create_sub_node($id, $values), $result);
   }
@@ -398,8 +398,8 @@ class caching_tree_test extends LimbTestCase
   {
     $this->tree->setReturnValue('delete_node', $result = 'some_result', array($id = 'id'));
 
-    $this->cache->expectArgumentsAt(0, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
-    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP));
+    $this->cache->expectArgumentsAt(0, 'flush_group', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
+    $this->cache->expectArgumentsAt(1, 'flush_group', array(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP));
 
     $this->assertEqual($this->decorator->delete_node($id), $result);
   }
@@ -410,8 +410,8 @@ class caching_tree_test extends LimbTestCase
                                 $result = 'some_result',
                                 array($id = 'id', $values = 'whatever', false));
 
-    $this->cache->expectArgumentsAt(0, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
-    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP));
+    $this->cache->expectArgumentsAt(0, 'flush_group', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
+    $this->cache->expectArgumentsAt(1, 'flush_group', array(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP));
 
     $this->assertEqual($this->decorator->update_node($id, $values), $result);
   }
@@ -422,8 +422,8 @@ class caching_tree_test extends LimbTestCase
                                 $result = 'some result',
                                 array($id = 'id', $target_id = 'target'));
 
-    $this->cache->expectArgumentsAt(0, 'flush', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
-    $this->cache->expectArgumentsAt(1, 'flush', array(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP));
+    $this->cache->expectArgumentsAt(0, 'flush_group', array(CACHE_REGISTRY_TREE_COMMON_GROUP));
+    $this->cache->expectArgumentsAt(1, 'flush_group', array(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP));
 
     $this->assertEqual($this->decorator->move_tree($id, $target_id), $result);
   }

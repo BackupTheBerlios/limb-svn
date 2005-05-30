@@ -19,7 +19,7 @@ class cache_registry_test extends LimbTestCase
   function setUp()
   {
     $this->cache = new cache_registry();
-    $this->cache->flush();
+    $this->cache->flush_all();
   }
 
   function test_assign_array_key_false()
@@ -115,34 +115,23 @@ class cache_registry_test extends LimbTestCase
     $this->assertEqual($this->cache->get($key, 'test-group'), $v);
   }
 
-  function test_purge()
+  function test_flush_value_scalar_key()
   {
-    $key = 1;
-    $this->cache->put($key, $v = 'value');
-
-    $this->cache->purge($key);
-
-    $this->assertNull($this->cache->get($key));
+    $this->_test_flush_value(1, 2);
   }
 
-  function test_purge_array_key()
+  function test_flush_value_array_key()
   {
-    $key = array(1);
-    $this->cache->put($key, $v = 'value');
-
-    $this->cache->purge($key);
-
-    $this->assertNull($this->cache->get($key));
+    $this->_test_flush_value(array(1), array(2));
   }
 
-  function test_purge_object_key()
+  function test_flush_value_object_key()
   {
-    $key = new cacheable_foo_class();
-    $this->cache->put($key, $v = 'value');
+    $key1 = new cacheable_foo_class();
+    $key2 = new cacheable_foo_class();
+    $key2->different = 1;
 
-    $this->cache->purge($key);
-
-    $this->assertNull($this->cache->get($key));
+    $this->_test_flush_value($key1, $key2);
   }
 
   function test_flush_all()
@@ -150,7 +139,7 @@ class cache_registry_test extends LimbTestCase
     $key = 1;
     $this->cache->put($key, $v = 'value');
 
-    $this->cache->flush();
+    $this->cache->flush_all();
 
     $this->assertNull($this->cache->get($key));
   }
@@ -161,10 +150,21 @@ class cache_registry_test extends LimbTestCase
     $this->cache->put($key, $v1 = 'value1');
     $this->cache->put($key, $v2 = 'value2', 'test-group');
 
-    $this->cache->flush('test-group');
+    $this->cache->flush_group('test-group');
 
     $this->assertNull($this->cache->get($key, 'test-group'));
     $this->assertEqual($this->cache->get($key), $v1);
+  }
+
+  function _test_flush_value($key1, $key2)
+  {
+    $this->cache->put($key1, $v1 = 'value1');
+    $this->cache->put($key2, $v2 = 'value2');
+
+    $this->cache->flush_value($key1);
+
+    $this->assertNull($this->cache->get($key1));
+    $this->assertEqual($this->cache->get($key2), $v2);
   }
 }
 ?>

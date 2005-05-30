@@ -123,7 +123,7 @@ class caching_tree extends tree_decorator
   function get_sub_branch($node, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
   {
     if($check_expanded_parents)
-      return $this->tree_imp->get_sub_branch($node, $depth, $include_parent, $check_expanded_parents, $only_parents);
+      return parent :: get_sub_branch($node, $depth, $include_parent, $check_expanded_parents, $only_parents);
 
     $id = $this->_get_id_lazy($node);
 
@@ -143,7 +143,7 @@ class caching_tree extends tree_decorator
   function get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
   {
     if($check_expanded_parents)
-      return $this->tree_imp->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents);
+      return parent :: get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents);
 
     $key = array('sub_branch_by_path',
                  'path' => rtrim($path, '/'),
@@ -161,7 +161,7 @@ class caching_tree extends tree_decorator
   function get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
   {
     if($check_expanded_parents)
-      return $this->tree_imp->get_accessible_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $class_id, $only_parents);
+      return parent :: get_accessible_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $class_id, $only_parents);
 
     $user =& user :: instance();
 
@@ -206,57 +206,42 @@ class caching_tree extends tree_decorator
   function create_root_node($values)
   {
     $this->flush_cache();
-    return $this->tree_imp->create_root_node($values);
+    return parent :: create_root_node($values);
   }
 
   function create_sub_node($id, $values)
   {
     $this->flush_cache();
-    return $this->tree_imp->create_sub_node($id, $values);
+    return parent :: create_sub_node($id, $values);
   }
 
   function delete_node($id)
   {
     $this->flush_cache();
-    return $this->tree_imp->delete_node($id);
+    return parent :: delete_node($id);
   }
 
   function update_node($id, $values, $internal = false)
   {
     $this->flush_cache();
-    return $this->tree_imp->update_node($id, $values, $internal);
+    return parent :: update_node($id, $values, $internal);
   }
 
   function move_tree($source_node, $target_node)
   {
     $this->flush_cache();
-    return $this->tree_imp->move_tree($source_node, $target_node);
-  }
-
-  function collapse_node($node)
-  {
-    return $this->tree_imp->collapse_node($node);
-  }
-
-  function expand_node($node)
-  {
-    return $this->tree_imp->expand_node($node);
-  }
-
-  function toggle_node($node)
-  {
-    return $this->tree_imp->toggle_node($node);
+    return parent :: move_tree($source_node, $target_node);
   }
 
   function flush_cache($group = null)
   {
     if(is_null($group))
     {
-      $this->cache->flush(CACHE_REGISTRY_TREE_COMMON_GROUP);
-      $this->cache->flush(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP);
+      $this->cache->flush_group(CACHE_REGISTRY_TREE_COMMON_GROUP);
+      $this->cache->flush_group(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP);
     }
     else
-      $this->cache->flush($group);
+      $this->cache->flush_group($group);
   }
 
   function _get_id_lazy($node)

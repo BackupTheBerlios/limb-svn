@@ -442,7 +442,7 @@ class access_policy
   function _flush_tree_cache()
   {
     $cache =& $this->_get_cache_registry();
-    $cache->flush(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP);
+    $cache->flush_group(CACHE_REGISTRY_TREE_ACCESSIBLE_GROUP);
   }
 }
 ?>
