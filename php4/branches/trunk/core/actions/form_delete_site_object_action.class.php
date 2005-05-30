@@ -29,7 +29,7 @@ class form_delete_site_object_action extends form_site_object_action
     }
 
     $tree = tree :: instance();
-    $tree->update_expanded_parents();
+    $tree->sync_expanded_parents();
 
     $request->set_status(REQUEST_STATUS_FORM_SUBMITTED);
 

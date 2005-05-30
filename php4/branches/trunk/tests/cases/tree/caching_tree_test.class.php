@@ -216,7 +216,7 @@ class caching_tree_test extends LimbTestCase
                  'node_id' => $node_id = 100,
                  'depth' => $depth = -1,
                  'include_parent' => false,
-                 'check_expanded_parents' => false,
+                 'normalize_expanded_parents' => false,
                  'only_parents' => false);
 
     $this->_test_cache_hit(array('get_sub_branch', array($node_id, $depth, false, false, false)),
@@ -231,7 +231,7 @@ class caching_tree_test extends LimbTestCase
                  'node_id' => $node_id = 100,
                  'depth' => $depth = -1,
                  'include_parent' => false,
-                 'check_expanded_parents' => false,
+                 'normalize_expanded_parents' => false,
                  'only_parents' => false);
 
     $this->_test_cache_miss(array('get_sub_branch', array($node_id, $depth, false, false, false)),
@@ -247,9 +247,9 @@ class caching_tree_test extends LimbTestCase
     $this->tree->expectOnce('get_sub_branch');
     $this->tree->setReturnValue('get_sub_branch',
                                 $expected = 'result',
-                                array($node_id = 100, $depth = -1, false, $check_expanded_parents = true, false));
+                                array($node_id = 100, $depth = -1, false, $normalize_expanded_parents = true, false));
 
-    $result = $this->decorator->get_sub_branch($node_id, $depth, false, $check_expanded_parents, false);
+    $result = $this->decorator->get_sub_branch($node_id, $depth, false, $normalize_expanded_parents, false);
 
     $this->assertEqual($result, $expected);
   }
@@ -261,7 +261,7 @@ class caching_tree_test extends LimbTestCase
                  'path' => 'path',
                  'depth' => $depth = -1,
                  'include_parent' => false,
-                 'check_expanded_parents' => false,
+                 'normalize_expanded_parents' => false,
                  'only_parents' => false);
 
     $this->_test_cache_hit(array('get_sub_branch_by_path', array('path/', $depth, false, false, false)),
@@ -277,7 +277,7 @@ class caching_tree_test extends LimbTestCase
                  'path' => 'path',
                  'depth' => $depth = -1,
                  'include_parent' => false,
-                 'check_expanded_parents' => false,
+                 'normalize_expanded_parents' => false,
                  'only_parents' => false);
 
     $this->_test_cache_miss(array('get_sub_branch_by_path', array('path/', $depth, false, false, false)),
@@ -293,9 +293,9 @@ class caching_tree_test extends LimbTestCase
     $this->tree->expectOnce('get_sub_branch_by_path');
     $this->tree->setReturnValue('get_sub_branch_by_path',
                                 $expected = 'result',
-                                array($path = '/', $depth = -1, false, $check_expanded_parents = true, false));
+                                array($path = '/', $depth = -1, false, $normalize_expanded_parents = true, false));
 
-    $result = $this->decorator->get_sub_branch_by_path($path, $depth, false, $check_expanded_parents, false);
+    $result = $this->decorator->get_sub_branch_by_path($path, $depth, false, $normalize_expanded_parents, false);
 
     $this->assertEqual($result, $expected);
   }
@@ -309,7 +309,7 @@ class caching_tree_test extends LimbTestCase
                  'path' => 'path',
                  'depth' => $depth = -1,
                  'include_parent' => false,
-                 'check_expanded_parents' => false,
+                 'normalize_expanded_parents' => false,
                  'class_id' => $class_id = 10,
                  'only_parents' => false,
                  'user_id' => $user->get_id(),
@@ -330,7 +330,7 @@ class caching_tree_test extends LimbTestCase
                  'path' => 'path',
                  'depth' => $depth = -1,
                  'include_parent' => false,
-                 'check_expanded_parents' => false,
+                 'normalize_expanded_parents' => false,
                  'class_id' => $class_id = 10,
                  'only_parents' => false,
                  'user_id' => $user->get_id(),
@@ -349,9 +349,9 @@ class caching_tree_test extends LimbTestCase
     $this->tree->expectOnce('get_accessible_sub_branch_by_path');
     $this->tree->setReturnValue('get_accessible_sub_branch_by_path',
                                 $expected = 'result',
-                                array($path = '/', $depth = -1, false, $check_expanded_parents = true, $class_id = 1, false));
+                                array($path = '/', $depth = -1, false, $normalize_expanded_parents = true, $class_id = 1, false));
 
-    $result = $this->decorator->get_accessible_sub_branch_by_path($path, $depth, false, $check_expanded_parents, $class_id, false);
+    $result = $this->decorator->get_accessible_sub_branch_by_path($path, $depth, false, $normalize_expanded_parents, $class_id, false);
 
     $this->assertEqual($result, $expected);
   }

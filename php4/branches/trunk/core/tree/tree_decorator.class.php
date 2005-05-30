@@ -124,19 +124,19 @@ class tree_decorator
     return $this->tree_imp->get_node_by_path($path, $delimiter);
   }
 
-  function & get_sub_branch($node, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
+  function & get_sub_branch($node, $depth = -1, $include_parent = false, $normalize_expanded_parents = false, $only_parents = false)
   {
-    return $this->tree_imp->get_sub_branch($node, $depth, $include_parent, $check_expanded_parents, $only_parents);
+    return $this->tree_imp->get_sub_branch($node, $depth, $include_parent, $normalize_expanded_parents, $only_parents);
   }
 
-  function & get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false)
+  function & get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $normalize_expanded_parents = false, $only_parents = false)
   {
-    return $this->tree_imp->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents);
+    return $this->tree_imp->get_sub_branch_by_path($path, $depth, $include_parent, $normalize_expanded_parents, $only_parents);
   }
 
-  function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
+  function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $normalize_expanded_parents = false, $class_id = null, $only_parents = false)
   {
-    return $this->tree_imp->get_accessible_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $class_id, $only_parents);
+    return $this->tree_imp->get_accessible_sub_branch_by_path($path, $depth, $include_parent, $normalize_expanded_parents, $class_id, $only_parents);
   }
 
   function & get_root_nodes()
@@ -179,14 +179,14 @@ class tree_decorator
     return $this->tree_imp->can_delete_node($node);
   }
 
-  function check_expanded_parents()
+  function normalize_expanded_parents()
   {
-    $this->tree_imp->check_expanded_parents();
+    $this->tree_imp->normalize_expanded_parents();
   }
 
-  function update_expanded_parents()
+  function sync_expanded_parents()
   {
-    $this->tree_imp->update_expanded_parents();
+    $this->tree_imp->sync_expanded_parents();
   }
 }
 

@@ -163,10 +163,10 @@ class materialized_path_tree//implements tree
   {
     $this->_expanded_parents =& $expanded_parents;
 
-    $this->check_expanded_parents();
+    $this->normalize_expanded_parents();
   }
 
-  function check_expanded_parents()
+  function normalize_expanded_parents()
   {
     if(!is_array($this->_expanded_parents) || sizeof($this->_expanded_parents) == 0)
     {
@@ -174,7 +174,7 @@ class materialized_path_tree//implements tree
     }
     elseif(sizeof($this->_expanded_parents) > 0)
     {
-      $this->update_expanded_parents();
+      $this->sync_expanded_parents();
     }
   }
 
@@ -346,7 +346,7 @@ class materialized_path_tree//implements tree
   * get_children only queries the immediate children
   * get_sub_branch returns all nodes below the given node
   */
-  function & get_sub_branch($node, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
+  function & get_sub_branch($node, $depth = -1, $include_parent = false, $normalize_expanded_parents = false, $only_parents = false, $add_sql = array())
   {
     if (!$parent_node = $this->get_node($node))
       return false;
@@ -365,7 +365,7 @@ class materialized_path_tree//implements tree
       $add_sql['append'][] = " AND {$this->_node_table}.object_id = sso.id AND sc.id = sso.class_id AND sc.can_be_parent = 1";
     }
 
-    if($check_expanded_parents)
+    if($normalize_expanded_parents)
     {
       $sql_path_condition = '';
       $sql_for_expanded_parents = array();
@@ -425,17 +425,17 @@ class materialized_path_tree//implements tree
     return $node_set;
   }
 
-  function & get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $only_parents = false, $add_sql = array())
+  function & get_sub_branch_by_path($path, $depth = -1, $include_parent = false, $normalize_expanded_parents = false, $only_parents = false, $add_sql = array())
   {
     if(!$parent_node = $this->get_node_by_path($path))
       return false;
 
-    $nodes =& $this->get_sub_branch($parent_node, $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
+    $nodes =& $this->get_sub_branch($parent_node, $depth, $include_parent, $normalize_expanded_parents, $only_parents, $add_sql);
 
     return $nodes;
   }
 
-  function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $check_expanded_parents = false, $class_id = null, $only_parents = false)
+  function & get_accessible_sub_branch_by_path($path, $depth = -1, $include_parent = false, $normalize_expanded_parents = false, $class_id = null, $only_parents = false)
   {
     $add_sql['columns'][] = ', soa.object_id';
 
@@ -456,7 +456,7 @@ class materialized_path_tree//implements tree
     if($accessor_ids)
       $add_sql['append'][] = " AND soa.accessor_id IN ({$accessor_ids})";
 
-    $result =& $this->get_sub_branch_by_path($path, $depth, $include_parent, $check_expanded_parents, $only_parents, $add_sql);
+    $result =& $this->get_sub_branch_by_path($path, $depth, $include_parent, $normalize_expanded_parents, $only_parents, $add_sql);
 
     return $result;
   }
@@ -652,7 +652,7 @@ class materialized_path_tree//implements tree
   {
   }
 
-  function update_expanded_parents()
+  function sync_expanded_parents()
   {
     $nodes_ids = array_keys($this->_expanded_parents);
 

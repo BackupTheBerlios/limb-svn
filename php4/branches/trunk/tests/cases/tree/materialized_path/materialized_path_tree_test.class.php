@@ -622,7 +622,7 @@ class materialized_path_tree_test extends LimbTestCase
     $this->_check_proper_nesting($branch, __LINE__);
   }
 
-  function test_get_sub_branch_check_expanded_parents()
+  function test_get_sub_branch_normalize_expanded_parents()
   {
     $this->db->sql_insert('sys_site_object', array('id' => 10, 'class_id' => 100));
     $this->db->sql_insert('sys_site_object', array('id' => 20, 'class_id' => 200));
@@ -643,7 +643,7 @@ class materialized_path_tree_test extends LimbTestCase
     $sub_node_id_2_1_1 = $this->imp->create_sub_node($sub_node_id_2_1, array('identifier' => 'test', 'object_id' => 20));
     $sub_node_id_2_1_2 = $this->imp->create_sub_node($sub_node_id_2_1, array('identifier' => 'test', 'object_id' => 20));
 
-    $this->imp->check_expanded_parents();
+    $this->imp->normalize_expanded_parents();
 
     $this->imp->expand_node($sub_node_id_1);
 
