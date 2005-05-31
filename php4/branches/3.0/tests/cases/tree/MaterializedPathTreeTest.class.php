@@ -29,7 +29,7 @@ class MaterializedPathTreeTest extends LimbTestCase
     parent :: LimbTestCase(__FILE__);
   }
 
-  function _createTreeImp()
+  function & _createTreeImp()
   {
     return new MaterializedPathTreeTestVersion();
   }

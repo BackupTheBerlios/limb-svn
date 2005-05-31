@@ -12,6 +12,7 @@ require_once(LIMB_DIR . '/core/tree/CachingTree.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
+require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 
 Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Tree');
@@ -82,7 +83,7 @@ class CachingTreeTest extends LimbTestCase
   function testGetParentsCacheHit()
   {
     $this->_testCacheHit(array('getParents', array($node_id = 100)),
-                           $result = 'whatever',
+                           new ArrayDataSet(array('whatever')),
                            $key = array('parents', $node_id),
                            CACHING_TREE_COMMON_GROUP);
   }
@@ -347,18 +348,10 @@ class CachingTreeTest extends LimbTestCase
     $this->cache->expectOnce('assign', array(null, $key, $group));
     $this->cache->setReturnValue('assign', true);
 
-    $this->cache->setReturnValue('get', $expected);
-
     $this->tree->expectNever($callback[0]);
     $result = $this->_callDecorator($callback);
-    $this->assertEqual($result, $expected);
-  }
 
-  function _assertCacheNotCalled()
-  {
-    $this->cache->expectNever('assign');
-    $this->cache->expectNever('put');
-    $this->cache->expectNever('get');
+    $this->assertEqual($result, $expected);
   }
 
   function _testCacheMiss($callback, $expected, $key, $group)
@@ -373,6 +366,12 @@ class CachingTreeTest extends LimbTestCase
 
     $result = $this->_callDecorator($callback);
     $this->assertEqual($result, $expected);
+  }
+
+  function _assertCacheNotCalled()
+  {
+    $this->cache->expectNever('assign');
+    $this->cache->expectNever('put');
   }
 
   function _callDecorator($callback)

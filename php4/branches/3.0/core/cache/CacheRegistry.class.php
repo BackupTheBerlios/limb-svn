@@ -8,20 +8,28 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/system/Fs.class.php');
-
-@define('CACHE_DIR', VAR_DIR . '/cache');
-@define('CACHE_FILE_PREFIX', 'cache_');
 
 class CacheRegistry
 {
   var $session_id;
   var $cache = array();
+  var $persister = null;
 
   function CacheRegistry()
   {
     $this->session_id = session_id();
-    Fs :: mkdir(CACHE_DIR);
+    $this->persister =& $this->_createCachePersister();
+  }
+
+  function & _createCachePersister()
+  {
+    include_once(dirname(__FILE__) . '/CacheFilePersister.class.php');
+    return new CacheFilePersister();
+  }
+
+  function setCachePersister(&$persister)
+  {
+    $this->persister =& $persister;
   }
 
   function put($raw_key, &$value, $group = 'default')
@@ -30,41 +38,23 @@ class CacheRegistry
 
     $this->cache[$group][$key] =& $value;
 
-    $file = $this->_getCacheFilePath($group, $key);
-
-    Fs :: safeWrite($file, $this->_makePhpContent($value));
+    $this->persister->put($key, $value, $group);
   }
 
   function assign(&$variable, $raw_key, $group = 'default')
   {
     $key = $this->_normalizeKey($raw_key);
 
-    if(isset($this->cache[$group][$key]))
+    if(isset($this->cache[$group]) &&
+       array_key_exists($key, $this->cache[$group]))
     {
       $variable = $this->cache[$group][$key];
       return true;
     }
     else
     {
-      $file = $this->_getCacheFilePath($group, $key);
-
-      if(!file_exists($file))
-        return false;
-
-      include($file);
-
-      $this->cache[$group][$key] = $value;
-      $variable = $value;
-      return true;
+      return $this->persister->assign($variable, $key, $group);
     }
-  }
-
-  function & get($raw_key, $group = 'default')
-  {
-    if($this->assign($value, $raw_key, $group))
-      return $value;
-    else
-      return null;
   }
 
   function flushValue($raw_key, $group = 'default')
@@ -74,7 +64,7 @@ class CacheRegistry
     if(isset($this->cache[$group][$key]))
       unset($this->cache[$group][$key]);
 
-    $this->_removeFileCache($group, $key);
+    $this->persister->flushValue($key, $group);
   }
 
   function flushGroup($group)
@@ -82,32 +72,14 @@ class CacheRegistry
     if(isset($this->cache[$group]))
       $this->cache[$group] = array();
 
-    $this->_removeFileCache($group);
+    $this->persister->flushGroup($group);
   }
 
   function flushAll()
   {
     $this->cache = array();
-    $this->_removeFileCache();
-  }
 
-  function _makePhpContent($value)
-  {
-    return "<?php\n\$value = " . var_export($value, true) . ";\n?>";
-  }
-
-  function _removeFileCache($group = false, $key = false)
-  {
-    if($key)
-    {
-      @unlink($this->_getCacheFilePath($group, $key));
-    }
-    else
-    {
-      $files = Fs :: find(CACHE_DIR, 'f', '~^' . preg_quote($this->_getCacheFilePrefix($group)) . '~');
-      foreach($files as $file)
-        @unlink($file);
-    }
+    $this->persister->flushAll();
   }
 
   function _normalizeKey($key)
@@ -116,21 +88,6 @@ class CacheRegistry
       return $key;
     else
       return md5(serialize($key));
-  }
-
-  function _getCacheFilePrefix($group = false)
-  {
-    return CACHE_FILE_PREFIX . ($group ? $group : '');
-  }
-
-  function _getCacheFileName($group, $key)
-  {
-    return $this->_getCacheFilePrefix($group) . '_' . $key . '.php';
-  }
-
-  function _getCacheFilePath($group, $key)
-  {
-    return CACHE_DIR . '/' . $this->_getCacheFileName($group, $key);
   }
 }
 ?>

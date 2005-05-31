@@ -147,7 +147,10 @@ class UnitOfWork
   function & _getFromCache($id)
   {
     $cache =& $this->_getCache();
-    return $cache->get($id, UOW_CACHE_GROUP);
+    if($cache->assign($var, $id, UOW_CACHE_GROUP))
+      return $var;
+
+    return null;
   }
 
   function _purgeFromCache($id)

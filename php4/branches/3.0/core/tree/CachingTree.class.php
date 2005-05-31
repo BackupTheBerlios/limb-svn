@@ -9,6 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/tree/TreeDecorator.class.php');
+require_once(LIMB_DIR . '/core/cache/PagedRsCache.class.php');
 
 define('CACHING_TREE_COMMON_GROUP', 'tree');
 
@@ -26,21 +27,21 @@ class CachingTree extends TreeDecorator
     $this->cache =& $toolkit->getCache();
   }
 
-  function getNode($node)
+  function & getNode($node)
   {
     $id = $this->_getIdLazy($node);
     $this->_useCacheKey(array('node', $id));
     return $this->_cacheCallback('getNode', array($node));
   }
 
-  function getParents($node)
+  function & getParents($node)
   {
     $id = $this->_getIdLazy($node);
     $this->_useCacheKey(array('parents', $id));
     return $this->_cacheCallback('getParents', array($node));
   }
 
-  function getChildren($node)
+  function & getChildren($node)
   {
     $id = $this->_getIdLazy($node);
     $this->_useCacheKey(array('children', $id));
@@ -54,7 +55,7 @@ class CachingTree extends TreeDecorator
     return $this->_cacheCallback('countChildren', array($node));
   }
 
-  function getNodesByIds($ids)
+  function & getNodesByIds($ids)
   {
     $sorted_ids = $ids;
     sort($sorted_ids);
@@ -63,32 +64,32 @@ class CachingTree extends TreeDecorator
     return $this->_cacheCallback('getNodesByIds', array($ids));
   }
 
-  function getPathToNode($node, $delimiter = '/')
+  function & getPathToNode($node, $delimiter = '/')
   {
     $id = $this->_getIdLazy($node);
     $this->_useCacheKey(array('path_to_node', $id));
     return $this->_cacheCallback('getPathToNode', array($node, $delimiter));
   }
 
-  function getNodeByPath($path)
+  function & getNodeByPath($path)
   {
     $this->_useCacheKey(array('path', rtrim($path, '/')));
     return $this->_cacheCallback('getNodeByPath', array($path));
   }
 
-  function getAllNodes()
+  function & getAllNodes()
   {
     $this->_useCacheKey(array('all_nodes'));
     return $this->_cacheCallback('getAllNodes');
   }
 
-  function getRootNodes()
+  function & getRootNodes()
   {
     $this->_useCacheKey(array('root_nodes'));
     return $this->_cacheCallback('getRootNodes');
   }
 
-  function getSubBranch($node, $depth = -1, $include_parent = false, $check_expanded_parents = false)
+  function & getSubBranch($node, $depth = -1, $include_parent = false, $check_expanded_parents = false)
   {
     if($check_expanded_parents)
       return parent :: getSubBranch($node, $depth, $include_parent, $check_expanded_parents);
@@ -104,10 +105,10 @@ class CachingTree extends TreeDecorator
     $this->_useCacheKey($key, CACHING_TREE_COMMON_GROUP);
 
     return $this->_cacheCallback('getSubBranch',
-                                  array($node, $depth, $include_parent, $check_expanded_parents));
+                                   array($node, $depth, $include_parent, $check_expanded_parents));
   }
 
-  function getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false)
+  function & getSubBranchByPath($path, $depth = -1, $include_parent = false, $check_expanded_parents = false)
   {
     if($check_expanded_parents)
       return $this->_tree->getSubBranchByPath($path, $depth, $include_parent, $check_expanded_parents);
@@ -121,7 +122,7 @@ class CachingTree extends TreeDecorator
     $this->_useCacheKey($key, CACHING_TREE_COMMON_GROUP);
 
     return $this->_cacheCallback('getSubBranchByPath',
-                                  array($path, $depth, $include_parent, $check_expanded_parents));
+                                   array($path, $depth, $include_parent, $check_expanded_parents));
   }
 
   function createRootNode($values)
@@ -173,18 +174,21 @@ class CachingTree extends TreeDecorator
       $this->cache->flushGroup($group);
   }
 
-  function _cacheCallback($method, $args = null, $key = null, $group = null)
+  function & _cacheCallback($method, $args = null, $is_rs = true, $key = null, $group = null)
   {
     $group = is_null($group) ? $this->current_group : $group;
     $key = is_null($key) ? $this->current_key : $key;
 
-    $variable = null;
-    if($this->cache->assign($variable, $key, $group))
-      return $variable;
+    $result = null;
+    if($this->cache->assign($result, $key, $group))
+      return $result;
 
-    $result = $this->_callImp($method, $args);
+    $result =& $this->_callImp($method, $args);
 
-    $this->cache->put($key, $result, $group);
+    if(is_object($result))//assuming it's an iterator object
+      $this->cache->put($key, new PagedRsCache($result), $group);
+    else
+      $this->cache->put($key, $result, $group);
 
     return $result;
   }

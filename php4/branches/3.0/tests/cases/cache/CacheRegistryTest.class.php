@@ -10,12 +10,11 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
 
+class CacheKeyFooClass{}
 class CacheableFooClass{}
 
 class CacheRegistryTest extends LimbTestCase
 {
-  var $cache;
-
   function CacheRegistryTest()
   {
     parent :: LimbTestCase(__FILE__);
@@ -27,97 +26,64 @@ class CacheRegistryTest extends LimbTestCase
     $this->cache->flushAll();
   }
 
+  function testAssignScalarKeyFalse()
+  {
+    $this->_testAssignFalse(1);
+  }
+
+  function testAssignScalarKeyTrue()
+  {
+    $this->_testAssignTrue(1);
+  }
+
   function testAssignArrayKeyFalse()
   {
-    $key = array('empty');
-
-    $this->assertFalse($this->cache->assign($var, $key));
+    $this->_testAssignFalse(array(1));
   }
 
   function testAssignArrayKeyTrue()
   {
-    $key = array('empty');
-    $this->cache->put($key, $v = 'value');
-
-    $this->assertTrue($this->cache->assign($var, $key));
-    $this->assertEqual($v, $var);
+    $this->_testAssignTrue(array(1));
   }
 
-  function testGetNull()
+  function testAssignObjectKeyFalse()
   {
-    $key = 'empty';
-
-    $this->assertNull($this->cache->get($key));
+    $this->_testAssignFalse(new CacheKeyFooClass());
   }
 
-  function testGetNullArrayKey()
+  function testAssignObjectKeyTrue()
   {
-    $key = array('empty');
-
-    $this->assertNull($this->cache->get($key));
+    $this->_testAssignTrue(new CacheKeyFooClass());
   }
 
-  function testGetNullObjectKey()
+  function testPutToCacheUsingScalarKey()
   {
-    $key = new CacheableFooClass();
-
-    $this->assertNull($this->cache->get($key));
+    $this->_testPutToCache(1);
   }
 
-  function testGetNull2()
+  function testPutToCacheUsingArrayKey()
   {
-    $key = 'empty';
-    $this->cache->put($key, $v = 'value', 'some-group');
-
-    $this->assertNull($this->cache->get($key));
+    $this->_testPutToCache(array(1));
   }
 
-  function testPutToCacheNoGroup()
+  function testPutToCacheUsingObjectKey()
   {
-    $key = 1;
-    $this->cache->put($key, $v = 'value');
-
-    $this->assertEqual($this->cache->get($key), 'value');
+    $this->_testPutToCache(new CacheKeyFooClass());
   }
 
-  function testPutToCacheNoGroupArrayKey()
+  function testPutToCacheWithGroupUsingScalarKey()
   {
-    $key = array(1);
-    $this->cache->put($key, $v = 'value');
-
-    $this->assertEqual($this->cache->get($key), 'value');
+    $this->_testPutToCacheWithGroup(1);
   }
 
-  function testPutToCacheNoGroupObjectKey()
+  function testPutToCacheWithGroupUsingArrayKey()
   {
-    $key = new CacheableFooClass();
-    $this->cache->put($key, $v = 'value');
-
-    $this->assertEqual($this->cache->get($key), 'value');
+    $this->_testPutToCacheWithGroup(array(1));
   }
 
-  function testPutToCacheWithGroup()
+  function testPutToCacheWithGroupUsingObjectKey()
   {
-    $key = 1;
-    $this->cache->put($key, $v = 'value', 'test-group');
-
-    $this->assertEqual($this->cache->get($key, 'test-group'), $v);
-  }
-
-  function testPutToCacheWithGroupArrayKey()
-  {
-    $key = array(1);
-    $this->cache->put($key, $v = 'value', 'test-group');
-
-    $this->assertEqual($this->cache->get($key, 'test-group'), $v);
-  }
-
-  function testPutToCacheWithGroupObjectKey()
-  {
-    $key = new CacheableFooClass();
-    $this->cache->put($key, $v = 'value', 'test-group');
-
-    $this->assertEqual($this->cache->get($key, 'test-group'), $v);
+    $this->_testPutToCacheWithGroup(new CacheKeyFooClass());
   }
 
   function testFlushValueWithScalarKey()
@@ -132,8 +98,8 @@ class CacheRegistryTest extends LimbTestCase
 
   function testFlushValueWithObjectKey()
   {
-    $key1 = new CacheableFooClass();
-    $key2 = new CacheableFooClass();
+    $key1 = new CacheKeyFooClass();
+    $key2 = new CacheKeyFooClass();
     $key2->im_different = 1;
 
     $this->_testFlushValue($key1, $key2);
@@ -146,8 +112,8 @@ class CacheRegistryTest extends LimbTestCase
 
     $this->cache->flushAll();
 
-    $this->assertNull($this->cache->get(1));
-    $this->assertNull($this->cache->get(2));
+    $this->assertFalse($this->cache->assign($var, 1));
+    $this->assertFalse($this->cache->assign($var, 2));
   }
 
   function testFlushGroup()
@@ -158,8 +124,51 @@ class CacheRegistryTest extends LimbTestCase
 
     $this->cache->flushGroup('test-group');
 
-    $this->assertNull($this->cache->get($key, 'test-group'));
-    $this->assertEqual($this->cache->get($key), $v1);
+    $this->assertFalse($this->cache->assign($var, $key, 'test-group'));
+
+    $this->assertTrue($this->cache->assign($var, $key));
+    $this->assertEqual($var, $v1);
+  }
+
+  function _testAssignFalse($key)
+  {
+    $this->assertFalse($this->cache->assign($var, $key));
+    $this->assertNull($var);
+  }
+
+  function _testAssignTrue($key)
+  {
+    $this->cache->put($key, $v = 'value');
+    $this->assertTrue($this->cache->assign($var, $key));
+    $this->assertEqual($v, $var);
+  }
+
+  function _testPutToCache($key)
+  {
+    $rnd_key = mt_rand();
+    $this->cache->put($rnd_key, $v1 = 'value1');
+
+    foreach($this->_getCachedValues() as $v2)
+    {
+      $this->cache->put($key, $v2);
+      $this->assertTrue($this->cache->assign($cache_value, $key));
+      $this->assertEqual($cache_value, $v2);
+
+      $this->assertTrue($this->cache->assign($cache_value, $rnd_key));
+      $this->assertEqual($cache_value, $v1);
+    }
+  }
+
+  function _testPutToCacheWithGroup($key)
+  {
+    $this->cache->put($key, $v1 = 'value1');
+    $this->cache->put($key, $v2 = 'value2', 'test-group');
+
+    $this->assertTrue($this->cache->assign($cache_value, $key));
+    $this->assertEqual($cache_value, $v1);
+
+    $this->assertTrue($this->cache->assign($cache_value, $key, 'test-group'));
+    $this->assertEqual($cache_value, $v2);
   }
 
   function _testFlushValue($key1, $key2)
@@ -169,8 +178,38 @@ class CacheRegistryTest extends LimbTestCase
 
     $this->cache->flushValue($key1);
 
-    $this->assertNull($this->cache->get($key1));
-    $this->assertEqual($v2, $this->cache->get($key2));
+    $this->assertFalse($this->cache->assign($cache_value, $key1));
+
+    $this->assertTrue($this->cache->assign($cache_value, $key2));
+    $this->assertEqual($cache_value, $v2);
+  }
+
+  function _getCachedValues()
+  {
+    return array($this->_createNullValue(),
+                 $this->_createScalarValue(),
+                 $this->_createArrayValue(),
+                 $this->_createObjectValue());
+  }
+
+  function _createNullValue()
+  {
+    return null;
+  }
+
+  function _createScalarValue()
+  {
+    return 'some value';
+  }
+
+  function _createArrayValue()
+  {
+    return array('some value');
+  }
+
+  function _createObjectValue()
+  {
+    return new CacheableFooClass();
   }
 }
 

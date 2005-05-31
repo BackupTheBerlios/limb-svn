@@ -42,7 +42,7 @@ class Path2IdTranslator
     $toolkit =& Limb :: toolkit();
     $cache =& $toolkit->getCache();
 
-    if($id = $cache->get($raw_path, ID_TO_PATH))
+    if($cache->assign($id, $raw_path, ID_TO_PATH))
       return $id;
 
     $path = $this->_applyPathOffsets($raw_path);
@@ -83,7 +83,7 @@ class Path2IdTranslator
     $toolkit =& Limb :: toolkit();
     $cache =& $toolkit->getCache();
 
-    if(!$path = $cache->get($node_id, PATH_TO_ID))
+    if(!$cache->assign($path, $node_id, PATH_TO_ID))
     {
       $tree =& $toolkit->getTree();
       $path = $tree->getPathToNode($node_id);
