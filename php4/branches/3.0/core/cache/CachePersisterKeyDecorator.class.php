@@ -5,28 +5,22 @@
 * released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: CacheRegistry.class.php 1341 2005-05-31 15:16:55Z pachanga $
 *
 ***********************************************************************************/
 
-class CacheRegistry
+class CachePersisterKeyDecorator
 {
   var $persister = null;
 
-  function CacheRegistry()
-  {
-    $this->persister =& $this->_createCachePersister();
-  }
-
-  function & _createCachePersister()
-  {
-    include_once(dirname(__FILE__) . '/CachePersister.class.php');
-    return new CachePersister();
-  }
-
-  function setCachePersister(&$persister)
+  function CachePersisterKeyDecorator($persister)
   {
     $this->persister =& $persister;
+  }
+
+  function getId()
+  {
+    return $this->persister->getId();
   }
 
   function put($raw_key, &$value, $group = 'default')

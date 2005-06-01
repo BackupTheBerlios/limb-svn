@@ -5,19 +5,30 @@
 * released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: CacheRegistry.class.php 1336 2005-05-30 12:54:56Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
+require_once(dirname(__FILE__) . '/CachePersister.class.php');
 require_once(LIMB_DIR . '/core/system/Fs.class.php');
 
-@define('CACHE_DIR', VAR_DIR . '/cache');
 @define('CACHE_FILE_PREFIX', 'cache_');
 
-class CacheFilePersister
+class CacheFilePersister extends CachePersister
 {
-  function CacheFilePersister()
+  var $cache_dir;
+
+  function CacheFilePersister($id = 'cache')
   {
-    Fs :: mkdir(CACHE_DIR);
+    parent :: CachePersister($id);
+
+    $this->cache_dir = VAR_DIR . '/' . $id;
+
+    Fs :: mkdir($this->cache_dir);
+  }
+
+  function getCacheDir()
+  {
+    return $this->cache_dir;
   }
 
   function put($key, &$value, $group = 'default')
@@ -67,7 +78,7 @@ class CacheFilePersister
     }
     else
     {
-      $files = Fs :: find(CACHE_DIR, 'f', '~^' . preg_quote($this->_getCacheFilePrefix($group)) . '~');
+      $files = Fs :: find($this->cache_dir, 'f', '~^' . preg_quote($this->_getCacheFilePrefix($group)) . '~');
       foreach($files as $file)
         @unlink($file);
     }
@@ -85,7 +96,7 @@ class CacheFilePersister
 
   function _getCacheFilePath($group, $key)
   {
-    return CACHE_DIR . '/' . $this->_getCacheFileName($group, $key);
+    return $this->cache_dir . '/' . $this->_getCacheFileName($group, $key);
   }
 }
 ?>

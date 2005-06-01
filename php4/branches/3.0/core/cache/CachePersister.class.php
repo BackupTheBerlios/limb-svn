@@ -5,46 +5,28 @@
 * released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: CacheRegistry.class.php 1336 2005-05-30 12:54:56Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 
-class CachePersister
+class CachePersister //abstract class
 {
-  var $cache = array();
+  var $id;
 
-  function put($key, &$value, $group = 'default')
+  function CachePersister($id = 'cache')
   {
-    $this->cache[$group][$key] =& $value;
+    $this->id = $id;
   }
 
-  function assign(&$variable, $key, $group = 'default')
+  function getId()
   {
-    if(isset($this->cache[$group]) &&
-       array_key_exists($key, $this->cache[$group]))
-    {
-      $variable = $this->cache[$group][$key];
-      return true;
-    }
-
-    return false;
+    return $this->id;
   }
 
-  function flushValue($key, $group = 'default')
-  {
-    if(isset($this->cache[$group][$key]))
-      unset($this->cache[$group][$key]);
-  }
-
-  function flushGroup($group)
-  {
-    if(isset($this->cache[$group]))
-      $this->cache[$group] = array();
-  }
-
-  function flushAll()
-  {
-    $this->cache = array();
-  }
+  function put($key, &$value, $group = 'default'){}
+  function assign(&$variable, $key, $group = 'default'){}
+  function flushValue($key, $group = 'default'){}
+  function flushGroup($group){}
+  function flushAll(){}
 }
 ?>

@@ -5,115 +5,55 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id$
+* $Id: CacheRegistryTest.class.php 1340 2005-05-31 15:01:35Z pachanga $
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
+SimpleTestOptions :: ignore('CacheBaseTest');
 
-class CacheKeyFooClass{}
-class CacheableFooClass{}
-
-class CacheRegistryTest extends LimbTestCase
+// NOTE: abstract class
+class CacheBaseTest extends LimbTestCase
 {
-  function CacheRegistryTest()
+  var $cache;
+
+  function &_createPersisterImp()
   {
-    parent :: LimbTestCase(__FILE__);
+    return null;
   }
 
   function setUp()
   {
-    $this->cache = new CacheRegistry();
+    $this->cache =& $this->_createPersisterImp();
     $this->cache->flushAll();
   }
 
-  function testAssignScalarKeyFalse()
+  function testGetId()
+  {
+    $this->assertNotNull($this->cache->getId());
+  }
+
+  function testAssignFalse()
   {
     $this->_testAssignFalse(1);
   }
 
-  function testAssignScalarKeyTrue()
+  function testAssignTrue()
   {
     $this->_testAssignTrue(1);
   }
 
-  function testAssignArrayKeyFalse()
-  {
-    $this->_testAssignFalse(array(1));
-  }
-
-  function testAssignArrayKeyTrue()
-  {
-    $this->_testAssignTrue(array(1));
-  }
-
-  function testAssignObjectKeyFalse()
-  {
-    $this->_testAssignFalse(new CacheKeyFooClass());
-  }
-
-  function testAssignObjectKeyTrue()
-  {
-    $this->_testAssignTrue(new CacheKeyFooClass());
-  }
-
-  function testPutToCacheUsingScalarKey()
+  function testPutToCache()
   {
     $this->_testPutToCache(1);
   }
 
-  function testPutToCacheUsingArrayKey()
-  {
-    $this->_testPutToCache(array(1));
-  }
-
-  function testPutToCacheUsingObjectKey()
-  {
-    $this->_testPutToCache(new CacheKeyFooClass());
-  }
-
-  function testPutToCacheWithGroupUsingScalarKey()
+  function testPutToCacheWithGroup()
   {
     $this->_testPutToCacheWithGroup(1);
   }
 
-  function testPutToCacheWithGroupUsingArrayKey()
-  {
-    $this->_testPutToCacheWithGroup(array(1));
-  }
-
-  function testPutToCacheWithGroupUsingObjectKey()
-  {
-    $this->_testPutToCacheWithGroup(new CacheKeyFooClass());
-  }
-
-  function testFlushValueWithScalarKey()
+  function testFlushValue()
   {
     $this->_testFlushValue(1, 2);
-  }
-
-  function testFlushValueWithArrayKey()
-  {
-    $this->_testFlushValue(array(1), array(2));
-  }
-
-  function testFlushValueWithObjectKey()
-  {
-    $key1 = new CacheKeyFooClass();
-    $key2 = new CacheKeyFooClass();
-    $key2->im_different = 1;
-
-    $this->_testFlushValue($key1, $key2);
-  }
-
-  function testFlushAll()
-  {
-    $this->cache->put(1, $v1 = 'value1');
-    $this->cache->put(2, $v2 = 'value2');
-
-    $this->cache->flushAll();
-
-    $this->assertFalse($this->cache->assign($var, 1));
-    $this->assertFalse($this->cache->assign($var, 2));
   }
 
   function testFlushGroup()
@@ -128,6 +68,30 @@ class CacheRegistryTest extends LimbTestCase
 
     $this->assertTrue($this->cache->assign($var, $key));
     $this->assertEqual($var, $v1);
+  }
+
+  function testFlushAll()
+  {
+    $this->cache->put(1, $v1 = 'value1');
+    $this->cache->put(2, $v2 = 'value2');
+
+    $this->cache->flushAll();
+
+    $this->assertFalse($this->cache->assign($var, 1));
+    $this->assertFalse($this->cache->assign($var, 2));
+  }
+
+  function _testFlushValue($key1, $key2)
+  {
+    $this->cache->put($key1, $v1 = 'value1');
+    $this->cache->put($key2, $v2 = 'value2');
+
+    $this->cache->flushValue($key1);
+
+    $this->assertFalse($this->cache->assign($cache_value, $key1));
+
+    $this->assertTrue($this->cache->assign($cache_value, $key2));
+    $this->assertEqual($cache_value, $v2);
   }
 
   function _testAssignFalse($key)
@@ -168,19 +132,6 @@ class CacheRegistryTest extends LimbTestCase
     $this->assertEqual($cache_value, $v1);
 
     $this->assertTrue($this->cache->assign($cache_value, $key, 'test-group'));
-    $this->assertEqual($cache_value, $v2);
-  }
-
-  function _testFlushValue($key1, $key2)
-  {
-    $this->cache->put($key1, $v1 = 'value1');
-    $this->cache->put($key2, $v2 = 'value2');
-
-    $this->cache->flushValue($key1);
-
-    $this->assertFalse($this->cache->assign($cache_value, $key1));
-
-    $this->assertTrue($this->cache->assign($cache_value, $key2));
     $this->assertEqual($cache_value, $v2);
   }
 

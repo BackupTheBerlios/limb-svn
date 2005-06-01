@@ -10,7 +10,8 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/UnitOfWork.class.php');
-require_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
+require_once(LIMB_DIR . '/core/cache/CachePersisterKeyDecorator.class.php');
+require_once(LIMB_DIR . '/core/cache/CacheMemoryPersister.class.php');
 require_once(LIMB_DIR . '/core/dao/SQLBasedDAO.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
@@ -60,7 +61,7 @@ class UnitOfWorkTest extends LimbTestCase
     $this->uow = new UnitOfWork();
     $this->mapper = new UOWTestObjectMapperStub($this);
     $this->dao = new MockSQLBasedDAO($this);
-    $this->cache = new CacheRegistry($this);
+    $this->cache = new CachePersisterKeyDecorator(new CacheMemoryPersister());
 
     $this->mapper->setReturnValue('getIdentityKeyName', 'id');
 

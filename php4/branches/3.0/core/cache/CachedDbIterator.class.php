@@ -23,12 +23,12 @@ class CachedDbIterator extends IteratorDbDecorator
   var $cache_key_for_rs = null;
   var $cache_key_for_total = null;
 
-  function CachedDbIterator(&$iterator)
+  function CachedDbIterator(&$iterator, &$cache)
   {
     parent :: IteratorDbDecorator($iterator);
 
     $toolkit =& Limb :: toolkit();
-    $this->cache =& $toolkit->getCache();
+    $this->cache =& $cache;
     $this->cache_key_for_rs = $iterator;
     $this->cache_key_for_total = $iterator;
   }

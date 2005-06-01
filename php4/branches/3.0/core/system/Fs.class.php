@@ -37,6 +37,7 @@ class Fs
 
     @flock($file, LOCK_UN);
     @chmod($file, $perm);
+    @unlink($tmp);
   }
 
   function dirpath($path)

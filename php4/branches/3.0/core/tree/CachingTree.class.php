@@ -22,9 +22,21 @@ class CachingTree extends TreeDecorator
   function CachingTree(&$tree)
   {
     parent :: TreeDecorator($tree);
+    $this->cache =& $this->_createCache();
+  }
 
-    $toolkit =& Limb :: toolkit();
-    $this->cache =& $toolkit->getCache();
+  function &_createCache()
+  {
+    include_once(LIMB_DIR . '/core/cache/CachePersisterKeyDecorator.class.php');
+    include_once(LIMB_DIR . '/core/cache/CacheCompositePersister.class.php');
+    include_once(LIMB_DIR . '/core/cache/CacheMemoryPersister.class.php');
+    include_once(LIMB_DIR . '/core/cache/CacheFilePersister.class.php');
+
+    $persister = new CacheCompositePersister();
+    $persister->registerPersister(new CacheMemoryPersister());
+    $persister->registerPersister(new CacheFilePersister('tree'));
+
+    return new CachePersisterKeyDecorator($persister);
   }
 
   function & getNode($node)
@@ -166,12 +178,9 @@ class CachingTree extends TreeDecorator
     $this->current_group = is_null($group) ? CACHING_TREE_COMMON_GROUP : $group;
   }
 
-  function flushCache($group = null)
+  function flushCache()
   {
-    if(is_null($group))
-      $this->cache->flushGroup(CACHING_TREE_COMMON_GROUP);
-    else
-      $this->cache->flushGroup($group);
+    $this->cache->flushAll();
   }
 
   function & _cacheCallback($method, $args = null, $is_rs = true, $key = null, $group = null)
@@ -186,7 +195,7 @@ class CachingTree extends TreeDecorator
     $result =& $this->_callImp($method, $args);
 
     if(is_object($result))//assuming it's an iterator object
-      $this->cache->put($key, new CachedDbIterator($result), $group);
+      $this->cache->put($key, new CachedDbIterator($result, $this->cache), $group);
     else
       $this->cache->put($key, $result, $group);
 

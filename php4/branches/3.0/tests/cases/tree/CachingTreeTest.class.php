@@ -11,14 +11,17 @@
 require_once(LIMB_DIR . '/core/tree/CachingTree.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
+require_once(LIMB_DIR . '/core/cache/CachePersister.class.php');
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 
-Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');
 Mock :: generate('Tree');
-Mock :: generate('CacheRegistry');
+Mock :: generate('CachePersister');
 
-class CacheRegistrySpecialVersion extends MockCacheRegistry
+Mock :: generatePartial('CachingTree',
+                        'CachingTreeSpecialVersion',
+                        array('_createCache'));
+
+class CachePersisterSpecialVersion extends MockCachePersister
 {
   var $assign;
 
@@ -34,7 +37,6 @@ class CachingTreeTest extends LimbTestCase
 {
   var $tree;
   var $driver;
-  var $toolkit;
   var $cache;
 
   function CachingTreeTest()
@@ -44,24 +46,19 @@ class CachingTreeTest extends LimbTestCase
 
   function setUp()
   {
-    $this->toolkit = new MockLimbToolkit($this);
     $this->tree = new MockTree($this);
-    $this->cache = new CacheRegistrySpecialVersion($this);
+    $this->cache = new CachePersisterSpecialVersion($this);
 
-    $this->toolkit->setReturnReference('getCache', $this->cache);
 
-    Limb :: registerToolkit($this->toolkit);
-
-    $this->decorator = new CachingTree($this->tree);
+    $this->decorator = new CachingTreeSpecialVersion($this);
+    $this->decorator->setReturnReference('_createCache', $this->cache);
+    $this->decorator->CachingTree($this->tree);
   }
 
   function tearDown()
   {
-    $this->toolkit->tally();
     $this->tree->tally();
     $this->cache->tally();
-
-    Limb :: restoreToolkit();
   }
 
   function testGetNodeCacheHit()
@@ -301,7 +298,7 @@ class CachingTreeTest extends LimbTestCase
   function testCreateRootNode()
   {
     $this->tree->setReturnValue('createRootNode', $result = 'someResult', array($values = 'whatever'));
-    $this->cache->expectOnce('flushGroup', array(CACHING_TREE_COMMON_GROUP));
+    $this->cache->expectOnce('flushAll');
     $this->assertEqual($this->decorator->createRootNode($values), $result);
   }
 
@@ -311,14 +308,14 @@ class CachingTreeTest extends LimbTestCase
                                 $result = 'someResult',
                                 array($id = 'id',$values = 'whatever'));
 
-    $this->cache->expectOnce('flushGroup', array(CACHING_TREE_COMMON_GROUP));
+    $this->cache->expectOnce('flushAll');
     $this->assertEqual($this->decorator->createSubNode($id, $values), $result);
   }
 
   function testDeleteNode()
   {
     $this->tree->setReturnValue('deleteNode', $result = 'someResult', array($id = 'id'));
-    $this->cache->expectOnce('flushGroup', array(CACHING_TREE_COMMON_GROUP));
+    $this->cache->expectOnce('flushAll');
     $this->assertEqual($this->decorator->deleteNode($id), $result);
   }
 
@@ -328,7 +325,7 @@ class CachingTreeTest extends LimbTestCase
                                 $result = 'someResult',
                                 array($id = 'id', $values = 'whatever', false));
 
-    $this->cache->expectOnce('flushGroup', array(CACHING_TREE_COMMON_GROUP));
+    $this->cache->expectOnce('flushAll');
     $this->assertEqual($this->decorator->updateNode($id, $values), $result);
   }
 
@@ -338,7 +335,7 @@ class CachingTreeTest extends LimbTestCase
                                 $result = 'some result',
                                 array($id = 'id', $target_id = 'target'));
 
-    $this->cache->expectOnce('flushGroup', array(CACHING_TREE_COMMON_GROUP));
+    $this->cache->expectOnce('flushAll');
     $this->assertEqual($this->decorator->moveTree($id, $target_id), $result);
   }
 

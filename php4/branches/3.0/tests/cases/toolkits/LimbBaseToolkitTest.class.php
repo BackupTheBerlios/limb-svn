@@ -98,7 +98,7 @@ class LimbBaseToolkitTest extends LimbTestCase
   function testGetCache()
   {
     $this->assertIsA($this->toolkit->getCache(),
-                     'CacheRegistry');
+                     'CachePersisterKeyDecorator');
   }
 
   function testGetLocale()

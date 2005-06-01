@@ -224,8 +224,9 @@ class LimbBaseToolkit// implements LimbToolkit
     if(is_object($this->cache))
       return $this->cache;
 
-    include_once(LIMB_DIR . '/core/cache/CacheRegistry.class.php');
-    $this->cache = new CacheRegistry();
+    include_once(LIMB_DIR . '/core/cache/CachePersisterKeyDecorator.class.php');
+    include_once(LIMB_DIR . '/core/cache/CacheMemoryPersister.class.php');
+    $this->cache = new CachePersisterKeyDecorator(new CacheMemoryPersister());
 
     return $this->cache;
   }
