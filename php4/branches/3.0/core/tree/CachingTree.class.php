@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/tree/TreeDecorator.class.php');
-require_once(LIMB_DIR . '/core/cache/PagedRsCache.class.php');
+require_once(LIMB_DIR . '/core/cache/CachedDbIterator.class.php');
 
 define('CACHING_TREE_COMMON_GROUP', 'tree');
 
@@ -186,7 +186,7 @@ class CachingTree extends TreeDecorator
     $result =& $this->_callImp($method, $args);
 
     if(is_object($result))//assuming it's an iterator object
-      $this->cache->put($key, new PagedRsCache($result), $group);
+      $this->cache->put($key, new CachedDbIterator($result), $group);
     else
       $this->cache->put($key, $result, $group);
 

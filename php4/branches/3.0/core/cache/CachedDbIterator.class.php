@@ -13,7 +13,7 @@ require_once(LIMB_DIR . '/core/db/IteratorDbDecorator.class.php');
 define('RS_CACHE_COMMON_GROUP', 'rs');
 define('RS_TOTAL_CACHE_COMMON_GROUP', 'rs_total');
 
-class PagedRsCache extends IteratorDbDecorator
+class CachedDbIterator extends IteratorDbDecorator
 {
   var $cached_rs = null;
   var $cached_total_row_count = null;
@@ -23,7 +23,7 @@ class PagedRsCache extends IteratorDbDecorator
   var $cache_key_for_rs = null;
   var $cache_key_for_total = null;
 
-  function PagedRsCache(&$iterator)
+  function CachedDbIterator(&$iterator)
   {
     parent :: IteratorDbDecorator($iterator);
 

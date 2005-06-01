@@ -5,10 +5,10 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: CacheRegistryTest.class.php 1336 2005-05-30 12:54:56Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/cache/PagedRsCache.class.php');
+require_once(LIMB_DIR . '/core/cache/CachedDbIterator.class.php');
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 
 class RsCacheDataPager {
@@ -52,11 +52,11 @@ class ArrayDataSetCacheStub extends PagedArrayDataSet
   }
 }
 
-class PagedRsCacheTest extends LimbTestCase
+class CachedDbIteratorTest extends LimbTestCase
 {
   var $cache;
 
-  function PagedRsCacheTest()
+  function CachedDbIteratorTest()
   {
     parent :: LimbTestCase(__FILE__);
   }
@@ -81,7 +81,7 @@ class PagedRsCacheTest extends LimbTestCase
                  array('wow'));
 
     $mock =& $this->_coachMockUsingArray($arr);
-    $rs =& new PagedRsCache($mock);
+    $rs =& new CachedDbIterator($mock);
 
     $this->_traverseAndCompareArrayWithRs($arr, $rs);
     $this->_traverseAndCompareArrayWithRs($arr, $rs);
@@ -99,7 +99,7 @@ class PagedRsCacheTest extends LimbTestCase
 
     $this->cache->put($stub, new PagedArrayDataSet($arr), RS_CACHE_COMMON_GROUP);
 
-    $rs =& new PagedRsCache($stub);
+    $rs =& new CachedDbIterator($stub);
 
     $this->_traverseAndCompareArrayWithRs($arr, $rs);
     $this->_traverseAndCompareArrayWithRs($arr, $rs);
@@ -116,7 +116,7 @@ class PagedRsCacheTest extends LimbTestCase
                  array('wow'));
 
     $stub =& new ArrayDataSetCacheStub($arr);
-    $rs =& new PagedRsCache($stub);
+    $rs =& new CachedDbIterator($stub);
 
     $clean_stub = $stub;
 
@@ -142,7 +142,7 @@ class PagedRsCacheTest extends LimbTestCase
                             array('wow'));
 
     $stub =& new ArrayDataSetCacheStub($arr);
-    $rs =& new PagedRsCache($stub);
+    $rs =& new CachedDbIterator($stub);
 
     $this->_traverseAndCompareArrayWithRs($arr, $rs);
     $this->_traverseAndCompareArrayWithRs($arr, $rs);
@@ -176,7 +176,7 @@ class PagedRsCacheTest extends LimbTestCase
                  array('wow'));
 
     $stub =& new ArrayDataSetCacheStub($arr);
-    $rs =& new PagedRsCache($stub);
+    $rs =& new CachedDbIterator($stub);
 
     $this->assertEqual($rs->getTotalRowCount(), 3);
     $this->assertEqual($rs->getTotalRowCount(), 3);
@@ -193,7 +193,7 @@ class PagedRsCacheTest extends LimbTestCase
     $arr_for_pager = array(array('bar'));
 
     $stub =& new ArrayDataSetCacheStub($arr);
-    $rs =& new PagedRsCache($stub);
+    $rs =& new CachedDbIterator($stub);
 
     $this->assertEqual($rs->getTotalRowCount(), 3);
 
