@@ -9,6 +9,8 @@
 *
 ***********************************************************************************/
 
+define('CACHE_NULL_RESULT', md5(mt_rand()));
+
 class CachePersister //abstract class
 {
   var $id;
@@ -24,7 +26,7 @@ class CachePersister //abstract class
   }
 
   function put($key, &$value, $group = 'default'){}
-  function assign(&$variable, $key, $group = 'default'){}
+  function & get($key, $group = 'default'){}
   function flushValue($key, $group = 'default'){}
   function flushGroup($group){}
   function flushAll(){}

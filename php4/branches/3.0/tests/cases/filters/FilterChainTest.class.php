@@ -27,7 +27,6 @@ class InterceptingFilterStub
     $this->captured['filter_chain'] =& $fc;
     $this->captured['request'] =& $request;
     $this->captured['response'] =& $response;
-    $this->captured['context'] =& $context;
 
     $fc->next();
   }
@@ -68,7 +67,6 @@ class FilterChainTest extends LimbTestCase
   var $fc;
   var $request;
   var $response;
-  var $context;
 
   function FilterChainTest()
   {

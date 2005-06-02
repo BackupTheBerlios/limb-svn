@@ -37,17 +37,15 @@ class CacheFilePersister extends CachePersister
     Fs :: safeWrite($file, $this->_makePhpContent($value));
   }
 
-  function assign(&$variable, $key, $group = 'default')
+  function & get($key, $group = 'default')
   {
     $file = $this->_getCacheFilePath($group, $key);
 
     if(!file_exists($file))
-      return false;
+      return CACHE_NULL_RESULT;
 
     include($file);
-    $variable = unserialize($value);
-
-    return true;
+    return unserialize($value);
   }
 
   function flushValue($key, $group = 'default')

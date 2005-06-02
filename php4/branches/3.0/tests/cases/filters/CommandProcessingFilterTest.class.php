@@ -19,11 +19,9 @@ Mock :: generate('Service');
 class CommandStub
 {
   var $performed = false;
-  var $context;
 
-  function perform(&$context)
+  function perform()
   {
-    $this->context =& $context;
     $this->performed = true;
   }
 }

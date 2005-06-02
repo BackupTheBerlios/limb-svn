@@ -27,18 +27,18 @@ class CacheCompositePersister extends CachePersister
     }
   }
 
-  function assign(&$variable, $key, $group = 'default')
+  function & get($key, $group = 'default')
   {
     foreach(array_keys($this->persisters) as $index)
     {
-      if($this->persisters[$index]->assign($variable, $key, $group) === true)
+      if(($value =& $this->persisters[$index]->get($key, $group)) !== CACHE_NULL_RESULT)
       {
-        $this->_putValueToPersisters($index, $variable, $key, $group);
-        return true;
+        $this->_putValueToPersisters($index, $value, $key, $group);
+        return $value;
       }
     }
 
-    return false;
+    return CACHE_NULL_RESULT;
   }
 
   function flushValue($key, $group = 'default')

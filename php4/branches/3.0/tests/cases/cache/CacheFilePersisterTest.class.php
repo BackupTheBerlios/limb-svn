@@ -39,9 +39,7 @@ class CacheFilePersisterTest extends CacheBaseTest
     $items = Fs :: ls($cache_dir);
     $this->assertEqual(sizeof($items), 1);
 
-    $this->assertTrue($cache->assign($var, 1));
-
-    $this->assertEqual($var, $cache_value);
+    $this->assertEqual($cache->get(1), $cache_value);
 
     $cache->flushAll();
     rmdir($cache_dir);
@@ -50,9 +48,8 @@ class CacheFilePersisterTest extends CacheBaseTest
   function testProperSerializing()
   {
     $this->cache->put(1, $obj = new Object());
-    $this->cache->assign($var, 1);
 
-    $this->assertEqual($obj, $var);
+    $this->assertEqual($obj, $this->cache->get(1));
   }
 }
 

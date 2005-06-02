@@ -9,9 +9,13 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/db/IteratorDbDecorator.class.php');
+require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 
 define('RS_CACHE_COMMON_GROUP', 'rs');
 define('RS_TOTAL_CACHE_COMMON_GROUP', 'rs_total');
+
+//Note that the code is alpha, we rely on PHP serialize skip resource type variables
+//feature. It would be much more efficient if $iterators implemented getHash() somehow
 
 class CachedDbIterator extends IteratorDbDecorator
 {
@@ -54,7 +58,7 @@ class CachedDbIterator extends IteratorDbDecorator
 
     for($this->iterator->rewind();$this->iterator->valid();$this->iterator->next())
     {
-      $record = $this->iterator->current();
+      $record =& $this->iterator->current();
       $tmp_cache[] = $record->export();
     }
 
@@ -125,7 +129,7 @@ class CachedDbIterator extends IteratorDbDecorator
 
   function _checkRsCache()
   {
-    if($this->cache->assign($cached_rs, $this->cache_key_for_rs, RS_CACHE_COMMON_GROUP))
+    if(($cached_rs =& $this->cache->get($this->cache_key_for_rs, RS_CACHE_COMMON_GROUP)) !== CACHE_NULL_RESULT)
     {
       $this->cached_rs =& $cached_rs;
       $this->is_cached_rs = true;
@@ -138,7 +142,7 @@ class CachedDbIterator extends IteratorDbDecorator
 
   function _checkRsCacheTotal()
   {
-    if($this->cache->assign($count, $this->cache_key_for_total, RS_TOTAL_CACHE_COMMON_GROUP))
+    if(($count =& $this->cache->get($this->cache_key_for_total, RS_TOTAL_CACHE_COMMON_GROUP)) !== CACHE_NULL_RESULT)
     {
       $this->cached_total_row_count = $count;
       $this->is_cached_total = true;

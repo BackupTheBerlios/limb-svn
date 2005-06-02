@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: InterceptingFilter.interface.php 981 2004-12-21 15:51:00Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -18,7 +18,7 @@ class CommandProcessingFilter//implements InterceptingFilter
       die('Service is not mapped!:' . __FILE__ . ' at line ' . __LINE__);//FIX
 
     $command =& $service->getActionCommand($service->getCurrentAction());
-    $command->perform($context);
+    $command->perform();
 
     $filter_chain->next();
   }

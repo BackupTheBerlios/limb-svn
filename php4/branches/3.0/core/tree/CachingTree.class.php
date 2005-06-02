@@ -188,18 +188,22 @@ class CachingTree extends TreeDecorator
     $group = is_null($group) ? $this->current_group : $group;
     $key = is_null($key) ? $this->current_key : $key;
 
-    $result = null;
-    if($this->cache->assign($result, $key, $group))
+    if(($result =& $this->cache->get($key, $group)) !== CACHE_NULL_RESULT)
       return $result;
 
     $result =& $this->_callImp($method, $args);
 
     if(is_object($result))//assuming it's an iterator object
-      $this->cache->put($key, new CachedDbIterator($result, $this->cache), $group);
+    {
+      $cached_result = new CachedDbIterator($result, $this->cache);
+      $this->cache->put($key, $cached_result, $group);
+      return $cached_result;
+    }
     else
+    {
       $this->cache->put($key, $result, $group);
-
-    return $result;
+      return $result;
+    }
   }
 
   function _getIdLazy($node)

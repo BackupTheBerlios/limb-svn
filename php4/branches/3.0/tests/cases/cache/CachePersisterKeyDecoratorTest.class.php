@@ -27,24 +27,24 @@ class CachePersisterKeyDecoratorTest extends CacheBaseTest
     return new CachePersisterKeyDecorator(new CacheMemoryPersister());
   }
 
-  function testAssignArrayKeyFalse()
+  function testGetArrayKeyFalse()
   {
-    $this->_testAssignFalse(array(1));
+    $this->_testGetFalse(array(1));
   }
 
-  function testAssignArrayKeyTrue()
+  function testGetArrayKeyTrue()
   {
-    $this->_testAssignTrue(array(1));
+    $this->_testGetTrue(array(1));
   }
 
-  function testAssignObjectKeyFalse()
+  function testGetObjectKeyFalse()
   {
-    $this->_testAssignFalse(new CacheKeyFooClass());
+    $this->_testGetFalse(new CacheKeyFooClass());
   }
 
-  function testAssignObjectKeyTrue()
+  function testGetObjectKeyTrue()
   {
-    $this->_testAssignTrue(new CacheKeyFooClass());
+    $this->_testGetTrue(new CacheKeyFooClass());
   }
 
   function testPutToCacheUsingArrayKey()

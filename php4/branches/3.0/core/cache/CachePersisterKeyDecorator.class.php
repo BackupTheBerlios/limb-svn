@@ -29,10 +29,10 @@ class CachePersisterKeyDecorator
     $this->persister->put($key, $value, $group);
   }
 
-  function assign(&$variable, $raw_key, $group = 'default')
+  function & get($raw_key, $group = 'default')
   {
     $key = $this->_normalizeKey($raw_key);
-    return $this->persister->assign($variable, $key, $group);
+    return $this->persister->get($key, $group);
   }
 
   function flushValue($raw_key, $group = 'default')

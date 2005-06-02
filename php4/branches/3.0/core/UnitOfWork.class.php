@@ -147,10 +147,7 @@ class UnitOfWork
   function & _getFromCache($id)
   {
     $cache =& $this->_getCache();
-    if($cache->assign($var, $id, UOW_CACHE_GROUP))
-      return $var;
-
-    return null;
+    return $cache->get($id, UOW_CACHE_GROUP);
   }
 
   function _purgeFromCache($id)
@@ -178,7 +175,7 @@ class UnitOfWork
 
   function & load($class, $id)
   {
-    if($obj =& $this->_getFromCache($id))
+    if(($obj =& $this->_getFromCache($id)) !== CACHE_NULL_RESULT)
       return $obj;
 
     $dao =& $this->_getDAO($class);

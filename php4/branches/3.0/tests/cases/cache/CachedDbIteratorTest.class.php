@@ -127,8 +127,8 @@ class CachedDbIteratorTest extends LimbTestCase
     $this->assertEqual($stub->calls['valid'], 4);
     $this->assertEqual($stub->calls['next'], 3);
 
-    $this->assertTrue($this->cache->assign($var, $clean_stub, RS_CACHE_COMMON_GROUP));
-    $this->assertEqual($var, new PagedArrayDataSet($arr));
+    $var = $this->cache->get($clean_stub, RS_CACHE_COMMON_GROUP);
+    $this->assertEqual($var->exportDataSetAsArray(), $arr);
   }
 
   function testCacheMissWithPager()

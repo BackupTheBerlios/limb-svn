@@ -32,12 +32,22 @@ function post_load_handler()
     process_popup();
 }
 
-//we can't use nice add event here, because it may be not loaded yet
-prev_window_on_load_handler = window.onload;
-window.onload = function()
+if(!window.ON_LOAD_SET)
 {
-  if(typeof(prev_window_on_load_handler) == 'function')
-    prev_window_on_load_handler();
-
-  post_load_handler();
+  ON_LOAD_SET = 0;
 }
+
+if(ON_LOAD_SET == 0) //protection from repeated common.js includes
+{
+  //we can't use nice add event here, because it may be not loaded yet
+  var prev_window_on_load_handler = window.onload;
+  window.onload = function()
+  {
+    if(typeof(prev_window_on_load_handler) == 'function')
+      prev_window_on_load_handler();
+
+    post_load_handler();
+  }
+}
+
+ON_LOAD_SET = 1;

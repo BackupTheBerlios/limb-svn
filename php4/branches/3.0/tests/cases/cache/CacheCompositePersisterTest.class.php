@@ -28,12 +28,12 @@ class CacheCompositePersisterTest extends LimbTestCase
     $this->cache = new CacheCompositePersister();
   }
 
-  function testAssignFailure()
+  function testGetFailure()
   {
-    $this->assertFalse($this->cache->assign($var, 1, 'group'));
+    $this->assertEqual($this->cache->get(1, 'group'), CACHE_NULL_RESULT);
   }
 
-  function testAssignSuccess()
+  function testGetSuccess()
   {
     $p1 = new MockCachePersister($this);
     $p2 = new MockCachePersister($this);
@@ -41,18 +41,18 @@ class CacheCompositePersisterTest extends LimbTestCase
     $this->cache->registerPersister($p1);
     $this->cache->registerPersister($p2);
 
-    $p1->expectOnce('assign', array(null, $key = 1, $group = 'some_group'));
-    $p1->setReturnValue('assign', true);
+    $p1->expectOnce('get', array($key = 1, $group = 'some_group'));
+    $p1->setReturnValue('get', $value = 'value');
 
-    $p2->expectNever('assign');
+    $p2->expectNever('get');
 
-    $this->assertTrue($this->cache->assign($var = null, $key, $group));
+    $this->assertEqual($value, $this->cache->get($key, $group));
 
     $p1->tally();
     $p2->tally();
   }
 
-  function testAssignSuccessCacheValueForUpperPersister()
+  function testGetSuccessCacheValueForUpperPersister()
   {
     $p1 = new MockCachePersister($this);
     $p2 = new MockCachePersister($this);
@@ -60,15 +60,15 @@ class CacheCompositePersisterTest extends LimbTestCase
     $this->cache->registerPersister($p1);
     $this->cache->registerPersister($p2);
 
-    $p1->expectOnce('assign');
-    $p1->setReturnValue('assign', false, array(null, $key = 1, $group = 'some_group'));
+    $p1->expectOnce('get');
+    $p1->setReturnValue('get', CACHE_NULL_RESULT, array($key = 1, $group = 'some_group'));
 
-    $p2->expectOnce('assign');
-    $p2->setReturnValue('assign', true, array(null, $key, $group));
+    $p2->expectOnce('get');
+    $p2->setReturnValue('get', $value = 'value', array($key, $group));
 
-    $p1->expectOnce('put', array($key, null, $group));
+    $p1->expectOnce('put', array($key, $value, $group));
 
-    $this->assertTrue($this->cache->assign($var, $key, $group));
+    $this->assertEqual($value, $this->cache->get($key, $group));
 
     $p1->tally();
     $p2->tally();
@@ -142,7 +142,7 @@ class CacheCompositePersisterTest extends LimbTestCase
     $p2->tally();
   }
 
-  function testRealAssign()
+  function testRealGet()
   {
     $p1 = new CacheMemoryPersister();
     $p2 = new CacheMemoryPersister();
@@ -154,7 +154,7 @@ class CacheCompositePersisterTest extends LimbTestCase
     $this->cache->registerPersister($p2);
     $this->cache->registerPersister($p3);
 
-    $this->cache->assign($cache_value, $key, $group);
+    $cache_value = $this->cache->get($key, $group);
 
     $this->assertEqual($value, $cache_value);
   }

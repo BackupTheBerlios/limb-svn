@@ -19,16 +19,15 @@ class CacheMemoryPersister extends CachePersister
     $this->cache[$group][$key] =& $value;
   }
 
-  function assign(&$variable, $key, $group = 'default')
+  function & get($key, $group = 'default')
   {
     if(isset($this->cache[$group]) &&
        array_key_exists($key, $this->cache[$group]))
     {
-      $variable = $this->cache[$group][$key];
-      return true;
+      return $this->cache[$group][$key];
     }
 
-    return false;
+    return CACHE_NULL_RESULT;
   }
 
   function flushValue($key, $group = 'default')

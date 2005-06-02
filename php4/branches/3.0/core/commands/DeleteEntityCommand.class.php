@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: DeleteObjectCommand.class.php 1209 2005-04-08 14:29:41Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 

@@ -16,20 +16,18 @@ require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 
 Mock :: generate('Tree');
 Mock :: generate('CachePersister');
-
 Mock :: generatePartial('CachingTree',
                         'CachingTreeSpecialVersion',
                         array('_createCache'));
 
 class CachePersisterSpecialVersion extends MockCachePersister
 {
-  var $assign;
+  var $put;
 
-  function assign(&$variable, $raw_key, $group)
+  function put($key, $variable, $group)
   {
-    $res = parent :: assign($variable, $raw_key, $group);
-    $variable = $this->assign;
-    return $res;
+    parent :: put($key, $variable, $group);
+    $this->put = $variable;
   }
 }
 
@@ -88,7 +86,7 @@ class CachingTreeTest extends LimbTestCase
   function testGetParentsCacheMiss()
   {
     $this->_testCacheMiss(array('getParents', array($node_id = 100)),
-                           $result = 'whatever',
+                           new ArrayDataSet(array('whatever')),
                            $key = array('parents', $node_id),
                            CACHING_TREE_COMMON_GROUP);
   }
@@ -104,7 +102,7 @@ class CachingTreeTest extends LimbTestCase
   function testGetChildrenCacheMiss()
   {
     $this->_testCacheMiss(array('getChildren', array($node_id = 100)),
-                           $result = 'whatever',
+                           new ArrayDataSet(array('whatever')),
                            $key = array('children', $node_id),
                            CACHING_TREE_COMMON_GROUP);
   }
@@ -138,7 +136,7 @@ class CachingTreeTest extends LimbTestCase
   {
     //sorting ids
     $this->_testCacheMiss(array('getNodesByIds', array(array(1, 3, 2))),
-                           $result = 'whatever',
+                           new ArrayDataSet(array('whatever')),
                            $key = array('ids', array(1, 2, 3)),
                            CACHING_TREE_COMMON_GROUP);
   }
@@ -188,7 +186,7 @@ class CachingTreeTest extends LimbTestCase
   function testGetAllNodesCacheMiss()
   {
     $this->_testCacheMiss(array('getAllNodes'),
-                           $result = 'whatever',
+                           new ArrayDataSet(array('whatever')),
                            $key = array('all_nodes'),
                            CACHING_TREE_COMMON_GROUP);
   }
@@ -216,7 +214,7 @@ class CachingTreeTest extends LimbTestCase
                  'check_expanded_parents' => false);
 
     $this->_testCacheMiss(array('getSubBranch', array($node_id, $depth, false, false)),
-                           $result = 'whatever',
+                           new ArrayDataSet(array('whatever')),
                            $key,
                            CACHING_TREE_COMMON_GROUP);
   }
@@ -260,7 +258,7 @@ class CachingTreeTest extends LimbTestCase
                  'check_expanded_parents' => false);
 
     $this->_testCacheMiss(array('getSubBranchByPath', array('path/', $depth, false, false)),
-                           $result = 'whatever',
+                           new ArrayDataSet(array('whatever')),
                            $key,
                            CACHING_TREE_COMMON_GROUP);
   }
@@ -290,7 +288,7 @@ class CachingTreeTest extends LimbTestCase
   function testGetRootNodesCacheMiss()
   {
     $this->_testCacheMiss(array('getRootNodes'),
-                           $result = 'whatever',
+                           new ArrayDataSet(array('whatever')),
                            $key = array('root_nodes'),
                            CACHING_TREE_COMMON_GROUP);
   }
@@ -341,9 +339,8 @@ class CachingTreeTest extends LimbTestCase
 
   function _testCacheHit($callback, $expected, $key, $group)
   {
-    $this->cache->assign = $expected;
-    $this->cache->expectOnce('assign', array(null, $key, $group));
-    $this->cache->setReturnValue('assign', true);
+    $this->cache->expectOnce('get', array($key, $group));
+    $this->cache->setReturnReference('get', $expected);
 
     $this->tree->expectNever($callback[0]);
     $result = $this->_callDecorator($callback);
@@ -353,21 +350,31 @@ class CachingTreeTest extends LimbTestCase
 
   function _testCacheMiss($callback, $expected, $key, $group)
   {
-    $this->cache->expectOnce('assign', array(null, $key, $group));
-    $this->cache->setReturnValue('assign', false);
+    $this->cache->expectOnce('get', array($key, $group));
+    $this->cache->setReturnValue('get', CACHE_NULL_RESULT);
 
     $this->tree->expectOnce($callback[0]);
     $this->tree->setReturnValue($callback[0], $expected, isset($callback[1]) ? $callback[1] : false);
 
-    $this->cache->expectOnce('put', array($key, $expected, $group));
+    if(is_object($expected))
+      $this->cache->expectOnce('put', array($key, new IsAExpectation('CachedDbIterator'), $group));
+    else
+      $this->cache->expectOnce('put', array($key, $expected, $group));
 
     $result = $this->_callDecorator($callback);
-    $this->assertEqual($result, $expected);
+
+    if(is_object($result)) //ugly hack
+    {
+      $this->assertEqual($result->iterator, $expected);
+      $this->assertEqual($this->cache->put->iterator, $expected);
+    }
+    else
+      $this->assertEqual($result, $expected);
   }
 
   function _assertCacheNotCalled()
   {
-    $this->cache->expectNever('assign');
+    $this->cache->expectNever('get');
     $this->cache->expectNever('put');
   }
 

@@ -31,14 +31,14 @@ class CacheBaseTest extends LimbTestCase
     $this->assertNotNull($this->cache->getId());
   }
 
-  function testAssignFalse()
+  function testGetFalse()
   {
-    $this->_testAssignFalse(1);
+    $this->_testGetFalse(1);
   }
 
-  function testAssignTrue()
+  function testGetTrue()
   {
-    $this->_testAssignTrue(1);
+    $this->_testGetTrue(1);
   }
 
   function testPutToCache()
@@ -64,9 +64,9 @@ class CacheBaseTest extends LimbTestCase
 
     $this->cache->flushGroup('test-group');
 
-    $this->assertFalse($this->cache->assign($var, $key, 'test-group'));
+    $this->assertCacheNotValid($this->cache->get($key, 'test-group'));
 
-    $this->assertTrue($this->cache->assign($var, $key));
+    $var = $this->cache->get($key);
     $this->assertEqual($var, $v1);
   }
 
@@ -77,8 +77,8 @@ class CacheBaseTest extends LimbTestCase
 
     $this->cache->flushAll();
 
-    $this->assertFalse($this->cache->assign($var, 1));
-    $this->assertFalse($this->cache->assign($var, 2));
+    $this->assertCacheNotValid($this->cache->get(1));
+    $this->assertCacheNotValid($this->cache->get(2));
   }
 
   function _testFlushValue($key1, $key2)
@@ -88,22 +88,21 @@ class CacheBaseTest extends LimbTestCase
 
     $this->cache->flushValue($key1);
 
-    $this->assertFalse($this->cache->assign($cache_value, $key1));
+    $this->assertCacheNotValid($this->cache->get($key1));
 
-    $this->assertTrue($this->cache->assign($cache_value, $key2));
+    $cache_value = $this->cache->get($key2);
     $this->assertEqual($cache_value, $v2);
   }
 
-  function _testAssignFalse($key)
+  function _testGetFalse($key)
   {
-    $this->assertFalse($this->cache->assign($var, $key));
-    $this->assertNull($var);
+    $this->assertCacheNotValid($this->cache->get($key));
   }
 
-  function _testAssignTrue($key)
+  function _testGetTrue($key)
   {
     $this->cache->put($key, $v = 'value');
-    $this->assertTrue($this->cache->assign($var, $key));
+    $var = $this->cache->get($key);
     $this->assertEqual($v, $var);
   }
 
@@ -115,10 +114,10 @@ class CacheBaseTest extends LimbTestCase
     foreach($this->_getCachedValues() as $v2)
     {
       $this->cache->put($key, $v2);
-      $this->assertTrue($this->cache->assign($cache_value, $key));
+      $cache_value = $this->cache->get($key);
       $this->assertEqual($cache_value, $v2);
 
-      $this->assertTrue($this->cache->assign($cache_value, $rnd_key));
+      $cache_value = $this->cache->get($rnd_key);
       $this->assertEqual($cache_value, $v1);
     }
   }
@@ -128,10 +127,10 @@ class CacheBaseTest extends LimbTestCase
     $this->cache->put($key, $v1 = 'value1');
     $this->cache->put($key, $v2 = 'value2', 'test-group');
 
-    $this->assertTrue($this->cache->assign($cache_value, $key));
+    $cache_value = $this->cache->get($key);
     $this->assertEqual($cache_value, $v1);
 
-    $this->assertTrue($this->cache->assign($cache_value, $key, 'test-group'));
+    $cache_value = $this->cache->get($key, 'test-group');
     $this->assertEqual($cache_value, $v2);
   }
 
@@ -161,6 +160,11 @@ class CacheBaseTest extends LimbTestCase
   function _createObjectValue()
   {
     return new CacheableFooClass();
+  }
+
+  function assertCacheNotValid($value)
+  {
+    $this->assertEqual($value, CACHE_NULL_RESULT);
   }
 }
 
