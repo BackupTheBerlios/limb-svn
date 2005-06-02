@@ -26,19 +26,22 @@ include('/shared/js/dom.js');
 include('/shared/js/favourites.js');//remove later!
 include('/shared/js/ims.js');//remove later!
 
-function post_load_handler()
+if(!window.ON_LOAD_SET)
 {
-  if(get_query_item(location.href, 'popup'))
-    process_popup();
+  ON_LOAD_SET = 0;
 }
 
-//we can't use nice add event here, because it may be not loaded yet
-prev_window_on_load_handler = window.onload;
-window.onload = function()
+if(ON_LOAD_SET == 0) //protection from repeated common.js includes
 {
-  if(typeof(prev_window_on_load_handler) == 'function')
-    prev_window_on_load_handler();
+  //we can't use nice add event here, because it may be not loaded yet
+  var prev_window_on_load_handler = window.onload;
+  window.onload = function()
+  {
+    if(typeof(prev_window_on_load_handler) == 'function')
+      prev_window_on_load_handler();
 
-  post_load_handler();
+    post_load_handler();
+  }
 }
 
+ON_LOAD_SET = 1;
