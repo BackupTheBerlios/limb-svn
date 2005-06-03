@@ -65,15 +65,15 @@ EOD;
     }
 
     if ($opt_browse_path)
-      $this->browse($opt_browse_path, $root_group);
+      $res = $this->browse($opt_browse_path, $root_group);
 
     if ($opt_test_path)
-      $this->perform($opt_test_path, $root_group);
+      $res = $this->perform($opt_test_path, $root_group);
 
     if(!$opt_browse_path &&  !$opt_test_path)
-      $this->browse('', $root_group);
+      $res = $this->browse('', $root_group);
 
-    exit(0);
+     return ($res ? 0 : 1);
   }
 
   function &_getReporter()

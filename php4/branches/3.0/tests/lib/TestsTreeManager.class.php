@@ -16,7 +16,7 @@ class TestsTreeManager
     if(is_a($test, 'LimbGroupTest'))
       $this->_fillTestGroup($test);
 
-    $test->run($reporter);
+    return $test->run($reporter);
   }
 
   function &getCaseByPath($tests_path, &$group)

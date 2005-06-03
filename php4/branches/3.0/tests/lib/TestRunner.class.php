@@ -52,9 +52,11 @@ class TestRunner
 
     $this->_displayBeforePerform($path, $root_group, $current_group);
 
-    $this->test_manager->run($current_group, $this->_getReporter());
+    $res = $this->test_manager->run($current_group, $this->_getReporter());
 
     $this->_displayAfterPerform($path, $root_group, $current_group);
+
+    return $res;
   }
 
   function browse($path, &$root_group)
