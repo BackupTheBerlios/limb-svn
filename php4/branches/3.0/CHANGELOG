@@ -1,4 +1,81 @@
+Version 3.0alpha2
+(3 June 2005, from /php4/branches/3.0 r1351)
+
+-- fixed a small bug in MapDataspaceToObjectCommand
+-- fixed: User :: getGroups returns empty array if no groups defined
+-- fixed: Display404ErrorCommand (due to new state machine design)
+-- fixed a couple of bugs with filters due to LimbBaseToolkit :: set/getService() methods implementation and removing $context from InterceptingFilter interface.
+
+-- better svn logs processing
+-- /build scripts dir added
+-- CLITestRunner returns 0 if all tests passed and 1 otherwise, which can be directly passed to exit() function
+-- common.js repeated inclusion protection
+-- caching subsystem refactored:
+  * CachePersister abstract class introduced
+  * CacheMemoryPersister, CacheFilePersister classes added
+  * CacheCompositePersister added
+  * CacheRegistry raw key functionality moved into CachePersisterKeyDecorator
+-- CacheRegistry is just a wrapper around cache persister now, local cache functionality moved to CachePersister
+-- CacheRegistry :: get() removed, use assign instead
+-- CacheFilePersister added, it's the first attempt to separate and unify cache storage and retrieval
+-- initial version of CachedDbIterator added which caches wrapped rs iterator records
+-- added several images to /shared/images for jips
+-- better CachingTree(+tests) implementation which also persists cache on the disk
+-- fixes to Tree.interface.php
+-- SessionTree decorator added
+-- Fs :: safeWrite($file, $content) added, which uses flock && rename trick to simulate flock behaviour
+-- Fs :: walkDir() signature changed to: walk_dir($dir, $function_def, $params=array(), $include_first=false), if $include_first == true the starting directory is also passed to the walker
+-- Fs walker signature changed to: func($dir, $file, $full_path, $params, &$return), $full_path contains full absolute path to the current traversed item
+-- Fs :: cleanPath() renamed to Fs :: normalizePath
+-- Sys class mess cleanup
+-- DAO interface splitted into 3 separate interfaces:
+  * DAO :: fetch()
+  * DAORecord :: fetchRecord()
+  * DAOById :: fetchById($id)
+-- LimbBaseToolkit :: set|getService() reverted
+-- $context removed from intercepting filters
+-- <limb:select_options_source> tag and corresponding component(+tests) added
+-- tags renamed datasource_processor => DSProcessor
+-- fetchRecord() introduced in DAO interface
+-- LimbDatasourceDAO => LimbDAORecord(uses fetchRecord() instead of fetch())
+-- added: GroupActionsProcessor, LimbGroupActionsDatasourceProcessorTag to create an attribute in the current scope of wact template containing a list of actions marked with some attribute.
+-- removed: JIPProcessor, LimbJIPDatasourceProcessorTag removed in favour of prev. classes.
+-- TreeRsProcessor accepts only record sets now
+-- TreeRsProcessor :: makeNested optimizations:
+  * handles multi-rooted trees
+  * uses record set interface without converting rs into array
+-- TreeSorter => TreeRsProcessor
+-- TreeRsProcessor :: makeNested() added which coneverts passed flat ordered tree rs into nested one(tree alike)
+-- TreeBranchCriteria adds tree path sorting
+-- UIDialogFilter added, it replaces 404 service with UIHandleDialog service in order to handle the situation when parent window for some reason can not be resolved(edited, deleted, etc)
+-- Service :: getCurrentAction() returns default action if not set
+-- Limb :: saveToolkit() returns cloned toolkit
+-- base js script modules added to /shared/js/
+-- CloseDialogCommand uses WACT template in order to create proper response
+-- removed: ClosePopup... Commands
+-- JIPProcessor appends popup=1 if action definition contains popup attribute
+-- finished commands refactoring.
+-- some of the state_machines were removed from LIMB core (currently in /servise_node package)
+-- DeleteEntityCommand added.
+-- added: /state_machines folder as a subfolder to /commands
+-- FormProcessingCommand refactored due to new StateMachineCommand design.
+-- initial revision of state machines added to /state_machines folder
+-- new state machine factory based implementation
+-- added: CompositeServiceRequestResolver
+-- minor refactorings in some DAO classed due to new RequestResolver conception.
+-- intercepting filter chain interface changed: now it also accepts $context data container which can be shared between all components of application logic
+-- LimbApplication passes context to filter chain
+-- CommandProcessingFilter passes context from filter chain to state machine
+-- old CLI stuff removed
+-- request resolver interface was simpified and split into separate classes. Now it supports only one method resolve($request) which can return just anything
+-- LimbBaseToolkit :: setRequestResolver($name, $resolver) now accepts resolver's name as a first argument, this way it's possible to have specific resolvers for each task
+-- LimbBaseToolkit :: get[set]CurrentEntity removed, this lead to some refactoring
+-- <limb:VERSION> tag added
+-- CacheRegistry is capable to accept non-scalar keys
+-- LimbBaseToolkit :: getTree() returns tree decorated with CachingTree
+-- materialized path driver optimizations: you can use array node as well as node id for all get* methods
+
 Version 3.0alpha1
 (19 April 2005, from /php4/branches/3.0 r1258)
 
-  -- with this message we start logging changelog for LIMB 3.x series :)
+-- with this message we start logging changelog for LIMB 3.x series :)
