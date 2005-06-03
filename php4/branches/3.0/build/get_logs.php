@@ -1,19 +1,44 @@
 <?php
 
-$TO_REV = 'HEAD';
-$FROM_REV = 1230;
-$SVN_PATH = '../';
+$WORKING_COPY_DIR = dirname(__FILE__) . '/../';
+$OUTPUT_DIR = dirname(__FILE__) . '/release/';
 
-$OUTPUT_DIR = './release';
+$TO_REV = 'auto';
+$FROM_REV = 'auto';
 
-function query_svn_logs($svn_path, $to_rev, $from_rev)
+$SVN = 'svn';
+
+//==================!!! don't edit below if not sure !!!==================
+
+function make_sure_working_copy_is_fresh()
 {
-  echo "Querying svn...\n";
+  global $WORKING_COPY_DIR;
+  global $SVN;
+
+  echo "Making sure the working copy is up-to-date...\n";
+
+  exec("$SVN up $WORKING_COPY_DIR");
+  exec("$SVN st $WORKING_COPY_DIR", $out);
+
+  foreach($out as $line)
+  {
+    if(trim($line) != '')
+    {
+      echo "There are modifications in the working copy!!!";
+      exit(1);
+    }
+  }
+}
+
+function query_svn_logs($working_copy, $to_rev, $from_rev)
+{
+  global $SVN;
+
+  echo "Querying svn({$working_copy} r{$to_rev}:{$from_rev})...\n";
 
   $result = array();
   $out = array();
-  $cmd = "svn log {$svn_path} -r{$to_rev}:{$from_rev}";
-  exec($cmd, $out);
+  exec("$SVN log {$working_copy} -r{$to_rev}:{$from_rev}", $out);
 
   foreach($out as $string)
   {
@@ -33,7 +58,7 @@ function query_svn_logs($svn_path, $to_rev, $from_rev)
     {
       echo "Merge detected($matches[3] $matches[2]:$matches[1])\n";
 
-      $merge_out = query_svn_logs($svn_path . $matches[3], $matches[2], $matches[1]);
+      $merge_out = query_svn_logs($working_copy . $matches[3], $matches[2], $matches[1]);
 
       foreach($merge_out as $merge_string)
         $result[] =  $merge_string;
@@ -72,12 +97,65 @@ function process_logs($out)
   return $result;
 }
 
-$out = query_svn_logs($SVN_PATH, $TO_REV, $FROM_REV);
+function get_last_svn_revision()
+{
+  global $WORKING_COPY_DIR;
+
+  exec("svn info $WORKING_COPY_DIR", $out);
+
+  foreach($out as $line)
+  {
+    if(preg_match('~Revision:\s*(\d+)~', $line, $m))
+      return $m[1];
+  }
+
+  return -1;
+}
+
+function get_repos_uri()
+{
+  global $WORKING_COPY_DIR;
+
+  exec("svn info $WORKING_COPY_DIR", $out);
+
+  foreach($out as $line)
+  {
+    if(preg_match('~URL:(.*)$~', $line, $m))
+      return trim($m[1]);
+  }
+
+  return -1;
+}
+
+function get_last_changelog_revision()
+{
+  global $WORKING_COPY_DIR;
+
+  exec("head $WORKING_COPY_DIR/CHANGELOG", $out);
+
+  foreach($out as $line)
+  {
+    if(preg_match('~r(\d+)\)$~', $line, $m))
+      return $m[1];
+  }
+  return -1;
+}
+
+make_sure_working_copy_is_fresh();
+
+$FROM_REV = ($FROM_REV == 'auto' ? get_last_changelog_revision() : $FROM_REV);
+$TO_REV = ($TO_REV == 'auto' ? get_last_svn_revision() : $TO_REV);
+$REPOS_URI = get_repos_uri();
+
+$OUTPUT_FILE = "{$OUTPUT_DIR}/LOG-{$FROM_REV}-{$TO_REV}";
+
+$out = query_svn_logs($WORKING_COPY_DIR, $TO_REV, $FROM_REV);
 $out = process_logs($out);
 
-$file = "{$OUTPUT_DIR}/LOG-{$TO_REV}-{$FROM_REV}";
-$fh = fopen($file, 'w');
+$fh = fopen($OUTPUT_FILE, 'w');
+fwrite($fh, "$REPOS_URI r{$FROM_REV}:{$TO_REV}\n\n");
 fwrite($fh, implode("\n", $out));
 fclose($fh);
 
+echo "Done.";
 ?>
