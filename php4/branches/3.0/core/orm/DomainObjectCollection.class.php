@@ -8,28 +8,32 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(WACT_ROOT . 'iterator/iterator.inc.php');
+require_once(WACT_ROOT . '/iterator/iterator.inc.php');
 
-class IteratorDbDecorator extends IteratorDecorator
+class DomainObjectCollection extends IteratorDecorator
 {
-  function paginate(&$pager)
+  var $collection = array();
+
+  function DomainObjectCollection(&$collection)
   {
-    $this->iterator->paginate($pager);
+    $this->collection =& $collection;
   }
 
-  function freeQuery()
+  function rewind()
   {
-    $this->iterator->freeQuery();
+    $this->iterator = new ArrayDataSet($this->collection);
+    parent :: rewind();
   }
 
-  function getRowCount()
+  function & current()
   {
-    return $this->iterator->getRowCount();
+    $record = parent :: current();
+    return $record->export();
   }
 
-  function getTotalRowCount()
+  function add(&$obj)
   {
-    return $this->iterator->getTotalRowCount();
+    $this->collection[] =& $obj;
   }
 }
 

@@ -180,6 +180,9 @@ class UnitOfWork
 
     $dao =& $this->_getDAO($class);
 
+    if(!is_object($dao))
+      die('Can\'t create dao for "'. $class. '" class: '. __FILE__. ' at line '. __LINE__);
+
     $obj =& $this->_getObject($class);
 
     if(!$record =& $dao->fetchById((int)$id))

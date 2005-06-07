@@ -23,7 +23,11 @@ class DataMapperFactory
   {
     DataMapperFactory :: _includeClassFile($class_name);
 
-    return new $class_name();
+    $mapper =& new $class_name();
+    if(!is_a($mapper, 'AbstractDataMapper'))
+      die($class_name . ' does not implement AbstractDataMapper interface');
+
+    return $mapper;
   }
 
   function _includeClassFile($class_name)

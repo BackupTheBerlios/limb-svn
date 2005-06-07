@@ -79,7 +79,7 @@ class OneTableObjectMapperTest extends LimbTestCase
     $this->assertIsA($mapper->getDbTable(), 'OneTableObjectMapperTestDbTable');
   }
 
-  function testLoad()
+  function testLoadUsingDefaultRecordPrefix()
   {
     $mapper = new OneTableObjectMapper('OneTableObjectMapperTest');
     $object = new OneTableObjectMapperTestNewsObject();
@@ -93,6 +93,48 @@ class OneTableObjectMapperTest extends LimbTestCase
     $record->import($result);
 
     $mapper->load($record, $object);
+
+    $this->assertEqual($object->get('id'), $id);
+    $this->assertEqual($object->get('content'), $content);
+    $this->assertEqual($object->get('annotation'), $annotation);
+    $this->assertEqual($object->get('news_date'), $news_date);
+  }
+
+  function testLoadEmptyRecordPrefix()
+  {
+    $mapper = new OneTableObjectMapper('OneTableObjectMapperTest', EMPTY_RECORD_PREFIX);
+    $object = new OneTableObjectMapperTestNewsObject();
+
+    $result = array('id' => $id = 10,
+                    'content' => $content = 'some content',
+                    'annotation' => $annotation = 'some annotation',
+                    'news_date' => $news_date = 'some date');
+
+    $record = new Dataspace();
+    $record->import($result);
+
+    $mapper->load($record, $object);
+
+    $this->assertEqual($object->get('id'), $id);
+    $this->assertEqual($object->get('content'), $content);
+    $this->assertEqual($object->get('annotation'), $annotation);
+    $this->assertEqual($object->get('news_date'), $news_date);
+  }
+
+  function testLoadOverrideRecordPrefix()
+  {
+    $mapper = new OneTableObjectMapper('OneTableObjectMapperTest', 'foo');
+    $object = new OneTableObjectMapperTestNewsObject();
+
+    $result = array('bar_id' => $id = 10,
+                    'bar_content' => $content = 'some content',
+                    'bar_annotation' => $annotation = 'some annotation',
+                    'bar_news_date' => $news_date = 'some date');
+
+    $record = new Dataspace();
+    $record->import($result);
+
+    $mapper->load($record, $object, 'bar_');
 
     $this->assertEqual($object->get('id'), $id);
     $this->assertEqual($object->get('content'), $content);

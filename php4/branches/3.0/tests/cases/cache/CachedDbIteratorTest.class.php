@@ -13,10 +13,11 @@ require_once(LIMB_DIR . '/core/cache/CachePersisterKeyDecorator.class.php');
 require_once(LIMB_DIR . '/core/cache/CachedDbIterator.class.php');
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 
-class RsCacheDataPager {
-    function setPagedDataSet(&$dataset) {}
-    function getStartingItem() {}
-    function getItemsPerPage() {}
+class RsCacheDataPager
+{
+  function setPagedDataSet(&$dataset) {}
+  function getStartingItem() {}
+  function getItemsPerPage() {}
 }
 
 Mock :: generate('PagedArrayDataSet');

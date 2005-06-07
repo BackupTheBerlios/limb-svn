@@ -10,13 +10,17 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 
+define('EMPTY_RECORD_PREFIX', '');
+
 class OneTableObjectMapper extends AbstractDataMapper
 {
   var $_db_table = null;
+  var $_record_prefix = null;
 
-  function OneTableObjectMapper($db_name)
+  function OneTableObjectMapper($db_name, $record_prefix = '_content_')
   {
     $this->_db_name = $db_name;
+    $this->_record_prefix = $record_prefix;
   }
 
   function & getDbTable()
@@ -30,13 +34,14 @@ class OneTableObjectMapper extends AbstractDataMapper
     return $this->_db_table;
   }
 
-  function load(&$record, &$object)
+  function load(&$record, &$object, $override_prefix = null)
   {
     $table =& $this->getDbTable();
 
+    $prefix = $override_prefix ? $override_prefix : $this->_record_prefix;
     foreach($table->getColumns() as $key => $props)
     {
-      if($value = $record->get('_content_' . $key))
+      if($value = $record->get($prefix . $key))
        $object->set($key, $value);
     }
   }
