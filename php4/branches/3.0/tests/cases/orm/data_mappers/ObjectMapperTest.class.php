@@ -61,6 +61,7 @@ class ObjectMapperTest extends LimbTestCase
   {
     $mapper = new ObjectMapper();
     $object = new Object();
+    $object->set('oid', $oid = 100);
     $object->__class_name = 'Object';
 
     $mapper->insert($object);
@@ -74,7 +75,7 @@ class ObjectMapperTest extends LimbTestCase
     $objects = $rs->getArray();
     $this->assertEqual(sizeof($objects), 1);
 
-    $this->assertEqual($objects[0]['oid'], 1);
+    $this->assertEqual($objects[0]['oid'], $oid);
     $this->assertEqual($objects[0]['class_id'], $classes[0]['id']);
 
     $this->assertEqual($object->get('oid'), $objects[0]['oid']);
@@ -85,6 +86,7 @@ class ObjectMapperTest extends LimbTestCase
   {
     $mapper = new ObjectMapper();
     $object = new Object();
+    $object->set('oid', $oid = 100);
     $object->__class_name = 'Object';
 
     $this->db->insert('sys_class', array('id' => $class_id = 5,
@@ -100,7 +102,7 @@ class ObjectMapperTest extends LimbTestCase
     $objects = $rs->getArray();
     $this->assertEqual(sizeof($objects), 1);
 
-    $this->assertEqual($objects[0]['oid'], 1);
+    $this->assertEqual($objects[0]['oid'], $oid);
     $this->assertEqual($objects[0]['class_id'], $class_id);
 
     $this->assertEqual($object->get('oid'), $objects[0]['oid']);

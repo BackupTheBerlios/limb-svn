@@ -83,10 +83,14 @@ class StateMachineCommandTest extends LimbTestCase
     $factory = new MockCommandsFactory($this);
     $state_machine = new StateMachineCommand($factory);
 
+    die_on_error(false);
+
     $state_machine->registerState('some_state');
     $this->assertFalse(catch_error('LimbException', $e));
     $state_machine->registerState('some_state');
     $this->assertTrue(catch_error('LimbException', $e));
+
+    die_on_error();
   }
 
   function testSeveralStatusesFlow()
@@ -146,8 +150,11 @@ class StateMachineCommandTest extends LimbTestCase
     $factory->setReturnValueAt(0, 'performInitial', 'some_result');
     $factory->expectNever('performNextState');
     $factory->expectNever('performExtraState');
+
+    die_on_error(false);
     $state_machine->perform();
     $this->assertTrue(catch_error('LimbException', $e));
+    die_on_error();
   }
 
   function testGetStateHistory()

@@ -31,8 +31,10 @@ class ObjectFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveObjectFileFailed()
   {
+    die_on_error(false);
     $this->resolver->resolve('no_such_object');
     $this->assertTrue(catch_error('LimbException', $e));
+    die_on_error();
   }
 
 }

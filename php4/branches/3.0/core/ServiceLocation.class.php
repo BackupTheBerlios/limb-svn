@@ -10,6 +10,9 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/Object.class.php');
 
-class ServiceLocation extends Object{}
+class ServiceLocation extends Object
+{
+  var $__class_name = 'ServiceLocation';
+}
 
 ?>

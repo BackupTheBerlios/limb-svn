@@ -23,10 +23,17 @@ class AbstractDataMapper
 
   function save(&$object)
   {
-    if($object->get($this->getIdentityKeyName()))
-      $this->update($object);
-    else
+    $toolkit =& Limb :: toolkit();
+    $uow =& $toolkit->getUOW();
+
+    if($uow->isNew($object))
+    {
       $this->insert($object);
+    }
+    elseif($uow->isDirty($object))
+    {
+      $this->update($object);
+    }
   }
 
   //protected

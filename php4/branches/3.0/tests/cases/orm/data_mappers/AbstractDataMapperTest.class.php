@@ -9,10 +9,13 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
-require_once(LIMB_DIR . '/core/DomainObject.class.php');
+require_once(LIMB_DIR . '/core/Object.class.php');
+require_once(LIMB_DIR . '/core/UnitOfWork.class.php');
+require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
 
-Mock :: generate('DomainObject');
+Mock :: generate('UnitOfWork');
+Mock :: generate('LimbBaseToolkit', 'MockToolkit');
 
 class AbstractDataMapperTestVersion extends AbstractDataMapper{}
 
@@ -24,6 +27,8 @@ Mock :: generatePartial('AbstractDataMapperTestVersion',
 class AbstractDataMapperTest extends LimbTestCase
 {
   var $object;
+  var $toolkit;
+  var $uow;
 
   function AbstractDataMapperTest()
   {
@@ -32,35 +37,69 @@ class AbstractDataMapperTest extends LimbTestCase
 
   function setUp()
   {
-    $this->object = new MockDomainObject($this);
+    $this->object = new Object();
+
+    $this->toolkit =& Limb :: registerToolkit(new MockToolkit($this));
+
+    $this->uow = new MockUnitOfWork($this);
+    $this->toolkit->setReturnReference('getUOW', $this->uow);
   }
 
   function tearDown()
   {
-    $this->object->tally();
+    $this->toolkit->tally();
+    $this->uow->tally();
+
+    Limb :: restoreToolkit();
   }
 
-  function testSaveInsert()
+  function testInsertNewObject()
   {
     $mapper = new AbstractDataMapperMock($this);
 
-    $mapper->expectOnce('insert', array(new IsAExpectation('MockDomainObject')));
+    $this->uow->expectNever('isDirty');
 
-    $this->object->expectOnce('get', array('id'));
+    $this->uow->expectOnce('isNew', array($this->object));
+    $this->uow->setReturnValue('isNew', true);
+
+    $mapper->expectNever('update');
+    $mapper->expectOnce('insert', array($this->object));
 
     $mapper->save($this->object);
 
     $mapper->tally();
   }
 
-  function testSaveUpdate()
+  function testUpdateDirtyObject()
   {
     $mapper = new AbstractDataMapperMock($this);
 
-    $mapper->expectOnce('update', array(new IsAExpectation('MockDomainObject')));
+    $this->uow->expectOnce('isDirty', array($this->object));
+    $this->uow->setReturnValue('isDirty', true);
 
-    $this->object->expectOnce('get', array('id'));
-    $this->object->setReturnValue('get', 10, array('id'));
+    $this->uow->expectOnce('isNew', array($this->object));
+    $this->uow->setReturnValue('isNew', false);
+
+    $mapper->expectNever('insert');
+    $mapper->expectOnce('update', array($this->object));
+
+    $mapper->save($this->object);
+
+    $mapper->tally();
+  }
+
+  function testDontUpdateUnchangedObject()
+  {
+    $mapper = new AbstractDataMapperMock($this);
+
+    $this->uow->expectOnce('isNew', array($this->object));
+    $this->uow->setReturnValue('isNew', false);
+
+    $this->uow->expectOnce('isDirty', array($this->object));
+    $this->uow->setReturnValue('isDirty', false);
+
+    $mapper->expectNever('update');
+    $mapper->expectNever('insert');
 
     $mapper->save($this->object);
 

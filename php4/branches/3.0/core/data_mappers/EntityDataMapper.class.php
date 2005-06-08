@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: TreeNodeDataMapper.class.php 1161 2005-03-14 16:55:07Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
@@ -27,6 +27,7 @@ class EntityDataMapper extends AbstractDataMapper
     $object_mapper->load($record, $entity);
 
     $toolkit =& Limb :: toolkit();
+    $uow =& $toolkit->getUOW();
     $parts =& $entity->getParts();
 
     foreach(array_keys($parts) as $key)
@@ -35,6 +36,7 @@ class EntityDataMapper extends AbstractDataMapper
       $mapper =& $this->_getPartMapperUseDefaultIfNone($key, $part);
       $mapper->load($record, $part);
       $part->set('oid', $record->get('oid'));
+      $uow->registerExisting($part);
     }
   }
 

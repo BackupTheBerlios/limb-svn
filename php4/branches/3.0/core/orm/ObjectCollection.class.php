@@ -10,25 +10,27 @@
 ***********************************************************************************/
 require_once(WACT_ROOT . '/iterator/iterator.inc.php');
 
-class DomainObjectCollection extends IteratorDecorator
+class ObjectCollection extends IteratorBase
 {
   var $collection = array();
 
-  function DomainObjectCollection(&$collection)
+  function ObjectCollection(&$collection)
   {
     $this->collection =& $collection;
   }
 
   function rewind()
   {
-    $this->iterator = new ArrayDataSet($this->collection);
-    parent :: rewind();
+    $this->current = reset($this->collection);
+    $this->key = key($this->collection);
+    $this->valid = is_object($this->current);
   }
 
-  function & current()
+  function next()
   {
-    $record = parent :: current();
-    return $record->export();
+    $this->current = next($this->collection);
+    $this->key = key($this->collection);
+    $this->valid = is_object($this->current);
   }
 
   function add(&$obj)

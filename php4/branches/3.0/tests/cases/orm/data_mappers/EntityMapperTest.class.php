@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: VersionedObjectMapperTest.class.php 1181 2005-03-21 10:46:55Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
@@ -61,25 +61,26 @@ class EntityMapperTest extends LimbTestCase
   function testLoad()
   {
     $mapper1 = new MockMapper($this);
+    $mapper1->setReturnValue('getIdentityKeyName', 'id');
     $mapper2 = new MockMapper($this);//will be used by default
+    $mapper2->setReturnValue('getIdentityKeyName', 'id');
 
     $mapper = new EntityDataMapper();
     $mapper->registerPartMapper('Part1', $mapper1);
 
     $part1 = new EntityPartStub1();
+    $part1->set('id', 10);
     $part2 = new EntityPartStub2();
+    $part2->set('id', 12);
 
     $entity = new Entity();
     $entity->registerPart('Part1', $part1);
     $entity->registerPart('Part2', $part2);
 
-    $this->toolkit->expectCallCount('createDataMapper', 2);
-    $this->toolkit->expectArgumentsAt(0, 'createDataMapper', array('ObjectMapper'));
-    $this->toolkit->expectArgumentsAt(1, 'createDataMapper', array('EntityPartStub2Mapper'));
-
     $object_mapper = new MockMapper($this);
 
     $this->toolkit->setReturnReference('createDataMapper', $object_mapper, array('ObjectMapper'));
+    $this->toolkit->setReturnReference('createDataMapper', $mapper1, array('EntityPartStub1Mapper'));
     $this->toolkit->setReturnReference('createDataMapper', $mapper2, array('EntityPartStub2Mapper'));
 
     $record = new DataSpace();
@@ -97,6 +98,10 @@ class EntityMapperTest extends LimbTestCase
     $object_mapper->tally();
     $mapper1->tally();
     $mapper2->tally();
+
+    $uow =& $this->toolkit->getUOW();
+    $this->assertTrue($uow->isExisting($part1));
+    $this->assertTrue($uow->isExisting($part2));
   }
 
   function testSave()

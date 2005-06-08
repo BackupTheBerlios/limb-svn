@@ -79,8 +79,10 @@ class DisplayViewCommandTest extends LimbTestCase
     $this->toolkit->expectOnce('getView');
     $this->toolkit->setReturnValue('getView', null);
 
+    die_on_error(false);
     $command->perform();
     $this->assertTrue(catch_error('LimbException', $e));
+    die_on_error();
   }
 }
 

@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: InterceptingFilter.interface.php 981 2004-12-21 15:51:00Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -16,7 +16,7 @@ class UOWFilter//implements InterceptingFilter
     $toolkit =& Limb :: toolkit();
     $uow =& $toolkit->getUOW();
 
-    $uow->start();
+    $uow->reset();
     $filter_chain->next();
     $uow->commit();
   }

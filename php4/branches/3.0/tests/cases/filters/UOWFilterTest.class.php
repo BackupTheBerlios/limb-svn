@@ -46,7 +46,7 @@ class UOWFilterTest extends LimbTestCase
 
   function testRunOk()
   {
-    $this->uow->expectOnce('start');
+    $this->uow->expectOnce('reset');
     $this->uow->expectOnce('commit');
 
     $filter = new UOWFilter();

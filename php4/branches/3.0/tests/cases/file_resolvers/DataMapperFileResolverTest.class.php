@@ -31,10 +31,11 @@ class DataMapperFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveDataMapperFileFailed()
   {
+    die_on_error(false);
     $this->resolver->resolve('no_such_mapper');
     $this->assertTrue(catch_error('LimbException', $e));
+    die_on_error();
   }
-
 }
 
 ?>

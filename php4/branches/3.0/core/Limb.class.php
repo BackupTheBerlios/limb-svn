@@ -32,10 +32,11 @@ class Limb
     return $GLOBALS['LimbGlobalInstance'];
   }
 
-  function registerToolkit(&$toolkit, $name = 'default')
+  function & registerToolkit(&$toolkit, $name = 'default')
   {
     $limb =& Limb :: instance();
     $limb->toolkits[$name][] =& $toolkit;
+    return $toolkit;
   }
 
   function & restoreToolkit($name = 'default')

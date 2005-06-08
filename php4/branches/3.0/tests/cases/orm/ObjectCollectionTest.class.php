@@ -8,12 +8,12 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/orm/DomainObjectCollection.class.php');
+require_once(LIMB_DIR . '/core/orm/ObjectCollection.class.php');
 require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
 
-class DomainObjectCollectionTest extends LimbTestCase
+class ObjectCollectionTest extends LimbTestCase
 {
-  function DomainObjectCollectionTest()
+  function ObjectCollectionTest()
   {
     parent :: LimbTestCase(__FILE__);
   }
@@ -27,13 +27,14 @@ class DomainObjectCollectionTest extends LimbTestCase
     $obj2->set('id', 2);
 
     $arr = array($obj1, $obj2);
-    $col = new DomainObjectCollection($arr);
+    $col = new ObjectCollection($arr);
 
     $col->rewind();
-
+    $this->assertTrue($col->valid());
     $this->assertEqual($col->current(), $obj1);
 
     $col->next();
+    $this->assertTrue($col->valid());
     $this->assertEqual($col->current(), $obj2);
 
     $col->next();
@@ -49,7 +50,7 @@ class DomainObjectCollectionTest extends LimbTestCase
     $obj2->set('id', 2);
 
     $arr = array($obj1);
-    $col = new DomainObjectCollection($arr);
+    $col = new ObjectCollection($arr);
 
     $col->add($obj2);
 

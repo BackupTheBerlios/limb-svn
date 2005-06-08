@@ -44,9 +44,12 @@ class NodeConnectionMapperTest extends LimbTestCase
 
     $mapper = new NodeConnectionMapper();
 
+    die_on_error(false);
     $mapper->insert($object);
+    die_on_error();
     $this->assertTrue(catch_error('LimbException', $e));
     $this->assertEqual($e->getMessage(), 'oid is not set');
+
   }
 
   function testFailedInsertNoObjectId()
@@ -56,7 +59,9 @@ class NodeConnectionMapperTest extends LimbTestCase
 
     $mapper = new NodeConnectionMapper();
 
+    die_on_error(false);
     $mapper->insert($object);
+    die_on_error();
     $this->assertTrue(catch_error('LimbException', $e));
     $this->assertEqual($e->getMessage(), 'node id is not set');
   }

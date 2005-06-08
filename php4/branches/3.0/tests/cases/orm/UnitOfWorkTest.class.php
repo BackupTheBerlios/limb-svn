@@ -26,21 +26,11 @@ class UOWTestObject extends Object
   var $__class_name = 'UOWTestObject';//php4 getclass workaround
 }
 
-class UOWTestObjectMapperStub extends MockAbstractDataMapper
+class UOWTestObjectMapper extends MockAbstractDataMapper//required for UOWTestObject!
 {
-  var $new_id = 0;
-
-  function setId($id)
+  function UOWTestObjectMapper(&$test)
   {
-    $this->new_id = $id;
-  }
-
-  function save(&$object)
-  {
-    parent :: save($object);
-
-    if(!$object->get('id'))
-      $object->set('id', $this->new_id);
+    parent :: MockAbstractDataMapper($test);
   }
 }
 
@@ -58,20 +48,21 @@ class UnitOfWorkTest extends LimbTestCase
 
   function setUp()
   {
-    $this->uow = new UnitOfWork();
-    $this->mapper = new UOWTestObjectMapperStub($this);
+    $this->toolkit = new MockLimbToolkit($this);
+
+    Limb :: registerToolkit($this->toolkit);
+
+    $this->mapper = new UOWTestObjectMapper($this);
     $this->dao = new MockSQLBasedDAO($this);
     $this->cache = new CachePersisterKeyDecorator(new CacheMemoryPersister());
 
     $this->mapper->setReturnValue('getIdentityKeyName', 'id');
 
-    $this->toolkit = new MockLimbToolkit($this);
     $this->toolkit->setReturnReference('getCache', $this->cache);
-
     $this->toolkit->setReturnReference('createDAO', $this->dao, array('UOWTestObjectDAO'));
     $this->toolkit->setReturnReference('createDataMapper', $this->mapper, array('UOWTestObjectMapper'));
 
-    Limb :: registerToolkit($this->toolkit);
+    $this->uow = new UnitOfWork();
   }
 
   function tearDown()
@@ -81,6 +72,99 @@ class UnitOfWorkTest extends LimbTestCase
     $this->toolkit->tally();
 
     Limb :: restoreToolkit();
+  }
+
+  function testRegisterNew()
+  {
+    $obj = new UOWTestObject();
+
+    $this->toolkit->expectOnce('nextUID');
+    $this->toolkit->setReturnValue('nextUID', $new_id = 10);
+
+    $this->uow->registerNew($obj);
+
+    $this->assertEqual($obj->get('id'), $new_id);
+
+    $this->assertTrue($this->uow->isRegistered($obj));
+    $this->assertTrue($this->uow->isNew($obj));
+    $this->assertFalse($this->uow->isExisting($obj));
+  }
+
+  function testRegisterExisting()
+  {
+    $obj = new UOWTestObject();
+
+    $this->toolkit->expectNever('nextUID');
+
+    $obj->set('id', 10);
+    $this->uow->registerExisting($obj);
+
+    $this->assertTrue($this->uow->isRegistered($obj));
+    $this->assertFalse($this->uow->isNew($obj));
+    $this->assertTrue($this->uow->isExisting($obj));
+  }
+
+  function testIsDirty()
+  {
+    $obj = new UOWTestObject();
+    $obj->set('id', 13);
+
+    $this->uow->registerExisting($obj);
+
+    $this->assertFalse($this->uow->isDirty($obj));
+
+    $obj->set('foo', 1);
+
+    $this->assertTrue($this->uow->isDirty($obj));
+  }
+
+  function testDeleteNewObject()
+  {
+    $obj = new UOWTestObject();
+    $this->toolkit->setReturnValue('nextUID', $id = 10);
+
+    $this->uow->registerNew($obj);
+
+    $this->assertFalse($this->uow->isDeleted($obj));
+
+    $this->uow->delete($obj);
+
+    $this->assertFalse($this->uow->isDeleted($obj));
+    $this->assertFalse($this->uow->isRegistered($obj));
+  }
+
+  function testDeleteExistingObject()
+  {
+    $obj = new UOWTestObject();
+    $obj->set('id', 10);
+
+    $this->uow->registerExisting($obj);
+
+    $this->assertFalse($this->uow->isDeleted($obj));
+
+    $this->uow->delete($obj);
+
+    $this->assertTrue($this->uow->isDeleted($obj));
+    $this->assertTrue($this->uow->isRegistered($obj));
+  }
+
+  function testReset()
+  {
+    $obj1 = new UOWTestObject();
+    $obj2 = new UOWTestObject();
+    $obj2->set('id', 20);
+
+    $this->toolkit->setReturnValue('nextUID', 10);
+
+    $this->uow->registerNew($obj1);
+    $this->uow->registerExisting($obj2);
+    $this->uow->delete($obj2);
+
+    $this->uow->reset();
+
+    $this->assertFalse($this->uow->isRegistered($obj1));
+    $this->assertFalse($this->uow->isRegistered($obj2));
+    $this->assertFalse($this->uow->isDeleted($obj2));
   }
 
   function testLoadNotFound()
@@ -95,6 +179,7 @@ class UnitOfWorkTest extends LimbTestCase
     $this->mapper->expectNever('load');
 
     $this->assertNull($this->uow->load('UOWTestObject', $id));
+    $this->assertFalse($this->uow->isRegistered($object));
   }
 
   function testLoad()
@@ -114,6 +199,9 @@ class UnitOfWorkTest extends LimbTestCase
 
     $loaded_object =& $this->uow->load('UOWTestObject', $id);
 
+    $this->assertTrue($this->uow->isExisting($loaded_object));
+    $this->assertFalse($this->uow->isNew($loaded_object));
+
     $this->assertEqual($object, $loaded_object);
 
     //cache hit test
@@ -122,7 +210,38 @@ class UnitOfWorkTest extends LimbTestCase
     $this->assertEqual($object, $loaded_object);
   }
 
-  function testCommit()
+  function testCommitNewObjects()
+  {
+    $obj1 = new UOWTestObject();
+    $obj2 = new UOWTestObject();
+
+    $this->toolkit->expectCallCount('nextUID', 2);
+    $this->toolkit->setReturnValueAt(0, 'nextUID', 10);
+    $this->toolkit->setReturnValueAt(1, 'nextUID', 20);
+
+    $this->uow->registerNew($obj1);
+    $this->uow->registerNew($obj2);
+
+    $this->mapper->expectCallCount('save', 2);
+    $this->mapper->expectArgumentsAt(0, 'save', array($obj1));
+    $this->mapper->expectArgumentsAt(1, 'save', array($obj2));
+
+    $this->assertTrue($this->uow->isNew($obj1));
+    $this->assertTrue($this->uow->isNew($obj2));
+
+    $this->assertFalse($this->uow->isExisting($obj1));
+    $this->assertFalse($this->uow->isExisting($obj2));
+
+    $this->uow->commit();
+
+    $this->assertFalse($this->uow->isNew($obj1));
+    $this->assertFalse($this->uow->isNew($obj2));
+
+    $this->assertTrue($this->uow->isExisting($obj1));
+    $this->assertTrue($this->uow->isExisting($obj2));
+  }
+
+  function testCommitOnlyDirty()
   {
     $obj1 = new UOWTestObject();
     $obj1->set('id', $id1 = 1);
@@ -130,8 +249,8 @@ class UnitOfWorkTest extends LimbTestCase
     $obj2 = new UOWTestObject();
     $obj2->set('id', $id2 = 2);
 
-    $this->uow->register($obj1);
-    $this->uow->register($obj2);
+    $this->uow->registerExisting($obj1);
+    $this->uow->registerExisting($obj2);
 
     $obj1->set('changed', true);
 
@@ -140,43 +259,15 @@ class UnitOfWorkTest extends LimbTestCase
     $this->uow->commit();
   }
 
-  function testDirtyObjectsGetNewlyRegisteredAfterCommit()
-  {
-    $obj = new UOWTestObject();
-    $obj->set('id', $id = 100);
-
-    $this->uow->register($obj);
-
-    $obj->set('changed', true);
-
-    $this->mapper->expectOnce('save', array($obj));
-
-    $this->uow->commit();
-
-    $this->uow->commit();//saved only once, since we're not changing object
-  }
-
-  function testNewObject()
-  {
-    $obj = new UOWTestObject();
-
-    $this->uow->register($obj);
-
-    $this->mapper->setId($id = 1000);
-    $this->mapper->expectOnce('save', array($obj));
-
-    $this->uow->commit();
-
-    $this->assertEqual($obj->get('id'), $id);
-
-    $this->uow->commit();//saved only once, since we're not changing object
-  }
-
   function testDeleteNew()
   {
     $obj = new UOWTestObject();
 
+    die_on_error(false);
     $this->uow->delete($obj);
+    die_on_error();
+
+    $this->assertTrue(catch_error('LimbException', $e));
 
     $this->mapper->expectNever('delete');
 
@@ -187,61 +278,48 @@ class UnitOfWorkTest extends LimbTestCase
   {
     $obj = new UOWTestObject();
     $obj->set('id', $id = 1);
-    $this->uow->register($obj);
+    $this->uow->registerExisting($obj);
 
     $this->uow->delete($obj);
+
+    $this->assertTrue($this->uow->isDeleted($obj));
+    $this->assertTrue($this->uow->isExisting($obj));
 
     $this->mapper->expectOnce('delete', array($obj));
 
     $this->uow->commit();
+
+    $this->assertFalse($this->uow->isDeleted($obj));
+    $this->assertFalse($this->uow->isExisting($obj));
 
     $this->uow->commit();//deleted only once
-  }
-
-  function testDeletePurgeFromCache()
-  {
-    $obj = new UOWTestObject();
-    $obj->set('id', $id = 1);
-
-    $this->uow->register($obj);
-    $this->uow->delete($obj);
-
-    $this->mapper->expectOnce('delete', array($obj));
-
-    $this->uow->commit();
-
-    $this->toolkit->setReturnReference('createObject', $null = null, array('UOWTestObject'));
-
-    $this->dao->expectOnce('fetchById', array($id));
-    $this->dao->setReturnValue('fetchById', null, array($id));
-
-    $this->assertNull($this->uow->load('UOWTestObject', $id));
   }
 
   function testEvictNewObject()
   {
     $obj = new UOWTestObject();
+    $this->toolkit->setReturnValue('nextUID', 101);
 
-    $this->uow->register($obj);
+    $this->uow->registerNew($obj);
+
+    $this->assertTrue($this->uow->isRegistered($obj));
 
     $this->uow->evict($obj);
 
-    $this->mapper->expectNever('save', array(new IdenticalExpectation($obj)));
-
-    $this->uow->commit();
+    $this->assertFalse($this->uow->isRegistered($obj));
   }
 
   function testEvictExistingObject()
   {
     $obj = new UOWTestObject();
     $obj->set('id', $id = 1);
-    $this->uow->register($obj);
+    $this->uow->registerExisting($obj);
+
+    $this->assertTrue($this->uow->isRegistered($obj));
 
     $this->uow->evict($obj);
 
-    $this->mapper->expectNever('save', array($obj));
-
-    $this->uow->commit();
+    $this->assertFalse($this->uow->isRegistered($obj));
   }
 
   function testEvictToBeDeletedObject()
@@ -249,58 +327,34 @@ class UnitOfWorkTest extends LimbTestCase
     $obj = new UOWTestObject();
     $obj->set('id', $id = 1);
 
-    $this->uow->register($obj);
-
-    $this->uow->delete($obj);
-
-    $this->uow->evict($obj);
-
-    $this->mapper->expectNever('delete', array($obj));
-
-    $this->uow->commit();
-  }
-
-  function testIsRegisteredForNewObject()
-  {
-    $obj1 = new UOWTestObject();
-    $obj2 = new UOWTestObject();
-
-    $this->uow->register($obj1);
-
-    $this->assertTrue($this->uow->isRegistered($obj1));
-    $this->assertFalse($this->uow->isRegistered($obj2));
-  }
-
-  function testIsDeleted()
-  {
-    $obj = new UOWTestObject();
-    $obj->set('id', $id = 1);
-
-    $this->uow->register($obj);
-
-    $this->assertFalse($this->uow->isDeleted($obj));
+    $this->uow->registerExisting($obj);
 
     $this->uow->delete($obj);
 
     $this->assertTrue($this->uow->isDeleted($obj));
+
+    $this->uow->evict($obj);
+
+    $this->assertFalse($this->uow->isDeleted($obj));
   }
 
-  function testReset()
+  function testDeletePurgeFromCache()
   {
-    $obj1 = new UOWTestObject();
-    $obj1->set('id', $id = 1);
+    $obj = new UOWTestObject();
+    $obj->set('id', $id = 1);
 
-    $obj2 = new UOWTestObject();
+    $this->uow->registerExisting($obj);
+    $this->uow->delete($obj);
 
-    $this->uow->register($obj1);
-    $this->uow->register($obj2);
+    $this->uow->commit();
 
-    $this->uow->reset();
+    $this->toolkit->setReturnReference('createObject', $null = null, array('UOWTestObject'));
 
-    $this->assertFalse($this->uow->isRegistered($obj1));
-    $this->assertFalse($this->uow->isRegistered($obj2));
+    //making sure dao gets called since cache is empty
+    $this->dao->expectOnce('fetchById', array($id));
+    $this->dao->setReturnValue('fetchById', null, array($id));
 
-    $this->assertFalse($this->uow->load('UOWTestObject', $id));
+    $this->assertNull($this->uow->load('UOWTestObject', $id));
   }
 }
 

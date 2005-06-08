@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/dao/DAO.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
-require_once(LIMB_DIR . '/core/orm/ProxyDomainObjectCollection.class.php');
+require_once(LIMB_DIR . '/core/orm/ProxyObjectCollection.class.php');
 require_once(WACT_ROOT . '/iterator/pagedarraydataset.inc.php');
 
 Mock :: generate('DAO');
@@ -34,9 +34,9 @@ class ProxyTestDataPager
 
 Mock::generate('ProxyTestDataPager', 'MockPager');
 
-class ProxyDomainObjectCollectionTest extends LimbTestCase
+class ProxyObjectCollectionTest extends LimbTestCase
 {
-  function ProxyDomainObjectCollectionTest()
+  function ProxyObjectCollectionTest()
   {
     parent :: LimbTestCase(__FILE__);
   }
@@ -46,7 +46,7 @@ class ProxyDomainObjectCollectionTest extends LimbTestCase
     $dao = new MockDAO($this);
     $mapper = new ProxyTestMapper($this);
 
-    $proxy = new ProxyDomainObjectCollection($dao, $mapper, new LimbHandle('Object'));
+    $proxy = new ProxyObjectCollection($dao, $mapper, new LimbHandle('Object'));
 
     $raw_array = array(array('id' => 1), array('id' => 2));
 
@@ -63,21 +63,20 @@ class ProxyDomainObjectCollectionTest extends LimbTestCase
     $mapper->expectArgumentsAt(1, 'load', array($ds2, new Object()));
 
     $proxy->rewind();
-
+    $this->assertTrue($proxy->valid());
     $expected1 = new Object();
     $expected1->set('id', 1);
 
     $this->assertEqual($proxy->current(), $expected1);
 
     $proxy->next();
-
+    $this->assertTrue($proxy->valid());
     $expected2 = new Object();
     $expected2->set('id', 2);
 
     $this->assertEqual($proxy->current(), $expected2);
 
     $proxy->next();
-
     $this->assertFalse($proxy->valid());
 
     $dao->tally();
@@ -89,7 +88,7 @@ class ProxyDomainObjectCollectionTest extends LimbTestCase
     $dao = new MockDAO($this);
     $mapper = new ProxyTestMapper($this);
 
-    $proxy = new ProxyDomainObjectCollection($dao, $mapper, new LimbHandle('Object'));
+    $proxy = new ProxyObjectCollection($dao, $mapper, new LimbHandle('Object'));
 
     $raw_array = array(array('id' => 1));
 

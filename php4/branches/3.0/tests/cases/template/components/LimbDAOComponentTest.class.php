@@ -131,7 +131,10 @@ class LimbDAOComponentTest extends LimbTestCase
     $component->setReturnReference('getDataset', $dataset);
 
     $component->setTargets('target1, target2');
+
+    die_on_error(false);
     $component->process();
+    die_on_error();
     $this->assertTrue(catch_error('LimbException', $e));
 
     $component->tally();

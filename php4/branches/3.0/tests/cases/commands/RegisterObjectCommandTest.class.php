@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: CreateSimpleObjectCommandTest.class.php 1165 2005-03-16 14:28:14Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/commands/RegisterObjectCommand.class.php');
@@ -31,7 +31,7 @@ class RegisterObjectCommandTest extends LimbTestCase
 
     $uow =& $toolkit->getUOW();
 
-    $this->assertTrue($uow->isRegistered($object));
+    $this->assertTrue($uow->isNew($object));
   }
 }
 

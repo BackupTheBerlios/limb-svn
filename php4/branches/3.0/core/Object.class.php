@@ -10,6 +10,8 @@
 ***********************************************************************************/
 class Object
 {
+  var $__class_name = 'Object';
+
   var $dataspace;
 
   function Object()

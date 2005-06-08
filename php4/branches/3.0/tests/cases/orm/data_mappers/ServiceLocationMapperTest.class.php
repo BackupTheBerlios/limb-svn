@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: ServiceLocationMapperTest.class.php 1181 2005-03-21 10:46:55Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/ServiceLocationMapper.class.php');
@@ -63,7 +63,9 @@ class ServiceLocationMapperTest extends LimbTestCase
 
     $mapper = new ServiceLocationMapper();
 
+    die_on_error(false);
     $mapper->insert($object);
+    die_on_error();
     $this->assertTrue(catch_error('LimbException', $e));
     $this->assertEqual($e->getMessage(), 'oid is not set');
   }

@@ -31,17 +31,16 @@ class ObjectMapper extends AbstractDataMapper
 
     $toolkit =& Limb :: toolkit();
     $db_table = $toolkit->createDBTable('SysObject');
-    $id = $toolkit->nextUID();
 
+    $raw_data = array();
+    $raw_data['oid'] = $object->get('oid');
     $raw_data['class_id'] = $class_id;
-    $raw_data['oid'] = $id;
     $db_table->insert($raw_data);
 
     if(catch_error('LimbException', $e))
       return throw_error($e);
 
     $object->set('class_id', $class_id);
-    $object->set('oid', $id);
   }
 
   function getClassId($object)

@@ -16,7 +16,7 @@ class DebugMock extends Debug
   var $test = null;
   var $mock = null;
 
-  function init(&$test, $wildcard = MOCK_WILDCARD)
+  function init(&$test, $wildcard = MOCK_ANYTHING)
   {
     $debug =& DebugMock :: instance();
 

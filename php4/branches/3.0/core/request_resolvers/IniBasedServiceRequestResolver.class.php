@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: Service.class.php 1191 2005-03-25 14:04:13Z seregalimb $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/services/Service.class.php');
@@ -19,8 +19,8 @@ class IniBasedServiceRequestResolver
     $path = $uri->getPath();
 
     $ini =& $toolkit->getIni('services.ini');
-    if (catch_error('LimbException', $e) || !is_object($ini))
-      return new Service('404');
+    if (!is_object($ini))
+      return null;
 
     $groups = $ini->getAll();
 

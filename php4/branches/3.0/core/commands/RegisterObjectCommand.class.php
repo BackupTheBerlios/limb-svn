@@ -5,7 +5,7 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: CreateSimpleObjectCommand.class.php 1165 2005-03-16 14:28:14Z pachanga $
+* $Id$
 *
 ***********************************************************************************/
 
@@ -23,7 +23,7 @@ class RegisterObjectCommand
     $toolkit =& Limb :: toolkit();
     $uow =& $toolkit->getUOW();
 
-    $uow->register($this->object);
+    $uow->registerNew($this->object);
 
     return LIMB_STATUS_OK;
   }

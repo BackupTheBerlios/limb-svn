@@ -8,17 +8,6 @@
 * $Id$
 *
 ***********************************************************************************/
-//register_shutdown_function('writeUnhandledExceptions');
-
-function writeUnhandledExceptions()
-{
-  if(!isset($GLOBALS['global_exception']))
-    return;
-
-  include_once(LIMB_DIR . '/core/error/Debug.class.php');
-
-  Debug :: writeException($GLOBALS['global_exception']);
-}
 
 class LimbException
 {
@@ -179,42 +168,38 @@ class LimbException
   }
 }
 
+$GLOBALS['DIE_ON_ERROR'] = true;
+
+function die_on_error($status = true)
+{
+  $GLOBALS['DIE_ON_ERROR'] = $status;
+}
+
 //idea taken from binarycloud
 function throw_error(&$exception)
 {
-  $use_html = php_sapi_name() != 'cli';
+  $GLOBALS['GLOBAL_ERROR'] =& $exception;
 
-  if(!isErrorHandlerInstalled('simpleTestErrorHandler'))
-    trigger_error($exception->toString(), E_USER_NOTICE);
-
-  if (isset($GLOBALS['global_exception']))
+  if(isset($GLOBALS['DIE_ON_ERROR']) && $GLOBALS['DIE_ON_ERROR'])
   {
-    if ($GLOBALS['global_exception'] !== null)
-    {
-      // take drastic actions, will be handled better in php5
-      printf('Trying to throw an Exception (%s) though last exception (%s) was not caught',
-             $exception->toString(),
-             $GLOBALS['global_exception']->toString());
-
-      print $GLOBALS['global_exception']->getBacktrace($use_html);
-      die();//???
-    }
+    trigger_error($exception->toString(), E_USER_WARNING);
+    printf("Trying to throw an Exception:\n%s", $exception->toString());
+    print($GLOBALS['GLOBAL_ERROR']->getBacktrace($use_html = true));
+    die();
   }
-
-  $GLOBALS['global_exception'] =& $exception;
 }
 
 function catch_error($type, &$result)
 {
-  if (!isset($GLOBALS['global_exception']) || $GLOBALS['global_exception'] === null)
+  if (!isset($GLOBALS['GLOBAL_ERROR']) || $GLOBALS['GLOBAL_ERROR'] === null)
     return false;
 
-  if (!is_a($GLOBALS['global_exception'], $type))
+  if (!is_a($GLOBALS['GLOBAL_ERROR'], $type))
     return false;
   else
-    $result = $GLOBALS['global_exception'];
+    $result = $GLOBALS['GLOBAL_ERROR'];
 
-  $GLOBALS['global_exception'] = null;
+  $GLOBALS['GLOBAL_ERROR'] = null;
   return true;
 }
 

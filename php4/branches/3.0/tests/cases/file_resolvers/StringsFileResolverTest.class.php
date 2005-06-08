@@ -31,6 +31,7 @@ class StringsFileResolverTest extends BasePackageFileResolverTest
 
   function testResolveStringsFileFailed()
   {
+    die_on_error(false);
     $this->resolver->resolve('no_such_strings_file', array('fr'));
     $this->assertTrue(catch_error('LimbException', $e));
 
@@ -38,7 +39,7 @@ class StringsFileResolverTest extends BasePackageFileResolverTest
       array(
         'file_path' => 'i18n/no_such_strings_file_fr.ini',
       ));
-
+    die_on_error();
   }
 
 }

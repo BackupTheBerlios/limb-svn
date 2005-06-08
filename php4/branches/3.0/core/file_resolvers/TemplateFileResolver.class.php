@@ -28,6 +28,7 @@ class TemplateFileResolver extends FileResolverDecorator
     if(file_exists($tmpl_path . $file_path))
       return $tmpl_path . $file_path;
 
+    die_on_error(false);
     $res = $this->_resolver->resolve('design/' . $locale . $file_path, $params);
 
     if(catch_error('LimbException', $e))
@@ -43,6 +44,8 @@ class TemplateFileResolver extends FileResolverDecorator
 
       throw_error($e);
     }
+
+    die_on_error();
 
     return $res;
   }

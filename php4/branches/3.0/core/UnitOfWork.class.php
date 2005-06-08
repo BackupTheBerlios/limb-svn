@@ -15,9 +15,11 @@ class UnitOfWork
   var $existing;
   var $new;
   var $deleted;
+  var $toolkit;
 
   function UnitOfWork()
   {
+    $this->toolkit =& Limb :: toolkit();
     $this->reset();
   }
 
@@ -30,111 +32,79 @@ class UnitOfWork
     $this->_purgeAllFromCache();
   }
 
-  function & _getDAO($class)
+  function registerExisting(&$obj)
   {
-    $toolkit =& Limb :: toolkit();
-    return $toolkit->createDAO($class . 'DAO');
-  }
-
-  function & _getDataMapper($class)
-  {
-    $toolkit =& Limb :: toolkit();
-    return $toolkit->createDataMapper($class . 'Mapper');
-  }
-
-  function & _getObject($class)
-  {
-    $toolkit =& Limb :: toolkit();
-    return $toolkit->createObject($class);
-  }
-
-  function & _getCache()
-  {
-    $toolkit =& Limb :: toolkit();
-    return $toolkit->getCache();
-  }
-
-  function register(&$obj)
-  {
-    if($id = $this->_getId($obj))
+    if($id = $this->_getObjectId($obj))
     {
       $this->_putToCache($id, $obj);
       $this->existing[$id] = $this->_getHash($obj);
     }
     else
     {
-      $this->new[] =& $obj;
+      return throw_error(new LimbException("Can't register object in UnitOfWork as existing because there is no id field!",
+                                    array('class' => get_class($obj))));
     }
   }
 
-  function _findDeletedObjectIndex(&$obj)
+  function registerNew(&$obj)
   {
-    foreach(array_keys($this->deleted) as $key)
-    {
-      if($this->_isReference($this->deleted[$key], $obj))
-        return $key;
-    }
-    return false;
-  }
-
-  function _findNewObjectIndex(&$obj)
-  {
-    foreach(array_keys($this->new) as $key)
-    {
-      if($this->_isReference($this->new[$key], $obj))
-        return $key;
-    }
-    return false;
-  }
-
-  //idea taken from SimpleTest :)
-  function _isReference(&$first, &$second)
-  {
-    if (version_compare(phpversion(), '5', '>=') && is_object($first))
-      return ($first === $second);
-
-    $temp = $first;
-    $first = uniqid('test');
-    $is_ref = ($first === $second);
-    $first = $temp;
-    return $is_ref;
+    $this->_setObjectId($obj, $this->toolkit->nextUID());
+    $id = $this->_getObjectId($obj);
+    $this->_putToCache($id, $obj);
+    $this->new[$id] =& $obj;
   }
 
   function isRegistered(&$obj)
   {
-    if($id = $this->_getId($obj))
+    return ($this->isExisting($obj) || $this->isNew($obj));
+  }
+
+  function isExisting(&$obj)
+  {
+    if($id = $this->_getObjectId($obj))
     {
       return isset($this->existing[$id]);
     }
-    else
-    {
-      return $this->_findNewObjectIndex($obj) !== false;
-    }
+  }
 
-    return false;
+  function isNew(&$obj)
+  {
+    if($id = $this->_getObjectId($obj))
+    {
+      return isset($this->new[$id]);
+    }
   }
 
   function isDeleted(&$obj)
   {
-    return $this->_findDeletedObjectIndex($obj) !== false;
+    if($id = $this->_getObjectId($obj))
+    {
+      return isset($this->deleted[$id]);
+    }
+  }
+
+  function isDirty(&$obj)
+  {
+    if(!$this->isExisting($obj))
+      return false;
+
+    return $this->_isExistingObjectDirty($obj);
   }
 
   function evict(&$obj)
   {
-    if($id = $this->_getId($obj))
+    if($id = $this->_getObjectId($obj))
     {
       $this->_purgeFromCache($id);
 
       if(isset($this->existing[$id]))
         unset($this->existing[$id]);
 
-      if(($key = $this->_findDeletedObjectIndex($obj)) !== false)
-        unset($this->deleted[$key]);
-    }
-    else
-    {
-      if(($key = $this->_findNewObjectIndex($obj)) !== false)
-        unset($this->new[$key]);
+      if(isset($this->new[$id]))
+        unset($this->new[$id]);
+
+      if(isset($this->deleted[$id]))
+        unset($this->deleted[$id]);
     }
   }
 
@@ -162,15 +132,16 @@ class UnitOfWork
     $cache->flushGroup(UOW_CACHE_GROUP);
   }
 
-  function _getId(&$obj)
+  function _getObjectId(&$obj)
   {
     $mapper =& $this->_getDataMapper($obj->__class_name);
     return $obj->get($mapper->getIdentityKeyName());
   }
 
-  function _hasId(&$obj)
+  function _setObjectId(&$obj, $id)
   {
-    return $this->_getId($obj) !== null;
+    $mapper =& $this->_getDataMapper($obj->__class_name);
+    return $obj->set($mapper->getIdentityKeyName(), $id);
   }
 
   function & load($class, $id)
@@ -181,7 +152,10 @@ class UnitOfWork
     $dao =& $this->_getDAO($class);
 
     if(!is_object($dao))
-      die('Can\'t create dao for "'. $class. '" class: '. __FILE__. ' at line '. __LINE__);
+    {
+      return throw_error(new LimbException("Cant create DAO",
+                                           array('class' => $class)));
+    }
 
     $obj =& $this->_getObject($class);
 
@@ -191,24 +165,28 @@ class UnitOfWork
     $mapper =& $this->_getDataMapper($class);
     $mapper->load($record, $obj);
 
-    $this->register($obj);
+    $this->registerExisting($obj);
 
     return $obj;
   }
 
   function delete(&$obj)
   {
-    $this->deleted[] = &$obj;
-  }
+    if($id = $this->_getObjectId($obj))
+    {
+      if(isset($this->new[$id]))
+      {
+        unset($this->new[$id]);
+        return;
+      }
+      $this->deleted[$id] =& $obj;
 
-  function start()
-  {
-    $this->existing = array();
-    $this->new = array();
-    $this->deleted = array();
-
-    $cache =& $this->_getCache();
-    $cache->flushGroup(UOW_CACHE_GROUP);
+    }
+    else
+    {
+      return throw_error(new LimbException("Can't delete object in UnitOfWork as existing because there is no id field!",
+                                    array('class' => get_class($obj))));
+    }
   }
 
   function commit()
@@ -223,11 +201,11 @@ class UnitOfWork
     foreach(array_keys($this->existing) as $id)
     {
       $obj =& $this->_getFromCache($id);
-      if($this->_isDirty($id, $obj))
+      if($this->_isExistingObjectDirty($obj))
       {
         $mapper =& $this->_getDataMapper($obj->__class_name);
         $mapper->save($obj);
-        $this->register($obj);
+        $this->registerExisting($obj);
       }
     }
   }
@@ -239,7 +217,7 @@ class UnitOfWork
       $obj =& $this->new[$key];
       $mapper =& $this->_getDataMapper($obj->__class_name);
       $mapper->save($obj);
-      $this->register($obj);
+      $this->registerExisting($obj);
     }
 
     $this->new = array();
@@ -247,27 +225,43 @@ class UnitOfWork
 
   function _commitDeleted()
   {
-    foreach(array_keys($this->deleted) as $key)
+    foreach(array_keys($this->deleted) as $id)
     {
-      $obj =& $this->deleted[$key];
-
-      if($id = $this->_getId($obj))
-      {
-        $mapper =& $this->_getDataMapper($obj->__class_name);
-        $mapper->delete($obj);
-        $this->evict($obj);
-      }
+      $obj =& $this->deleted[$id];
+      $mapper =& $this->_getDataMapper($obj->__class_name);
+      $mapper->delete($obj);
+      $this->evict($obj);
     }
   }
 
-  function _isDirty($id, $obj)
+  function _isExistingObjectDirty(&$obj)
   {
-    return $this->_getHash($obj) != $this->existing[$id];
+    return $this->_getHash($obj) != $this->existing[$this->_getObjectId($obj)];
   }
 
   function _getHash($obj)
   {
     return md5(serialize($obj));
+  }
+
+  function & _getDAO($class)
+  {
+    return $this->toolkit->createDAO($class . 'DAO');
+  }
+
+  function & _getDataMapper($class)
+  {
+    return $this->toolkit->createDataMapper($class . 'Mapper');
+  }
+
+  function & _getObject($class)
+  {
+    return $this->toolkit->createObject($class);
+  }
+
+  function & _getCache()
+  {
+    return $this->toolkit->getCache();
   }
 }
 

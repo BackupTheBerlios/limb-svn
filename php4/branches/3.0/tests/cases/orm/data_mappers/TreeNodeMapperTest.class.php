@@ -96,9 +96,11 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $generator->expectOnce('generate', array($object));
     $generator->setReturnValue('generate', false, array($object));
 
+    die_on_error(false);
     $mapper->insert($object);
     $this->assertTrue(catch_error('LimbException', $e));
     $this->assertEqual($e->getMessage(), 'failed to generate identifier');
+    die_on_error();
 
     $generator->tally();
   }
@@ -117,8 +119,11 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $this->tree->expectOnce('canAddNode', array($parent_node_id));
     $this->tree->setReturnValue('canAddNode', false);
 
+    die_on_error(false);
     $mapper->insert($object);
+    die_on_error();
     $this->assertTrue(catch_error('LimbException', $e));
+
     $this->assertEqual($e->getMessage(), 'tree registering failed');
     $this->assertEqual($e->getAdditionalParams(), array('parent_id' => 10));
   }
@@ -144,7 +149,9 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $this->tree->expectOnce('createSubNode', $expected);
     $this->tree->setReturnValue('createSubNode', false, $expected);
 
+    die_on_error(false);
     $mapper->insert($object);
+    die_on_error();
     $this->assertTrue(catch_error('LimbException', $e));
     $this->assertEqual($e->getMessage(), 'could not create tree node');
 
@@ -209,7 +216,10 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
     $object = new Object();
 
+    die_on_error(false);
     $mapper->update($object);
+    die_on_error();
+
     $this->assertTrue(catch_error('LimbException', $e));
     $this->assertEqual($e->getMessage(), 'node id not set');
   }
@@ -221,7 +231,9 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $object = new Object();
     $object->set('id', 10);
 
+    die_on_error(false);
     $mapper->update($object);
+    die_on_error();
     $this->assertTrue(catch_error('LimbException', $e));
     $this->assertEqual($e->getMessage(), 'parent node id not set');
   }
@@ -279,7 +291,9 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $this->tree->expectOnce('moveTree');
     $this->tree->setReturnValue('moveTree', false, array($node_id, $parent_node_id));
 
+    die_on_error(false);
     $mapper->update($object);
+    die_on_error();
     $this->assertTrue(catch_error('LimbException', $e));
     $this->assertEqual($e->getMessage(), 'could not move node');
   }
@@ -302,7 +316,9 @@ class TreeNodeDataMapperTest extends LimbTestCase
 
     $this->tree->expectNever('moveTree');
     $this->tree->expectNever('updateNode');
+    die_on_error(false);
     $mapper->update($object);
+    die_on_error();
     $this->assertTrue(catch_error('LimbException', $e));
     $this->assertEqual($e->getMessage(), 'new parent cant accept children');
   }
@@ -334,7 +350,9 @@ class TreeNodeDataMapperTest extends LimbTestCase
     $mapper = new TreeNodeDataMapper();
     $object = new Object();
 
+    die_on_error(false);
     $mapper->delete($object);
+    die_on_error();
     $this->assertTrue(catch_error('LimbException', $e));
     $this->assertEqual($e->getMessage(), 'node id not set');
   }

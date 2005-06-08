@@ -8,26 +8,24 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(WACT_ROOT . '/iterator/iterator.inc.php');
+require_once(LIMB_DIR . '/core/orm/ObjectCollection.class.php');
 
-class ProxyDomainObjectCollection extends IteratorDecorator
+class ProxyObjectCollection extends ObjectCollection
 {
   var $dao;
   var $mapper;
   var $class_handle;
-  var $cached_array;
 
-  function ProxyDomainObjectCollection(&$dao, &$mapper, $class_handle)
+  function ProxyObjectCollection(&$dao, &$mapper, $class_handle)
   {
     $this->dao = &$dao;
     $this->mapper = &$mapper;
     $this->class_handle = $class_handle;
-    $this->cached_array = array();
   }
 
-  function _ensureCachedArray()
+  function _ensureCollection()
   {
-    if(!$this->cached_array)
+    if(!$this->collection)
     {
       $iterator =& $this->dao->fetch();
       for($iterator->rewind();$iterator->valid();$iterator->next())
@@ -36,28 +34,22 @@ class ProxyDomainObjectCollection extends IteratorDecorator
         $record =& $iterator->current();
         $this->mapper->load($record, $object);
 
-        $this->cached_array[] = $object;
+        $this->collection[] =& $object;
       }
     }
   }
 
-  function & current()
-  {
-    $record =& parent :: current();
-    return $record->export();
-  }
 
   function rewind()
   {
-    $this->_ensureCachedArray();
-    $this->iterator = new ArrayDataSet($this->cached_array);
+    $this->_ensureCollection();
     parent :: rewind();
   }
 
   function add(&$obj)
   {
-    $this->_ensureCachedArray();
-    $this->cached_array[] =& $obj;
+    $this->_ensureCollection();
+    parent :: add($obj);
   }
 }
 

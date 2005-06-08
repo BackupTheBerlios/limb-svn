@@ -73,11 +73,6 @@ class OneTableObjectMapper extends AbstractDataMapper
     $toolkit =& Limb :: toolkit();
     $table =& $this->getDbTable();
 
-    $id = $toolkit->nextUID();
-    $raw_data[$table->getPrimaryKeyName()] = $id;
-
-    $object->set($table->getPrimaryKeyName(), $id);
-
     return $table->insert($raw_data);
   }
 

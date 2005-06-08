@@ -147,13 +147,12 @@ class OneTableObjectMapperTest extends LimbTestCase
     $mapper = new OneTableObjectMapper('OneTableObjectMapperTest');
     $object = new OneTableObjectMapperTestNewsObject();
 
+    $object->set('id', 1);
     $object->setAnnotation('news annotation');
     $object->setContent('news content');
     $object->setNewsDate('2004-01-02 00:00:00');
 
     $mapper->insert($object);
-
-    $this->assertEqual($object->get('id'), 1);
 
     $this->_checkLinkedTableRecord($object, $mapper->getDbTable());
   }

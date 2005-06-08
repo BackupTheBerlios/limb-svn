@@ -28,9 +28,11 @@ class IniBasedServiceRequestResolverTest extends LimbTestCase
     $request = $toolkit->getRequest();
     $resolver = new IniBasedServiceRequestResolver();
 
+    die_on_error(false);
     $service = $resolver->resolve($request);
+    die_on_error();
 
-    $this->assertEqual($service->getName(), '404');
+    $this->assertTrue(catch_error('LimbException', $e));
   }
 
   function testGetRequestedService404NotMatches()
