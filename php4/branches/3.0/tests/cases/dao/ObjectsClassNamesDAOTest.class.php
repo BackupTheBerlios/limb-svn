@@ -5,11 +5,11 @@
 * Released under the LGPL license (http://www.gnu.org/copyleft/lesser.html)
 ***********************************************************************************
 *
-* $Id: TreeBranchCriteriaTest.class.php 1173 2005-03-17 11:36:43Z seregalimb $
+* $Id$
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/UnitOfWork.class.php');
+require_once(LIMB_DIR . '/core/orm/UnitOfWork.class.php');
 require_once(LIMB_DIR . '/core/request/Request.class.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 require_once(LIMB_DIR . '/core/dao/ObjectsClassNamesDAO.class.php');

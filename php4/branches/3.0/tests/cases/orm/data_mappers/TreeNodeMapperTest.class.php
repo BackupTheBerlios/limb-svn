@@ -9,10 +9,10 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/data_mappers/TreeNodeDataMapper.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/TreeNodeDataMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/core/data_mappers/ObjectIdentifierGenerator.interface.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/ObjectIdentifierGenerator.interface.php');
 
 Mock :: generate('Tree');
 Mock :: generatePartial('LimbBaseToolkit',

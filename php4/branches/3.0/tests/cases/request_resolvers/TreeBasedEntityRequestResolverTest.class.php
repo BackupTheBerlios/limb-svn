@@ -12,7 +12,7 @@ require_once(LIMB_DIR . '/core/request_resolvers/TreeBasedEntityRequestResolver.
 require_once(LIMB_DIR . '/core/tree/Path2IdTranslator.class.php');
 require_once(LIMB_DIR . '/core/db/SimpleDb.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
-require_once(LIMB_DIR . '/core/UnitOfWork.class.php');
+require_once(LIMB_DIR . '/core/orm/UnitOfWork.class.php');
 
 Mock :: generatePartial('LimbBaseToolkit',
                         'ToolkitTreeBasedEntityRequestResolverTestVersion',

@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/data_mappers/ServiceLocationMapper.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/ServiceLocationMapper.class.php');
 require_once(LIMB_DIR . '/core/ServiceLocation.class.php');
 
 class ServiceLocationMapperTest extends LimbTestCase

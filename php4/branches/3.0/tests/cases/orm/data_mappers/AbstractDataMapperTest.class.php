@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/AbstractDataMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
-require_once(LIMB_DIR . '/core/UnitOfWork.class.php');
+require_once(LIMB_DIR . '/core/orm/UnitOfWork.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(WACT_ROOT . '/iterator/arraydataset.inc.php');
 

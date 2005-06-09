@@ -9,7 +9,7 @@
 *
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
-require_once(LIMB_DIR . '/core/data_mappers/EntityDataMapper.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/EntityDataMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(LIMB_DIR . '/core/entity/Entity.class.php');
 

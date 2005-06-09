@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/DomainObject.class.php');
+require_once(LIMB_DIR . '/core/orm/DomainObject.class.php');
 require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
 
 class DomainObjectTest extends LimbTestCase

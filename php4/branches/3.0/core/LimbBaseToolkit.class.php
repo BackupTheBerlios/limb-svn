@@ -64,7 +64,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function nextUID()
   {
-    include_once(LIMB_DIR . '/core/UIDGenerator.class.php');
+    include_once(LIMB_DIR . '/core/orm/UIDGenerator.class.php');
     return UIDGenerator :: next();
   }
 
@@ -88,7 +88,7 @@ class LimbBaseToolkit// implements LimbToolkit
 
   function & createDataMapper($mapper_path)
   {
-    include_once(LIMB_DIR . '/core/data_mappers/DataMapperFactory.class.php');
+    include_once(LIMB_DIR . '/core/orm/data_mappers/DataMapperFactory.class.php');
     return DataMapperFactory :: create($mapper_path);
   }
 
@@ -190,7 +190,7 @@ class LimbBaseToolkit// implements LimbToolkit
     if(is_object($this->uow))
       return $this->uow;
 
-    include_once(LIMB_DIR . '/core/UnitOfWork.class.php');
+    include_once(LIMB_DIR . '/core/orm/UnitOfWork.class.php');
 
     $this->uow = new UnitOfWork();
 

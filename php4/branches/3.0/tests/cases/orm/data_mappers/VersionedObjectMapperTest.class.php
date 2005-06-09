@@ -10,8 +10,8 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 require_once(LIMB_DIR . '/core/permissions/User.class.php');
-require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
-require_once(LIMB_DIR . '/core/data_mappers/VersionedObjectMapper.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/AbstractDataMapper.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/VersionedObjectMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 
 Mock :: generate('AbstractDataMapper');

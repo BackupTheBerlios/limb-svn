@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/data_mappers/NodeConnectionMapper.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/NodeConnectionMapper.class.php');
 require_once(LIMB_DIR . '/core/NodeConnection.class.php');
 
 class NodeConnectionMapperTest extends LimbTestCase

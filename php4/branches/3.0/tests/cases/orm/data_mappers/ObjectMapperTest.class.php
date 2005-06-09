@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/data_mappers/ObjectMapper.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/ObjectMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 
 class ObjectMapperTest extends LimbTestCase

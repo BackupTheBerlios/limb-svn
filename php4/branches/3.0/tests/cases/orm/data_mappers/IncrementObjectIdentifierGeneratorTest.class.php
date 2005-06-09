@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(LIMB_DIR . '/core/tree/Tree.interface.php');
-require_once(LIMB_DIR . '/core/data_mappers/IncrementObjectIdentifierGenerator.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/IncrementObjectIdentifierGenerator.class.php');
 require_once(LIMB_DIR . '/core/LimbBaseToolkit.class.php');
 
 Mock :: generate('LimbBaseToolkit', 'MockLimbToolkit');

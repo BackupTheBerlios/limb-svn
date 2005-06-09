@@ -8,7 +8,7 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/data_mappers/OneTableObjectMapper.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/OneTableObjectMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 require_once(dirname(__FILE__) . '/OneTableObjectMapperTestDbTable.class.php');
 

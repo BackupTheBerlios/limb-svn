@@ -10,7 +10,7 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/filters/FilterChain.class.php');
 require_once(LIMB_DIR . '/core/filters/UOWFilter.class.php');
-require_once(LIMB_DIR . '/core/UnitOfWork.class.php');
+require_once(LIMB_DIR . '/core/orm/UnitOfWork.class.php');
 
 Mock :: generate('FilterChain');
 Mock :: generate('UnitOfWork');

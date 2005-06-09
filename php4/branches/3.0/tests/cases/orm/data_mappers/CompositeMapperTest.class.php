@@ -8,8 +8,8 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
-require_once(LIMB_DIR . '/core/data_mappers/CompositeMapper.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/AbstractDataMapper.class.php');
+require_once(LIMB_DIR . '/core/orm/data_mappers/CompositeMapper.class.php');
 require_once(LIMB_DIR . '/core/Object.class.php');
 
 Mock :: generate('AbstractDataMapper');

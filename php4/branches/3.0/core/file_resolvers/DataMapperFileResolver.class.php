@@ -14,8 +14,8 @@ class DataMapperFileResolver extends FileResolverDecorator
 {
   function resolve($class_path, $params = array())
   {
-    if(file_exists(LIMB_DIR . '/core/data_mappers/' . $class_path . '.class.php'))
-      return LIMB_DIR . '/core/data_mappers/' . $class_path . '.class.php';
+    if(file_exists(LIMB_DIR . '/core/orm/data_mappers/' . $class_path . '.class.php'))
+      return LIMB_DIR . '/core/orm/data_mappers/' . $class_path . '.class.php';
 
     return $this->_resolver->resolve('data_mappers/' . $class_path . '.class.php', $params);
   }
