@@ -8,25 +8,17 @@
 * $Id$
 *
 ***********************************************************************************/
-require_once(LIMB_DIR . '/core/orm/DomainObject.class.php');
-require_once(WACT_ROOT . '/datasource/dataspace.inc.php');
+require_once(LIMB_DIR . '/core/Object.class.php');
 
-class DomainObjectTest extends LimbTestCase
+class PersistentObject extends Object
 {
-  var $object;
-
-  function DomainObjectTest()
+  function PersistentObject()
   {
-    parent :: LimbTestCase(__FILE__);
-  }
+    parent :: Object();
 
-  function setUp()
-  {
-    $this->object = new DomainObject();
-  }
-
-  function tearDown()
-  {
+    $toolkit =& Limb :: toolkit();
+    $uow =& $toolkit->getUOW();
+    $uow->registerNew($this);
   }
 }
 

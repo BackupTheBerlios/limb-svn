@@ -8,9 +8,9 @@
 * $Id$
 *
 ***********************************************************************************/
-class DomainObjectsGroup extends LimbGroupTest
+class PersistentObjectsGroup extends LimbGroupTest
 {
-  function DomainObjectsGroup()
+  function PersistentObjectsGroup()
   {
     parent :: LimbGroupTest(__FILE__);
   }
