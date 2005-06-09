@@ -22,7 +22,7 @@ class ObjectFactory
   function create($class_name, $args = array())
   {
     ObjectFactory :: _includeClassFile($class_name);
-    $handle = new Handle($class_name, $args);
+    $handle =& new Handle($class_name, $args);
 
     return Handle :: resolve($handle);
   }

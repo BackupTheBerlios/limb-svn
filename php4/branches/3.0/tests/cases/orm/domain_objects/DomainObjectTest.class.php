@@ -28,62 +28,6 @@ class DomainObjectTest extends LimbTestCase
   function tearDown()
   {
   }
-
-  function testGetId()
-  {
-    $this->object->setId(10);
-    $this->assertEqual($this->object->getId(), 10);
-  }
-
-  function testIsDirtyFalse()
-  {
-    $this->assertFalse($this->object->isDirty());
-  }
-
-  function testObjectBecomesCleanAfterImport()
-  {
-    $this->assertFalse($this->object->isDirty());
-
-    $this->object->set('test', 'value');
-
-    $this->assertTrue($this->object->isDirty());
-
-    $values = array('test');
-
-    $this->object->import($values);
-
-    $this->assertFalse($this->object->isDirty());
-  }
-
-  function testObjectBecomesDirtyAfterSet()
-  {
-    $this->assertFalse($this->object->isDirty());
-
-    $this->object->set('test', 'value');
-
-    $this->assertTrue($this->object->isDirty());
-  }
-
-  function testMarkClean()
-  {
-    $this->object->set('test', 'value');
-    $this->object->markClean();
-
-    $this->assertFalse($this->object->isDirty());
-  }
-
-  function testObjectBecomesDirtyAfterReferenceGotChanged1()
-  {
-    $this->object->import(array('test' => new Object()));
-
-    $obj = $this->object->get('test');
-
-    $this->assertFalse($this->object->isDirty());
-
-    $obj->set('whatever', 1);
-
-    $this->assertTrue($this->object->isDirty());
-  }
 }
 
 ?>

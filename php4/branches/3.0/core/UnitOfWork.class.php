@@ -38,6 +38,8 @@ class UnitOfWork
     {
       $this->_putToCache($id, $obj);
       $this->existing[$id] = $this->_getHash($obj);
+      if(isset($this->new[$id]))
+        unset($this->new[$id]);
     }
     else
     {

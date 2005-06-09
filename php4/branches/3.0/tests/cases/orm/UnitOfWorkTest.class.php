@@ -104,6 +104,28 @@ class UnitOfWorkTest extends LimbTestCase
     $this->assertTrue($this->uow->isExisting($obj));
   }
 
+  function testRegisterNewObjectAsExisting()
+  {
+    $obj = new UOWTestObject();
+
+    $this->toolkit->expectOnce('nextUID');
+    $this->toolkit->setReturnValue('nextUID', $new_id = 10);
+
+    $this->uow->registerNew($obj);
+
+    $this->assertEqual($obj->get('id'), $new_id);
+
+    $this->assertTrue($this->uow->isRegistered($obj));
+    $this->assertTrue($this->uow->isNew($obj));
+    $this->assertFalse($this->uow->isExisting($obj));
+
+    $this->uow->registerExisting($obj);
+
+    $this->assertTrue($this->uow->isRegistered($obj));
+    $this->assertFalse($this->uow->isNew($obj));
+    $this->assertTrue($this->uow->isExisting($obj));
+  }
+
   function testIsDirty()
   {
     $obj = new UOWTestObject();

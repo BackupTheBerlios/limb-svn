@@ -10,10 +10,10 @@
 ***********************************************************************************/
 require_once(LIMB_DIR . '/core/data_mappers/AbstractDataMapper.class.php');
 require_once(LIMB_DIR . '/core/data_mappers/CompositeMapper.class.php');
-require_once(LIMB_DIR . '/core/DomainObject.class.php');
+require_once(LIMB_DIR . '/core/Object.class.php');
 
 Mock :: generate('AbstractDataMapper');
-Mock :: generate('DomainObject');
+Mock :: generate('Object');
 
 class AbstractDataMapperForCompositeTestVersion extends MockAbstractDataMapper
 {
@@ -59,12 +59,11 @@ class CompositeMapperTest extends LimbTestCase
 
   function setUp()
   {
-    $this->object = new MockDomainObject($this);
+    $this->object = new Object();
   }
 
   function tearDown()
   {
-    $this->object->tally();
   }
 
   function testLoad()
@@ -82,8 +81,8 @@ class CompositeMapperTest extends LimbTestCase
     $mapper->registerMapper($m1);
     $mapper->registerMapper($m2);
 
-    $m1->expectOnce('load', array($record, new IsAExpectation('MockDomainObject')));
-    $m2->expectOnce('load', array($record, new IsAExpectation('MockDomainObject')));
+    $m1->expectOnce('load', array($record,  $this->object));
+    $m2->expectOnce('load', array($record,  $this->object));
 
     $mapper->load($record, $this->object);
 
@@ -93,7 +92,6 @@ class CompositeMapperTest extends LimbTestCase
     $m1->tally();
     $m2->tally();
   }
-
 
   function testUpdate()
   {
@@ -108,8 +106,8 @@ class CompositeMapperTest extends LimbTestCase
     $mapper->registerMapper($m1);
     $mapper->registerMapper($m2);
 
-    $m1->expectOnce('update', array(new IsAExpectation('MockDomainObject')));
-    $m2->expectOnce('update', array(new IsAExpectation('MockDomainObject')));
+    $m1->expectOnce('update', array($this->object));
+    $m2->expectOnce('update', array($this->object));
 
     $mapper->update($this->object);
 
@@ -133,8 +131,8 @@ class CompositeMapperTest extends LimbTestCase
     $mapper->registerMapper($m1);
     $mapper->registerMapper($m2);
 
-    $m1->expectOnce('insert', array(new IsAExpectation('MockDomainObject')));
-    $m2->expectOnce('insert', array(new IsAExpectation('MockDomainObject')));
+    $m1->expectOnce('insert', array($this->object));
+    $m2->expectOnce('insert', array($this->object));
 
     $mapper->insert($this->object);
 
@@ -158,8 +156,8 @@ class CompositeMapperTest extends LimbTestCase
     $mapper->registerMapper($m1);
     $mapper->registerMapper($m2);
 
-    $m1->expectOnce('delete', array(new IsAExpectation('MockDomainObject')));
-    $m2->expectOnce('delete', array(new IsAExpectation('MockDomainObject')));
+    $m1->expectOnce('delete', array($this->object));
+    $m2->expectOnce('delete', array($this->object));
 
     $mapper->delete($this->object);
 

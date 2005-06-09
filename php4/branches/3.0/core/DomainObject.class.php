@@ -12,45 +12,13 @@ require_once(LIMB_DIR . '/core/Object.class.php');
 
 class DomainObject extends Object
 {
-  var $clean_hash;
-
   function DomainObject()
   {
     parent :: Object();
 
-    $this->markClean();
-  }
-
-  function getId()
-  {
-    return (int)$this->get('id');
-  }
-
-  function setId($id)
-  {
-    $this->set('id', (int)$id);
-  }
-
-  function isDirty()
-  {
-    return ($this->clean_hash != $this->getHash());
-  }
-
-  function markClean()
-  {
-    $this->clean_hash = $this->getHash();
-  }
-
-  function import($values)
-  {
-    parent :: import($values);
-
-    $this->markClean();
-  }
-
-  function getHash()//quick'n'dirty hack
-  {
-    return md5(serialize($this->dataspace));
+    $toolkit =& Limb :: toolkit();
+    $uow =& $toolkit->getUOW();
+    $uow->registerNew($this);
   }
 }
 
